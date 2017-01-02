@@ -4,3 +4,7 @@
 DigitalInspection/obj/
 DigitalInspection/.vs/
 DigitalInspection/Properties/PublishProfiles/
+
+#Dynamically fetched files and package manager folders
+packages/
+DigitalInspection/bin/
