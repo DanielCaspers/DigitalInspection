@@ -1,44 +1,89 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+	<meta charset="utf-8" >
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - My ASP.NET Application</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+		  rel="stylesheet">
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("DigitalInspection", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+	<div class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid ma-nav-container">
+			<div class="dropdown ma-nav-dropdown">
+				<i class="dropdown-toggle material-icons md-24" data-toggle="dropdown">
+					menu
+				</i>
+				<ul class="dropdown-menu ma-menu-tray">
+					<li>
+						<a href="@Url.Action("Index", "Home")">
+							<i class="material-icons">description</i>
+							<span>Work Orders</span>
+						</a>
+					</li>
+					<li>
+						<a href="@Url.Action("About", "Home")">
+							<i class="material-icons">list</i>
+							<span>Checklists</span>
+						</a>
+					</li>
+					<li>
+						<a href="@Url.Action("Contact", "Home")">
+							<i class="material-icons">people</i>
+							<span>Users</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<span class="ma-nav-breadcrumb" style="font-size:16px; font-weight:700;">Work Orders</span>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+			<div class="ma-nav-brand">
+				@Html.ActionLink("Murphy Automotive", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+			</div>
+
+			<div class="ma-nav-account">
+				@Html.Partial("_LoginPartial")
+			</div>
+
+
+		</div>
+
+	</div>
+	<div class="container-fluid body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+			<i class="material-icons">edit</i>
+			<i class="material-icons">delete</i>
+			<i class="material-icons">content_copy</i>
+			<i class="material-icons">photo_camera</i>
+
+			<i class="material-icons">arrow_back</i>
+			<i class="material-icons">menu</i>
+			<i class="material-icons">apps</i>
+			<i class="material-icons">clear</i>
+
+			<i class="material-icons">account_circle</i>
+			<i class="material-icons">label</i>
+
+			<i class="material-icons">add</i>
+			<i class="material-icons">note_add</i>
+			<i class="material-icons">add_a_photo</i>
+			<i class="material-icons md-36">person_add</i>
+
+
+
+
+		</footer>
+	</div>
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
 </body>
 </html>

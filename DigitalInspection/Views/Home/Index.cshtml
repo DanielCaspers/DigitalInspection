@@ -1,34 +1,31 @@
 ﻿@{
-    ViewBag.Title = "Digital Inspection";
+	ViewBag.Title = "Digital Inspection";
 }
 
-<div class="row">
-    <h2 class="col-sm-12">Checklists</h2>
 
-    @if (Model == null)
-    {
-        <div class="bg-error">Model was null, looks like the database needs stuff.</div>
-    }
-    else
-    {
-        <table class="table table-hover">
-            <tr>
-                <th></th>
-                <th>ID</th>
-                <th>Name</th>
-            </tr>
-            @foreach (var checklist in Model)
-            {
-                <tr>
-                    <td class="">
-                        <button class="btn btn-primary" type="button" value="Input">
-                            Button that does nothing...
-                        </button>
-                    </td>
-                    <td>@checklist.Id</td>
-                    <td>@checklist.Name</td>
-                </tr>
-            }
-        </table>
-    }
-</div>
+@if (Model == null)
+{
+	<div class="bg-error">Model was null, looks like the database needs stuff.</div>
+}
+else
+{
+	<table class="table table-hover">
+		<tr>
+			<th></th>
+			<th>ID</th>
+			<th>Name</th>
+		</tr>
+		@foreach (var checklist in Model)
+		{
+			<tr>
+				<td class="">
+					<button class="btn btn-primary" type="button" value="Input">
+						Button that does nothing...
+					</button>
+				</td>
+				<td>@checklist.Id</td>
+				<td>@checklist.Name</td>
+			</tr>
+		}
+	</table>
+}

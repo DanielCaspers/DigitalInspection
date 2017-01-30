@@ -1,35 +1,103 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+	padding-top: 50px;
+	padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
-    white-space: normal;
+	white-space: normal;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 280px;
+	max-width: 280px;
 }
 
 
 //Compilation demo using webview essentials
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
-     -moz-border-radius: $radius;
-      -ms-border-radius: $radius;
-          border-radius: $radius;
+	 -moz-border-radius: $radius;
+	  -ms-border-radius: $radius;
+		  border-radius: $radius;
 }
 
 .box { @include border-radius(15px); }
+
+
+
+//_layout.cshtml
+.ma-nav-container{
+	display:flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.ma-nav-dropdown{
+		flex: 0 1 auto;
+
+		.ma-menu-tray {
+			width:200px;
+			li{
+				justify-content: space-around;
+				align-items:center;
+
+				a{
+					line-height:44px;
+					display:flex;
+					flex: 1 1 auto;
+					padding: 3px 3px;
+				}
+
+				i.material-icons{
+					margin-top:9px;
+					margin-right:15px;
+					margin-left:10px;
+				}
+			} 
+		}
+	}
+
+	.ma-nav-breadcrumb{
+		padding-left:10px;
+		flex:1 1 auto;
+	}
+
+	.ma-nav-brand{
+		flex: 1 1 auto;
+	}
+
+	.ma-nav-account{
+		flex: 0 1 auto;
+	}
+}
+
+
+
+
+
+/*
+ ===Google Material Icons Styles===
+*/
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
