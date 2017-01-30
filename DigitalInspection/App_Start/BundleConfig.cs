@@ -30,6 +30,7 @@ namespace DigitalInspection
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 					  "~/Content/bootstrap.css",
 					  "~/Content/bootstrap-material-design.css",
+					  "~/Content/ripples.css",
 					  "~/Content/site.css"));
 		}
 	}
