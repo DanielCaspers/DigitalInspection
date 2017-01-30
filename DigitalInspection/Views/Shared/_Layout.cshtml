@@ -8,15 +8,16 @@
 		  rel="stylesheet">
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
-	<div class="navbar navbar-default navbar-fixed-top">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid ma-nav-container">
 			<div class="dropdown ma-nav-dropdown">
-				<i class="dropdown-toggle material-icons md-24" data-toggle="dropdown">
-					menu
-				</i>
+				<button type="button" class="btn btn-default" data-toggle="dropdown">
+					<i class="dropdown-toggle material-icons md-24 md-light">
+						menu
+					</i>
+				</button>
 				<ul class="dropdown-menu ma-menu-tray">
 					<li>
 						<a href="@Url.Action("Index", "Home")">
@@ -84,6 +85,12 @@
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/material")
+	<script type="text/javascript">
+	$(document).ready(function () {
+		$.material.init();
+	});
+	</script>
 	@RenderSection("scripts", required: false)
 </body>
 </html>

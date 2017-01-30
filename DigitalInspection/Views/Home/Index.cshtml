@@ -11,21 +11,111 @@ else
 {
 	<table class="table table-hover">
 		<tr>
-			<th></th>
 			<th>ID</th>
 			<th>Name</th>
+			<th></th>
 		</tr>
 		@foreach (var checklist in Model)
 		{
 			<tr>
-				<td class="">
-					<button class="btn btn-primary" type="button" value="Input">
-						Button that does nothing...
-					</button>
-				</td>
 				<td>@checklist.Id</td>
 				<td>@checklist.Name</td>
+				<td>
+					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+						<i class="material-icons">delete</i>
+					</button>
+				</td>
 			</tr>
 		}
 	</table>
+
+	<!-- Checklist cards-->
+	<a href="javascript:void(0)">
+		<div class="col-md-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Mechanics</h3>
+				</div>
+				<div class="panel-body">
+					Typical service level
+				</div>
+			</div>
+		</div>
+	</a>
+
+	<div class="col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">X-lube</h3>
+			</div>
+			<div class="panel-body">
+				Tires, interior, fluids and lights
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Pre-purchase inspection</h3>
+			</div>
+			<div class="panel-body">
+				The "everything" option
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Error toast -->
+	<div class="ma-toast alert alert-dismissible alert-danger">
+		<i class="material-icons">lock</i>
+		<span >X-lube (192.168.2.222) has locked the current work order.</span>
+		<button type="button" class="close" data-dismiss="alert">
+			<i class="material-icons">close</i>
+		</button>
+	</div>
+
+
+	<!-- Delete option slim-->
+	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+		<i class="material-icons">delete</i>
+	</button>
+
+	<div id="myModal" class="modal fade">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-body">
+					<p>Delete checklist?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Delete option fat-->
+
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal2">
+		<i class="material-icons">delete</i>
+	</button>
+
+	<div id="myModal2" class="modal fade">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">Delete checklist?</h4>
+				</div>
+				<div class="modal-body">
+					<p>This cannot be undone!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary">Delete</button>
+				</div>
+			</div>
+		</div>
+	</div>
 }

@@ -53,6 +53,11 @@ textarea {
   .ma-nav-container .ma-nav-account {
     flex: 0 1 auto; }
 
+.ma-toast {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important; }
+
 /*
  ===Google Material Icons Styles===
 */
