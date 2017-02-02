@@ -25,6 +25,10 @@ textarea {
   -ms-border-radius: 15px;
   border-radius: 15px; }
 
+img.center-image {
+  margin: auto;
+  display: block; }
+
 .ma-nav-container {
   display: flex;
   justify-content: space-between;

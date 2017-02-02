@@ -34,7 +34,11 @@ textarea {
 
 .box { @include border-radius(15px); }
 
-
+//Convenience classes
+img.center-image{
+	margin:auto;
+	display:block;
+}
 
 //_layout.cshtml
 .ma-nav-container{
