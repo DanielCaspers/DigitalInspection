@@ -1,0 +1,43 @@
+﻿@model DigitalInspection.ViewModels.ManageChecklistMasterViewModel
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Digital Inspection";
+}
+
+<script type="text/javascript" src="~/Scripts/App/Shared/Services/dialog.service.js"></script>
+<script type="text/javascript" src="~/Scripts/App/Shared/Services/tab.service.js"></script>
+
+@Html.Partial("Dialogs/_ConfirmDelete", "checklist")
+@Html.Partial("TabContainers/_ChecklistManagementTabs")
+
+<div class="container-fluid">
+
+	<div class="list-group">
+		@foreach (var checklist in Model.Checklists)
+		{
+			<div class="list-group-separator"></div>
+			<div class="list-group-item">
+				<div class="row-picture">
+					<img class="img-rounded" src="http://lorempixel.com/56/56/people/1" alt="checklist-image">
+				</div>
+				<div class="row-content">
+					<div class="col-xs-10">
+						<h4 class="list-group-item-heading">@checklist.Name</h4>
+						<span class="list-group-item-text">Items: @checklist.Items.Count()</span>
+						<span class="list-group-item-text">Items: @checklist.Id</span>
+
+					</div>
+
+					<div class="col-xs-2">
+						<button type="button" style="float:right;" class="btn btn-default" onclick="DialogService.confirmDelete('Checklists', '@checklist.Id', true, function() { console.log('HTTP SUCCESS'); } )">
+							<i class="material-icons">delete</i>
+						</button>
+					</div>
+				</div>
+
+			</div>
+		}
+		<div class="list-group-separator"></div>
+
+	</div>
+</div>

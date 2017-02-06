@@ -1,12 +1,14 @@
-﻿body {
+﻿/*
+	_variables. TODO  Move to a separate file
+*/
+$brand-color:#b40000;
+
+
+
+
+body {
 	padding-top: 50px;
 	padding-bottom: 20px;
-}
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
-	padding-left: 15px;
-	padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -45,6 +47,7 @@ img.center-image{
 	display:flex;
 	justify-content: space-between;
 	align-items: center;
+	background-color:$brand-color;
 
 	.ma-nav-dropdown{
 		flex: 0 1 auto;
@@ -91,6 +94,15 @@ img.center-image{
 	justify-content: space-between !important;
 }
 
+
+//_tabContainer.cshtml
+.ma-tab-container{
+	height: 60px;
+	a{
+		font-weight: bold !important;
+		padding-top: 17px;
+	}
+}
 
 
 

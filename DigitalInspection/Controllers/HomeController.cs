@@ -27,7 +27,6 @@ namespace DigitalInspection.Controllers
         {
             var checklists = _context.Checklists;
             return View(checklists);
-            //return View();
         }
 
         public ActionResult About()

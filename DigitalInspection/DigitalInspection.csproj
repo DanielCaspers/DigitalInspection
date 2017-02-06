@@ -209,6 +209,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ChecklistsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -230,6 +231,8 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\DialogConfirmDeleteViewModel.cs" />
+    <Compile Include="ViewModels\ManageChecklistMasterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-material-design.css" />
@@ -266,32 +269,35 @@
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\MurphyAuto_Debug.pubxml" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\App\Shared\Services\dialog.service.js" />
+    <Content Include="Scripts\App\Shared\Services\httpClient.service.js" />
+    <Content Include="Scripts\App\Shared\Services\tab.service.js" />
+    <Content Include="Scripts\Library\Bootstrap\bootstrap.js" />
+    <Content Include="Scripts\Library\Bootstrap\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Nightly A.pubxml" />
     <None Include="Properties\PublishProfiles\Nightly B.pubxml" />
     <None Include="Properties\PublishProfiles\Stable Dev.pubxml" />
-    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.1.1.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\material.js" />
-    <Content Include="Scripts\material.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\ripples.js" />
-    <Content Include="Scripts\ripples.min.js" />
+    <None Include="Scripts\Library\JQuery\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\Library\JQuery\jquery-3.1.1.js" />
+    <Content Include="Scripts\Library\JQuery\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\Library\JQuery\jquery-3.1.1.slim.js" />
+    <Content Include="Scripts\Library\JQuery\jquery-3.1.1.slim.min.js" />
+    <Content Include="Scripts\Library\JQuery\jquery-3.1.1.slim.min.map" />
+    <Content Include="Scripts\Library\JQuery\jquery-3.1.1.min.map" />
+    <None Include="Scripts\Library\JQuery-Validate\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\Library\JQuery-Validate\jquery.validate.js" />
+    <Content Include="Scripts\Library\JQuery-Validate\jquery.validate.min.js" />
+    <Content Include="Scripts\Library\JQuery-Validate\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\Library\JQuery-Validate\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\Library\Bootstrap-Material\material.js" />
+    <Content Include="Scripts\Library\Bootstrap-Material\material.min.js" />
+    <Content Include="Scripts\Library\Modernizr\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Library\Bootstrap\respond.js" />
+    <Content Include="Scripts\Library\Bootstrap\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\Library\Bootstrap\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\Library\Bootstrap\respond.min.js" />
+    <Content Include="Scripts\Library\Bootstrap-Material\ripples.js" />
+    <Content Include="Scripts\Library\Bootstrap-Material\ripples.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -330,8 +336,13 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Scripts\material.min.js.map" />
-    <Content Include="Scripts\ripples.min.js.map" />
+    <Content Include="Scripts\Library\Bootstrap-Material\material.min.js.map" />
+    <Content Include="Scripts\Library\Bootstrap-Material\ripples.min.js.map" />
+    <Content Include="Views\Checklists\Index.cshtml" />
+    <Content Include="Views\Shared\Dialogs\_ConfirmDelete.cshtml" />
+    <Content Include="Views\Shared\Dialogs\_ConfirmDeleteRich.cshtml" />
+    <Content Include="Views\Shared\Toasts\_ErrorToast.cshtml" />
+    <Content Include="Views\Shared\TabContainers\_ChecklistManagementTabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
