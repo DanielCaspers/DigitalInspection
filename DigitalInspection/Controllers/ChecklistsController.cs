@@ -83,6 +83,7 @@ namespace DigitalInspection.Controllers
 
 			var viewModel = new ManageChecklistMasterViewModel
 			{
+				Resource = "Checklists",
 				Checklists = checklists.ToList()
 			};
 

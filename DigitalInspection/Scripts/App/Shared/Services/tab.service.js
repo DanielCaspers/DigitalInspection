@@ -1,4 +1,4 @@
-﻿const TabService = function () { }
+﻿const TabService = function () { };
 
 TabService.changeTab = function (event) {
 	//Remove selected state from the child that has it

@@ -1,12 +1,4 @@
-﻿/*
-	_variables. TODO  Move to a separate file
-*/
-$brand-color:#b40000;
-
-
-
-
-body {
+﻿body {
 	padding-top: 50px;
 	padding-bottom: 20px;
 }
@@ -42,35 +34,59 @@ img.center-image{
 	display:block;
 }
 
+.text-inverse{
+	color:#ffffff;
+}
+
+@mixin dropdown-tray($trayWidth, $linkPadding) {
+	width: $trayWidth;
+	li{
+		justify-content: space-around;
+		align-items:center;
+
+		a{
+			line-height:44px;
+			display:flex;
+			flex: 1 1 auto;
+			padding: $linkPadding !important;
+		}
+
+		i.material-icons{
+			margin-top:9px;
+			margin-right:15px;
+			margin-left:10px;
+		}
+	} 
+}
+
+.ma-dropdown-tray{
+	@include dropdown-tray(150px, 0px);
+}
+
+
 //_layout.cshtml
 .ma-nav-container{
 	display:flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color:$brand-color;
+
+	.ma-nav-text{
+		@extend .text-inverse;
+		text-transform: none !important;
+		font-weight: bold;
+		font-size: 16px;
+	}
 
 	.ma-nav-dropdown{
 		flex: 0 1 auto;
 
+		button{
+			margin: 0;
+			padding: 15px;
+		}
+
 		.ma-menu-tray {
-			width:200px;
-			li{
-				justify-content: space-around;
-				align-items:center;
-
-				a{
-					line-height:44px;
-					display:flex;
-					flex: 1 1 auto;
-					padding: 3px 3px;
-				}
-
-				i.material-icons{
-					margin-top:9px;
-					margin-right:15px;
-					margin-left:10px;
-				}
-			} 
+			@include dropdown-tray(200px, 3px);
 		}
 	}
 
@@ -85,7 +101,18 @@ img.center-image{
 
 	.ma-nav-account{
 		flex: 0 1 auto;
+
+		button{
+			margin: 5px;
+			padding: 0px 5px;
+		}
+
+		.ma-account-name{
+			padding-right:15px;
+		}
 	}
+
+
 }
 
 .ma-toast{

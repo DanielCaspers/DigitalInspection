@@ -1,4 +1,5 @@
 ﻿using DigitalInspection.Models;
+using DigitalInspection.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,31 +8,29 @@ using System.Web.Mvc;
 
 namespace DigitalInspection.Controllers
 {
-    public class HomeController : Controller
-    {
-        private ApplicationDbContext _context;
+	public class HomeController : Controller
+	{
 
-        public HomeController()
-        {
-            _context = new ApplicationDbContext();
-        }
+		public HomeController()
+		{
+		}
 
+		public ActionResult Index()
+		{
+			var viewModel = new BaseViewModel
+			{
+				Resource = "Home"
+			};
+			return View(viewModel);
+		}
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            _context.Dispose();
-        }
-
-        public ActionResult Index()
-        {
-            var checklists = _context.Checklists;
-            return View(checklists);
-        }
-
-        public ActionResult About()
-        {
-            return View();
-        }
-    }
+		public ActionResult About()
+		{
+			var viewModel = new BaseViewModel
+			{
+				Resource = "About"
+			};
+			return View(viewModel);
+		}
+	}
 }

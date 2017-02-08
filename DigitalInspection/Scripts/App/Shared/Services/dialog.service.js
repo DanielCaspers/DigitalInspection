@@ -1,4 +1,4 @@
-﻿const DialogService = function () {}
+﻿const DialogService = function () { };
 
 DialogService.confirmDelete = function (resource, resourceId, appendBaseUrl, cb) {
 	$(document).ready(function () {

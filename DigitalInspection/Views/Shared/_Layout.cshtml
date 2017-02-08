@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model DigitalInspection.ViewModels.BaseViewModel
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" >
@@ -13,7 +14,7 @@
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
 	@Scripts.Render("~/bundles/material")
-	<div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid ma-nav-container">
 			<div class="dropdown ma-nav-dropdown">
 				<button type="button" class="btn btn-default" data-toggle="dropdown">
@@ -48,8 +49,7 @@
 					</li>
 				</ul>
 			</div>
-			<span class="ma-nav-breadcrumb" style="font-size:16px; font-weight:700;">Work Orders</span>
-
+			<span id="ma-nav-title" class="ma-nav-breadcrumb ma-nav-text">@Model.Resource</span>
 
 			<div class="ma-nav-brand">
 				@Html.ActionLink("Murphy Automotive", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })

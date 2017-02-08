@@ -1,7 +1,4 @@
-﻿/*
-	_variables. TODO  Move to a separate file
-*/
-body {
+﻿body {
   padding-top: 50px;
   padding-bottom: 20px; }
 
@@ -27,13 +24,37 @@ img.center-image {
   margin: auto;
   display: block; }
 
+.text-inverse, .ma-nav-container .ma-nav-text {
+  color: #ffffff; }
+
+.ma-dropdown-tray {
+  width: 150px; }
+  .ma-dropdown-tray li {
+    justify-content: space-around;
+    align-items: center; }
+    .ma-dropdown-tray li a {
+      line-height: 44px;
+      display: flex;
+      flex: 1 1 auto;
+      padding: 0px !important; }
+    .ma-dropdown-tray li i.material-icons {
+      margin-top: 9px;
+      margin-right: 15px;
+      margin-left: 10px; }
+
 .ma-nav-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background-color: #b40000; }
+  align-items: center; }
+  .ma-nav-container .ma-nav-text {
+    text-transform: none !important;
+    font-weight: bold;
+    font-size: 16px; }
   .ma-nav-container .ma-nav-dropdown {
     flex: 0 1 auto; }
+    .ma-nav-container .ma-nav-dropdown button {
+      margin: 0;
+      padding: 15px; }
     .ma-nav-container .ma-nav-dropdown .ma-menu-tray {
       width: 200px; }
       .ma-nav-container .ma-nav-dropdown .ma-menu-tray li {
@@ -43,7 +64,7 @@ img.center-image {
           line-height: 44px;
           display: flex;
           flex: 1 1 auto;
-          padding: 3px 3px; }
+          padding: 3px !important; }
         .ma-nav-container .ma-nav-dropdown .ma-menu-tray li i.material-icons {
           margin-top: 9px;
           margin-right: 15px;
@@ -55,6 +76,11 @@ img.center-image {
     flex: 1 1 auto; }
   .ma-nav-container .ma-nav-account {
     flex: 0 1 auto; }
+    .ma-nav-container .ma-nav-account button {
+      margin: 5px;
+      padding: 0px 5px; }
+    .ma-nav-container .ma-nav-account .ma-account-name {
+      padding-right: 15px; }
 
 .ma-toast {
   display: flex !important;
