@@ -85,7 +85,11 @@ img.center-image {
 .ma-toast {
   display: flex !important;
   align-items: center !important;
-  justify-content: space-between !important; }
+  justify-content: space-between !important;
+  margin-top: 20px;
+  padding-right: 0px; }
+  .ma-toast button {
+    margin: 0px !important; }
 
 .ma-tab-container {
   height: 60px; }

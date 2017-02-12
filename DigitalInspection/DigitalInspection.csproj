@@ -278,6 +278,8 @@
     <None Include="Properties\PublishProfiles\Nightly B.pubxml" />
     <None Include="Properties\PublishProfiles\Stable Dev.pubxml" />
     <None Include="Scripts\Library\JQuery\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\Library\JQuery-Ajax\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\Library\JQuery-Ajax\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\Library\JQuery\jquery-3.1.1.js" />
     <Content Include="Scripts\Library\JQuery\jquery-3.1.1.min.js" />
     <Content Include="Scripts\Library\JQuery\jquery-3.1.1.slim.js" />
@@ -341,8 +343,10 @@
     <Content Include="Views\Checklists\Index.cshtml" />
     <Content Include="Views\Shared\Dialogs\_ConfirmDelete.cshtml" />
     <Content Include="Views\Shared\Dialogs\_ConfirmDeleteRich.cshtml" />
-    <Content Include="Views\Shared\Toasts\_ErrorToast.cshtml" />
+    <Content Include="Views\Shared\Toasts\_Toast.cshtml" />
     <Content Include="Views\Shared\TabContainers\_ChecklistManagementTabs.cshtml" />
+    <Content Include="Views\Checklists\_ChecklistList.cshtml" />
+    <Compile Include="ViewModels\ToastViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

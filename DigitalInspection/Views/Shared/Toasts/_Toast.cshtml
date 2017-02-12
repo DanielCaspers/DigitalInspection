@@ -1,0 +1,48 @@
+﻿@model DigitalInspection.ViewModels.ToastViewModel
+
+@{
+	var styleClass = "";
+
+	switch (Model.Type)
+	{
+		case DigitalInspection.ViewModels.ToastType.Error:
+			styleClass = "alert-danger";
+			break;
+		case DigitalInspection.ViewModels.ToastType.Warn:
+			styleClass = "alert-warning";
+			break;
+		case DigitalInspection.ViewModels.ToastType.Success:
+			styleClass = "alert-success";
+			break;
+		case DigitalInspection.ViewModels.ToastType.Info:
+			styleClass = "alert-info";
+			break;
+	}
+}
+
+<div class="ma-toast alert alert-dismissible @styleClass">
+	<i class="material-icons">@Model.Icon</i>
+	<span>@Model.Message</span>
+
+	@switch (Model.Action)
+	{
+		case DigitalInspection.ViewModels.ToastActionType.Close:
+			<button type="button" class="btn btn-default" data-dismiss="alert">
+				<i class="material-icons md-light">close</i>
+			</button>
+			break;
+		case DigitalInspection.ViewModels.ToastActionType.Refresh:
+			<button type="button" class="btn btn-default" onclick="window.location.reload()">
+				<i class="material-icons md-light">refresh</i>
+			</button>
+			break;
+		case DigitalInspection.ViewModels.ToastActionType.Unlock:
+			<button type="button" class="btn btn-default" data-dismiss="alert">
+				<i class="material-icons md-light">lock_open</i>
+			</button>
+			break;
+		default:
+			<span>ENUM PROPERTY NOT YET IMPLEMENTED</span>
+			break;
+	}
+</div>

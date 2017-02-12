@@ -1,4 +1,5 @@
 ﻿body {
+	//TODO: DJC This needs to be 75px for normal views, but 50px with tab containers... It would be better handled by the stacked partials instead of body?
 	padding-top: 50px;
 	padding-bottom: 20px;
 }
@@ -119,6 +120,13 @@ img.center-image{
 	display: flex !important;
 	align-items: center !important;
 	justify-content: space-between !important;
+
+	margin-top:20px;
+	padding-right: 0px;
+
+	button{
+		margin: 0px !important;
+	}
 }
 
 

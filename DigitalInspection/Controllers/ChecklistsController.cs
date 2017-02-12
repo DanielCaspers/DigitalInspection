@@ -68,76 +68,35 @@ namespace DigitalInspection.Controllers
 			_context.Dispose();
 		}
 
-
-		// GET: Checklist
-		public ActionResult Index()
+		private ManageChecklistMasterViewModel GetChecklistViewModel()
 		{
-
 			var checklists = _context.Checklists;
-			
+
 			//Temp append to not mess with the db
-			foreach(var checklist in checklists)
+			foreach (var checklist in checklists)
 			{
 				checklist.Items = Items;
 			}
 
-			var viewModel = new ManageChecklistMasterViewModel
+			return new ManageChecklistMasterViewModel
 			{
 				Resource = "Checklists",
 				Checklists = checklists.ToList()
 			};
-
-			return View(viewModel);
 		}
 
-		// GET: Checklist/Details/5
-		public ActionResult Details(int id)
+		// GET: Checklists page and return response to index.cshtml
+		public ActionResult Index()
 		{
-			return View();
+			var viewModel = GetChecklistViewModel();
+			return PartialView(viewModel);
 		}
 
-		// GET: Checklist/Create
-		public ActionResult Create()
+		// GET: Checklists_ChecklistList partial and return it to _ChecklistList.cshtml 
+		public ActionResult _ChecklistList()
 		{
-			return PartialView("Toasts/_ErrorToast");
-		}
-
-		// POST: Checklist/Create
-		[HttpPost]
-		public ActionResult Create(FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add insert logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: Checklist/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
-
-		// POST: Checklist/Edit/5
-		[HttpPost]
-		public ActionResult Edit(int id, FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add update logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
+			var viewModel = GetChecklistViewModel();
+			return PartialView(viewModel);
 		}
 
 		// POST: Checklist/Delete/5
@@ -149,17 +108,32 @@ namespace DigitalInspection.Controllers
 				var checklist = _context.Checklists.Find(id);
 
 				if (checklist == null)
-					return HttpNotFound();
+				{
+					return PartialView("Toasts/_Toast", new ToastViewModel
+					{
+						Icon = "error",
+						Message = "Checklist could not be found.",
+						Type = ToastType.Error,
+						Action = ToastActionType.Refresh
+					});
+					//return HttpNotFound();
+				}
 
 				_context.Checklists.Remove(checklist);
 				_context.SaveChanges();
 			}
 			catch
 			{
-				return PartialView("Toasts/_ErrorToast");
+				return PartialView("Toasts/_Toast", new ToastViewModel
+				{
+					Icon = "error",
+					Message = "An unknown error occurred.",
+					Type = ToastType.Error,
+					Action = ToastActionType.Refresh
+				});
 			}
 
-			return RedirectToAction("Index");
+			return RedirectToAction("_ChecklistList");
 		}
 	}
 }

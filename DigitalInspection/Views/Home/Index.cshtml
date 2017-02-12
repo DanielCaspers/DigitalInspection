@@ -1,4 +1,5 @@
-﻿@{
+﻿@using DigitalInspection.ViewModels
+@{
 	ViewBag.Title = "Digital Inspection";
 }
 
@@ -65,4 +66,59 @@ else
 	</div>
 </div>
 
-@Html.Partial("Toasts/_ErrorToast", "checklist")
+
+<!-- Begin throwaway code-->
+<div class="container">
+	Welcome to the toast playground. Check out what we can return with AJAX now. 
+
+	@Html.Partial("Toasts/_Toast", new ToastViewModel
+	{
+		Icon = "cloud_done",
+		Message = "Inspection has been sent to your service advisor!",
+		Type = ToastType.Success,
+		Action = ToastActionType.Close
+	})
+
+	@Html.Partial("Toasts/_Toast", new ToastViewModel
+	{
+		Icon = "error",
+		Message = "An unknown error occurred!",
+		Type = ToastType.Error,
+		Action = ToastActionType.Refresh
+	})
+
+
+	Developer proposal for handling file lock. X-lube has lock that front counter wants
+	@Html.Partial("Toasts/_Toast", new ToastViewModel
+	{
+		Icon = "lock",
+		Message = "X-lube (192.168.2.2) has locked this work order. Request unlock?",
+		Type = ToastType.Warn,
+		Action = ToastActionType.Unlock
+	})
+
+	@Html.Partial("Toasts/_Toast", new ToastViewModel
+	{
+		Icon = "lock",
+		Message = "Front counter (192.168.2.3) wants to edit this work order. Grant unlock?",
+		Type = ToastType.Info,
+		Action = ToastActionType.Unlock
+	})
+
+	@Html.Partial("Toasts/_Toast", new ToastViewModel
+	{
+		Icon = "lock_open",
+		Message = "X-lube (192.168.2.2) unlocked the work order for you!",
+		Type = ToastType.Success,
+		Action = ToastActionType.Close
+	})
+
+	@Html.Partial("Toasts/_Toast", new ToastViewModel
+	{
+		Icon = "lock",
+		Message = "X-lube (192.168.2.2) isn't ready to unlock yet!",
+		Type = ToastType.Warn,
+		Action = ToastActionType.Close
+	})
+</div>
+

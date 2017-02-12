@@ -9,10 +9,13 @@ namespace DigitalInspection
 		// For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
 		public static void RegisterBundles(BundleCollection bundles)
 		{
-			string LIB_DIR_PREFIX = "~/Scripts/Library/";
+			const string LIB_DIR_PREFIX = "~/Scripts/Library/";
 
 			bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
 						LIB_DIR_PREFIX + "JQuery/jquery-{version}.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/jquery-ajax").Include(
+						LIB_DIR_PREFIX + "JQuery-Ajax/jquery.unobtrusive-ajax.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
 						LIB_DIR_PREFIX + "JQuery-Validate/jquery.validate*"));

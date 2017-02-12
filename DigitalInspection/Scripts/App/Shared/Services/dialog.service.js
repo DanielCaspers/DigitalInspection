@@ -1,25 +1,18 @@
 ﻿const DialogService = function () { };
 
-DialogService.confirmDelete = function (resource, resourceId, appendBaseUrl, cb) {
-	$(document).ready(function () {
+DialogService.confirmDelete = function (formName) {
 
-		$("#confirmDelete").modal();
+	var deferred = $.Deferred();
 
-		const API_BASE_URL = 'http://localhost:54343/';
+	$("#confirmDelete").modal();
 
-		$("#confirmDelete_success").on("click", function () {
-
-			var url = '';
-
-			if (appendBaseUrl) {
-				url = API_BASE_URL + url;
-			}
-
-			url += resource + '/Delete/' + resourceId;
-
-			console.log("delete was called with ", url);
-
-			$.post(url, {}, cb);
-		});
+	$("#confirmDelete_success").click(function () {
+		$("#" + formName).submit();
+		deferred.resolve(true);
 	});
+	$("#confirmDelete_cancel").click(function(){
+		deferred.resolve(false);
+	});
+
+	return deferred.promise();
 };
