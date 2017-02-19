@@ -8,5 +8,9 @@
 <script type="text/javascript" src="~/Scripts/App/Shared/Services/tab.service.js"></script>
 
 @Html.Partial("Dialogs/_ConfirmDelete", "checklist")
+@Html.Partial("_AddChecklistDialog", Model.AddChecklistVM)
+
 @Html.Partial("TabContainers/_ChecklistManagementTabs")
+
+@Html.Partial("_ChecklistToolbar")
 @Html.Partial("_ChecklistList", Model)

@@ -16,3 +16,30 @@ DialogService.confirmDelete = function (formName) {
 
 	return deferred.promise();
 };
+
+DialogService.show = function (dialogId, formName) {
+
+	var dialogElement = $("#" + dialogId);
+	var formElement = $("#" + formName);
+	dialogElement.modal();
+
+	$("#" + dialogId + "_success").click(function (e) {
+		// Prevent stacking instances of submission if one after another occur without navigating away.
+		// EG, submitting "1" returns 1, submitting "2" returns two "2"s
+		e.preventDefault();
+		e.stopImmediatePropagation();
+
+		formElement.submit();
+
+		dialogElement.modal('hide');
+
+		// Reset values in the form for next open
+		formElement[0].reset();
+	});
+
+	$("#" + dialogId + "_cancel").click(function (e) {
+		// Reset values in the form for next open
+		formElement[0].reset();
+	});
+
+}

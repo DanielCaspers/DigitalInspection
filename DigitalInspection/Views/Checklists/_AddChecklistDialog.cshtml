@@ -1,0 +1,56 @@
+﻿@model DigitalInspection.ViewModels.AddChecklistViewModel
+
+@{ 
+	const string TEMPLATE_NAMESPACE = "addChecklistDialog";
+	const string CANCEL =			TEMPLATE_NAMESPACE + "_cancel";
+	const string SUCCESS =			TEMPLATE_NAMESPACE + "_success";
+}
+
+<div id="@TEMPLATE_NAMESPACE" class="modal fade">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Add a checklist</h4>
+			</div>
+			@using (Ajax.BeginForm(
+				"Create",
+				"Checklists",
+				null,
+				new AjaxOptions
+				{
+					InsertionMode = InsertionMode.Replace,
+					UpdateTargetId = "checklistList"
+				},
+				new { id = "addChecklistForm" })
+			)
+			{
+				<div class="modal-body">
+					<div class="form-group">
+						@Html.LabelFor(m => m.Name, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+					</div>
+
+					@*@Html.LabelFor(x => x.Picture)
+					@Html.TextBoxFor(x => x.Picture, new { type = "file", @class = "form-control", placeholder = "Attach a picture", readonly = ""})*@
+
+					<div class="form-group">
+						@Html.TextBoxFor(m => m.Picture, new { type = "file", accept = "image/*" })
+						<div class="input-group">
+							@Html.TextBoxFor(m => m.Picture, new { @readonly = "", @class = "form-control", placeholder  ="Attach a picture"})
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-fab btn-fab-mini">
+									<i class="material-icons">attach_file</i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
+				</div>
+			}
+		</div>
+	</div>
+</div>

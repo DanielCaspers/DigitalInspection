@@ -27,6 +27,9 @@ img.center-image {
 .text-inverse, .ma-nav-container .ma-nav-text {
   color: #ffffff; }
 
+button.no-margin {
+  margin: 0px; }
+
 .ma-dropdown-tray {
   width: 150px; }
   .ma-dropdown-tray li {
@@ -90,6 +93,11 @@ img.center-image {
   padding-right: 0px; }
   .ma-toast button {
     margin: 0px !important; }
+
+.ma-well {
+  background-color: #eeeeee;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }
 
 .ma-tab-container {
   height: 60px; }

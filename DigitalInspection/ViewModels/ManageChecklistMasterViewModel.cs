@@ -9,6 +9,6 @@ namespace DigitalInspection.ViewModels
 	public class ManageChecklistMasterViewModel: BaseViewModel
 	{
 		public List<Checklist> Checklists { get; set; }
-		//public DialogConfirmDeleteViewModel {};
+		public AddChecklistViewModel AddChecklistVM { get; set; }
 	}
 }

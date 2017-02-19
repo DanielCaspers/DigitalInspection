@@ -1,6 +1,4 @@
-﻿using DigitalInspection.Models;
-
-namespace DigitalInspection.ViewModels
+﻿namespace DigitalInspection.ViewModels
 {
 	public enum ToastType { Success, Warn, Error, Info }
 	public enum ToastActionType { Close, Unlock, Refresh }

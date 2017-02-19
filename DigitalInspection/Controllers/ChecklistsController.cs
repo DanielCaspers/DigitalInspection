@@ -81,7 +81,12 @@ namespace DigitalInspection.Controllers
 			return new ManageChecklistMasterViewModel
 			{
 				Resource = "Checklists",
-				Checklists = checklists.ToList()
+				Checklists = checklists.ToList(),
+				AddChecklistVM = new AddChecklistViewModel
+				{
+					Name = "",
+					Picture = null
+				}
 			};
 		}
 
@@ -97,6 +102,21 @@ namespace DigitalInspection.Controllers
 		{
 			var viewModel = GetChecklistViewModel();
 			return PartialView(viewModel);
+		}
+
+		[HttpPost]
+		public ActionResult Create(AddChecklistViewModel list)
+		{
+			Checklist newList = new Checklist
+			{
+				Name = list.Name,
+				Id = Guid.NewGuid()
+			};
+
+			_context.Checklists.Add(newList);
+			_context.SaveChanges();
+
+			return RedirectToAction("_ChecklistList");
 		}
 
 		// POST: Checklist/Delete/5
