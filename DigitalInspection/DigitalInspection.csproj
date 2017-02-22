@@ -223,11 +223,20 @@
     <Compile Include="Migrations\201612182205502_PopulateFirstChecklist.Designer.cs">
       <DependentUpon>201612182205502_PopulateFirstChecklist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702220155024_AddImageModel.cs" />
+    <Compile Include="Migrations\201702220155024_AddImageModel.Designer.cs">
+      <DependentUpon>201702220155024_AddImageModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702220157234_AddImageToChecklist.cs" />
+    <Compile Include="Migrations\201702220157234_AddImageToChecklist.Designer.cs">
+      <DependentUpon>201702220157234_AddImageToChecklist.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChecklistItem.cs" />
     <Compile Include="Models\Checklist.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -346,10 +355,15 @@
     <Content Include="Views\Shared\Toasts\_Toast.cshtml" />
     <Content Include="Views\Shared\TabContainers\_ChecklistManagementTabs.cshtml" />
     <Content Include="Views\Checklists\_ChecklistList.cshtml" />
+    <Compile Include="Models\MaxFileSizeAttribute.cs" />
     <Compile Include="ViewModels\ToastViewModel.cs" />
+    <Content Include="Views\Checklists\_ChecklistToolbar.cshtml" />
+    <Content Include="Views\Checklists\_AddChecklistDialog.cshtml" />
+    <Compile Include="ViewModels\AddChecklistViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\Checklists\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -363,6 +377,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612182205502_PopulateFirstChecklist.resx">
       <DependentUpon>201612182205502_PopulateFirstChecklist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702220155024_AddImageModel.resx">
+      <DependentUpon>201702220155024_AddImageModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702220157234_AddImageToChecklist.resx">
+      <DependentUpon>201702220157234_AddImageToChecklist.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

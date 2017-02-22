@@ -22,6 +22,7 @@ DialogService.show = function (dialogId, formName) {
 	var dialogElement = $("#" + dialogId);
 	var formElement = $("#" + formName);
 	dialogElement.modal();
+	var validator = formElement.validate();
 
 	$("#" + dialogId + "_success").click(function (e) {
 		// Prevent stacking instances of submission if one after another occur without navigating away.
@@ -29,17 +30,21 @@ DialogService.show = function (dialogId, formName) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
-		formElement.submit();
+		if (formElement.valid()) {
+			formElement.submit();
 
-		dialogElement.modal('hide');
+			dialogElement.modal('hide');
 
-		// Reset values in the form for next open
-		formElement[0].reset();
+			// Reset values in the form for next open
+			formElement[0].reset();
+			validator.resetForm();
+		}
 	});
 
 	$("#" + dialogId + "_cancel").click(function (e) {
 		// Reset values in the form for next open
 		formElement[0].reset();
+		validator.resetForm();
 	});
 
 }

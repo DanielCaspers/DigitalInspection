@@ -43,6 +43,10 @@ button.no-margin{
 	margin: 0px;
 }
 
+.field-validation-error, .field-validation-valid{
+	color:#f44336 ;
+}
+
 @mixin dropdown-tray($trayWidth, $linkPadding) {
 	width: $trayWidth;
 	li{

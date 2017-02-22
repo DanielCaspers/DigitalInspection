@@ -30,6 +30,9 @@ img.center-image {
 button.no-margin {
   margin: 0px; }
 
+.field-validation-error, .field-validation-valid {
+  color: #f44336; }
+
 .ma-dropdown-tray {
   width: 150px; }
   .ma-dropdown-tray li {

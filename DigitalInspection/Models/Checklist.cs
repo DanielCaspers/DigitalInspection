@@ -8,12 +8,14 @@ namespace DigitalInspection.Models
 {
 	public class Checklist
 	{
-		//[Required]
+		[Required]
 		public string Name { get; set; }
 		public IList<ChecklistItem> Items { get; set; }
 
 		//[Required]
-		public Guid Id { get; set; }
+		public Image Image { get; set; }
 
+		[Required]
+		public Guid Id { get; set; }
 	}
 }

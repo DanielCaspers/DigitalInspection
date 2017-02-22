@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using DigitalInspection.Models;
 using DigitalInspection.ViewModels;
+using System.IO;
 
 namespace DigitalInspection.Controllers
 {
@@ -107,16 +108,37 @@ namespace DigitalInspection.Controllers
 		[HttpPost]
 		public ActionResult Create(AddChecklistViewModel list)
 		{
+
 			Checklist newList = new Checklist
 			{
 				Name = list.Name,
 				Id = Guid.NewGuid()
 			};
 
+
+			// TODO Improve error handling and prevent NPEs
+			if (list.Picture.ContentLength > 0)
+			{
+				var UPLOAD_DIR = "~/Uploads/Checklists/";
+				var imageFileName = newList.Id + "_" + list.Picture.FileName;
+				var imagePath = Path.Combine(Server.MapPath(UPLOAD_DIR), imageFileName);
+				list.Picture.SaveAs(imagePath);
+
+				var image = new Image
+				{
+					Title = imageFileName,
+					ImageUrl = imagePath
+					//Id = Guid.NewGuid()
+				};
+
+				newList.Image = image;
+			}
+
 			_context.Checklists.Add(newList);
 			_context.SaveChanges();
 
-			return RedirectToAction("_ChecklistList");
+			return RedirectToAction("Index");
+			//return RedirectToAction("_ChecklistList");
 		}
 
 		// POST: Checklist/Delete/5
@@ -152,7 +174,6 @@ namespace DigitalInspection.Controllers
 					Action = ToastActionType.Refresh
 				});
 			}
-
 			return RedirectToAction("_ChecklistList");
 		}
 	}
