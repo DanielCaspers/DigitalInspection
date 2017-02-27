@@ -1,5 +1,19 @@
-﻿<div id="tabContainer" class="ma-tab-container btn-group-justified btn-group-raised">
-	<a id="checklistsTab" onclick="TabService.changeTab(event)" class="btn btn-info">Checklists</a>
-	<a id="checklistItemsTab" onclick="TabService.changeTab(event)" class="btn ">Checklist Items</a>
-	<a id="tagsTab" onclick="TabService.changeTab(event)" class="btn ">Tags</a>
+﻿<div id="tabContainer"
+	 class="ma-tab-container btn-group-justified">
+	<a id="checklistsTab"
+	   href="@Url.Action("Index", "Checklists")"
+	   onclick="TabService.changeTab(event)"
+	   class="btn btn-info btn-raised">
+		Checklists
+	</a>
+	<a id="checklistItemsTab"
+	   onclick="TabService.changeTab(event)"
+	   class="btn ">
+		Checklist Items
+	</a>
+	<a id="tagsTab"
+	   onclick="TabService.changeTab(event)"
+	   class="btn ">
+		Tags
+	</a>
 </div>

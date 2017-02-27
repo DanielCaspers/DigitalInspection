@@ -105,6 +105,30 @@ namespace DigitalInspection.Controllers
 			return PartialView(viewModel);
 		}
 
+		public ActionResult Edit(Guid id)
+		{
+			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == id);
+			if( checklist == null)
+			{
+				return PartialView("Toasts/_Toast", new ToastViewModel
+				{
+					Icon = "error",
+					Message = "Checklist could not be found.",
+					Type = ToastType.Error,
+					Action = ToastActionType.Refresh
+				});
+			}
+			else
+			{
+				var viewModel = new EditChecklistViewModel {
+					Name = checklist.Name,
+					Picture = checklist.Image
+					//Checklist = checklist
+				};
+				return PartialView("_EditChecklist", viewModel);
+			}
+		}
+
 		[HttpPost]
 		public ActionResult Create(AddChecklistViewModel list)
 		{

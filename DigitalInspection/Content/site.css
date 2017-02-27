@@ -8,12 +8,6 @@
 .dl-horizontal dt {
   white-space: normal; }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-  max-width: 280px; }
-
 .box {
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
@@ -27,7 +21,11 @@ img.center-image {
 .text-inverse, .ma-nav-container .ma-nav-text {
   color: #ffffff; }
 
-button.no-margin {
+a.back-button {
+  font-weight: bold;
+  text-transform: none; }
+
+button.no-margin, a.no-margin {
   margin: 0px; }
 
 .field-validation-error, .field-validation-valid {
@@ -47,6 +45,23 @@ button.no-margin {
       margin-top: 9px;
       margin-right: 15px;
       margin-left: 10px; }
+
+.container-flex {
+  display: flex; }
+  .container-flex.align-center {
+    align-items: center; }
+  .container-flex.around {
+    justify-content: space-around; }
+  .container-flex.between {
+    justify-content: space-between; }
+  .container-flex.center {
+    justify-content: center; }
+
+.flex-item {
+  flex: 0 1 auto; }
+
+table .checkbox-with-label {
+  margin-right: 15px; }
 
 .ma-nav-container {
   display: flex;

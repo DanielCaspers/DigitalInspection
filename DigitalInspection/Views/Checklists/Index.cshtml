@@ -12,5 +12,15 @@
 
 @Html.Partial("TabContainers/_ChecklistManagementTabs")
 
-@Html.Partial("_ChecklistToolbar")
+<div class="btn-toolbar ma-well well well-sm">
+	<div class="row">
+		<button type="button"
+				class="btn btn-default no-margin pull-right"
+				style="right:65px;"
+				onclick="DialogService.show('addChecklistDialog', 'addChecklistForm')">
+			<i class="material-icons">add</i>
+		</button>
+	</div>
+</div>
+
 @Html.Partial("_ChecklistList", Model)

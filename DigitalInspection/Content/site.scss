@@ -11,14 +11,6 @@
 	white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-	max-width: 280px;
-}
-
-
 //Compilation demo using webview essentials
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
@@ -39,10 +31,17 @@ img.center-image{
 	color:#ffffff;
 }
 
-button.no-margin{
+a.back-button{
+	font-weight:bold;
+	text-transform:none;
+}
+
+button.no-margin, a.no-margin {
+
 	margin: 0px;
 }
 
+// Form classes
 .field-validation-error, .field-validation-valid{
 	color:#f44336 ;
 }
@@ -72,6 +71,35 @@ button.no-margin{
 	@include dropdown-tray(150px, 0px);
 }
 
+//Flex classes
+.container-flex{
+	display:flex;
+
+	&.align-center{
+		align-items:center;
+	}
+
+	&.around{
+		justify-content: space-around;
+	}
+
+	&.between{
+		justify-content: space-between;
+	}
+
+	&.center{
+		justify-content: center;
+	}
+}
+
+.flex-item{
+	flex: 0 1 auto;
+}
+
+// Tables
+table .checkbox-with-label{
+	margin-right: 15px;
+}
 
 //_layout.cshtml
 .ma-nav-container{
@@ -145,8 +173,9 @@ button.no-margin{
 
 
 //_tabContainer.cshtml
-.ma-tab-container{
+.ma-tab-container {
 	height: 60px;
+
 	a{
 		font-weight: bold !important;
 		padding-top: 17px;

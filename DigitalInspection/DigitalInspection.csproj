@@ -241,6 +241,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\EditChecklistViewModel.cs" />
     <Compile Include="ViewModels\ManageChecklistMasterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -357,9 +358,9 @@
     <Content Include="Views\Checklists\_ChecklistList.cshtml" />
     <Compile Include="Models\MaxFileSizeAttribute.cs" />
     <Compile Include="ViewModels\ToastViewModel.cs" />
-    <Content Include="Views\Checklists\_ChecklistToolbar.cshtml" />
     <Content Include="Views\Checklists\_AddChecklistDialog.cshtml" />
     <Compile Include="ViewModels\AddChecklistViewModel.cs" />
+    <Content Include="Views\Checklists\_EditChecklist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
