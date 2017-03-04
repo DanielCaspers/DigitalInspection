@@ -10,10 +10,6 @@ namespace DigitalInspection.ViewModels
 {
 	public class EditChecklistViewModel: BaseViewModel
 	{
-		[Required(ErrorMessage = "Checklist name is required")]
-		[DisplayName("Checklist name *")]
-		public string Name { get; set; }
-
-		public Image Picture { get; set; }
+		public Checklist Checklist { get; set; }
 	}
 }

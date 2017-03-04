@@ -5,13 +5,16 @@ using System.Web;
 using System.Web.Mvc;
 using DigitalInspection.Models;
 using DigitalInspection.ViewModels;
-using System.IO;
+using DigitalInspection.Services;
 
 namespace DigitalInspection.Controllers
 {
 	public class ChecklistsController : Controller
 	{
-		//TODO temp code
+		private static readonly string RESOURCE = "Checklist";
+		private static readonly string IMAGE_SUBDIRECTORY = "Checklists";
+
+		//TODO Remove this temp code once checklist items can be added onto checklist
 		private List<ChecklistItem> Items
 		{
 			get
@@ -31,28 +34,6 @@ namespace DigitalInspection.Controllers
 
 			set { Items = value; }
 		}
-
-		private List<Checklist> List
-		{
-			get
-			{
-				return new List<Checklist>
-				{
-					new Checklist
-					{
-						Name = "Mechanics",
-						Items = Items
-					},
-					new Checklist
-					{
-						Name = "X-lube",
-						Items = new List<ChecklistItem>{}
-					}
-				};
-			}
-			set { List = value;  }
-		}
-		
 
 		private ApplicationDbContext _context;
 
@@ -92,77 +73,76 @@ namespace DigitalInspection.Controllers
 		}
 
 		// GET: Checklists page and return response to index.cshtml
-		public ActionResult Index()
+		public PartialViewResult Index()
 		{
-			var viewModel = GetChecklistViewModel();
-			return PartialView(viewModel);
+			return PartialView(GetChecklistViewModel());
 		}
 
 		// GET: Checklists_ChecklistList partial and return it to _ChecklistList.cshtml 
-		public ActionResult _ChecklistList()
+		public PartialViewResult _ChecklistList()
 		{
-			var viewModel = GetChecklistViewModel();
-			return PartialView(viewModel);
+			return PartialView(GetChecklistViewModel());
 		}
 
-		public ActionResult Edit(Guid id)
+		//GET: Checklists/Edit/:id
+		public PartialViewResult Edit(Guid id)
 		{
 			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == id);
+
 			if( checklist == null)
 			{
-				return PartialView("Toasts/_Toast", new ToastViewModel
-				{
-					Icon = "error",
-					Message = "Checklist could not be found.",
-					Type = ToastType.Error,
-					Action = ToastActionType.Refresh
-				});
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
 			}
 			else
 			{
 				var viewModel = new EditChecklistViewModel {
-					Name = checklist.Name,
-					Picture = checklist.Image
-					//Checklist = checklist
+					Checklist = checklist
 				};
 				return PartialView("_EditChecklist", viewModel);
 			}
 		}
 
 		[HttpPost]
+		public ActionResult Update(Guid id, Checklist checklist)
+		{
+			var checklistInDb = _context.Checklists.SingleOrDefault(c => c.Id == id);
+			if(checklistInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+			}
+			else
+			{
+				checklistInDb.Name = checklist.Name;
+
+				HttpPostedFileBase picture = Request.Files[0];
+
+				// Only update the picture if a new one was uploaded
+				if(picture != null && picture.ContentLength > 0)
+				{
+					ImageService.DeleteImage(checklistInDb.Image, IMAGE_SUBDIRECTORY);
+					checklistInDb.Image = ImageService.SaveImage(picture, IMAGE_SUBDIRECTORY, id.ToString());
+				}
+
+				_context.SaveChanges();
+				return RedirectToAction("Edit", new { id = checklistInDb.Id });
+			}
+		}
+
+		[HttpPost]
 		public ActionResult Create(AddChecklistViewModel list)
 		{
-
 			Checklist newList = new Checklist
 			{
 				Name = list.Name,
 				Id = Guid.NewGuid()
 			};
 
-
-			// TODO Improve error handling and prevent NPEs
-			if (list.Picture.ContentLength > 0)
-			{
-				var UPLOAD_DIR = "~/Uploads/Checklists/";
-				var imageFileName = newList.Id + "_" + list.Picture.FileName;
-				var imagePath = Path.Combine(Server.MapPath(UPLOAD_DIR), imageFileName);
-				list.Picture.SaveAs(imagePath);
-
-				var image = new Image
-				{
-					Title = imageFileName,
-					ImageUrl = imagePath
-					//Id = Guid.NewGuid()
-				};
-
-				newList.Image = image;
-			}
+			newList.Image = ImageService.SaveImage(list.Picture, IMAGE_SUBDIRECTORY, newList.Id.ToString());
 
 			_context.Checklists.Add(newList);
 			_context.SaveChanges();
 
 			return RedirectToAction("Index");
-			//return RedirectToAction("_ChecklistList");
 		}
 
 		// POST: Checklist/Delete/5
@@ -175,30 +155,20 @@ namespace DigitalInspection.Controllers
 
 				if (checklist == null)
 				{
-					return PartialView("Toasts/_Toast", new ToastViewModel
-					{
-						Icon = "error",
-						Message = "Checklist could not be found.",
-						Type = ToastType.Error,
-						Action = ToastActionType.Refresh
-					});
-					//return HttpNotFound();
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
 				}
+
+				ImageService.DeleteImage(checklist.Image, IMAGE_SUBDIRECTORY);
 
 				_context.Checklists.Remove(checklist);
 				_context.SaveChanges();
 			}
 			catch
 			{
-				return PartialView("Toasts/_Toast", new ToastViewModel
-				{
-					Icon = "error",
-					Message = "An unknown error occurred.",
-					Type = ToastType.Error,
-					Action = ToastActionType.Refresh
-				});
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
 			return RedirectToAction("_ChecklistList");
 		}
+
 	}
 }

@@ -239,6 +239,8 @@
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ToastService.cs" />
+    <Compile Include="Services\ImageService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\EditChecklistViewModel.cs" />
@@ -282,6 +284,7 @@
     <Content Include="Scripts\App\Shared\Services\dialog.service.js" />
     <Content Include="Scripts\App\Shared\Services\httpClient.service.js" />
     <Content Include="Scripts\App\Shared\Services\tab.service.js" />
+    <Content Include="Scripts\App\Shared\Services\table.service.js" />
     <Content Include="Scripts\Library\Bootstrap\bootstrap.js" />
     <Content Include="Scripts\Library\Bootstrap\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Nightly A.pubxml" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,8 @@ namespace DigitalInspection.Models
 {
 	public class Checklist
 	{
-		[Required]
+		[Required(ErrorMessage = "Checklist name is required")]
+		[DisplayName("Checklist name *")]
 		public string Name { get; set; }
 		public IList<ChecklistItem> Items { get; set; }
 
