@@ -21,12 +21,18 @@ img.center-image {
 .text-inverse, .ma-nav-container .ma-nav-text {
   color: #ffffff; }
 
-a.back-button {
+a.back-button, button.back-button {
   font-weight: bold;
   text-transform: none; }
 
-button.no-margin, a.no-margin {
+a.bold, button.bold {
+  font-weight: bold; }
+
+a.no-margin, button.no-margin {
   margin: 0px; }
+
+a.no-transform, button.no-transform {
+  text-transform: none; }
 
 .field-validation-error, .field-validation-valid {
   color: #f44336; }

@@ -10,7 +10,7 @@ namespace DigitalInspection.ViewModels
 		[DisplayName("Checklist name *")]
 		public string Name { get; set; }
 
-		[Required(ErrorMessage = "Picture is requried")]
+		[Required(ErrorMessage = "Picture is required")]
 		[DisplayName("Attach a picture *")]
 		[MaxFileSize(8 * 1024 * 1024, ErrorMessage = "Max image size is 8 MB")]
 		[DataType(DataType.Upload)]

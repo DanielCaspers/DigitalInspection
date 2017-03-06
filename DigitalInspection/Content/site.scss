@@ -31,14 +31,23 @@ img.center-image{
 	color:#ffffff;
 }
 
-a.back-button{
-	font-weight:bold;
-	text-transform:none;
-}
+a, button {
+	&.back-button{
+		font-weight:bold;
+		text-transform:none;
+	}
 
-button.no-margin, a.no-margin {
+	&.bold{
+		font-weight:bold;
+	}
 
-	margin: 0px;
+	&.no-margin {
+		margin: 0px;
+	}
+
+	&.no-transform{
+		text-transform:none;
+	}
 }
 
 // Form classes

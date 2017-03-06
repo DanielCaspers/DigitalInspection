@@ -209,6 +209,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\ChecklistsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -231,8 +232,13 @@
     <Compile Include="Migrations\201702220157234_AddImageToChecklist.Designer.cs">
       <DependentUpon>201702220157234_AddImageToChecklist.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703052305280_AddedTags.cs" />
+    <Compile Include="Migrations\201703052305280_AddedTags.Designer.cs">
+      <DependentUpon>201703052305280_AddedTags.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\ChecklistItem.cs" />
     <Compile Include="Models\Checklist.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -242,8 +248,10 @@
     <Compile Include="Services\ToastService.cs" />
     <Compile Include="Services\ImageService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AddTagViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\EditChecklistViewModel.cs" />
+    <Compile Include="ViewModels\ManageTagsViewModel.cs" />
     <Compile Include="ViewModels\ManageChecklistMasterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -364,6 +372,9 @@
     <Content Include="Views\Checklists\_AddChecklistDialog.cshtml" />
     <Compile Include="ViewModels\AddChecklistViewModel.cs" />
     <Content Include="Views\Checklists\_EditChecklist.cshtml" />
+    <Content Include="Views\Tags\Index.cshtml" />
+    <Content Include="Views\Tags\_AddTagDialog.cshtml" />
+    <Content Include="Views\Tags\_TagList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -387,6 +398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702220157234_AddImageToChecklist.resx">
       <DependentUpon>201702220157234_AddImageToChecklist.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703052305280_AddedTags.resx">
+      <DependentUpon>201703052305280_AddedTags.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
