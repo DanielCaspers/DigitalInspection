@@ -43,14 +43,33 @@ namespace DigitalInspection.Controllers
 			return PartialView(GetTagViewModel());
 		}
 
-		// GET: Checklists_TagList partial and return it to _TagList.cshtml 
+		// GET: _TagList partial and return it to _TagList.cshtml 
 		public PartialViewResult _TagList()
 		{
 			return PartialView(GetTagViewModel());
 		}
 
+		//GET: Tags/Edit/:id
+		public PartialViewResult Edit(Guid id)
+		{
+			var tag = _context.Tags.SingleOrDefault(t => t.Id == id);
+
+			if (tag == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+			}
+			else
+			{
+				var viewModel = new EditTagViewModel
+				{
+					Tag = tag
+				};
+				return PartialView("_EditTag", viewModel);
+			}
+		}
+
 		[HttpPost]
-		public ActionResult Update(Guid id, Tag tag)
+		public ActionResult Update(Guid id, AddTagViewModel tag)
 		{
 			var tagInDb = _context.Tags.SingleOrDefault(t => t.Id == id);
 			if(tagInDb == null)
@@ -62,7 +81,7 @@ namespace DigitalInspection.Controllers
 				tagInDb.Name = tag.Name;
 
 				_context.SaveChanges();
-				return RedirectToAction("_TagList");
+				return RedirectToAction("Edit", new { id = tagInDb.Id });
 			}
 		}
 
@@ -81,7 +100,7 @@ namespace DigitalInspection.Controllers
 			return RedirectToAction("_TagList");
 		}
 
-		// POST: Checklist/Delete/5
+		// POST: Tags/Delete/5
 		[HttpPost]
 		public ActionResult Delete(Guid id)
 		{

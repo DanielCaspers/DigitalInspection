@@ -4,36 +4,35 @@
 	<div class="list-group" id="tagList">
 		@foreach (var tag in Model.Tags)
 		{
-			//Checklist submission is linked by a form with ID named after resource entity. It is triggered by jQuery on delete confirmation
-			using (Ajax.BeginForm(
-							"Delete",
-							"Tags",
-							new { id = tag.Id },
-							new AjaxOptions
-							{
-								InsertionMode = InsertionMode.Replace,
-								UpdateTargetId = "tagList"
-							},
-							new { id = tag.Id }
-						)
-				)
-			{
-				<div class="list-group-item">
-					<div class="row-content">
-						<div class="container-flex align-center between">
-							<button type="button" style="left:55px;" class="btn btn-default no-transform bold" onclick="DialogService.show('editTagDialog', 'editTagForm')">
-								<h4 class="list-group-item-heading">@tag.Name</h4>
-							</button>
+			<div class="list-group-item">
+				<div class="container-flex align-center between">
+					<a style="padding: 0 0 0 100px;" href="@Url.Action("Edit", "Tags", new { id = tag.Id} )">
+						<h4  class="list-group-item-heading">@tag.Name</h4>
+					</a>
 
-							<button type="button" style="right: -65px;" class="btn btn-default" onclick="DialogService.confirmDelete('@tag.Id');">
+					<div>
+						@* Checklist submission is linked by a form with ID named after resource entity. It is triggered by jQuery on delete confirmation*@
+						@using (Ajax.BeginForm(
+						"Delete",
+						"Tags",
+						new { id = tag.Id },
+						new AjaxOptions
+						{
+							InsertionMode = InsertionMode.Replace,
+							UpdateTargetId = "tagList"
+						},
+						new { id = tag.Id, @class = "inline" }
+						)
+						)
+						{
+							<button type="button" class="btn btn-default" onclick="DialogService.confirmDelete('@tag.Id');">
 								<i class="material-icons">delete</i>
 							</button>
-						</div>
+						}
 					</div>
-
 				</div>
-				<div class="list-group-separator"></div>
-			}
+			</div>
+			<div class="list-group-separator"></div>
 		}
 
 	</div>

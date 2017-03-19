@@ -1,0 +1,47 @@
+﻿@model DigitalInspection.ViewModels.EditTagViewModel
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Digital Inspection";
+}
+
+@using (Html.BeginForm(
+					"Update",
+					"Tags",
+					new { id = Model.Tag.Id },
+					FormMethod.Post,
+					new
+					{
+						enctype = "multipart/form-data"
+					}
+				)
+		)
+{
+
+	<div class="btn-toolbar ma-well well well-sm">
+		<div class="row">
+			<a href="@Url.Action("Index", "Tags")"
+			   class="btn btn-default back-button no-margin pull-left">
+				<i class="material-icons">arrow_back</i>
+				Tags
+			</a>
+			<button type="submit"
+					class="btn btn-default no-margin pull-right">
+				<i class="material-icons">save</i>
+			</button>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="jumbotron">
+			<fieldset>
+				<div class="form-group">
+					@Html.LabelFor(m => m.Tag.Name, new { @class = "control-label" })
+					@Html.TextBoxFor(m => m.Tag.Name, new { @class = "form-control" })
+					@Html.ValidationMessageFor(m => m.Tag.Name)
+				</div>
+			</fieldset>
+		</div>
+	</div>
+}
+
+

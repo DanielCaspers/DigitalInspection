@@ -250,6 +250,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddTagViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\EditTagViewModel.cs" />
     <Compile Include="ViewModels\EditChecklistViewModel.cs" />
     <Compile Include="ViewModels\ManageTagsViewModel.cs" />
     <Compile Include="ViewModels\ManageChecklistMasterViewModel.cs" />
@@ -375,6 +376,7 @@
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Tags\_AddTagDialog.cshtml" />
     <Content Include="Views\Tags\_TagList.cshtml" />
+    <Content Include="Views\Tags\_EditTag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
