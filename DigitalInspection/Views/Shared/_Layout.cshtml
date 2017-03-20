@@ -53,8 +53,9 @@
 			</div>
 			<span id="ma-nav-title" class="ma-nav-breadcrumb ma-nav-text">@Model.Resource</span>
 
+			<!-- Note: Using navbar-brand on the actionlink causes the height of the bar to increase, covering important tab containers or toolbars slightly.-->
 			<div class="ma-nav-brand">
-				@Html.ActionLink("Murphy Automotive", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+				@Html.ActionLink("Murphy Automotive", "Index", "Home", new { area = "" }, new { @class = "text-inverse" })
 			</div>
 
 			<div class="ma-nav-account">
@@ -67,6 +68,21 @@
 	</div>
 
 	<div>
+		@if (IsSectionDefined("TabContainer"))
+		{
+			<script type="text/javascript" src="~/Scripts/App/Shared/Services/tab.service.js"></script>
+
+			<div id="tabContainer" class="ma-tab-container btn-group-justified">
+				@RenderSection("TabContainer")
+			</div>
+		}
+		@if (IsSectionDefined("Toolbar"))
+		{
+			<div class="btn-toolbar ma-well well well-sm">
+				@RenderSection("Toolbar")
+			</div>
+		}
+
 		@RenderBody()
 		<hr />
 		<footer>

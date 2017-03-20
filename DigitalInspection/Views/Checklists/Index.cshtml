@@ -5,14 +5,15 @@
 }
 
 <script type="text/javascript" src="~/Scripts/App/Shared/Services/dialog.service.js"></script>
-<script type="text/javascript" src="~/Scripts/App/Shared/Services/tab.service.js"></script>
 
 @Html.Partial("Dialogs/_ConfirmDelete", "checklist")
 @Html.Partial("_AddChecklistDialog", Model.AddChecklistVM)
 
-@Html.Partial("TabContainers/_ChecklistManagementTabs")
+@section TabContainer {
+	@{ Html.RenderPartial("TabContainers/_ChecklistManagementTabs", "checklistsTab"); }
+}
 
-<div class="btn-toolbar ma-well well well-sm">
+@section Toolbar {
 	<div class="container-flex end">
 		<button type="button"
 				class="btn btn-default no-margin"
@@ -20,6 +21,6 @@
 			<i class="material-icons">add</i>
 		</button>
 	</div>
-</div>
+}
 
 @Html.Partial("_ChecklistList", Model)

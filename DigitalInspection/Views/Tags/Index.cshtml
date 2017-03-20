@@ -1,19 +1,16 @@
 ﻿@model DigitalInspection.ViewModels.ManageTagsViewModel
-@*TODO Determine if I can point to a checklist management tabs layout to share*@
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Digital Inspection";
 }
 
 <script type="text/javascript" src="~/Scripts/App/Shared/Services/dialog.service.js"></script>
-<script type="text/javascript" src="~/Scripts/App/Shared/Services/tab.service.js"></script>
 
-@Html.Partial("Dialogs/_ConfirmDelete", "tag")
-@Html.Partial("_AddTagDialog", Model.AddTagVM)
+@section TabContainer {
+	@{ Html.RenderPartial("TabContainers/_ChecklistManagementTabs", "tagsTab");}
+}
 
-@Html.Partial("TabContainers/_ChecklistManagementTabs")
-
-<div class="btn-toolbar ma-well well well-sm">
+@section Toolbar{
 	<div class="container-flex end">
 		<button type="button"
 				class="btn btn-default no-margin"
@@ -21,6 +18,9 @@
 			<i class="material-icons">add</i>
 		</button>
 	</div>
-</div>
+}
+
+@Html.Partial("Dialogs/_ConfirmDelete", "tag")
+@Html.Partial("_AddTagDialog", Model.AddTagVM)
 
 @Html.Partial("_TagList", Model)

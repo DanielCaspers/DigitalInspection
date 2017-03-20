@@ -63,7 +63,7 @@ namespace DigitalInspection.Controllers
 			return new ManageChecklistMasterViewModel
 			{
 				Resource = "Checklists",
-				Checklists = checklists.ToList(),
+				Checklists = checklists.OrderBy(c => c.Name).ToList(),
 				AddChecklistVM = new AddChecklistViewModel
 				{
 					Name = "",

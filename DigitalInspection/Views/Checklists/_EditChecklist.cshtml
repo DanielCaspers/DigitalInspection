@@ -7,7 +7,21 @@
 <script type="text/javascript" src="~/Scripts/App/Shared/Services/dialog.service.js"></script>
 <script type="text/javascript" src="~/Scripts/App/Shared/Services/table.service.js"></script>
 
-@*onclick="DialogService.show('addChecklistDialog', 'addChecklistForm')"*@
+@section Toolbar {
+	<div class="row">
+		<a href="@Url.Action("Index", "Checklists")"
+		   class="btn btn-default back-button no-margin pull-left">
+			<i class="material-icons">arrow_back</i>
+			@Model.Checklist.Name
+		</a>
+		<!-- Requires use of jQuery for submission because this is defined outside the form -->
+		<button onclick="$('#editChecklistForm').submit()"
+				class="btn btn-default no-margin pull-right">
+			<i class="material-icons">save</i>
+		</button>
+	</div>
+}
+
 @using (Html.BeginForm(
 					"Update",
 					"Checklists",
@@ -15,26 +29,12 @@
 					FormMethod.Post,
 					new
 					{
-						enctype = "multipart/form-data"
+						enctype = "multipart/form-data",
+						id = "editChecklistForm"
 					}
 				)
 		)
 {
-
-	<div class="btn-toolbar ma-well well well-sm">
-		<div class="row">
-			<a href="@Url.Action("Index", "Checklists")"
-			   class="btn btn-default back-button no-margin pull-left">
-				<i class="material-icons">arrow_back</i>
-				@Model.Checklist.Name
-			</a>
-			<button type="submit"
-					class="btn btn-default no-margin pull-right">
-				<i class="material-icons">save</i>
-			</button>
-		</div>
-	</div>
-
 	<div class="container-fluid">
 		<div class="jumbotron">
 

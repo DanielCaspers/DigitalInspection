@@ -1,20 +1,19 @@
-﻿<div id="tabContainer"
-	 class="ma-tab-container btn-group-justified">
-	<a id="checklistsTab"
-	   href="@Url.Action("Index", "Checklists")"
-	   onclick="TabService.changeTab(event)"
-	   class="btn btn-info btn-raised">
-		Checklists
-	</a>
-	<a id="checklistItemsTab"
-	   onclick="TabService.changeTab(event)"
-	   class="btn ">
-		Checklist Items
-	</a>
-	<a id="tagsTab"
-	   href="@Url.Action("Index", "Tags")"
-	   onclick="TabService.changeTab(event)"
-	   class="btn ">
-		Tags
-	</a>
-</div>
+﻿<a id="checklistsTab"
+	href="@Url.Action("Index", "Checklists")"
+	onclick="TabService.changeTab(event)"
+	class="btn">
+	Checklists
+</a>
+<a id="checklistItemsTab"
+	onclick="TabService.changeTab(event)"
+	class="btn">
+	Checklist Items
+</a>
+<a id="tagsTab"
+	href="@Url.Action("Index", "Tags")"
+	onclick="TabService.changeTab(event)"
+	class="btn">
+	Tags
+</a>
+
+<script type="text/javascript">TabService.selectTab("@Model")</script>
