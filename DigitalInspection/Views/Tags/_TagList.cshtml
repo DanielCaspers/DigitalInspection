@@ -1,39 +1,37 @@
 ﻿@model DigitalInspection.ViewModels.ManageTagsViewModel
 
-<div class="container-fluid">
-	<div class="list-group" id="tagList">
-		@foreach (var tag in Model.Tags)
-		{
-			<div class="list-group-item">
-				<div class="container-flex align-center between">
-					<a style="padding: 0 0 0 100px;" href="@Url.Action("Edit", "Tags", new { id = tag.Id} )">
-						<h4  class="list-group-item-heading">@tag.Name</h4>
-					</a>
+<div class="list-group" id="tagList">
+	@foreach (var tag in Model.Tags)
+	{
+		<div class="list-group-item">
+			<div class="container-flex align-center between">
+				<a style="padding: 0 0 0 100px;" href="@Url.Action("Edit", "Tags", new { id = tag.Id} )">
+					<h4  class="list-group-item-heading">@tag.Name</h4>
+				</a>
 
-					<div>
-						@* Checklist submission is linked by a form with ID named after resource entity. It is triggered by jQuery on delete confirmation*@
-						@using (Ajax.BeginForm(
-						"Delete",
-						"Tags",
-						new { id = tag.Id },
-						new AjaxOptions
-						{
-							InsertionMode = InsertionMode.Replace,
-							UpdateTargetId = "tagList"
-						},
-						new { id = tag.Id, @class = "inline" }
-						)
-						)
-						{
-							<button type="button" class="btn btn-default" onclick="DialogService.confirmDelete('@tag.Id');">
-								<i class="material-icons">delete</i>
-							</button>
-						}
-					</div>
+				<div>
+					@* Checklist submission is linked by a form with ID named after resource entity. It is triggered by jQuery on delete confirmation*@
+					@using (Ajax.BeginForm(
+					"Delete",
+					"Tags",
+					new { id = tag.Id },
+					new AjaxOptions
+					{
+						InsertionMode = InsertionMode.Replace,
+						UpdateTargetId = "tagList"
+					},
+					new { id = tag.Id, @class = "inline" }
+					)
+					)
+					{
+						<button type="button" class="btn btn-default" onclick="DialogService.confirmDelete('@tag.Id');">
+							<i class="material-icons">delete</i>
+						</button>
+					}
 				</div>
 			</div>
-			<div class="list-group-separator"></div>
-		}
+		</div>
+		<div class="list-group-separator"></div>
+	}
 
-	</div>
 </div>

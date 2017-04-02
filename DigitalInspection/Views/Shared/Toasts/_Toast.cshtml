@@ -31,6 +31,11 @@
 				<i class="material-icons md-light">close</i>
 			</button>
 			break;
+		case DigitalInspection.ViewModels.ToastActionType.NavigateBack:
+			<button type="button" class="btn btn-default"  onclick="window.history.back()">
+				<i class="material-icons md-light">arrow_back</i>
+			</button>
+			break;
 		case DigitalInspection.ViewModels.ToastActionType.Refresh:
 			<button type="button" class="btn btn-default" onclick="window.location.reload()">
 				<i class="material-icons md-light">refresh</i>

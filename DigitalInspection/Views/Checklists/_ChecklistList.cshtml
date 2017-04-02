@@ -1,46 +1,44 @@
 ﻿@model DigitalInspection.ViewModels.ManageChecklistMasterViewModel
 
-<div class="container-fluid">
-	<div class="list-group" id="checklistList">
-		@foreach (var checklist in Model.Checklists)
+<div class="list-group" id="checklistList">
+	@foreach (var checklist in Model.Checklists)
+	{
+		//Checklist submission is linked by a form with ID named after resource entity. It is triggered by jQuery on delete confirmation
+		using (Ajax.BeginForm(
+						"Delete",
+						"Checklists",
+						new { id = checklist.Id },
+						new AjaxOptions
+						{
+							InsertionMode = InsertionMode.Replace,
+							UpdateTargetId = "checklistList"
+						},
+						new { id = checklist.Id }
+					)
+			)
 		{
-			//Checklist submission is linked by a form with ID named after resource entity. It is triggered by jQuery on delete confirmation
-			using (Ajax.BeginForm(
-							"Delete",
-							"Checklists",
-							new { id = checklist.Id },
-							new AjaxOptions
-							{
-								InsertionMode = InsertionMode.Replace,
-								UpdateTargetId = "checklistList"
-							},
-							new { id = checklist.Id }
-						)
-				)
-			{
-				<div class="list-group-item">
-					<div class="row-picture">
-						<img class="img-rounded" src="Uploads/Checklists/@checklist.Image.Title" style="height:64px; width:64px;" alt="checklist-image">
-					</div>
-					<div class="row-content">
-						<div class="col-xs-10">
-							<a href="@Url.Action("Edit", "Checklists", new { id = checklist.Id} )">
-								<h4 class="list-group-item-heading">@checklist.Name</h4>
-								<span class="list-group-item-text">Items: @checklist.Items.Count()</span>
-							</a>
-						</div>
-
-						<div class="col-xs-2">
-							<button type="button" style="float:right; right:-25px;" class="btn btn-default" onclick="DialogService.confirmDelete('@checklist.Id')">
-								<i class="material-icons">delete</i>
-							</button>
-						</div>
-					</div>
-
+			<div class="list-group-item">
+				<div class="row-picture">
+					<img class="img-rounded" src="Uploads/Checklists/@checklist.Image.Title" style="height:64px; width:64px;" alt="checklist-image">
 				</div>
-				<div class="list-group-separator"></div>
-			}
-		}
+				<div class="row-content">
+					<div class="col-xs-10">
+						<a href="@Url.Action("Edit", "Checklists", new { id = checklist.Id} )">
+							<h4 class="list-group-item-heading">@checklist.Name</h4>
+							<span class="list-group-item-text">Items: @checklist.Items.Count()</span>
+						</a>
+					</div>
 
-	</div>
+					<div class="col-xs-2">
+						<button type="button" style="float:right; right:-25px;" class="btn btn-default" onclick="DialogService.confirmDelete('@checklist.Id')">
+							<i class="material-icons">delete</i>
+						</button>
+					</div>
+				</div>
+
+			</div>
+			<div class="list-group-separator"></div>
+		}
+	}
+
 </div>

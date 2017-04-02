@@ -1,4 +1,4 @@
-﻿@model DigitalInspection.ViewModels.ManageChecklistMasterViewModel
+﻿@model DigitalInspection.ViewModels.ManageChecklistItemsViewModel
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Digital Inspection";
@@ -6,23 +6,23 @@
 
 <script type="text/javascript" src="~/Scripts/App/Shared/Services/dialog.service.js"></script>
 
-@Html.Partial("Dialogs/_ConfirmDelete", "checklist")
-@Html.Partial("_AddChecklistDialog", Model.AddChecklistVM)
+@Html.Partial("Dialogs/_ConfirmDelete", "checklist item")
+@Html.Partial("_AddChecklistItemDialog", Model.AddChecklistItemVM)
 
 @section TabContainer {
-	@{ Html.RenderPartial("TabContainers/_ChecklistManagementTabs", "checklistsTab"); }
+	@{ Html.RenderPartial("TabContainers/_ChecklistManagementTabs", "checklistItemsTab"); }
 }
 
 @section Toolbar {
 	<div class="container-flex end">
 		<button type="button"
 				class="btn btn-default no-margin"
-				onclick="DialogService.show('addChecklistDialog', 'addChecklistForm')">
+				onclick="DialogService.show('addChecklistItemDialog', 'addChecklistItemForm')">
 			<i class="material-icons">add</i>
 		</button>
 	</div>
 }
 
 <div class="container-fluid">
-	@Html.Partial("_ChecklistList", Model)
+	@Html.Partial("_ChecklistItemList", Model)
 </div>

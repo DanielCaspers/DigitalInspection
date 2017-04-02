@@ -1,0 +1,43 @@
+﻿@model DigitalInspection.ViewModels.AddChecklistItemViewModel
+
+@{
+	const string TEMPLATE_NAMESPACE = "addChecklistItemDialog";
+	const string CANCEL = TEMPLATE_NAMESPACE + "_cancel";
+	const string SUCCESS = TEMPLATE_NAMESPACE + "_success";
+}
+
+<div id="@TEMPLATE_NAMESPACE" class="modal fade">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Add a checklist item</h4>
+			</div>
+			@using (Ajax.BeginForm(
+				"Create",
+				"ChecklistItems",
+				FormMethod.Post,
+				new AjaxOptions
+				{
+					InsertionMode = InsertionMode.Replace,
+					UpdateTargetId = "checklistItemList"
+				},
+				new { id = "addChecklistItemForm" })
+			)
+			{
+				<div class="modal-body">
+					<div class="form-group">
+						@Html.LabelFor(m => m.Name, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.Name, new { @class = "form-control", autofocus = "" })
+						@Html.ValidationMessageFor(m => m.Name)
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
+				</div>
+			}
+		</div>
+	</div>
+</div>

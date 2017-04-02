@@ -1,0 +1,37 @@
+﻿@model DigitalInspection.ViewModels.ManageChecklistItemsViewModel
+
+<div class="list-group" id="checklistItemList">
+	@foreach (var checklistItem in Model.ChecklistItems)
+	{
+		<div class="list-group-item">
+			<div class="container-flex align-center between">
+				<a style="padding: 0 0 0 100px;" href="@Url.Action("Edit", "ChecklistItems", new { id = checklistItem.Id} )">
+					<h4  class="list-group-item-heading">@checklistItem.Name</h4>
+				</a>
+
+				<div>
+					@* Checklist item submission is linked by a form with ID named after resource entity. It is triggered by jQuery on delete confirmation*@
+					@using (Ajax.BeginForm(
+					"Delete",
+					"ChecklistItems",
+					new { id = checklistItem.Id },
+					new AjaxOptions
+					{
+						InsertionMode = InsertionMode.Replace,
+						UpdateTargetId = "checklistItemList"
+					},
+					new { id = checklistItem.Id, @class = "inline" }
+					)
+					)
+					{
+						<button type="button" class="btn btn-default" onclick="DialogService.confirmDelete('@checklistItem.Id');">
+							<i class="material-icons">delete</i>
+						</button>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="list-group-separator"></div>
+	}
+
+</div>

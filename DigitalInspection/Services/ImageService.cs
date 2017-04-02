@@ -50,7 +50,7 @@ namespace DigitalInspection.Services
 		{
 			var imageDirectoryPath = Path.Combine(HttpContext.Current.Server.MapPath(UPLOAD_DIR), subdir);
 			DirectoryInfo di = Directory.CreateDirectory(imageDirectoryPath); // No folders are created if they already exist
-			SetPathAccessControl(imageDirectoryPath);
+			// SetPathAccessControl(imageDirectoryPath);
 			return imageDirectoryPath;
 		}
 
