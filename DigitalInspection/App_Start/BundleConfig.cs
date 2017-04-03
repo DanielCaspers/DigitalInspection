@@ -33,12 +33,16 @@ namespace DigitalInspection
 						LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
 						LIB_DIR_PREFIX + "Bootstrap-Material/ripples.js"));
 
+			bundles.Add(new ScriptBundle("~/bundles/multiselect").Include(
+						LIB_DIR_PREFIX + "Bootstrap-Multiselect/bootstrap-multiselect.js"));
+
 			//bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory(
 			//			"~/Scripts/App/", "*.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 					  "~/Content/bootstrap.css",
 					  "~/Content/bootstrap-material-design.css",
+					  "~/Content/bootstrap-multiselect.css",
 					  "~/Content/ripples.css",
 					  "~/Content/site.css"));
 		}

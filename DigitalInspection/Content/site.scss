@@ -1,4 +1,7 @@
-﻿body {
+﻿$material-primary: #009688;
+
+
+body {
 	//TODO: DJC This needs to be 75px for normal views, but 50px with tab containers... It would be better handled by the stacked partials instead of body?
 	padding-top: 50px;
 	padding-bottom: 20px;
@@ -190,6 +193,29 @@ table .checkbox-with-label{
 	padding: 9px 31px;
 }
 
+// BS MultiSelect - Using plugin defined classes http://davidstutz.github.io/bootstrap-multiselect/#styling
+.multiselect-native-select{
+
+	.multiselect-container.dropdown-menu{
+
+		li{
+			&.active label{
+				background-color:white;
+				color:$material-primary !important;
+			}
+
+			label{
+				color:#555;
+			}
+		}
+	}
+	
+	.multiselect-selected-text {
+		text-transform: none;
+		color:$material-primary;
+	}
+}
+
 
 //_tabContainer.cshtml
 .ma-tab-container {
@@ -200,8 +226,6 @@ table .checkbox-with-label{
 		padding-top: 17px;
 	}
 }
-
-
 
 
 /*

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Web;
+using DigitalInspection.Models;
+using System.Collections.Generic;
 
 namespace DigitalInspection.ViewModels
 {
@@ -9,5 +10,10 @@ namespace DigitalInspection.ViewModels
 		[Required(ErrorMessage = "Checklist item name is required")]
 		[DisplayName("Checklist item name *")]
 		public string Name { get; set; }
+
+
+		[DisplayName("Tags *")]
+		[Required(ErrorMessage = "One or more tags are required")]
+		public List<Tag> Tags { get; set; }
 	}
 }

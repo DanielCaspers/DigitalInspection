@@ -129,6 +129,17 @@ table .checkbox-with-label {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   padding: 9px 31px; }
 
+.multiselect-native-select .multiselect-container.dropdown-menu li.active label {
+  background-color: white;
+  color: #009688 !important; }
+
+.multiselect-native-select .multiselect-container.dropdown-menu li label {
+  color: #555; }
+
+.multiselect-native-select .multiselect-selected-text {
+  text-transform: none;
+  color: #009688; }
+
 .ma-tab-container {
   height: 60px; }
   .ma-tab-container a {

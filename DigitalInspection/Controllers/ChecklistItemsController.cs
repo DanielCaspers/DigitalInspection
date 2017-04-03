@@ -28,12 +28,13 @@ namespace DigitalInspection.Controllers
 
 		private ManageChecklistItemsViewModel GetChecklistItemViewModel()
 		{
-			var checklistItems = _context.ChecklistItems;
+			var checklistItems = _context.ChecklistItems.OrderBy(c => c.Name).ToList();
+			var tags = _context.Tags.OrderBy(t => t.Name).ToList();
 			return new ManageChecklistItemsViewModel
 			{
 				Resource = "Checklists",
-				ChecklistItems = checklistItems.OrderBy(c => c.Name).ToList(),
-				AddChecklistItemVM = new AddChecklistItemViewModel { Name = "" }
+				ChecklistItems = checklistItems,
+				AddChecklistItemVM = new AddChecklistItemViewModel { Name = "", Tags = tags }
 			};
 		}
 

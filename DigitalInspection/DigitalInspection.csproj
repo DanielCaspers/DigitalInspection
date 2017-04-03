@@ -261,6 +261,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap-material-design.css" />
     <Content Include="Content\bootstrap-material-design.min.css" />
+    <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ripples.css" />
@@ -297,6 +298,7 @@
     <Content Include="Scripts\App\Shared\Services\httpClient.service.js" />
     <Content Include="Scripts\App\Shared\Services\tab.service.js" />
     <Content Include="Scripts\App\Shared\Services\table.service.js" />
+    <Content Include="Scripts\Library\Bootstrap-Multiselect\bootstrap-multiselect.js" />
     <Content Include="Scripts\Library\Bootstrap\bootstrap.js" />
     <Content Include="Scripts\Library\Bootstrap\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Nightly A.pubxml" />
