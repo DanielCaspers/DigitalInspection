@@ -61,19 +61,18 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				return PartialView("Toasts/_Toast", ToastService.NotYetImplemented());
-				//var viewModel = new EditChecklistItemViewModel
-				//{
-				//	ChecklistItem = checklistItem
-				//};
-				//return PartialView("_EditChecklistItem", viewModel);
+				var viewModel = new EditChecklistItemViewModel
+				{
+					ChecklistItem = checklistItem
+				};
+				return PartialView("_EditChecklistItem", viewModel);
 			}
 		}
 
 		[HttpPost]
 		public ActionResult Update(Guid id, AddChecklistItemViewModel checklistItem)
 		{
-			var checklistItemInDb = _context.ChecklistItems.SingleOrDefault(t => t.Id == id);
+			var checklistItemInDb = _context.ChecklistItems.SingleOrDefault(c => c.Id == id);
 			if(checklistItemInDb == null)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));

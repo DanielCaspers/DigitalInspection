@@ -1,0 +1,46 @@
+﻿@model DigitalInspection.ViewModels.EditChecklistItemViewModel
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Digital Inspection";
+}
+
+@using (Html.BeginForm(
+					"Update",
+					"ChecklistItems",
+					new { id = Model.ChecklistItem.Id },
+					FormMethod.Post,
+					new
+					{
+						id = "editChecklistItemForm",
+						autocomplete = "off"
+					}
+				)
+		)
+{
+	<div class="container-fluid">
+		<div class="jumbotron">
+			<fieldset>
+				<div class="form-group">
+					@Html.LabelFor(m => m.ChecklistItem.Name, new { @class = "control-label" })
+					@Html.TextBoxFor(m => m.ChecklistItem.Name, new { @class = "form-control" })
+					@Html.ValidationMessageFor(m => m.ChecklistItem.Name)
+				</div>
+			</fieldset>
+		</div>
+	</div>
+}
+
+@section Toolbar {
+	<div class="row">
+		<a href="@Url.Action("Index", "ChecklistItems")"
+		   class="btn btn-default back-button no-margin pull-left">
+			<i class="material-icons">arrow_back</i>
+			@Model.ChecklistItem.Name
+		</a>
+		<!-- Requires use of jQuery for submission because this is defined outside the form -->
+		<button onclick="$('#editChecklistItemForm').submit()"
+				class="btn btn-default no-margin pull-right">
+			<i class="material-icons">save</i>
+		</button>
+	</div>
+}
