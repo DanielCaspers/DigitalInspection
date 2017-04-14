@@ -252,6 +252,7 @@
     <Compile Include="ViewModels\AddChecklistItemViewModel.cs" />
     <Compile Include="ViewModels\AddTagViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\EditChecklistItemViewModel.cs" />
     <Compile Include="ViewModels\EditTagViewModel.cs" />
     <Compile Include="ViewModels\EditChecklistViewModel.cs" />
     <Compile Include="ViewModels\ManageChecklistItemsViewModel.cs" />
@@ -386,6 +387,7 @@
     <Content Include="Views\ChecklistItems\Index.cshtml" />
     <Content Include="Views\ChecklistItems\_ChecklistItemList.cshtml" />
     <Content Include="Views\ChecklistItems\_AddChecklistItemDialog.cshtml" />
+    <Content Include="Views\ChecklistItems\_EditChecklistItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
