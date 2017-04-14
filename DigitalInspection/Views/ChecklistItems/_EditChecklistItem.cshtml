@@ -25,6 +25,16 @@
 					@Html.TextBoxFor(m => m.ChecklistItem.Name, new { @class = "form-control" })
 					@Html.ValidationMessageFor(m => m.ChecklistItem.Name)
 				</div>
+
+				@*@foreach (var measurement in Model.ChecklistItem.Measurements)
+				{
+					<div class="form-group">
+						@Html.LabelFor(m => measurement.Label, new { @class = "control-label" })
+						@Html.TextBoxFor(m => measurement.Label, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => measurement.Label)
+					</div>
+				}*@
+
 			</fieldset>
 		</div>
 	</div>

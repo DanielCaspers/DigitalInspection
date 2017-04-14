@@ -20,6 +20,7 @@ namespace DigitalInspection.Models
 
 	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
+		// TODO: Add a separate dbset for measurements?
 		public DbSet<Checklist> Checklists { get; set; }
 		public DbSet<ChecklistItem> ChecklistItems { get; set; }
 		public DbSet<Tag> Tags { get; set; }

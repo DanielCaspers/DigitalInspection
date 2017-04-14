@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using DigitalInspection.Models;
 using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
+using System.Collections.Generic;
 
 namespace DigitalInspection.Controllers
 {
@@ -30,11 +31,13 @@ namespace DigitalInspection.Controllers
 		{
 			var checklistItems = _context.ChecklistItems.OrderBy(c => c.Name).ToList();
 			var tags = _context.Tags.OrderBy(t => t.Name).ToList();
+			// TODO: Why is this necessary?
+			var measurements = new List<Measurement>();
 			return new ManageChecklistItemsViewModel
 			{
 				Resource = "Checklists",
 				ChecklistItems = checklistItems,
-				AddChecklistItemVM = new AddChecklistItemViewModel { Name = "", Tags = tags }
+				AddChecklistItemVM = new AddChecklistItemViewModel { Name = "", Tags = tags, Measurements = measurements }
 			};
 		}
 
@@ -92,7 +95,19 @@ namespace DigitalInspection.Controllers
 			ChecklistItem newItem = new ChecklistItem
 			{
 				Name = checklistItem.Name,
-				Id = Guid.NewGuid()
+				Id = Guid.NewGuid(),
+				Measurements = new List<Measurement>
+				{
+					new Measurement
+					{
+						//Id = Guid.NewGuid(),
+						Label = "Tread Depth",
+						MinValue = 0,
+						MaxValue = 32,
+						StepSize = 1,
+						Unit = "32''"
+					}
+				}
 			};
 
 			_context.ChecklistItems.Add(newItem);
