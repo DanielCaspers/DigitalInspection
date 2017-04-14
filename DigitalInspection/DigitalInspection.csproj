@@ -217,26 +217,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612182155090_initialmodel.cs" />
-    <Compile Include="Migrations\201612182155090_initialmodel.Designer.cs">
-      <DependentUpon>201612182155090_initialmodel.cs</DependentUpon>
+    <Compile Include="Migrations\201704140125405_initial.cs" />
+    <Compile Include="Migrations\201704140125405_initial.Designer.cs">
+      <DependentUpon>201704140125405_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612182205502_PopulateFirstChecklist.cs" />
-    <Compile Include="Migrations\201612182205502_PopulateFirstChecklist.Designer.cs">
-      <DependentUpon>201612182205502_PopulateFirstChecklist.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702220155024_AddImageModel.cs" />
-    <Compile Include="Migrations\201702220155024_AddImageModel.Designer.cs">
-      <DependentUpon>201702220155024_AddImageModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702220157234_AddImageToChecklist.cs" />
-    <Compile Include="Migrations\201702220157234_AddImageToChecklist.Designer.cs">
-      <DependentUpon>201702220157234_AddImageToChecklist.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201703052305280_AddedTags.cs" />
-    <Compile Include="Migrations\201703052305280_AddedTags.Designer.cs">
-      <DependentUpon>201703052305280_AddedTags.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Migrations\DigitalInspectionMySqlMigrationSqlGenerator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Tag.cs" />
@@ -400,24 +385,12 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612182155090_initialmodel.resx">
-      <DependentUpon>201612182155090_initialmodel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612182205502_PopulateFirstChecklist.resx">
-      <DependentUpon>201612182205502_PopulateFirstChecklist.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702220155024_AddImageModel.resx">
-      <DependentUpon>201702220155024_AddImageModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702220157234_AddImageToChecklist.resx">
-      <DependentUpon>201702220157234_AddImageToChecklist.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201703052305280_AddedTags.resx">
-      <DependentUpon>201703052305280_AddedTags.cs</DependentUpon>
-    </EmbeddedResource>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <EmbeddedResource Include="Migrations\201704140125405_initial.resx">
+      <DependentUpon>201704140125405_initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

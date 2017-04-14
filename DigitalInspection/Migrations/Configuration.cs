@@ -9,9 +9,9 @@ namespace DigitalInspection.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
 
-            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+            SetSqlGenerator("MySql.Data.MySqlClient", new DigitalInspectionMySqlMigrationSqlGenerator());
         }
 
         protected override void Seed(DigitalInspection.Models.ApplicationDbContext context)

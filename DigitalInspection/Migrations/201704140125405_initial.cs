@@ -3,7 +3,7 @@ namespace DigitalInspection.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initialmodel : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
@@ -24,7 +24,11 @@ namespace DigitalInspection.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Name = c.String(unicode: false),
+                        Name = c.String(nullable: false, unicode: false),
+                        Image_Title = c.String(unicode: false),
+                        Image_Caption = c.String(unicode: false),
+                        Image_ImageUrl = c.String(unicode: false),
+                        Image_CreatedDate = c.DateTime(nullable: false, precision: 0),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -50,6 +54,15 @@ namespace DigitalInspection.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.Tags",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Name = c.String(nullable: false, unicode: false),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -115,6 +128,7 @@ namespace DigitalInspection.Migrations
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.Tags");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Checklists");
