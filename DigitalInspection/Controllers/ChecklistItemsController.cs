@@ -78,7 +78,7 @@ namespace DigitalInspection.Controllers
 			ChecklistItem newItem = new ChecklistItem
 			{
 				Name = checklistItem.Name,
-				Id = Guid.NewGuid(),
+				CannedResponses = new List<CannedResponse>(),
 				Measurements = new List<Measurement>()
 			};
 
@@ -189,6 +189,58 @@ namespace DigitalInspection.Controllers
 			var measurementToRemove = checklistItemInDb.Measurements.Single(m => m.Id == id);
 			checklistItemInDb.Measurements.Remove(measurementToRemove);
 
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+			}
+
+			return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
+		}
+
+		[HttpPost]
+		public ActionResult AddCannedResponse(Guid id)
+		{
+			var checklistItemInDb = _context.ChecklistItems.Find(id);
+
+			if (checklistItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+			}
+
+			var cannedResponse = new CannedResponse()
+			{
+				Response = "New response"
+			};
+			checklistItemInDb.CannedResponses.Add(cannedResponse);
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+			}
+
+			return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
+		}
+
+		[HttpPost]
+		public ActionResult DeleteCannedResponse(Guid id)
+		{
+			var checklistItemInDb = _context.ChecklistItems.FirstOrDefault(ci => ci.CannedResponses.Any(m => m.Id == id));
+
+			if (checklistItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+			}
+
+			var cannedResponseToRemove = checklistItemInDb.CannedResponses.Single(m => m.Id == id);
+			checklistItemInDb.CannedResponses.Remove(cannedResponseToRemove);
 			try
 			{
 				_context.SaveChanges();

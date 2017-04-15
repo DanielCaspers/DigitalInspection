@@ -8,6 +8,15 @@
 <script type="text/javascript" src="~/Scripts/App/Shared/Services/form.service.js"></script>
 
 @using (Html.BeginForm(
+			"DeleteCannedResponse",
+			"ChecklistItems",
+			// ID is tacked on external submission via jQuery
+			FormMethod.Post,
+			new { id = "deleteCannedResponseForm" })
+		)
+{}
+
+@using (Html.BeginForm(
 			"DeleteMeasurement",
 			"ChecklistItems",
 			// ID is tacked on external submission via jQuery
@@ -44,54 +53,90 @@
 				@Html.ValidationMessageFor(m => m.ChecklistItem.Tags)
 			</div>*@
 
+				@if (Model.ChecklistItem.CannedResponses.Count() > 0)
+				{
+					<h3>Canned Responses</h3>
+				}
+
+				<!-- NOTE: Model binder requires a FOR loop instead of FOREACH to SEE Measurements when saving-->
+				@for (var i = 0; i < Model.ChecklistItem.CannedResponses.Count; i++)
+				{
+					<div class="row">
+						<div class="col-sm-11">
+							<div class="form-group col-sm-6">
+								@Html.LabelFor(m => Model.ChecklistItem.CannedResponses[i].Response, new { @class = "control-label" })
+								@Html.TextBoxFor(m => Model.ChecklistItem.CannedResponses[i].Response, new { @class = "form-control" })
+								@Html.ValidationMessageFor(m => Model.ChecklistItem.CannedResponses[i].Response)
+							</div>
+
+							<div class="form-group col-sm-6">
+								@Html.LabelFor(m => Model.ChecklistItem.CannedResponses[i].Url, new { @class = "control-label" })
+								@Html.TextBoxFor(m => Model.ChecklistItem.CannedResponses[i].Url, new { @class = "form-control" })
+								@Html.ValidationMessageFor(m => Model.ChecklistItem.CannedResponses[i].Url)
+							</div>
+
+							<div class="form-group col-sm-12">
+								@Html.LabelFor(m => Model.ChecklistItem.CannedResponses[i].Description, new { @class = "control-label" })
+								@Html.TextAreaFor(m => Model.ChecklistItem.CannedResponses[i].Description, new { @class = "form-control" })
+								@Html.ValidationMessageFor(m => Model.ChecklistItem.CannedResponses[i].Description)
+							</div>
+						</div>
+
+						<div class="col-sm-1">
+							<button onclick="FormService.triggerExternalSubmit('deleteCannedResponseForm', '@Model.ChecklistItem.CannedResponses[i].Id')"
+									type="button"
+									style="position:relative; top:135px; right:35px;"
+									class="btn btn-default no-margin">
+								<i class="material-icons">delete</i>
+							</button>
+						</div>
+					</div>
+				}
+
 				@if (Model.ChecklistItem.Measurements.Count() > 0)
 				{
 					<h3>Measurements</h3>
 				}
 
-				<!-- NOTE: Model binder requires a FOR loop instead of FOREACH to SEE Measurements when saving-->
 				@for (var i = 0; i < Model.ChecklistItem.Measurements.Count; i++)
 				{
-					<div class="form-group" id="@Model.ChecklistItem.Measurements[i].Id">
-						<div class="col-sm-3">
-							@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].Label, new { @class = "control-label" })
-							@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].Label, new { @class = "form-control" })
-							@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].Label)
-						</div>
+					<div class="form-group col-sm-3">
+						@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].Label, new { @class = "control-label" })
+						@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].Label, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].Label)
+					</div>
 
-						<div class="col-sm-2">
-							@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].Unit, new { @class = "control-label" })
-							@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].Unit, new { @class = "form-control" })
-							@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].Unit)
-						</div>
+					<div class="form-group col-sm-2">
+						@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].Unit, new { @class = "control-label" })
+						@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].Unit, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].Unit)
+					</div>
 
-						<div class="col-sm-2">
-							@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].MinValue, new { @class = "control-label" })
-							@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].MinValue, new { @class = "form-control", type = "number" })
-							@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].MinValue)
-						</div>
+					<div class="form-group col-sm-2">
+						@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].MinValue, new { @class = "control-label" })
+						@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].MinValue, new { @class = "form-control", type = "number" })
+						@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].MinValue)
+					</div>
 
-						<div class="col-sm-2">
-							@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].MaxValue, new { @class = "control-label" })
-							@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].MaxValue, new { @class = "form-control", type = "number" })
-							@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].MaxValue)
-						</div>
+					<div class="form-group col-sm-2">
+						@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].MaxValue, new { @class = "control-label" })
+						@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].MaxValue, new { @class = "form-control", type = "number" })
+						@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].MaxValue)
+					</div>
 
-						<div class="col-sm-2">
-							@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].StepSize, new { @class = "control-label" })
-							@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].StepSize, new { @class = "form-control", type = "number", min = "1" })
-							@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].StepSize)
-						</div>
+					<div class="form-group col-sm-2">
+						@Html.LabelFor(m => Model.ChecklistItem.Measurements[i].StepSize, new { @class = "control-label" })
+						@Html.TextBoxFor(m => Model.ChecklistItem.Measurements[i].StepSize, new { @class = "form-control", type = "number", min = "1" })
+						@Html.ValidationMessageFor(m => Model.ChecklistItem.Measurements[i].StepSize)
+					</div>
 
-						<div class="col-sm-1">
-							<button onclick="FormService.triggerExternalSubmit('deleteMeasurementForm', '@Model.ChecklistItem.Measurements[i].Id')"
-									type="button"
-									style="position:relative; top:30px; right:20px;"
-									class="btn btn-default no-margin">
-								<i class="material-icons">delete</i>
-							</button>
-						</div>
-
+					<div class="form-group col-sm-1">
+						<button onclick="FormService.triggerExternalSubmit('deleteMeasurementForm', '@Model.ChecklistItem.Measurements[i].Id')"
+								type="button"
+								style="position:relative; top:30px; right:20px;"
+								class="btn btn-default no-margin">
+							<i class="material-icons">delete</i>
+						</button>
 					</div>
 				}
 
@@ -110,9 +155,19 @@
 
 		<span class="pull-right">
 
-			<button class="btn btn-primary no-margin">
-				Add Canned Response
-			</button>
+			@using (Html.BeginForm(
+					"AddCannedResponse",
+					"ChecklistItems",
+					new { id = Model.ChecklistItem.Id },
+					FormMethod.Post,
+					new { @class = "ma-inline-form" }
+				)
+			)
+			{
+				<button class="btn btn-primary no-margin">
+					Add Canned Response
+				</button>
+			}
 
 			@using (Html.BeginForm(
 					"AddMeasurement",

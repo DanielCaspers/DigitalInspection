@@ -233,10 +233,19 @@
     <Compile Include="Migrations\201704151629194_MeasurementAnnotations.Designer.cs">
       <DependentUpon>201704151629194_MeasurementAnnotations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704152228149_InitialCannedResponse.cs" />
+    <Compile Include="Migrations\201704152228149_InitialCannedResponse.Designer.cs">
+      <DependentUpon>201704152228149_InitialCannedResponse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704152230418_ChecklistItemCannedResponseFK.cs" />
+    <Compile Include="Migrations\201704152230418_ChecklistItemCannedResponseFK.Designer.cs">
+      <DependentUpon>201704152230418_ChecklistItemCannedResponseFK.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DigitalInspectionMySqlMigrationSqlGenerator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Measurement.cs" />
+    <Compile Include="Models\CannedResponse.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\ChecklistItem.cs" />
     <Compile Include="Models\Checklist.cs" />
@@ -417,6 +426,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704151629194_MeasurementAnnotations.resx">
       <DependentUpon>201704151629194_MeasurementAnnotations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704152228149_InitialCannedResponse.resx">
+      <DependentUpon>201704152228149_InitialCannedResponse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704152230418_ChecklistItemCannedResponseFK.resx">
+      <DependentUpon>201704152230418_ChecklistItemCannedResponseFK.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
