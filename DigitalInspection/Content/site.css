@@ -74,6 +74,9 @@ a.no-transform, button.no-transform {
 table .checkbox-with-label {
   margin-right: 15px; }
 
+.ma-inline-form {
+  display: inline !important; }
+
 .ma-nav-container {
   display: flex;
   justify-content: space-between;

@@ -299,6 +299,7 @@
     <None Include="Properties\PublishProfiles\MurphyAuto_Debug.pubxml" />
     <Content Include="Scripts\App\Shared\Services\dialog.service.js" />
     <Content Include="Scripts\App\Shared\Services\httpClient.service.js" />
+    <Content Include="Scripts\App\Shared\Services\form.service.js" />
     <Content Include="Scripts\App\Shared\Services\tab.service.js" />
     <Content Include="Scripts\App\Shared\Services\table.service.js" />
     <Content Include="Scripts\Library\Bootstrap-Multiselect\bootstrap-multiselect.js" />
