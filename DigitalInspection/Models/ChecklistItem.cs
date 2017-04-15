@@ -13,8 +13,10 @@ namespace DigitalInspection.Models
 		//[DisplayName("Checklist item name *")]
 		public string Name { get; set; }
 
+		// Virtual lazy loads and makes EF less dumb 
+		// http://stackoverflow.com/a/9246932/2831961
 		[Required]
-		public IList<Measurement> Measurements { get; set; }
+		public virtual IList<Measurement> Measurements { get; set; }
 
 		public enum Condition {NEEDS_SERVICE, SHOULD_WATCH, ALL_GOOD }
 		public Guid Id { get; set; }

@@ -31,7 +31,6 @@ namespace DigitalInspection.Controllers
 			var tags = _context.Tags;
 			return new ManageTagsViewModel
 			{
-				Resource = "Checklists",
 				Tags = tags.OrderBy(tag => tag.Name).ToList(),
 				AddTagVM = new AddTagViewModel { Name = "" }
 			};

@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace DigitalInspection.ViewModels
 {
-	public class EditChecklistViewModel: BaseViewModel
+	public class EditChecklistViewModel: BaseChecklistsViewModel
 	{
 		public Checklist Checklist { get; set; }
 	}

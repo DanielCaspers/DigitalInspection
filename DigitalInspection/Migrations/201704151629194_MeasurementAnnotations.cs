@@ -1,0 +1,18 @@
+namespace DigitalInspection.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class MeasurementAnnotations : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.Measurements", "StepSize", c => c.Int(nullable: false));
+        }
+        
+        public override void Down()
+        {
+            DropColumn("dbo.Measurements", "StepSize");
+        }
+    }
+}

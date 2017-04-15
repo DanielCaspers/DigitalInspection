@@ -17,20 +17,12 @@ namespace DigitalInspection.Controllers
 
 		public ActionResult Index()
 		{
-			var viewModel = new BaseViewModel
-			{
-				Resource = "Home"
-			};
-			return View(viewModel);
+			return View(new BaseHomeViewModel());
 		}
 
 		public ActionResult About()
 		{
-			var viewModel = new BaseViewModel
-			{
-				Resource = "About"
-			};
-			return View(viewModel);
+			return View(new BaseAboutViewModel());
 		}
 	}
 }

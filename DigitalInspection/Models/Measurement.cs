@@ -1,27 +1,35 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DigitalInspection.Models
 {
 	public class Measurement
 	{
-		[Required]
-		public Guid Id { get; set; }
-
-		//[Required(ErrorMessage = "Label is required")]
-		[Required]
-		public string Label { get; set; }
+		private static readonly int DEFAULT_STEP_SIZE = 1;
 
 		[Required]
-		public uint MinValue { get; set; }
+		public Guid Id { get; set; } = Guid.NewGuid();
 
-		[Required]
-		public uint MaxValue { get; set; }
+		[Required(AllowEmptyStrings = true)]
+		[DisplayName("Label *")]
+		public string Label { get; set; } = string.Empty;
 
-		[Required]
-		public uint StepSize { get; set; }
+		[Required(ErrorMessage = "Minimum is required")]
+		[DisplayName("Minimum *")]
+		public int MinValue { get; set; }
 
-		[Required]
-		public string Unit { get; set; }
+		[Required(ErrorMessage = "Maximum is required")]
+		[DisplayName("Maximum *")]
+		public int MaxValue { get; set; }
+
+		[Required(ErrorMessage = "Step size is required")]
+		[DisplayName("Step size *")]
+		[Range(1, int.MaxValue)]
+		public int StepSize { get; set; } = DEFAULT_STEP_SIZE;
+
+		[Required(AllowEmptyStrings = true)]
+		[DisplayName("Unit *")]
+		public string Unit { get; set; } = string.Empty;
 	}
 }

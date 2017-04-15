@@ -5,6 +5,7 @@ using DigitalInspection.Models;
 using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 
 namespace DigitalInspection.Controllers
 {
@@ -35,7 +36,6 @@ namespace DigitalInspection.Controllers
 			var measurements = new List<Measurement>();
 			return new ManageChecklistItemsViewModel
 			{
-				Resource = "Checklists",
 				ChecklistItems = checklistItems,
 				AddChecklistItemVM = new AddChecklistItemViewModel { Name = "", Tags = tags, Measurements = measurements }
 			};
@@ -73,7 +73,31 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Update(Guid id, AddChecklistItemViewModel checklistItem)
+		public ActionResult Create(AddChecklistItemViewModel checklistItem)
+		{
+			ChecklistItem newItem = new ChecklistItem
+			{
+				Name = checklistItem.Name,
+				Id = Guid.NewGuid(),
+				Measurements = new List<Measurement>()
+			};
+
+			_context.ChecklistItems.Add(newItem);
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+			}
+
+			return RedirectToAction("_ChecklistItemList");
+		}
+
+		[HttpPost]
+		public ActionResult Update(Guid id, EditChecklistItemViewModel vm)
 		{
 			var checklistItemInDb = _context.ChecklistItems.SingleOrDefault(c => c.Id == id);
 			if(checklistItemInDb == null)
@@ -82,38 +106,27 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				checklistItemInDb.Name = checklistItem.Name;
+				checklistItemInDb.Name = vm.ChecklistItem.Name;
+				checklistItemInDb.Measurements = vm.ChecklistItem.Measurements;
 
-				_context.SaveChanges();
+				try
+				{
+					// Duplicating database entries bug
+					// http://stackoverflow.com/a/22389505/2831961
+					//foreach (var measurement in vm.ChecklistItem.Measurements)
+					//{
+					//	_context.Measurements.Attach(measurement);
+					//}
+
+					_context.SaveChanges();
+				}
+				catch (DbEntityValidationException dbEx)
+				{
+					ExceptionHandlerService.HandleException(dbEx);
+				}
+
 				return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
 			}
-		}
-
-		[HttpPost]
-		public ActionResult Create(AddChecklistItemViewModel checklistItem)
-		{
-			ChecklistItem newItem = new ChecklistItem
-			{
-				Name = checklistItem.Name,
-				Id = Guid.NewGuid(),
-				Measurements = new List<Measurement>
-				{
-					new Measurement
-					{
-						//Id = Guid.NewGuid(),
-						Label = "Tread Depth",
-						MinValue = 0,
-						MaxValue = 32,
-						StepSize = 1,
-						Unit = "32''"
-					}
-				}
-			};
-
-			_context.ChecklistItems.Add(newItem);
-			_context.SaveChanges();
-
-			return RedirectToAction("_ChecklistItemList");
 		}
 
 		// POST: ChecklistItems/Delete/5
@@ -139,5 +152,53 @@ namespace DigitalInspection.Controllers
 			return RedirectToAction("_ChecklistItemList");
 		}
 
+		[HttpPost]
+		public ActionResult AddMeasurement(Guid id)
+		{
+			var checklistItemInDb = _context.ChecklistItems.Find(id);
+
+			if (checklistItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+			}
+
+			checklistItemInDb.Measurements.Add(new Measurement());
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+			}
+
+			return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
+		}
+
+		[HttpPost]
+		public ActionResult DeleteMeasurement(Guid id)
+		{
+			var checklistItemInDb = _context.ChecklistItems.FirstOrDefault(ci => ci.Measurements.Any(m => m.Id == id));
+
+			if (checklistItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+			}
+
+			var measurementToRemove = checklistItemInDb.Measurements.Single(m => m.Id == id);
+			checklistItemInDb.Measurements.Remove(measurementToRemove);
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+			}
+
+			return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
+		}
 	}
 }

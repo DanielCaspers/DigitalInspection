@@ -2,7 +2,7 @@
 
 namespace DigitalInspection.ViewModels
 {
-	public class EditChecklistItemViewModel: BaseViewModel
+	public class EditChecklistItemViewModel: BaseChecklistsViewModel
 	{
 		public ChecklistItem ChecklistItem { get; set; }
 	}

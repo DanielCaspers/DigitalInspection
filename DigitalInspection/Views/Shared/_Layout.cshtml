@@ -116,6 +116,14 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$.material.init();
+
+			$('select').multiselect({
+				// includeSelectAllOption: true,
+				// maxHeight: 300,
+				buttonWidth: '100%',
+				enableFiltering: true,
+				enableCaseInsensitiveFiltering: true
+			});
 		});
 	</script>
 	@RenderSection("scripts", required: false)
