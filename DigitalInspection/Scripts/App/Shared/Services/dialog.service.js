@@ -34,17 +34,19 @@ DialogService.show = function (dialogId, formName) {
 			formElement.submit();
 
 			dialogElement.modal('hide');
-
-			// Reset values in the form for next open
-			formElement[0].reset();
-			validator.resetForm();
 		}
 	});
 
-	$("#" + dialogId + "_cancel").click(function (e) {
+	dialogElement.on('hidden.bs.modal', function () {
 		// Reset values in the form for next open
 		formElement[0].reset();
 		validator.resetForm();
+
+		var selectInputs = $('#' + dialogId).find('select');
+		for(var selectInput of selectInputs) {
+			$(selectInput).multiselect('deselectAll', false);
+			$(selectInput).multiselect('updateButtonText');
+		}
 	});
 
 }

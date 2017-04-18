@@ -6,6 +6,20 @@
 
 
 <script type="text/javascript" src="~/Scripts/App/Shared/Services/form.service.js"></script>
+<script type="text/javascript">
+	//http://stackoverflow.com/a/35651254/2831961
+	var tagIds = JSON.parse('@Html.Raw(Json.Encode(Model.ChecklistItem.Tags.Select(t => t.Id).ToList()  ))');
+	console.log(tagIds);
+	$(document).ready(function () {
+		$('#editTagSelect').multiselect({
+			buttonWidth: '100%',
+			enableFiltering: true,
+			enableCaseInsensitiveFiltering: true
+		});
+
+		$('#editTagSelect').multiselect('select', tagIds);
+	}); 
+</script>
 
 @using (Html.BeginForm(
 			"DeleteCannedResponse",
@@ -46,12 +60,12 @@
 					@Html.ValidationMessageFor(m => m.ChecklistItem.Name)
 				</div>
 
-				<!-- TODO: Integrate tags into ChecklistItem model-->
-				@*<div class="form-group" style="margin-top:0px;">
-				@Html.LabelFor(m => m.ChecklistItem.Tags, new { @class = "control-label" })
-				@Html.ListBoxFor(m => m.ChecklistItem.Tags, new MultiSelectList(Model.ChecklistItem.Tags, "Id", "Name"), new { @class = "form-control ma-multi-select", required = "required" })
-				@Html.ValidationMessageFor(m => m.ChecklistItem.Tags)
-			</div>*@
+				<div class="form-group" style="margin-top:0px;">
+					@Html.LabelFor(m => m.ChecklistItem.Tags, new { @class = "control-label" })
+					@Html.ListBoxFor(m => m.ChecklistItem.Tags, new MultiSelectList(Model.Tags, "Id", "Name"),
+						new { id = "editTagSelect", @class = "form-control ma-multi-select", required = "required" })
+					@Html.ValidationMessageFor(m => m.ChecklistItem.Tags)
+				</div>
 
 				@if (Model.ChecklistItem.CannedResponses.Count() > 0)
 				{

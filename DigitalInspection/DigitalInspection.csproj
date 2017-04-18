@@ -241,6 +241,10 @@
     <Compile Include="Migrations\201704152230418_ChecklistItemCannedResponseFK.Designer.cs">
       <DependentUpon>201704152230418_ChecklistItemCannedResponseFK.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704181028306_TagsInChecklistItem.cs" />
+    <Compile Include="Migrations\201704181028306_TagsInChecklistItem.Designer.cs">
+      <DependentUpon>201704181028306_TagsInChecklistItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DigitalInspectionMySqlMigrationSqlGenerator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -432,6 +436,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704152230418_ChecklistItemCannedResponseFK.resx">
       <DependentUpon>201704152230418_ChecklistItemCannedResponseFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704181028306_TagsInChecklistItem.resx">
+      <DependentUpon>201704181028306_TagsInChecklistItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

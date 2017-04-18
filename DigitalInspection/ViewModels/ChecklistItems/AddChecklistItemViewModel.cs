@@ -14,7 +14,7 @@ namespace DigitalInspection.ViewModels
 
 		[DisplayName("Tags *")]
 		[Required(ErrorMessage = "One or more tags are required")]
-		public List<Tag> Tags { get; set; }
+		public IList<Tag> Tags { get; set; }
 
 
 		public IList<Measurement> Measurements { get; set; }

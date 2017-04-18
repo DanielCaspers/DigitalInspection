@@ -6,6 +6,16 @@
 	const string SUCCESS = TEMPLATE_NAMESPACE + "_success";
 }
 
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#addChecklistItemSelect').multiselect({
+			buttonWidth: '100%',
+			enableFiltering: true,
+			enableCaseInsensitiveFiltering: true
+		});
+	});
+</script>
+
 <div id="@TEMPLATE_NAMESPACE" class="modal fade">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -35,7 +45,8 @@
 					<!-- Separate div required so input:foucs behavior on search box doesn't trigger name field -->
 					<div class="form-group" style="margin-top:0px;">
 						@Html.LabelFor(m => m.Tags, new { @class = "control-label" })
-						@Html.ListBoxFor(m => m.Tags, new MultiSelectList(Model.Tags, "Id", "Name"), new { @class = "form-control ma-multi-select", required="required"})
+						@Html.ListBoxFor(m => m.Tags, new MultiSelectList(Model.Tags, "Id", "Name"),
+							new { id = "addChecklistItemSelect", @class = "form-control ma-multi-select", required = "required" })
 						@Html.ValidationMessageFor(m => m.Tags)
 					</div>
 				</div>

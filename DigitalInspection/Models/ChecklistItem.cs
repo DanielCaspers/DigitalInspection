@@ -15,6 +15,9 @@ namespace DigitalInspection.Models
 		//[DisplayName("Checklist item name *")]
 		public string Name { get; set; }
 
+		[Required]
+		public virtual IList<Tag> Tags { get; set; }
+
 		// Virtual lazy loads and makes EF less dumb 
 		// http://stackoverflow.com/a/9246932/2831961
 		[Required] // TODO: REVISIT REQUIRED

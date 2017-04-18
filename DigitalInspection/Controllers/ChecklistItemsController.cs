@@ -15,7 +15,6 @@ namespace DigitalInspection.Controllers
 
 		private ApplicationDbContext _context;
 
-
 		public ChecklistItemsController()
 		{
 			_context = new ApplicationDbContext();
@@ -64,24 +63,36 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
+				var tags = _context.Tags.OrderBy(t => t.Name).ToList();
+
 				var viewModel = new EditChecklistItemViewModel
 				{
-					ChecklistItem = checklistItem
+					ChecklistItem = checklistItem,
+					Tags = tags
 				};
 				return PartialView("_EditChecklistItem", viewModel);
 			}
 		}
 
-		[HttpPost]
-		public ActionResult Create(AddChecklistItemViewModel checklistItem)
+		[HttpPost] //TODO: Move Tags parameter into viewModel??
+		public ActionResult Create(AddChecklistItemViewModel checklistItem, IList<Guid> tags)
 		{
 			ChecklistItem newItem = new ChecklistItem
 			{
 				Name = checklistItem.Name,
+				Tags = new List<Tag>(),
 				CannedResponses = new List<CannedResponse>(),
 				Measurements = new List<Measurement>()
 			};
 
+			// TODO: Figure out how to do this with LINQ
+			// Push each full tag object onto list
+			foreach (var tagId in tags)
+			{
+				var tag = _context.Tags.Find(tagId);
+				newItem.Tags.Add(tag);
+			}
+			newItem.Tags.OrderBy(t => t.Name);
 			_context.ChecklistItems.Add(newItem);
 
 			try
@@ -108,6 +119,8 @@ namespace DigitalInspection.Controllers
 			{
 				checklistItemInDb.Name = vm.ChecklistItem.Name;
 				checklistItemInDb.Measurements = vm.ChecklistItem.Measurements;
+				// TODO: Model binding is broken here, it seems it can't match tagIds to the Tags object
+				checklistItemInDb.Tags = vm.ChecklistItem.Tags;
 
 				try
 				{
