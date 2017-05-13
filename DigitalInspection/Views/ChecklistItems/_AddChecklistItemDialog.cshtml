@@ -11,7 +11,10 @@
 		$('#addChecklistItemSelect').multiselect({
 			buttonWidth: '100%',
 			enableFiltering: true,
-			enableCaseInsensitiveFiltering: true
+			enableCaseInsensitiveFiltering: true,
+			onDropdownHide: function() {
+				$('button.multiselect-clear-filter').click();
+			}
 		});
 	});
 </script>

@@ -9,6 +9,12 @@ namespace DigitalInspection.Models
 		[Required]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
+		// Foreign key - Nullable allows individual deletion of response
+		public Guid? ChecklistItemId { get; set; }
+
+		// Navigation properties for model binding
+		public virtual ChecklistItem ChecklistItem { get; set; }
+
 		[Required(ErrorMessage = "Canned response is required")]
 		[DisplayName("Canned Response *")]
 		public string Response { get; set; }

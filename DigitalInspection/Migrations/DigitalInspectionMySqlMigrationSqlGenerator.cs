@@ -15,5 +15,13 @@ namespace DigitalInspection.Migrations
 			MigrationStatement ms = base.Generate(addForeignKeyOperation);
 			return ms;
 		}
+
+		protected override MigrationStatement Generate(DropForeignKeyOperation dropForeignKeyOperation)
+		{
+			dropForeignKeyOperation.PrincipalTable = dropForeignKeyOperation.PrincipalTable.Replace("dbo.", "");
+			dropForeignKeyOperation.DependentTable = dropForeignKeyOperation.DependentTable.Replace("dbo.", "");
+			MigrationStatement ms = base.Generate(dropForeignKeyOperation);
+			return ms;
+		}
 	}
 }

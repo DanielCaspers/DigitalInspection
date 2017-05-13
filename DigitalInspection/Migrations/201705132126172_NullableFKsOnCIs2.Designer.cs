@@ -7,13 +7,13 @@ namespace DigitalInspection.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class TagsInChecklistItem : IMigrationMetadata
+    public sealed partial class NullableFKsOnCIs2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(TagsInChecklistItem));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(NullableFKsOnCIs2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704181028306_TagsInChecklistItem"; }
+            get { return "201705132126172_NullableFKsOnCIs2"; }
         }
         
         string IMigrationMetadata.Source

@@ -21,10 +21,10 @@ namespace DigitalInspection.Models
 		// Virtual lazy loads and makes EF less dumb 
 		// http://stackoverflow.com/a/9246932/2831961
 		[Required] // TODO: REVISIT REQUIRED
-		public virtual IList<CannedResponse> CannedResponses { get; set; }
+		public virtual IList<CannedResponse> CannedResponses { get; set; } = new List<CannedResponse>();
 
 		[Required]
-		public virtual IList<Measurement> Measurements { get; set; }
+		public virtual IList<Measurement> Measurements { get; set; } = new List<Measurement>();
 
 		public enum Condition {NEEDS_SERVICE, SHOULD_WATCH, ALL_GOOD }
 	}

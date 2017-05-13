@@ -3,7 +3,7 @@ namespace DigitalInspection.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -18,6 +18,45 @@ namespace DigitalInspection.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Checklists", t => t.Checklist_Id)
                 .Index(t => t.Checklist_Id);
+            
+            CreateTable(
+                "dbo.CannedResponses",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ChecklistItemId = c.Guid(nullable: false),
+                        Response = c.String(nullable: false, unicode: false),
+                        Url = c.String(unicode: false),
+                        Description = c.String(unicode: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ChecklistItems", t => t.ChecklistItemId, cascadeDelete: true)
+                .Index(t => t.ChecklistItemId);
+            
+            CreateTable(
+                "dbo.Measurements",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        ChecklistItemId = c.Guid(nullable: false),
+                        Label = c.String(nullable: false, unicode: false),
+                        MinValue = c.Int(nullable: false),
+                        MaxValue = c.Int(nullable: false),
+                        StepSize = c.Int(nullable: false),
+                        Unit = c.String(nullable: false, unicode: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ChecklistItems", t => t.ChecklistItemId, cascadeDelete: true)
+                .Index(t => t.ChecklistItemId);
+            
+            CreateTable(
+                "dbo.Tags",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Name = c.String(nullable: false, unicode: false),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Checklists",
@@ -54,15 +93,6 @@ namespace DigitalInspection.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
-            
-            CreateTable(
-                "dbo.Tags",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Name = c.String(nullable: false, unicode: false),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -109,6 +139,19 @@ namespace DigitalInspection.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
             
+            CreateTable(
+                "dbo.TagChecklistItems",
+                c => new
+                    {
+                        Tag_Id = c.Guid(nullable: false),
+                        ChecklistItem_Id = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Tag_Id, t.ChecklistItem_Id })
+                .ForeignKey("dbo.Tags", t => t.Tag_Id, cascadeDelete: true)
+                .ForeignKey("dbo.ChecklistItems", t => t.ChecklistItem_Id, cascadeDelete: true)
+                .Index(t => t.Tag_Id)
+                .Index(t => t.ChecklistItem_Id);
+            
         }
         
         public override void Down()
@@ -118,20 +161,31 @@ namespace DigitalInspection.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.ChecklistItems", "Checklist_Id", "dbo.Checklists");
+            DropForeignKey("dbo.TagChecklistItems", "ChecklistItem_Id", "dbo.ChecklistItems");
+            DropForeignKey("dbo.TagChecklistItems", "Tag_Id", "dbo.Tags");
+            DropForeignKey("dbo.Measurements", "ChecklistItemId", "dbo.ChecklistItems");
+            DropForeignKey("dbo.CannedResponses", "ChecklistItemId", "dbo.ChecklistItems");
+            DropIndex("dbo.TagChecklistItems", new[] { "ChecklistItem_Id" });
+            DropIndex("dbo.TagChecklistItems", new[] { "Tag_Id" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Measurements", new[] { "ChecklistItemId" });
+            DropIndex("dbo.CannedResponses", new[] { "ChecklistItemId" });
             DropIndex("dbo.ChecklistItems", new[] { "Checklist_Id" });
+            DropTable("dbo.TagChecklistItems");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.Tags");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Checklists");
+            DropTable("dbo.Tags");
+            DropTable("dbo.Measurements");
+            DropTable("dbo.CannedResponses");
             DropTable("dbo.ChecklistItems");
         }
     }

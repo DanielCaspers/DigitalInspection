@@ -11,6 +11,12 @@ namespace DigitalInspection.Models
 		[Required]
 		public Guid Id { get; set; } = Guid.NewGuid();
 
+		// Foreign key - Nullable allows individual deletion of response
+		public Guid? ChecklistItemId { get; set; }
+
+		// Navigation properties for model binding
+		public virtual ChecklistItem ChecklistItem { get; set; }
+
 		[Required(AllowEmptyStrings = true)]
 		[DisplayName("Label *")]
 		public string Label { get; set; } = string.Empty;

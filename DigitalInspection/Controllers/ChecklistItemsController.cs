@@ -6,6 +6,7 @@ using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Data.Entity.Core;
 
 namespace DigitalInspection.Controllers
 {
@@ -117,20 +118,28 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
+				// Duplicating database entries bug - MUST BE DONE BEFORE PROP CHANGES 
+				// http://stackoverflow.com/a/22389505/2831961
+				foreach (var measurement in checklistItemInDb.Measurements)
+				{
+					_context.Measurements.Attach(measurement);
+				}
+
+				foreach (var cannedResponse in checklistItemInDb.CannedResponses)
+				{
+					_context.CannedResponses.Attach(cannedResponse);
+				}
+
 				checklistItemInDb.Name = vm.ChecklistItem.Name;
 				checklistItemInDb.Measurements = vm.ChecklistItem.Measurements;
+				checklistItemInDb.CannedResponses = vm.ChecklistItem.CannedResponses;
+
 				// TODO: Model binding is broken here, it seems it can't match tagIds to the Tags object
+				// CONSIDER USING HIDDEN FIELD. REWATCH MOSH TUTORIAL
 				checklistItemInDb.Tags = vm.ChecklistItem.Tags;
 
 				try
 				{
-					// Duplicating database entries bug
-					// http://stackoverflow.com/a/22389505/2831961
-					//foreach (var measurement in vm.ChecklistItem.Measurements)
-					//{
-					//	_context.Measurements.Attach(measurement);
-					//}
-
 					_context.SaveChanges();
 				}
 				catch (DbEntityValidationException dbEx)
@@ -155,11 +164,30 @@ namespace DigitalInspection.Controllers
 					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
 				}
 
+				// TODO: DJC Should cascade delete work from checklistitem to measurement and canned response
+				foreach(var measurement in _context.Measurements)
+				{
+					if(measurement.ChecklistItemId == id)
+					{
+						_context.Measurements.Remove(measurement);
+					}
+				}
+
+				// TODO: DJC Should cascade delete work from checklistitem to measurement and canned response
+				foreach (var cannedResponse in _context.CannedResponses)
+				{
+					if (cannedResponse.ChecklistItemId == id)
+					{
+						_context.CannedResponses.Remove(cannedResponse);
+					}
+				}
+
 				_context.ChecklistItems.Remove(checklistItemInDb);
 				_context.SaveChanges();
 			}
-			catch
+			catch (DbEntityValidationException dbEx)
 			{
+				ExceptionHandlerService.HandleException(dbEx);
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
 			return RedirectToAction("_ChecklistItemList");

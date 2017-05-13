@@ -217,33 +217,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704140125405_initial.cs" />
-    <Compile Include="Migrations\201704140125405_initial.Designer.cs">
-      <DependentUpon>201704140125405_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201705132034143_Initial.cs" />
+    <Compile Include="Migrations\201705132034143_Initial.Designer.cs">
+      <DependentUpon>201705132034143_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201704140134557_Measurements.cs" />
-    <Compile Include="Migrations\201704140134557_Measurements.Designer.cs">
-      <DependentUpon>201704140134557_Measurements.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704151606396_NegativeMeasurements.cs" />
-    <Compile Include="Migrations\201704151606396_NegativeMeasurements.Designer.cs">
-      <DependentUpon>201704151606396_NegativeMeasurements.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704151629194_MeasurementAnnotations.cs" />
-    <Compile Include="Migrations\201704151629194_MeasurementAnnotations.Designer.cs">
-      <DependentUpon>201704151629194_MeasurementAnnotations.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704152228149_InitialCannedResponse.cs" />
-    <Compile Include="Migrations\201704152228149_InitialCannedResponse.Designer.cs">
-      <DependentUpon>201704152228149_InitialCannedResponse.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704152230418_ChecklistItemCannedResponseFK.cs" />
-    <Compile Include="Migrations\201704152230418_ChecklistItemCannedResponseFK.Designer.cs">
-      <DependentUpon>201704152230418_ChecklistItemCannedResponseFK.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201704181028306_TagsInChecklistItem.cs" />
-    <Compile Include="Migrations\201704181028306_TagsInChecklistItem.Designer.cs">
-      <DependentUpon>201704181028306_TagsInChecklistItem.cs</DependentUpon>
+    <Compile Include="Migrations\201705132126172_NullableFKsOnCIs2.cs" />
+    <Compile Include="Migrations\201705132126172_NullableFKsOnCIs2.Designer.cs">
+      <DependentUpon>201705132126172_NullableFKsOnCIs2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\DigitalInspectionMySqlMigrationSqlGenerator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -419,26 +399,11 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201704140125405_initial.resx">
-      <DependentUpon>201704140125405_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705132034143_Initial.resx">
+      <DependentUpon>201705132034143_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704140134557_Measurements.resx">
-      <DependentUpon>201704140134557_Measurements.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704151606396_NegativeMeasurements.resx">
-      <DependentUpon>201704151606396_NegativeMeasurements.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704151629194_MeasurementAnnotations.resx">
-      <DependentUpon>201704151629194_MeasurementAnnotations.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704152228149_InitialCannedResponse.resx">
-      <DependentUpon>201704152228149_InitialCannedResponse.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704152230418_ChecklistItemCannedResponseFK.resx">
-      <DependentUpon>201704152230418_ChecklistItemCannedResponseFK.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201704181028306_TagsInChecklistItem.resx">
-      <DependentUpon>201704181028306_TagsInChecklistItem.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705132126172_NullableFKsOnCIs2.resx">
+      <DependentUpon>201705132126172_NullableFKsOnCIs2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

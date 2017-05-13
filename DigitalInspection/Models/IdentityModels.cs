@@ -20,7 +20,8 @@ namespace DigitalInspection.Models
 
 	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
-		//public DbSet<Measurement> Measurements { get; set; }
+		public DbSet<CannedResponse> CannedResponses { get; set; }
+		public DbSet<Measurement> Measurements { get; set; }
 		public DbSet<Checklist> Checklists { get; set; }
 		public DbSet<ChecklistItem> ChecklistItems { get; set; }
 		public DbSet<Tag> Tags { get; set; }
