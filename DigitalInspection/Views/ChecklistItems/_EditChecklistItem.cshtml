@@ -67,7 +67,7 @@
 					@Html.LabelFor(m => m.ChecklistItem.Tags, new { @class = "control-label" })
 					@Html.ListBoxFor(m => m.SelectedTagIds, new MultiSelectList(Model.Tags, "Id", "Name"),
 						new { id = "editTagSelect", @class = "form-control ma-multi-select", required = "required" })
-					@Html.ValidationMessageFor(m => m.ChecklistItem.Tags)
+					@Html.ValidationMessageFor(m => m.SelectedTagIds)
 				</div>
 
 				@if (Model.ChecklistItem.CannedResponses.Count() > 0)

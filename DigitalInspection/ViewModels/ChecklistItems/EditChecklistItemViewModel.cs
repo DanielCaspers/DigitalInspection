@@ -11,9 +11,9 @@ namespace DigitalInspection.ViewModels
 		public ChecklistItem ChecklistItem { get; set; }
 
 		[DisplayName("Tags *")]
-		[Required(ErrorMessage = "One or more tags are required")]
 		public IList<Tag> Tags { get; set; }
 
+		[Required(ErrorMessage = "One or more tags are required")]
 		public IEnumerable<Guid> SelectedTagIds { get; set; }
 	}
 }
