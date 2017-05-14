@@ -225,6 +225,14 @@
     <Compile Include="Migrations\201705132126172_NullableFKsOnCIs2.Designer.cs">
       <DependentUpon>201705132126172_NullableFKsOnCIs2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705132238534_FKListsToItems.cs" />
+    <Compile Include="Migrations\201705132238534_FKListsToItems.Designer.cs">
+      <DependentUpon>201705132238534_FKListsToItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705132255239_FixingChecklistModel.cs" />
+    <Compile Include="Migrations\201705132255239_FixingChecklistModel.Designer.cs">
+      <DependentUpon>201705132255239_FixingChecklistModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DigitalInspectionMySqlMigrationSqlGenerator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -404,6 +412,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705132126172_NullableFKsOnCIs2.resx">
       <DependentUpon>201705132126172_NullableFKsOnCIs2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705132238534_FKListsToItems.resx">
+      <DependentUpon>201705132238534_FKListsToItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705132255239_FixingChecklistModel.resx">
+      <DependentUpon>201705132255239_FixingChecklistModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

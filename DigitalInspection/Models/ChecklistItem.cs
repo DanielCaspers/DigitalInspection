@@ -11,6 +11,9 @@ namespace DigitalInspection.Models
 	{
 		public Guid Id { get; set; } = Guid.NewGuid();
 
+		// Many to Many navigation property
+		public virtual IList<Checklist> Checklists { get; set; } = new List<Checklist>();
+
 		//[Required(ErrorMessage = "Checklist item name is required")]
 		//[DisplayName("Checklist item name *")]
 		public string Name { get; set; }

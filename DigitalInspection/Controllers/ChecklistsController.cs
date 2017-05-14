@@ -14,27 +14,6 @@ namespace DigitalInspection.Controllers
 		private static readonly string RESOURCE = "Checklist";
 		private static readonly string IMAGE_SUBDIRECTORY = "Checklists";
 
-		//TODO Remove this temp code once checklist items can be added onto checklist
-		private List<ChecklistItem> Items
-		{
-			get
-			{
-				return new List<ChecklistItem>
-				{
-					new ChecklistItem
-					{
-						Name = "Front Brakes"
-					},
-					new ChecklistItem
-					{
-						Name = "Rear Brakes"
-					}
-				};
-			}
-
-			set { Items = value; }
-		}
-
 		private ApplicationDbContext _context;
 
 
@@ -53,12 +32,6 @@ namespace DigitalInspection.Controllers
 		private ManageChecklistMasterViewModel GetChecklistViewModel()
 		{
 			var checklists = _context.Checklists;
-
-			//Temp append to not mess with the db
-			foreach (var checklist in checklists)
-			{
-				checklist.Items = Items;
-			}
 
 			return new ManageChecklistMasterViewModel
 			{
@@ -87,22 +60,32 @@ namespace DigitalInspection.Controllers
 		public PartialViewResult Edit(Guid id)
 		{
 			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == id);
+			IList<ChecklistItem> checklistItems = _context.ChecklistItems.OrderBy(c => c.Name).ToList();
+			IList<bool> isChecklistItemSelected = new List<bool>();
+			
+			foreach(var checklistItem in checklistItems)
+			{
+				isChecklistItemSelected.Add(checklist.ChecklistItems.Contains(checklistItem));
+			}
 
-			if( checklist == null)
+
+			if (checklist == null)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
 			}
 			else
 			{
 				var viewModel = new EditChecklistViewModel {
-					Checklist = checklist
+					Checklist = checklist,
+					ChecklistItems = checklistItems,
+					IsChecklistItemSelected = isChecklistItemSelected
 				};
 				return PartialView("_EditChecklist", viewModel);
 			}
 		}
 
 		[HttpPost]
-		public ActionResult Update(Guid id, Checklist checklist)
+		public ActionResult Update(Guid id, EditChecklistViewModel vm)
 		{
 			var checklistInDb = _context.Checklists.SingleOrDefault(c => c.Id == id);
 			if(checklistInDb == null)
@@ -111,7 +94,23 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				checklistInDb.Name = checklist.Name;
+				checklistInDb.Name = vm.Checklist.Name;
+
+				IList<ChecklistItem> selectedItems = new List<ChecklistItem>();
+				// Using plain for loop for parallel array data reference
+				for(int i=0; i < vm.IsChecklistItemSelected.Count(); i++)
+				{
+					if (vm.IsChecklistItemSelected[i])
+					{
+						Guid selectedItemId = vm.ChecklistItems[i].Id;
+						selectedItems.Add(_context.ChecklistItems.Single(ci => ci.Id == selectedItemId));
+					}
+				}
+				foreach(var item in checklistInDb.ChecklistItems)
+				{
+					_context.ChecklistItems.Attach(item);
+				}
+				checklistInDb.ChecklistItems = selectedItems;
 
 				HttpPostedFileBase picture = Request.Files[0];
 

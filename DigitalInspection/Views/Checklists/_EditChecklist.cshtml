@@ -68,7 +68,7 @@
 								<div class="container-flex align-center">
 									<div class="checkbox checkbox-with-label flex-item">
 										<label>
-											<input type="checkbox" onchange="TableService.toggleCheckboxesForColumn(1)" />
+											<input type="checkbox" onclick="TableService.toggleCheckboxesForColumn(1, this)" />
 										</label>
 									</div>
 									<div class="flex-item">
@@ -80,11 +80,11 @@
 								<div class="container-flex align-center">
 									<div class="checkbox checkbox-with-label flex-item">
 										<label>
-											<input type="checkbox" onchange="TableService.toggleCheckboxesForColumn(2)" />
+											<input type="checkbox" onclick="TableService.toggleCheckboxesForColumn(2, this)" />
 										</label>
 									</div>
 									<div class="flex-item">
-										Picture Required?
+										Picture required?
 									</div>
 								</div>
 							</th>
@@ -92,105 +92,51 @@
 								<div class="container-flex align-center">
 									<div class="checkbox checkbox-with-label flex-item">
 										<label>
-											<input type="checkbox" onchange="TableService.toggleCheckboxesForColumn(3)" />
+											<input type="checkbox" onclick="TableService.toggleCheckboxesForColumn(3, this)" />
 										</label>
 									</div>
 									<div class="flex-item">
-										Allow not applicable?
+										Required to complete inspection?
 									</div>
 								</div>
 							</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>
-								<div class="container-flex align-center">
-									<div class="checkbox checkbox-with-label flex-item">
-										<label>
-											<input type="checkbox" />
-										</label>
-									</div>
-									<div class="flex-item">
-										Hardcoded checklist item
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-									</label>
-								</div>
-							</td>
-							<td>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-									</label>
-								</div>
-							</td>
-						</tr>
 
-						<!-- 2 -->
-						<tr>
-							<td>
-								<div class="container-flex align-center">
-									<div class="checkbox checkbox-with-label flex-item">
+						@for (var i = 0; i < Model.ChecklistItems.Count; i++)
+						{
+							<tr>
+								<td>
+									<div class="container-flex align-center">
+										<div class="checkbox checkbox-with-label flex-item">
+											<label>
+												@Html.HiddenFor(m => m.ChecklistItems[i].Id)
+												@Html.CheckBoxFor(m => m.IsChecklistItemSelected[i])
+											</label>
+										</div>
+										<div class="flex-item">
+											@Model.ChecklistItems[i].Name
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class="checkbox">
 										<label>
 											<input type="checkbox" />
 										</label>
 									</div>
-									<div class="flex-item">
-										Hardcoded checklist item 2
+								</td>
+								<td>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" />
+										</label>
 									</div>
-								</div>
-							</td>
-							<td>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-									</label>
-								</div>
-							</td>
-							<td>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-									</label>
-								</div>
-							</td>
-						</tr>
+								</td>
+							</tr>
+						}
 
-						<!-- 3 -->
-						<tr>
-							<td>
-								<div class="container-flex align-center">
-									<div class="checkbox checkbox-with-label flex-item">
-										<label>
-											<input type="checkbox" />
-										</label>
-									</div>
-									<div class="flex-item">
-										Hardcoded checklist item 3
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-									</label>
-								</div>
-							</td>
-							<td>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-									</label>
-								</div>
-							</td>
-						</tr>
 					</tbody>
 				</table>
 

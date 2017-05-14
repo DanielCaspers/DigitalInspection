@@ -1,4 +1,5 @@
 ﻿using DigitalInspection.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -12,5 +13,7 @@ namespace DigitalInspection.ViewModels
 		[DisplayName("Tags *")]
 		[Required(ErrorMessage = "One or more tags are required")]
 		public IList<Tag> Tags { get; set; }
+
+		public IEnumerable<Guid> SelectedTagIds { get; set; }
 	}
 }

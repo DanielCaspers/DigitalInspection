@@ -65,11 +65,12 @@ namespace DigitalInspection.Controllers
 			else
 			{
 				var tags = _context.Tags.OrderBy(t => t.Name).ToList();
-
+				var selectedTagIds = checklistItem.Tags.Select(t => t.Id);
 				var viewModel = new EditChecklistItemViewModel
 				{
 					ChecklistItem = checklistItem,
-					Tags = tags
+					Tags = tags,
+					SelectedTagIds = selectedTagIds
 				};
 				return PartialView("_EditChecklistItem", viewModel);
 			}
@@ -130,13 +131,18 @@ namespace DigitalInspection.Controllers
 					_context.CannedResponses.Attach(cannedResponse);
 				}
 
+				foreach (var tag in checklistItemInDb.Tags)
+				{
+					_context.Tags.Attach(tag);
+				}
+
+				IList<Tag> selectedTagsInDb = _context.Tags.Where(t => vm.SelectedTagIds.Contains(t.Id)).ToList();
+
 				checklistItemInDb.Name = vm.ChecklistItem.Name;
 				checklistItemInDb.Measurements = vm.ChecklistItem.Measurements;
 				checklistItemInDb.CannedResponses = vm.ChecklistItem.CannedResponses;
 
-				// TODO: Model binding is broken here, it seems it can't match tagIds to the Tags object
-				// CONSIDER USING HIDDEN FIELD. REWATCH MOSH TUTORIAL
-				checklistItemInDb.Tags = vm.ChecklistItem.Tags;
+				checklistItemInDb.Tags = selectedTagsInDb;
 
 				try
 				{
