@@ -210,6 +210,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChecklistItemsController.cs" />
+    <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\ChecklistsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -236,6 +237,9 @@
     <Compile Include="Migrations\DigitalInspectionMySqlMigrationSqlGenerator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Vehicle.cs" />
+    <Compile Include="Models\WorkOrder.cs" />
     <Compile Include="Models\Measurement.cs" />
     <Compile Include="Models\CannedResponse.cs" />
     <Compile Include="Models\Tag.cs" />
@@ -249,6 +253,7 @@
     <Compile Include="Services\ToastService.cs" />
     <Compile Include="Services\ImageService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Base\BaseWorkOrdersViewModel.cs" />
     <Compile Include="ViewModels\ChecklistItems\AddChecklistItemViewModel.cs" />
     <Compile Include="ViewModels\Tags\AddTagViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseHomeViewModel.cs" />
@@ -261,6 +266,7 @@
     <Compile Include="ViewModels\ChecklistItems\ManageChecklistItemsViewModel.cs" />
     <Compile Include="ViewModels\Tags\ManageTagsViewModel.cs" />
     <Compile Include="ViewModels\Checklists\ManageChecklistMasterViewModel.cs" />
+    <Compile Include="ViewModels\WorkOrders\WorkOrderMasterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-material-design.css" />
@@ -392,6 +398,8 @@
     <Content Include="Views\ChecklistItems\_ChecklistItemList.cshtml" />
     <Content Include="Views\ChecklistItems\_AddChecklistItemDialog.cshtml" />
     <Content Include="Views\ChecklistItems\_EditChecklistItem.cshtml" />
+    <Content Include="Views\WorkOrders\Index.cshtml" />
+    <Content Include="Views\WorkOrders\_WorkOrderTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

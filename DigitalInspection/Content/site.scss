@@ -1,5 +1,6 @@
 ﻿$material-primary: #009688;
-
+$material-info: rgb(3, 169, 244);
+$material-disabled-button: rgba(153,153,153, 0.2);
 
 body {
 	//TODO: DJC This needs to be 75px for normal views, but 50px with tab containers... It would be better handled by the stacked partials instead of body?
@@ -116,9 +117,76 @@ a, button {
 }
 
 // Tables
-table .checkbox-with-label{
-	margin-right: 15px;
+table {
+	&.dataTable{
+		&.no-footer{
+			border-bottom: none;
+		}
+
+		tbody tr:hover{
+			background-color: rgba(0,150,136, 0.08) !important;
+		}
+	}
+
+	.checkbox-with-label{
+		margin-right: 15px;
+	}
+
+	tbody tr td.color-indicator{
+		width: 10px !important;
+		padding: 0px !important;
+		opacity: 0.8;
+	}
 }
+
+.dataTables_wrapper {
+	.dataTables_info{
+		color: $material-info;
+	}
+	.dataTables_length{
+		padding-top: 10px;
+		label{
+			color: $material-primary;
+			select {
+				text-align: center;
+				text-align-last:center;
+
+				width: 80px;
+				border:none;
+			}
+		}
+	}
+
+	.dataTables_paginate{
+		%undo-bundled-styles{
+			border:none;
+			background:none !important;
+		}
+
+		//Emulate Bootstrap Material Button behavior
+		.paginate_button {
+			color: $material-primary !important;
+
+			&[disabled]{
+				color: rgba(0, 0, 0, 0.26);
+				background: transparent;
+			}
+
+			&:hover{
+				@extend %undo-bundled-styles;
+				color: $material-primary !important;
+				background-color: $material-disabled-button !important;
+			}
+
+			&.current, &.current:hover {
+				@extend %undo-bundled-styles;
+				color: #fff !important;
+				background-color: $material-primary !important;
+			}
+		}
+	}
+}
+
 
 .ma-inline-form {
 	display: inline !important;

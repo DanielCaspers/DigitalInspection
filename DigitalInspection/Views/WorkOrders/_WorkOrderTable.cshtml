@@ -1,0 +1,68 @@
+﻿@model DigitalInspection.ViewModels.WorkOrderMasterViewModel
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		var tableSelector = '#workOrderTable';
+		var table = $(tableSelector).DataTable({
+			dom: 't<"container-flex between"lip>',
+			lengthMenu: [10, 20, 50, 100],
+			columnDefs: [{
+				targets: 3,
+				orderable: false,
+				searchable: false
+			}],
+			language: {
+				info: "_TOTAL_ results",
+				infoFiltered: "(filtered from _MAX_)",
+				infoEmpty: "No results",
+				lengthMenu: "Page size _MENU_",
+				zeroRecords: ""
+			}
+		});
+
+		$(tableSelector + '_searchInput').on('keyup', function () {
+			table.search(this.value).draw();
+		});
+
+		$(tableSelector + '_clearSearch').on('click', function () {
+			$(tableSelector + '_searchInput').val('');
+			table.search(this.value).draw();
+		});
+	});
+</script>
+
+
+<div class="jumbotron">
+	<table id="workOrderTable" class="table table-striped table-condensed table-responsive form-group">
+		<thead>
+			<tr>
+				<th>Work Order #</th>
+				<th>Employee #</th>
+				<th>Customer</th>
+				<!-- Empty is used for vehicle color -->
+				<th></th>
+				<th>Vehicle</th>
+				<th>Status</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var workOrder in Model.WorkOrders)
+			{
+				<tr>
+					<td>@workOrder.Id</td>
+					<td>@workOrder.EmployeeId</td>
+					<td>@workOrder.Customer.FirstName @workOrder.Customer.LastName</td>
+					<td class="color-indicator" style="background-color: @workOrder.Vehicle.Color;"></td>
+					<td>
+						<div>@workOrder.Vehicle.Year @workOrder.Vehicle.Make @workOrder.Vehicle.Model</div>
+						<div>@workOrder.Vehicle.LicensePlate</div>
+					</td>
+					<td>@workOrder.Status</td>
+					<!-- http://www.csharp-examples.net/string-format-datetime/ -->
+					<td>@String.Format("{0:g}", @workOrder.Date)</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
