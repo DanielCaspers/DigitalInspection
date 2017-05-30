@@ -30,21 +30,21 @@ namespace DigitalInspection.Controllers
 		{
 			WorkOrder wo = new WorkOrder
 			{
-				Id = "987435543",
+				Id = "123456",
 				EmployeeId = 4067,
 				Status = WorkOrderStatus.NotStarted,
 				Date = new DateTime(2017, 5, 30, 11, 15, 0),
 				Customer = new Customer
 				{
-					FirstName = "Dan",
-					LastName = "Caspers"
+					FirstName = "Daniel-Joseph",
+					LastName = "Casperswoskiee"
 				},
 				Vehicle = new Vehicle
 				{
 					VIN = "MH3RH06YXFK002818",
 					Year = 2015,
-					Make = "Yamaha",
-					Model = "R3",
+					Make = "Land Rover",
+					Model = "Range Rover Sport HSE",
 					Color = "Blue",
 					LicensePlate = "293-GBE",
 					LicenseState = "IL",
@@ -57,7 +57,7 @@ namespace DigitalInspection.Controllers
 
 			WorkOrder wo2 = new WorkOrder
 			{
-				Id = "12345465",
+				Id = "452212",
 				EmployeeId = 4056,
 				Status = WorkOrderStatus.Complete,
 				Date = new DateTime(2017, 4, 1, 1, 23, 56),
@@ -83,7 +83,7 @@ namespace DigitalInspection.Controllers
 
 			WorkOrder wo3 = new WorkOrder
 			{
-				Id = "ujiasdfiuhasdf",
+				Id = "776553",
 				EmployeeId = 4171,
 				Status = WorkOrderStatus.NotStarted,
 				Date = new DateTime(2017, 4, 1, 13, 26, 56),

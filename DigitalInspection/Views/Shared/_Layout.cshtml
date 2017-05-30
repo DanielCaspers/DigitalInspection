@@ -5,10 +5,9 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>@ViewBag.Title</title>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-		  rel="stylesheet">
-	<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"
-		  rel="stylesheet">
+
+	<!-- Needs to go first because styles need to be overridden by other CSS files. Needs WWW access for fetching external images -->
+	<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet"> 
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
 </head>
@@ -17,9 +16,9 @@
 	@Scripts.Render("~/bundles/jquery-ajax")
 	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/data-tables")
 	@Scripts.Render("~/bundles/material")
 	@Scripts.Render("~/bundles/multiselect")
-	<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid ma-nav-container">

@@ -29,6 +29,9 @@ namespace DigitalInspection
 					  LIB_DIR_PREFIX + "Bootstrap/bootstrap.js",
 					  LIB_DIR_PREFIX + "Bootstrap/respond.js"));
 
+			bundles.Add(new ScriptBundle("~/bundles/data-tables").Include(
+						LIB_DIR_PREFIX + "DataTables/jquery.dataTables.min.js"));
+
 			bundles.Add(new ScriptBundle("~/bundles/material").Include(
 						LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
 						LIB_DIR_PREFIX + "Bootstrap-Material/ripples.js"));
@@ -43,6 +46,7 @@ namespace DigitalInspection
 					  "~/Content/bootstrap.css",
 					  "~/Content/bootstrap-material-design.css",
 					  "~/Content/bootstrap-multiselect.css",
+					  "~/Content/material-icons.css",
 					  "~/Content/ripples.css",
 					  "~/Content/site.css"));
 		}
