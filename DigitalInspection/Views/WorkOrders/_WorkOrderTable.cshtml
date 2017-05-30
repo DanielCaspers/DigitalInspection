@@ -1,34 +1,15 @@
 ﻿@model DigitalInspection.ViewModels.WorkOrderMasterViewModel
 
 <script type="text/javascript">
-	$(document).ready(function () {
-		var tableSelector = '#workOrderTable';
-		var table = $(tableSelector).DataTable({
-			dom: 't<"container-flex between"lip>',
-			lengthMenu: [10, 15, 20, 40],
-			columnDefs: [{
-				targets: 3,
-				orderable: false,
-				searchable: false
-			}],
-			language: {
-				info: "_TOTAL_ results",
-				infoFiltered: "(filtered from _MAX_)",
-				infoEmpty: "No results",
-				lengthMenu: "Page size _MENU_",
-				zeroRecords: ""
-			}
-		});
-
-		$(tableSelector + '_searchInput').on('keyup', function () {
-			table.search(this.value).draw();
-		});
-
-		$(tableSelector + '_clearSearch').on('click', function () {
-			$(tableSelector + '_searchInput').val('');
-			table.search(this.value).draw();
-		});
-	});
+	TableService.showTable(
+		'workOrderTable',
+		[10, 15, 20, 40],
+		[{
+			targets: 3,
+			orderable: false,
+			searchable: false
+		}]
+	);
 </script>
 
 

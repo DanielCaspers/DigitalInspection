@@ -10,6 +10,7 @@ namespace DigitalInspection
 		public static void RegisterBundles(BundleCollection bundles)
 		{
 			const string LIB_DIR_PREFIX = "~/Scripts/Library/";
+			const string APP_DIR_PREFIX = "~/Scripts/App/Shared/Services";
 
 			bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
 						LIB_DIR_PREFIX + "JQuery/jquery-{version}.js"));
@@ -39,8 +40,8 @@ namespace DigitalInspection
 			bundles.Add(new ScriptBundle("~/bundles/multiselect").Include(
 						LIB_DIR_PREFIX + "Bootstrap-Multiselect/bootstrap-multiselect.js"));
 
-			//bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory(
-			//			"~/Scripts/App/", "*.js"));
+			bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory(
+						APP_DIR_PREFIX, "*.service.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 					  "~/Content/bootstrap.css",

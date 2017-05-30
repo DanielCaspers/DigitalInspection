@@ -19,6 +19,7 @@
 	@Scripts.Render("~/bundles/data-tables")
 	@Scripts.Render("~/bundles/material")
 	@Scripts.Render("~/bundles/multiselect")
+	@Scripts.Render("~/bundles/app")
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid ma-nav-container">
@@ -68,8 +69,6 @@
 	<div>
 		@if (IsSectionDefined("TabContainer"))
 		{
-			<script type="text/javascript" src="~/Scripts/App/Shared/Services/tab.service.js"></script>
-
 			<div id="tabContainer" class="ma-tab-container btn-group-justified">
 				@RenderSection("TabContainer")
 			</div>
@@ -85,29 +84,14 @@
 		<hr />
 		<footer>
 			<p>&copy; @DateTime.Now.Year - Digital Inspection</p>
-			<i class="material-icons">edit</i>
-			<i class="material-icons">delete</i>
 			<i class="material-icons">content_copy</i>
 			<i class="material-icons">photo_camera</i>
-
-			<i class="material-icons">arrow_back</i>
-			<i class="material-icons">menu</i>
-			<i class="material-icons">local_offer</i>
-			<i class="material-icons">clear</i>
-			<i class="material-icons">close</i>
-
-
-			<i class="material-icons">account_circle</i>
-			<i class="material-icons">label</i>
-
-			<i class="material-icons">add</i>
-			<i class="material-icons">note_add</i>
 			<i class="material-icons">add_a_photo</i>
-			<i class="material-icons md-36">person_add</i>
-
-
-
-
+			<i class="material-icons">local_offer</i>
+			<i class="material-icons">label</i>
+			<i class="material-icons">account_circle</i>
+			<i class="material-icons ">person_add</i>
+			<i class="material-icons">note_add</i>
 		</footer>
 	</div>
 

@@ -4,24 +4,13 @@
 	ViewBag.Title = "Digital Inspection";
 }
 
-
-<script type="text/javascript" src="~/Scripts/App/Shared/Services/form.service.js"></script>
 <script type="text/javascript">
 	//http://stackoverflow.com/a/35651254/2831961
 	var tagIds = JSON.parse('@Html.Raw(Json.Encode(Model.ChecklistItem.Tags.Select(t => t.Id).ToList()  ))');
 	console.log(tagIds);
-	$(document).ready(function () {
-		$('#editTagSelect').multiselect({
-			buttonWidth: '100%',
-			enableFiltering: true,
-			enableCaseInsensitiveFiltering: true,
-			onDropdownHide: function () {
-				$('button.multiselect-clear-filter').click();
-			}
-		});
 
-		$('#editTagSelect').multiselect('select', tagIds);
-	}); 
+	MultiSelectService.show('editTagSelect');
+	MultiSelectService.autoSelectOptions('editTagSelect', tagIds);
 </script>
 
 @using (Html.BeginForm(
