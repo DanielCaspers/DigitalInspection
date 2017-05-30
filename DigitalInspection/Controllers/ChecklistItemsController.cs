@@ -6,26 +6,14 @@ using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
-using System.Data.Entity.Core;
 
 namespace DigitalInspection.Controllers
 {
-	public class ChecklistItemsController : Controller
+	public class ChecklistItemsController : BaseController
 	{
-		private static readonly string RESOURCE = "Checklist item";
-
-		private ApplicationDbContext _context;
-
 		public ChecklistItemsController()
 		{
-			_context = new ApplicationDbContext();
-		}
-
-
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-			_context.Dispose();
+			_resource = "Checklist item";
 		}
 
 		private ManageChecklistItemsViewModel GetChecklistItemViewModel()
@@ -60,7 +48,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItem == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 			}
 			else
 			{
@@ -115,7 +103,7 @@ namespace DigitalInspection.Controllers
 			var checklistItemInDb = _context.ChecklistItems.SingleOrDefault(c => c.Id == id);
 			if(checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 			}
 			else
 			{
@@ -167,7 +155,7 @@ namespace DigitalInspection.Controllers
 
 				if (checklistItemInDb == null)
 				{
-					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 				}
 
 				// TODO: DJC Should cascade delete work from checklistitem to measurement and canned response
@@ -206,7 +194,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 			}
 
 			checklistItemInDb.Measurements.Add(new Measurement());
@@ -230,7 +218,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 			}
 
 			var measurementToRemove = checklistItemInDb.Measurements.Single(m => m.Id == id);
@@ -255,7 +243,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 			}
 
 			var cannedResponse = new CannedResponse()
@@ -283,7 +271,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 			}
 
 			var cannedResponseToRemove = checklistItemInDb.CannedResponses.Single(m => m.Id == id);

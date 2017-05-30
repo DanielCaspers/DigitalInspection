@@ -8,22 +8,13 @@ using System.Collections.Generic;
 
 namespace DigitalInspection.Controllers
 {
-	public class WorkOrdersController : Controller
+	public class WorkOrdersController : BaseController
 	{
-		private static readonly string RESOURCE = "Work order";
-
 		// TODO: Determine how to store WorkOrder -> Checklist relationship for persistence
-		private ApplicationDbContext _context;
 
 		public WorkOrdersController()
 		{
-			_context = new ApplicationDbContext();
-		}
-
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-			_context.Dispose();
+			_resource = "Work order";
 		}
 
 		private WorkOrderMasterViewModel GetWorkOrderViewModel()

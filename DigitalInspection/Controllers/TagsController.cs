@@ -7,23 +7,11 @@ using DigitalInspection.Services;
 
 namespace DigitalInspection.Controllers
 {
-	public class TagsController : Controller
+	public class TagsController : BaseController
 	{
-		private static readonly string RESOURCE = "Tag";
-
-		private ApplicationDbContext _context;
-
-
 		public TagsController()
 		{
-			_context = new ApplicationDbContext();
-		}
-
-
-		protected override void Dispose(bool disposing)
-		{
-			base.Dispose(disposing);
-			_context.Dispose();
+			_resource = "Tag";
 		}
 
 		private ManageTagsViewModel GetTagViewModel()
@@ -55,7 +43,7 @@ namespace DigitalInspection.Controllers
 
 			if (tag == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 			}
 			else
 			{
@@ -73,7 +61,7 @@ namespace DigitalInspection.Controllers
 			var tagInDb = _context.Tags.SingleOrDefault(t => t.Id == id);
 			if(tagInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 			}
 			else
 			{
@@ -109,7 +97,7 @@ namespace DigitalInspection.Controllers
 
 				if (tagInDb == null)
 				{
-					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(RESOURCE));
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
 				}
 
 				_context.Tags.Remove(tagInDb);

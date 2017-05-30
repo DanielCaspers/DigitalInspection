@@ -1,9 +1,4 @@
-﻿using DigitalInspection.Models;
-using DigitalInspection.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using DigitalInspection.ViewModels;
 using System.Web.Mvc;
 
 namespace DigitalInspection.Controllers
