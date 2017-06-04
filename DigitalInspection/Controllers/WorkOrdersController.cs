@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
-using DigitalInspection.Models;
 using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DigitalInspection.Controllers
 {
@@ -17,121 +15,32 @@ namespace DigitalInspection.Controllers
 			_resource = "Work order";
 		}
 
-		private WorkOrderMasterViewModel GetWorkOrderViewModel()
+		private async Task<WorkOrderMasterViewModel> GetWorkOrderViewModel()
 		{
-			WorkOrder wo = new WorkOrder
-			{
-				Id = "123456",
-				EmployeeId = 4067,
-				Status = WorkOrderStatus.NotStarted,
-				Date = new DateTime(2017, 5, 30, 11, 15, 0),
-				Customer = new Customer
-				{
-					FirstName = "Daniel-Joseph",
-					LastName = "Casperswoskiee"
-				},
-				Vehicle = new Vehicle
-				{
-					VIN = "MH3RH06YXFK002818",
-					Year = 2015,
-					Make = "Land Rover",
-					Model = "Range Rover Sport HSE",
-					Color = "Blue",
-					LicensePlate = "293-GBE",
-					LicenseState = "IL",
-					Transmission = Transmission.Manual,
-					EngineDisplacement = 0.3f,
-					Mileage = 1222,
-				}
-
-			};
-
-			WorkOrder wo2 = new WorkOrder
-			{
-				Id = "452212",
-				EmployeeId = 4056,
-				Status = WorkOrderStatus.Complete,
-				Date = new DateTime(2017, 4, 1, 1, 23, 56),
-				Customer = new Customer
-				{
-					FirstName = "Rick",
-					LastName = "Murphy"
-				},
-				Vehicle = new Vehicle
-				{
-					VIN = "MH3RH06YXFK002817",
-					Year = 2016,
-					Make = "Kia",
-					Model = "Optima",
-					Color = "Silver",
-					Transmission = Transmission.Auto,
-					LicensePlate = "293-GBE",
-					LicenseState = "IL",
-					EngineDisplacement = 3.9f,
-					Mileage = 151500,
-				}
-			};
-
-			WorkOrder wo3 = new WorkOrder
-			{
-				Id = "776553",
-				EmployeeId = 4171,
-				Status = WorkOrderStatus.NotStarted,
-				Date = new DateTime(2017, 4, 1, 13, 26, 56),
-				Customer = new Customer
-				{
-					FirstName = "Steve",
-					LastName = "Caspers"
-				},
-				Vehicle = new Vehicle
-				{
-					VIN = "MH3RH06YXFK002817",
-					Year = 2017,
-					Make = "Toyota",
-					Model = "Avalon",
-					Color = "Crimson",
-					Transmission = Transmission.Auto,
-					LicensePlate = "672-KUB",
-					LicenseState = "MN",
-					EngineDisplacement = 3.5f,
-					Mileage = 35000,
-				}
-			};
-
-			List<WorkOrder> orders = new List<WorkOrder>();
-
-			for(int i=0; i < 60; i++)
-			{
-				if (i % 3 == 0)
-				{
-					orders.Add(wo);
-				}
-				else if(i % 3 == 1)
-				{
-					orders.Add(wo3);
-				}
-				else
-				{
-					orders.Add(wo2);
-				}
-			}
+			var task = Task.Run(async () => {
+				return await WorkOrderService.GetWorkOrders();
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
 			return new WorkOrderMasterViewModel
 			{
-				WorkOrders = orders
+				WorkOrders = task.Result
 			};
 		}
 
 		// GET: Work Orders page and return response to index.cshtml
-		public PartialViewResult Index()
+		public async Task<PartialViewResult> Index()
 		{
-			return PartialView(GetWorkOrderViewModel());
+			var task = await GetWorkOrderViewModel();
+			return PartialView(task);
 		}
 
 		// GET: _WorkOrderTable partial and return it to _WorkOrderTable.cshtml 
-		public PartialViewResult _WorkOrderTable()
+		public async Task<PartialViewResult> _WorkOrderTable()
 		{
-			return PartialView(GetWorkOrderViewModel());
+			var task = await GetWorkOrderViewModel();
+			return PartialView(task);
 		}
 
 	}

@@ -15,7 +15,7 @@ namespace DigitalInspection.Models
 
 		[Required(ErrorMessage = "Year is required")]
 		[DisplayName("Year *")]
-		public int Year { get; set; }
+		public int? Year { get; set; }
 
 		[Required(ErrorMessage = "Make is required")]
 		[DisplayName("Make *")]
@@ -31,22 +31,18 @@ namespace DigitalInspection.Models
 
 		[Required(ErrorMessage = "License plate is required")]
 		[DisplayName("License plate *")]
-		public string LicensePlate { get; set; }
-
-		[Required(ErrorMessage = "License state is required")]
-		[DisplayName("License state *")]
-		public string LicenseState { get; set; }
+		public string License { get; set; }
 
 		[Required(ErrorMessage = "Transmission is required")]
 		[DisplayName("Transmission *")]
 		public Transmission Transmission { get; set; }
 
-		[Required(ErrorMessage = "Engine size is required")]
-		[DisplayName("Engine size *")]
-		public float EngineDisplacement { get; set; }
+		[Required(ErrorMessage = "Engine is required")]
+		[DisplayName("Engine *")]
+		public string Engine { get; set; }
 
 		[Required(ErrorMessage = "Mileage is required")]
 		[DisplayName("Mileage *")]
-		public int Mileage { get; set; }
+		public int? Odometer { get; set; }
 	}
 }

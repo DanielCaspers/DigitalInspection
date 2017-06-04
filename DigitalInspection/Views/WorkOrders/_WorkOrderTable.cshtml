@@ -33,17 +33,17 @@
 				<tr>
 					<td>@workOrder.Id</td>
 					<td>@workOrder.EmployeeId</td>
-					<td>@workOrder.Customer.FirstName @workOrder.Customer.LastName</td>
+					<td>@workOrder.Customer.Name</td>
 					<td class="color-indicator" style="background-color: @workOrder.Vehicle.Color;"></td>
 					<td>
 						<div>@workOrder.Vehicle.Year @workOrder.Vehicle.Make @workOrder.Vehicle.Model</div>
-						<div>@workOrder.Vehicle.LicensePlate</div>
+						<div>@workOrder.Vehicle.License</div>
 					</td>
 					<td>@workOrder.Status</td>
 					<!-- http://www.csharp-examples.net/string-format-datetime/ -->
 					<td>
 						<div>@String.Format("{0:d}", @workOrder.Date)</div>
-						<div>@String.Format("{0:t}", @workOrder.Date)</div>
+						@*<div>@String.Format("{0:t}", @workOrder.Date)</div>*@
 					</td>
 				</tr>
 			}

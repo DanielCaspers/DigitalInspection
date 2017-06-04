@@ -83,7 +83,10 @@ table .checkbox-with-label {
 table tbody tr td.color-indicator {
   width: 10px !important;
   padding: 0px !important;
-  opacity: 0.8; }
+  opacity: 0.8;
+  border: 1px solid black;
+  border-top: none;
+  border-bottom: none; }
 
 .dataTables_wrapper .dataTables_info {
   color: #03a9f4; }

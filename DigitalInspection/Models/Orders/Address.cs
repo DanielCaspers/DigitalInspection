@@ -3,22 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DigitalInspection.Models
 {
-	public class Customer
+	public class Address
 	{
-		[Required]
-		public string Id { get; set; }
-
-		[Required(ErrorMessage = "First name is required")]
-		[DisplayName("First name *")]
-		public string FirstName { get; set; }
-
-		[Required(ErrorMessage = "Last name is required")]
-		[DisplayName("Last name *")]
-		public string LastName { get; set; }
+		[Required(ErrorMessage = "Address is required")]
+		[DisplayName("Address Line 1 *")]
+		public string Line1 { get; set; }
 
 		[Required(ErrorMessage = "Address is required")]
-		[DisplayName("Address *")]
-		public string Address { get; set; }
+		[DisplayName("Address Line 2 *")]
+		public string Line2 { get; set; }
 
 		[Required(ErrorMessage = "City is required")]
 		[DisplayName("City *")]
@@ -31,8 +24,5 @@ namespace DigitalInspection.Models
 		[Required(ErrorMessage = "ZIP is required")]
 		[DisplayName("ZIP *")]
 		public string ZIP { get; set; }
-
-		// TODO: Address things
-		// TODO: Phone number things
 	}
 }
