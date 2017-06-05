@@ -6,8 +6,8 @@ namespace DigitalInspection.Utils
 	{
 		public static DateTime FromUnixTime(long unixTimeInSeconds)
 		{
-			var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
-			return epoch.AddSeconds(unixTimeInSeconds);
+			var epoch = new DateTime(1970, 1, 1, 0, 0, 0);
+			return epoch.AddSeconds(unixTimeInSeconds).ToLocalTime();
 		}
 	}
 }

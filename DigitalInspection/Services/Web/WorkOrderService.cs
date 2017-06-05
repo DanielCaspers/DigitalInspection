@@ -32,11 +32,23 @@ namespace DigitalInspection.Services
 			}
 		}
 
+		public static async Task<WorkOrder> GetWorkOrder(string id)
+		{
+			using (HttpClient httpClient = InitializeHttpClient())
+			{
+				var response = await httpClient.GetAsync(string.Format("orders/{0}", id));
+				string json = await response.Content.ReadAsStringAsync();
+
+				WorkOrderDTO orderDto = JsonConvert.DeserializeObject<WorkOrderDTO>(json);
+				return mapWorkOrder(orderDto);
+			}
+		}
+
 		private static WorkOrder mapWorkOrder(WorkOrderDTO orderDto)
 		{
 			WorkOrder actualOrder = new WorkOrder();
 
-			actualOrder.Id = orderDto.orderId.Substring(3);
+			actualOrder.Id = orderDto.orderId;
 			actualOrder.Date = Convert.ToDateTime(DateTimeUtils.FromUnixTime(orderDto.orderDate));
 			//actualOrder.Status = (int) orderDto.orderStatus;
 
@@ -65,7 +77,7 @@ namespace DigitalInspection.Services
 			actualOrder.Vehicle.Make = orderDto.vehicleMake.ToTitleCase();
 			actualOrder.Vehicle.Model = orderDto.vehicleModel.ToTitleCase();
 			actualOrder.Vehicle.License = orderDto.vehicleLicense;
-			actualOrder.Vehicle.Color = orderDto.vehicleColor;
+			actualOrder.Vehicle.Color = orderDto.vehicleColor.ToTitleCase();
 			actualOrder.Vehicle.Engine = orderDto.vehicleEngine;
 			//actualOrder.Vehicle.Transmission = orderDto.vehicleTransmission;
 			actualOrder.Vehicle.Odometer = orderDto.vehicleOdometer;

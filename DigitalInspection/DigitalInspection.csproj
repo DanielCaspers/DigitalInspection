@@ -284,6 +284,7 @@
     <Compile Include="ViewModels\ChecklistItems\ManageChecklistItemsViewModel.cs" />
     <Compile Include="ViewModels\Tags\ManageTagsViewModel.cs" />
     <Compile Include="ViewModels\Checklists\ManageChecklistMasterViewModel.cs" />
+    <Compile Include="ViewModels\WorkOrders\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModels\WorkOrders\WorkOrderMasterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +422,9 @@
     <Content Include="Views\ChecklistItems\_EditChecklistItem.cshtml" />
     <Content Include="Views\WorkOrders\Index.cshtml" />
     <Content Include="Views\WorkOrders\_WorkOrderTable.cshtml" />
+    <Content Include="Views\WorkOrders\_Vehicle.cshtml" />
+    <Content Include="Views\Shared\TabContainers\_WorkOrderDetailTabs.cshtml" />
+    <Content Include="Views\WorkOrders\_VehicleEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

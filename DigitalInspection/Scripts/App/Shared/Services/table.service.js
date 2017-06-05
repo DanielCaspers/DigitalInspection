@@ -45,3 +45,12 @@ TableService.toggleCheckboxesForColumn = function (index, checkAllCheckbox) {
 	// Toggles checkbox DIRECTLY related to parent state, and has better handling of indeterminate state
 	$(jqSelector).prop("checked", checkAllCheckbox.checked);
 }
+
+TableService.navigateOnRowClick = function () {
+	$(document).ready(function () {
+		// TODO: Rebind this event on table pagination, or page size change
+		$("table tr").click(function (event) {
+			window.location.href = $(this).attr('data-url');
+		});
+	});
+}

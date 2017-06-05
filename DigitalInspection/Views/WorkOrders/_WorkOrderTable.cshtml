@@ -10,6 +10,8 @@
 			searchable: false
 		}]
 	);
+
+	TableService.navigateOnRowClick();
 </script>
 
 
@@ -30,11 +32,18 @@
 		<tbody>
 			@foreach (var workOrder in Model.WorkOrders)
 			{
-				<tr>
-					<td>@workOrder.Id</td>
+				<!-- data-url is used by TableService to take generated URL and navigate to page -->
+				<tr data-url="@Url.Action("_Vehicle", "WorkOrders", new { id = workOrder.Id })">
+					<td>@workOrder.Id.Substring(3)</td>
 					<td>@workOrder.EmployeeId</td>
 					<td>@workOrder.Customer.Name</td>
-					<td class="color-indicator" style="background-color: @workOrder.Vehicle.Color;"></td>
+					@if (String.IsNullOrWhiteSpace(workOrder.Vehicle.Color))
+					{
+						<td>X</td>
+					} else
+					{
+						<td class="color-indicator" style="background-color: @workOrder.Vehicle.Color;"></td>
+					}
 					<td>
 						<div>@workOrder.Vehicle.Year @workOrder.Vehicle.Make @workOrder.Vehicle.Model</div>
 						<div>@workOrder.Vehicle.License</div>

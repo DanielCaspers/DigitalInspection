@@ -1,0 +1,20 @@
+﻿<a id="customerTab"
+	@*href="@Url.Action("_Customer", "WorkOrders")"*@
+	onclick="alert('Coming soon!')"
+	class="btn">
+	Customer
+</a>
+<a id="vehicleTab"
+	href="@Url.Action("_Vehicle", "WorkOrders")"
+	onclick="TabService.changeTab(event)"
+	class="btn">
+	Vehicle
+</a>
+<a id="inspectionTab"
+	@*href="@Url.Action("_Inspection", "WorkOrders")"*@
+	onclick="alert('Coming soon!')"
+	class="btn">
+	Inspection
+</a>
+
+<script type="text/javascript">TabService.selectTab("@Model")</script>

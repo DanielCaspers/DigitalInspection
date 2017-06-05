@@ -1,0 +1,98 @@
+﻿@model DigitalInspection.ViewModels.WorkOrderDetailViewModel
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Digital Inspection";
+}
+
+@section TabContainer {
+	@{ Html.RenderPartial("TabContainers/_WorkOrderDetailTabs", "vehicleTab");}
+}
+
+@section Toolbar{
+	<a href="@Url.Action("Index", "WorkOrders")"
+	   class="btn btn-default back-button no-margin pull-left">
+		<i class="material-icons">arrow_back</i>
+		Order @Model.WorkOrder.Id.Substring(3)
+	</a>
+
+	@*<div>@Model.WorkOrder.Customer.Name</div>*@
+
+	@*<div>@Model.WorkOrder.Vehicle.</div>*@
+
+	<div class="container-flex end">
+		<button type="button"
+				class="btn btn-default no-margin"
+				onclick="alert('Feature coming soon')">
+			<i class="material-icons">save</i>
+		</button>
+	</div>
+}
+
+<div class="container-fluid">
+	<div class="container-fluid">
+		<div class="jumbotron">
+			<fieldset>
+				<div class="row">
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Year, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Year, new { @class = "form-control", type ="number"})
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Year)
+					</div>
+
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Make, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Make, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Make)
+					</div>
+
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Model, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Model, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Model)
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.License, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.License, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.License)
+					</div>
+
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Odometer, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Odometer, new { @class = "form-control", type = "number" })
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Odometer)
+					</div>
+
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Color, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Color, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Color)
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Engine, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Engine, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Engine)
+					</div>
+
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Transmission, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Transmission, new { @class = "form-control" })
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Transmission)
+					</div>
+
+					<div class="col-sm-4 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.VIN, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.VIN, new { @class = "form-control"})
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.VIN)
+					</div>
+				</div>
+
+			</fieldset>
+		</div>
+	</div>
+</div>
