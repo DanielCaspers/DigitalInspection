@@ -67,6 +67,12 @@
 	</div>
 
 	<div>
+		@if (IsSectionDefined("DetailedNavigationInfo"))
+		{
+			<div class="btn-toolbar ma-nav-info well well-sm">
+				@RenderSection("DetailedNavigationInfo")
+			</div>
+		}
 		@if (IsSectionDefined("TabContainer"))
 		{
 			<div id="tabContainer" class="ma-tab-container btn-group-justified">

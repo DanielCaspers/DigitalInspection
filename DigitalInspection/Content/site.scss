@@ -271,6 +271,13 @@ table {
 	padding: 9px 31px;
 }
 
+.ma-nav-info{
+	background-color: inherit;
+	margin-bottom: 0;
+	line-height: 40px;
+	font-weight:bold;
+}
+
 // BS MultiSelect - Using plugin defined classes http://davidstutz.github.io/bootstrap-multiselect/#styling
 .multiselect-native-select{
 	$multiselect-font-size: 16px;

@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using DigitalInspection.Models;
 using DigitalInspection.Models.DTOs;
-using DigitalInspection.Utils;
+using DigitalInspection.Models.Mappers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DigitalInspection.Services
@@ -26,7 +27,7 @@ namespace DigitalInspection.Services
 				IList<WorkOrder> workOrders = new List<WorkOrder>();
 				foreach (WorkOrderDTO orderDto in orderDtos)
 				{
-					workOrders.Add(mapWorkOrder(orderDto));
+					workOrders.Add(WorkOrderMapper.mapToWorkOrder(orderDto));
 				}
 				return workOrders;
 			}
@@ -40,57 +41,25 @@ namespace DigitalInspection.Services
 				string json = await response.Content.ReadAsStringAsync();
 
 				WorkOrderDTO orderDto = JsonConvert.DeserializeObject<WorkOrderDTO>(json);
-				return mapWorkOrder(orderDto);
+				return WorkOrderMapper.mapToWorkOrder(orderDto);
 			}
 		}
 
-		private static WorkOrder mapWorkOrder(WorkOrderDTO orderDto)
+		public static async Task<WorkOrder> SaveWorkOrder(WorkOrder order)
 		{
-			WorkOrder actualOrder = new WorkOrder();
-
-			actualOrder.Id = orderDto.orderId;
-			actualOrder.Date = Convert.ToDateTime(DateTimeUtils.FromUnixTime(orderDto.orderDate));
-			//actualOrder.Status = (int) orderDto.orderStatus;
-
-			actualOrder.Customer = new Customer();
-			actualOrder.Customer.Id = orderDto.clientId;
-			actualOrder.Customer.Name = orderDto.clientName.ToTitleCase();
-
-			actualOrder.Customer.Address = new Address();
-			actualOrder.Customer.Address.Line1 = orderDto.clientAddr;
-			actualOrder.Customer.Address.Line2 = orderDto.clientAddr2;
-			actualOrder.Customer.Address.City = orderDto.clientCity;
-			actualOrder.Customer.Address.State = orderDto.clientState;
-			actualOrder.Customer.Address.ZIP = orderDto.clientZip;
-
-			actualOrder.Customer.PhoneNumbers = new List<PhoneNumber>();
-			foreach (ClientPhoneDTO clientPhoneDto in orderDto.clientPhone)
+			using (HttpClient httpClient = InitializeHttpClient())
 			{
-				actualOrder.Customer.PhoneNumbers.Add(mapPhoneNumber(clientPhoneDto));
+				// Map work order to work order dto
+				WorkOrderDTO dto = WorkOrderMapper.mapToWorkOrderDTO(order);
+				// Serialize mapped object
+				string json = JsonConvert.SerializeObject(dto);
+				var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+				var response = await httpClient.PutAsync(string.Format("orders/{0}", order.Id), httpContent);
+				//string json = await response.Content.ReadAsStringAsync();
+
+				WorkOrderDTO orderDto = JsonConvert.DeserializeObject<WorkOrderDTO>(json);
+				return WorkOrderMapper.mapToWorkOrder(orderDto);
 			}
-
-			actualOrder.Vehicle = new Vehicle();
-			actualOrder.Vehicle.VIN = orderDto.vehicleId;
-
-			actualOrder.Vehicle.Year = orderDto.vehicleYear;
-
-			actualOrder.Vehicle.Make = orderDto.vehicleMake.ToTitleCase();
-			actualOrder.Vehicle.Model = orderDto.vehicleModel.ToTitleCase();
-			actualOrder.Vehicle.License = orderDto.vehicleLicense;
-			actualOrder.Vehicle.Color = orderDto.vehicleColor.ToTitleCase();
-			actualOrder.Vehicle.Engine = orderDto.vehicleEngine;
-			//actualOrder.Vehicle.Transmission = orderDto.vehicleTransmission;
-			actualOrder.Vehicle.Odometer = orderDto.vehicleOdometer;
-			return actualOrder;
-		}
-
-		private static PhoneNumber mapPhoneNumber(ClientPhoneDTO phoneDto)
-		{
-			PhoneNumber actualNumber = new PhoneNumber();
-			actualNumber.Number = phoneDto.number;
-			actualNumber.ContactName = phoneDto.name;
-			actualNumber.Type = phoneDto.type;
-			return actualNumber;
 		}
 	}
 }

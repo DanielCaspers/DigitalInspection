@@ -1,11 +1,13 @@
-﻿<a id="customerTab"
-	@*href="@Url.Action("_Customer", "WorkOrders")"*@
-	onclick="alert('Coming soon!')"
+﻿@model DigitalInspection.ViewModels.TabContainers.TabContainerViewModel
+
+<a id="customerTab"
+	href="@Url.Action("_Customer", "WorkOrders", new { id = Model.RouteId})"
+	onclick="TabService.changeTab(event)"
 	class="btn">
 	Customer
 </a>
 <a id="vehicleTab"
-	href="@Url.Action("_Vehicle", "WorkOrders")"
+	href="@Url.Action("_Vehicle", "WorkOrders", new { id = Model.RouteId })"
 	onclick="TabService.changeTab(event)"
 	class="btn">
 	Vehicle
@@ -17,4 +19,4 @@
 	Inspection
 </a>
 
-<script type="text/javascript">TabService.selectTab("@Model")</script>
+<script type="text/javascript">TabService.selectTab("@Model.TabId")</script>

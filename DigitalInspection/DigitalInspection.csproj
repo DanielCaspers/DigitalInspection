@@ -228,6 +228,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Mappers\WorkOrderMapper.cs" />
     <Compile Include="Migrations\201705132034143_Initial.cs" />
     <Compile Include="Migrations\201705132034143_Initial.Designer.cs">
       <DependentUpon>201705132034143_Initial.cs</DependentUpon>
@@ -273,6 +274,7 @@
     <Compile Include="Utils\DateTimeUtils.cs" />
     <Compile Include="ViewModels\Base\BaseWorkOrdersViewModel.cs" />
     <Compile Include="ViewModels\ChecklistItems\AddChecklistItemViewModel.cs" />
+    <Compile Include="ViewModels\TabContainers\TabContainerViewModel.cs" />
     <Compile Include="ViewModels\Tags\AddTagViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseHomeViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseAboutViewModel.cs" />
@@ -286,6 +288,7 @@
     <Compile Include="ViewModels\Checklists\ManageChecklistMasterViewModel.cs" />
     <Compile Include="ViewModels\WorkOrders\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModels\WorkOrders\WorkOrderMasterViewModel.cs" />
+    <Compile Include="Views\Helpers\HtmlHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-material-design.css" />
@@ -424,7 +427,7 @@
     <Content Include="Views\WorkOrders\_WorkOrderTable.cshtml" />
     <Content Include="Views\WorkOrders\_Vehicle.cshtml" />
     <Content Include="Views\Shared\TabContainers\_WorkOrderDetailTabs.cshtml" />
-    <Content Include="Views\WorkOrders\_VehicleEdit.cshtml" />
+    <Content Include="Views\WorkOrders\_Customer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

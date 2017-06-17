@@ -33,14 +33,15 @@
 			@foreach (var workOrder in Model.WorkOrders)
 			{
 				<!-- data-url is used by TableService to take generated URL and navigate to page -->
-				<tr data-url="@Url.Action("_Vehicle", "WorkOrders", new { id = workOrder.Id })">
+				<tr data-url="@Url.Action("_Customer", "WorkOrders", new { id = workOrder.Id })">
 					<td>@workOrder.Id.Substring(3)</td>
 					<td>@workOrder.EmployeeId</td>
 					<td>@workOrder.Customer.Name</td>
 					@if (String.IsNullOrWhiteSpace(workOrder.Vehicle.Color))
 					{
-						<td>X</td>
-					} else
+						<td>?</td>
+					}
+					else
 					{
 						<td class="color-indicator" style="background-color: @workOrder.Vehicle.Color;"></td>
 					}

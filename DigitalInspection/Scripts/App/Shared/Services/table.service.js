@@ -49,7 +49,9 @@ TableService.toggleCheckboxesForColumn = function (index, checkAllCheckbox) {
 TableService.navigateOnRowClick = function () {
 	$(document).ready(function () {
 		// TODO: Rebind this event on table pagination, or page size change
-		$("table tr").click(function (event) {
+		// Integrate select plugin for just navigating on the row click event instead 
+		// https://datatables.net/extensions/select/examples/api/events.html
+		$("table tbody tr").click(function (event) {
 			window.location.href = $(this).attr('data-url');
 		});
 	});

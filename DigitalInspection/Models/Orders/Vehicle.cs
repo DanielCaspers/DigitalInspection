@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 namespace DigitalInspection.Models
 {
 
-	public enum Transmission { Auto, Manual }
-
 	public class Vehicle
 	{
 		[RegularExpression("[A-HJ-NPR-Z0-9]{13}[0-9]{4}", ErrorMessage = "Invalid VIN. Please check the format.")]
@@ -35,7 +33,7 @@ namespace DigitalInspection.Models
 
 		[Required(ErrorMessage = "Transmission is required")]
 		[DisplayName("Transmission *")]
-		public Transmission Transmission { get; set; }
+		public string Transmission { get; set; }
 
 		[Required(ErrorMessage = "Engine is required")]
 		[DisplayName("Engine *")]

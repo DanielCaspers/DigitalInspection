@@ -1,0 +1,118 @@
+﻿@model DigitalInspection.ViewModels.WorkOrderDetailViewModel
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Digital Inspection";
+}
+
+@using DigitalInspection.Views.Helpers;
+
+@section DetailedNavigationInfo {
+
+<div class="container-flex between">
+	<div>
+		@if (Model.CanEdit)
+		{
+			<a href="@Url.Action("_Customer", "WorkOrders")"
+				class="btn btn-default back-button no-margin pull-left">
+				<i class="material-icons">arrow_back</i>
+				Order @Model.WorkOrder.Id.Substring(3)
+			</a>
+		}
+		else
+		{
+			<a href="@Url.Action("Index", "WorkOrders")"
+				class="btn btn-default back-button no-margin pull-left">
+				<i class="material-icons">arrow_back</i>
+				Order @Model.WorkOrder.Id.Substring(3)
+			</a>
+		}
+	</div>
+
+	<div>@Model.WorkOrder.Customer.Name</div>
+
+	<div style="border-bottom: 2px solid @Model.WorkOrder.Vehicle.Color">
+		<span>@Model.WorkOrder.Vehicle.Year</span>
+		<span>@Model.WorkOrder.Vehicle.Make</span>
+		<span>@Model.WorkOrder.Vehicle.Model</span>
+	</div>
+</div>
+
+
+
+}
+
+@section TabContainer {
+	@{ Html.RenderPartial("TabContainers/_WorkOrderDetailTabs", Model.TabViewModel);}
+}
+
+@section Toolbar{
+	<div class="container-flex end">
+
+		@if (Model.CanEdit)
+		{
+			<button type="button"
+					class="btn btn-default no-margin"
+					onclick="alert('Feature coming soon')">
+				<i class="material-icons">save</i>
+			</button>
+		}
+		else
+		{
+			<a href="@Url.Action("_Customer", "WorkOrders", new { id = Model.WorkOrder.Id, canEdit = true })"
+			   class="btn btn-default no-margin">
+				<i class="material-icons">edit</i>
+			</a>
+		}
+	</div>
+}
+
+<div class="container-fluid">
+	<div class="container-fluid">
+		<div class="jumbotron">
+			<fieldset>
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Customer.Name, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Customer.Name, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Name)
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Customer.Address.Line1, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.Line1, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.Line1)
+					</div>
+
+					<div class="col-sm-6 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Customer.Address.Line2, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.Line2, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.Line2)
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Customer.Address.City, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.City, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.City)
+					</div>
+
+					<div class="col-sm-3 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Customer.Address.State, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.State, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.State)
+					</div>
+
+					<div class="col-sm-3 form-group">
+						@Html.LabelFor(m => m.WorkOrder.Customer.Address.ZIP, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.ZIP, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.ZIP)
+					</div>
+				</div>
+			</fieldset>
+
+		</div>
+	</div>
+</div>
