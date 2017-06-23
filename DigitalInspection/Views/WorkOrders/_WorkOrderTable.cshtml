@@ -8,10 +8,17 @@
 			targets: 3,
 			orderable: false,
 			searchable: false
-		}]
-	);
+		}],
+		function (e, dataTableInstance, type, indexes) {
+			// console.log('Running onSelect', e, dataTableInstance, type, indexes);
+			if (type === 'row') {
+				var selectedRowElement = dataTableInstance.row(indexes).node();
 
-	TableService.navigateOnRowClick();
+				window.location.href = selectedRowElement.attributes['data-url'].value;
+
+			}
+		}
+	);
 </script>
 
 

@@ -1,0 +1,62 @@
+﻿@model DigitalInspection.ViewModels.WorkOrderInspectionViewModel
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Digital Inspection";
+}
+
+@section TabContainer {
+	@{ Html.RenderPartial("TabContainers/_WorkOrderDetailTabs", Model.TabViewModel);}
+}
+
+@section Toolbar{
+
+	<div class="container-flex between ma-nav-info">
+		<div>
+			<a href="@Url.Action("Index", "WorkOrders")"
+				class="btn btn-default back-button no-margin pull-left">
+				<i class="material-icons">arrow_back</i>
+				Order @Model.WorkOrder.Id.Substring(3)
+			</a>
+
+
+			<span>@Model.WorkOrder.Customer.Name's</span>
+
+			<span>
+				<span>@Model.WorkOrder.Vehicle.Color</span>
+				<span>@Model.WorkOrder.Vehicle.Year</span>
+				<span>@Model.WorkOrder.Vehicle.Make</span>
+				<span>@Model.WorkOrder.Vehicle.Model</span>
+			</span>
+
+		</div>
+	</div>
+}
+
+<div class="container-fluid">
+	<div class="container-flex around" style="flex-wrap: wrap">
+
+		@foreach (var checklist in Model.Checklists)
+		{
+			<div class="panel panel-info ma-card" style="width: 320px;">
+				<div class="panel-heading">
+					<div class="panel-title">
+						<h4>@checklist.Name</h4>
+					</div>
+				</div>
+
+				<a href="#" onclick="alert('Coming soon!')">
+					<div class="img-darkener">
+						<img src="../../../Uploads/Checklists/@checklist.Image.Title"
+							 alt="Image could not be found" />
+					</div>
+				</a>
+
+				<!-- Consider using progress statistics down here -->
+				@*<div class="panel-footer">
+					On-site support and troubleshooting
+				</div>*@
+			</div>
+		}
+
+	</div>
+</div>

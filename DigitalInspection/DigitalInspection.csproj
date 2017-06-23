@@ -286,6 +286,7 @@
     <Compile Include="ViewModels\ChecklistItems\ManageChecklistItemsViewModel.cs" />
     <Compile Include="ViewModels\Tags\ManageTagsViewModel.cs" />
     <Compile Include="ViewModels\Checklists\ManageChecklistMasterViewModel.cs" />
+    <Compile Include="ViewModels\WorkOrders\WorkOrderInspectionViewModel.cs" />
     <Compile Include="ViewModels\WorkOrders\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModels\WorkOrders\WorkOrderMasterViewModel.cs" />
     <Compile Include="Views\Helpers\HtmlHelpers.cs" />
@@ -341,6 +342,7 @@
     <None Include="Properties\PublishProfiles\Stable Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Weekly.pubxml" />
     <None Include="Scripts\Library\JQuery\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\Library\DataTables\dataTables.select.min.js" />
     <Content Include="Scripts\Library\DataTables\jquery.dataTables.min.js" />
     <Content Include="Scripts\Library\JQuery-Ajax\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\Library\JQuery-Ajax\jquery.unobtrusive-ajax.min.js" />
@@ -428,6 +430,7 @@
     <Content Include="Views\WorkOrders\_Vehicle.cshtml" />
     <Content Include="Views\Shared\TabContainers\_WorkOrderDetailTabs.cshtml" />
     <Content Include="Views\WorkOrders\_Customer.cshtml" />
+    <Content Include="Views\WorkOrders\_Inspection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

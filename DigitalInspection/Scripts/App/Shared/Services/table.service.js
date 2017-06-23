@@ -1,6 +1,6 @@
 ﻿const TableService = function () { };
 
-TableService.showTable = function (elementId, pageSizeOptions, columnRules) {
+TableService.showTable = function (elementId, pageSizeOptions, columnRules, onSelect) {
 	$(document).ready(function () {
 		var tableSelector = '#' + elementId;
 		
@@ -14,6 +14,7 @@ TableService.showTable = function (elementId, pageSizeOptions, columnRules) {
 
 		var table = $(tableSelector).DataTable({
 			dom: 't<"container-flex between"lip>',
+			select: !!onSelect,
 			lengthMenu: pageSizeOptions,
 			columnDefs: columnRules,
 			language: {
@@ -24,6 +25,10 @@ TableService.showTable = function (elementId, pageSizeOptions, columnRules) {
 				zeroRecords: ""
 			}
 		});
+
+		if (typeof onSelect === 'function') {
+			table.on('select', onSelect);
+		}
 
 		$(tableSelector + '_searchInput').on('keyup', function () {
 			table.search(this.value).draw();
@@ -46,13 +51,3 @@ TableService.toggleCheckboxesForColumn = function (index, checkAllCheckbox) {
 	$(jqSelector).prop("checked", checkAllCheckbox.checked);
 }
 
-TableService.navigateOnRowClick = function () {
-	$(document).ready(function () {
-		// TODO: Rebind this event on table pagination, or page size change
-		// Integrate select plugin for just navigating on the row click event instead 
-		// https://datatables.net/extensions/select/examples/api/events.html
-		$("table tbody tr").click(function (event) {
-			window.location.href = $(this).attr('data-url');
-		});
-	});
-}

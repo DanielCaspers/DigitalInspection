@@ -5,6 +5,7 @@ using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Threading.Tasks;
 using DigitalInspection.ViewModels.TabContainers;
+using System.Linq;
 
 namespace DigitalInspection.Controllers
 {
@@ -49,6 +50,29 @@ namespace DigitalInspection.Controllers
 				RouteId = id
 			};
 			return await GetWorkOrderViewModel(id, tabVM, canEdit);
+		}
+
+		public async Task<PartialViewResult> _Inspection(string id)
+		{
+			TabContainerViewModel tabVM = new TabContainerViewModel
+			{
+				TabId = "inspectionTab",
+				RouteId = id
+			};
+			var task = Task.Run(async () => {
+				return await WorkOrderService.GetWorkOrder(id);
+			});
+			var checklists = _context.Checklists.OrderBy(c => c.Name).ToList();
+
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			return PartialView(new WorkOrderInspectionViewModel
+			{
+				WorkOrder = task.Result,
+				TabViewModel = tabVM,
+				Checklists = checklists
+			});
 		}
 
 		[HttpPost]

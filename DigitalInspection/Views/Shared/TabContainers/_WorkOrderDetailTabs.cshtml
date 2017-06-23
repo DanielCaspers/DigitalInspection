@@ -13,8 +13,8 @@
 	Vehicle
 </a>
 <a id="inspectionTab"
-	@*href="@Url.Action("_Inspection", "WorkOrders")"*@
-	onclick="alert('Coming soon!')"
+	href="@Url.Action("_Inspection", "WorkOrders", new { id = Model.RouteId })"
+	onclick="TabService.changeTab(event)"
 	class="btn">
 	Inspection
 </a>

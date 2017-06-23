@@ -3,75 +3,10 @@
 	ViewBag.Title = "Digital Inspection";
 }
 
-@*@if (Model == null)
-{
-	<div class="bg-error">Model was null, looks like the database needs stuff.</div>
-}
-else
-{
-	<table class="table table-hover">
-		<tr>
-			<th>ID</th>
-			<th>Name</th>
-			<th></th>
-		</tr>
-		@foreach (var checklist in Model)
-		{
-			<tr>
-				<td>@checklist.Id</td>
-				<td>@checklist.Name</td>
-				<td>
-					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#confirmDelete">
-						<i class="material-icons">delete</i>
-					</button>
-				</td>
-			</tr>
-		}
-	</table>
-}*@
-
-<!-- Checklist cards-->
-<div style="margin-top:40px;">
-	<a href="javascript:void(0)">
-		<div class="col-md-4">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Mechanics</h3>
-				</div>
-				<div class="panel-body">
-					Typical service level
-				</div>
-			</div>
-		</div>
-	</a>
-
-	<div class="col-md-4">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">X-lube</h3>
-			</div>
-			<div class="panel-body">
-				Tires, interior, fluids and lights
-			</div>
-		</div>
-	</div>
-
-	<div class="col-md-4">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Pre-purchase inspection</h3>
-			</div>
-			<div class="panel-body">
-				The "everything" option
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<!-- Begin throwaway code-->
 <div class="container">
-	Welcome to the toast playground. Check out what we can return with AJAX now. 
+
+	<!-- Begin throwaway code-->
+	Welcome to the toast playground. Check out what we can return with AJAX now.
 
 	@Html.Partial("Toasts/_Toast", new ToastViewModel
 	{
@@ -80,15 +15,6 @@ else
 		Type = ToastType.Success,
 		Action = ToastActionType.Close
 	})
-
-	@Html.Partial("Toasts/_Toast", new ToastViewModel
-	{
-		Icon = "error",
-		Message = "An unknown error occurred!",
-		Type = ToastType.Error,
-		Action = ToastActionType.Refresh
-	})
-
 
 	Developer proposal for handling file lock. X-lube has lock that front counter wants
 	@Html.Partial("Toasts/_Toast", new ToastViewModel
@@ -123,4 +49,6 @@ else
 		Action = ToastActionType.Close
 	})
 </div>
+
+
 

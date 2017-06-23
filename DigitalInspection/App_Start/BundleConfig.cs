@@ -31,7 +31,8 @@ namespace DigitalInspection
 					  LIB_DIR_PREFIX + "Bootstrap/respond.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/data-tables").Include(
-						LIB_DIR_PREFIX + "DataTables/jquery.dataTables.min.js"));
+						LIB_DIR_PREFIX + "DataTables/jquery.dataTables.min.js",
+						LIB_DIR_PREFIX + "DataTables/dataTables.select.min.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/material").Include(
 						LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
