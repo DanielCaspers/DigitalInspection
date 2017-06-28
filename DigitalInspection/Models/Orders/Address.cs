@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using DigitalInspection.Utils;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DigitalInspection.Models
@@ -24,5 +25,16 @@ namespace DigitalInspection.Models
 		[Required(ErrorMessage = "ZIP is required")]
 		[DisplayName("ZIP *")]
 		public string ZIP { get; set; }
+
+		public Address() { }
+
+		public Address(string line1, string line2, string city, string state, string zip)
+		{
+			Line1 = line1?.ToTitleCase();
+			Line2 = line2?.ToTitleCase();
+			City = city?.ToTitleCase();
+			State = state;
+			ZIP = zip;
+		}
 	}
 }

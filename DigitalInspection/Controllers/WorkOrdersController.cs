@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Web.Mvc;
 using DigitalInspection.Models;
+using DigitalInspection.Models.Web;
 using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Threading.Tasks;
 using DigitalInspection.ViewModels.TabContainers;
 using System.Linq;
+using System.Net;
 
 namespace DigitalInspection.Controllers
 {
@@ -69,7 +71,7 @@ namespace DigitalInspection.Controllers
 
 			return PartialView(new WorkOrderInspectionViewModel
 			{
-				WorkOrder = task.Result,
+				WorkOrder = task.Result.WorkOrder,
 				TabViewModel = tabVM,
 				Checklists = checklists
 			});
@@ -81,10 +83,17 @@ namespace DigitalInspection.Controllers
 			var task = Task.Run(async () => {
 				return await WorkOrderService.SaveWorkOrder(vm.WorkOrder);
 			});
-			// Request save with lock
-						// If successful, redirect to _vehicle
-			return RedirectToAction("_Vehicle", new { id = id });
-			// if unsuccessful, return error toast with refresh setting
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			if (task.Result.IsSuccessStatusCode)
+			{
+				return RedirectToAction("_Vehicle", new { id = id });
+			}
+			else
+			{
+				return DisplayErrorToast(task.Result);
+			}
 		}
 
 		private async Task<WorkOrderMasterViewModel> GetWorkOrdersViewModel()
@@ -104,17 +113,39 @@ namespace DigitalInspection.Controllers
 		private async Task<PartialViewResult> GetWorkOrderViewModel(string id, TabContainerViewModel tabVM, bool canEdit = false)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(id);
+				return await WorkOrderService.GetWorkOrder(id, canEdit);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
 
-			return PartialView(new WorkOrderDetailViewModel
+			if (task.Result.IsSuccessStatusCode)
 			{
-				WorkOrder = task.Result,
-				CanEdit = canEdit,
-				TabViewModel = tabVM
-			});
+				return PartialView(new WorkOrderDetailViewModel
+				{
+					WorkOrder = task.Result.WorkOrder,
+					CanEdit = canEdit,
+					TabViewModel = tabVM
+				});
+			}
+			else
+			{
+				return DisplayErrorToast(task.Result);
+			}
+		}
+
+		private PartialViewResult DisplayErrorToast(WorkOrderResponse response)
+		{
+			switch (response.HTTPCode)
+			{
+				case HttpStatusCode.NotFound:
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource, ToastActionType.NavigateBack));
+				case (HttpStatusCode)423:
+					return PartialView("Toasts/_Toast", ToastService.FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh));
+				case (HttpStatusCode)428:
+					return PartialView("Toasts/_Toast", ToastService.FileLockRequired());
+				default:
+					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage));
+			}
 		}
 	}
 }

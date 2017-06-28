@@ -1,8 +1,7 @@
 ﻿using DigitalInspection.Models.DTOs;
+using DigitalInspection.Models.Orders;
 using DigitalInspection.Utils;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace DigitalInspection.Models.Mappers
 {
@@ -12,66 +11,87 @@ namespace DigitalInspection.Models.Mappers
 		{
 			WorkOrder order = new WorkOrder();
 
-			order.Id = dto.orderId;
+			order.Id = dto.orderID;
 			order.Date = DateTimeUtils.FromUnixTime(dto.orderDate);
-			//order.Status = (int) orderDto.orderStatus;
+			order.ScheduleDate = DateTimeUtils.FromUnixTime(dto.schedDate);
+			order.CompletionDate = DateTimeUtils.FromUnixTime(dto.completionDate);
+			order.EmployeeId = dto.techNum;
+			order.WorkDescription = dto.workDesc;
 
-			order.Customer = new Customer();
-			order.Customer.Id = dto.clientId;
-			order.Customer.Name = dto.clientName.ToTitleCase();
+			order.Status = new WorkOrderStatus(
+				dto.orderStatus.statusCode,
+				dto.orderStatus.statusDesc,
+				dto.orderStatus.statusTimestamp,
+				dto.orderStatus.statusMisc);
 
-			order.Customer.Address = new Address();
-			order.Customer.Address.Line1 = dto.clientAddr.ToTitleCase();
-			order.Customer.Address.Line2 = dto.clientAddr2.ToTitleCase();
-			order.Customer.Address.City = dto.clientCity.ToTitleCase();
-			order.Customer.Address.State = dto.clientState;
-			order.Customer.Address.ZIP = dto.clientZip;
+			Address clientAddress = new Address(
+				dto.clientAddr,
+				dto.clientAddr2,
+				dto.clientCity,
+				dto.clientState,
+				dto.clientZip);
 
-			order.Customer.PhoneNumbers = new List<PhoneNumber>();
+			IList<PhoneNumber> clientPhoneNumbers = new List<PhoneNumber>();
+
 			foreach (ClientPhoneDTO clientPhoneDto in dto.clientPhone)
 			{
-				order.Customer.PhoneNumbers.Add(mapToPhoneNumber(clientPhoneDto));
+				if (clientPhoneDto == null)
+				{
+					clientPhoneNumbers.Add(null);
+				}
+				else
+				{
+					clientPhoneNumbers.Add(new PhoneNumber(
+						clientPhoneDto.number,
+						clientPhoneDto.name,
+						clientPhoneDto.type,
+						clientPhoneDto.smsPrefs)
+					);
+				}
 			}
 
-			order.Vehicle = new Vehicle();
-			order.Vehicle.VIN = dto.vehicleId;
-			order.Vehicle.Year = dto.vehicleYear;
-			order.Vehicle.Make = dto.vehicleMake.ToTitleCase();
-			order.Vehicle.Model = dto.vehicleModel.ToTitleCase();
-			order.Vehicle.License = dto.vehicleLicense;
-			order.Vehicle.Color = dto.vehicleColor.ToTitleCase();
+			order.Customer = new Customer(
+				dto.clientID,
+				dto.clientName,
+				clientAddress,
+				clientPhoneNumbers);
 
-			if (Color.FromName(order.Vehicle.Color).IsKnownColor == false)
-			{
-				order.Vehicle.Color = null;
-			}
-			order.Vehicle.Engine = dto.vehicleEngine;
-			order.Vehicle.Transmission = dto.vehicleTransmission.ToTitleCase();
-			order.Vehicle.Odometer = dto.vehicleOdometer;
+			order.Vehicle = new Vehicle(
+				dto.vehicleID,
+				dto.vehicleYear,
+				dto.vehicleMake,
+				dto.vehicleModel,
+				dto.vehicleLicense,
+				dto.vehicleColor,
+				dto.vehicleEngine,
+				dto.vehicleTransmission,
+				dto.vehicleOdometer);
+
 			return order;
-		}
-
-		public static PhoneNumber mapToPhoneNumber(ClientPhoneDTO dto)
-		{
-			PhoneNumber phoneNumber = new PhoneNumber();
-			phoneNumber.Number = dto.number;
-			phoneNumber.ContactName = dto.name;
-			phoneNumber.Type = dto.type;
-			return phoneNumber;
 		}
 
 		public static WorkOrderDTO mapToWorkOrderDTO(WorkOrder order)
 		{
 			WorkOrderDTO dto = new WorkOrderDTO();
 
-			dto.orderId = order.Id;
+			dto.orderID = order.Id;
 			dto.orderDate = DateTimeUtils.ToUnixTime(order.Date);
+			dto.schedDate = DateTimeUtils.ToUnixTime(order.ScheduleDate);
+			dto.completionDate = DateTimeUtils.ToUnixTime(order.CompletionDate);
+			dto.techNum = order.EmployeeId;
+			dto.workDesc = order.WorkDescription;
 
-			dto.clientId = order.Customer.Id;
+			dto.orderStatus = new WorkOrderStatusDTO(
+				order.Status.Code,
+				order.Status.Description,
+				order.Status.Timestamp,
+				order.Status.Misc);
+
+			dto.clientID = order.Customer.Id;
 			dto.clientName = order.Customer.Name.ToUpper();
 
-			dto.clientAddr = order.Customer.Address.Line1.ToUpper();
-			dto.clientAddr2 = order.Customer.Address.Line2.ToUpper();
+			dto.clientAddr = order.Customer.Address.Line1?.ToUpper();
+			dto.clientAddr2 = order.Customer.Address.Line2?.ToUpper();
 			dto.clientCity = order.Customer.Address.City.ToUpper();
 			dto.clientState = order.Customer.Address.State;
 			dto.clientZip = order.Customer.Address.ZIP;
@@ -79,28 +99,31 @@ namespace DigitalInspection.Models.Mappers
 			dto.clientPhone = new ClientPhoneDTO[order.Customer.PhoneNumbers.Count];
 			for(int i = 0; i < order.Customer.PhoneNumbers.Count; i++)
 			{
-				dto.clientPhone[i] = mapToPhoneNumberDTO(order.Customer.PhoneNumbers[i]);
+				if (order.Customer.PhoneNumbers[i] == null)
+				{
+					dto.clientPhone[i] = null;
+				}
+				else
+				{
+					dto.clientPhone[i] = new ClientPhoneDTO(
+						order.Customer.PhoneNumbers[i].Number,
+						order.Customer.PhoneNumbers[i].ContactName,
+						order.Customer.PhoneNumbers[i].Type,
+						order.Customer.PhoneNumbers[i].SMSPreferences
+					);
+				}
 			}
 
-			dto.vehicleId = order.Vehicle.VIN;
+			dto.vehicleID = order.Vehicle.VIN;
 			dto.vehicleYear = order.Vehicle.Year;
-			dto.vehicleMake = order.Vehicle.Make.ToUpper();
-			dto.vehicleModel = order.Vehicle.Model.ToUpper();
-			dto.vehicleLicense = order.Vehicle.License;
-			dto.vehicleColor = order.Vehicle.Color.ToUpper();
+			dto.vehicleMake = order.Vehicle.Make?.ToUpper();
+			dto.vehicleModel = order.Vehicle.Model?.ToUpper();
+			dto.vehicleLicense = order.Vehicle.License?.ToUpper();
+			dto.vehicleColor = order.Vehicle.Color?.ToUpper();
 			dto.vehicleEngine = order.Vehicle.Engine;
-			dto.vehicleTransmission = order.Vehicle.Transmission.ToUpper();
+			dto.vehicleTransmission = order.Vehicle.Transmission?.ToUpper();
 			dto.vehicleOdometer = order.Vehicle.Odometer;
 
-			return dto;
-		}
-
-		public static ClientPhoneDTO mapToPhoneNumberDTO(PhoneNumber phoneNumber)
-		{
-			ClientPhoneDTO dto = new ClientPhoneDTO();
-			dto.number = phoneNumber.Number;
-			dto.name = phoneNumber.ContactName;
-			dto.type = phoneNumber.Type;
 			return dto;
 		}
 	}

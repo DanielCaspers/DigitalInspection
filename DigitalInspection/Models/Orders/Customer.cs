@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DigitalInspection.Utils;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,5 +19,15 @@ namespace DigitalInspection.Models
 
 		[Required(ErrorMessage = "One or more phone numbers are required")]
 		public IList<PhoneNumber> PhoneNumbers { get; set; }
+
+		public Customer() { }
+
+		public Customer(string id, string name, Address address, IList<PhoneNumber> phoneNumbers)
+		{
+			Id = id;
+			Name = name?.ToTitleCase();
+			Address = address;
+			PhoneNumbers = phoneNumbers;
+		}
 	}
 }

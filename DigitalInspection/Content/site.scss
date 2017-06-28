@@ -54,6 +54,19 @@ a, button {
 	}
 }
 
+@mixin circle($radius) {
+	width: $radius * 2;
+	height: $radius * 2;
+	border-radius: $radius;
+}
+
+.car-color-indicator{
+	@include circle(10px);
+	display: inline-block;
+	margin-bottom:-5px;
+	margin-left:5px;
+}
+
 // Form classes
 .field-validation-error, .field-validation-valid{
 	color:#f44336 ;

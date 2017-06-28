@@ -11,16 +11,26 @@ namespace DigitalInspection.Utils
 	 */
 	public class DateTimeUtils
 	{ 
-		public static DateTime FromUnixTime(long unixTimeInSeconds)
+		public static DateTime? FromUnixTime(long? unixTimeInSeconds)
 		{
-			DateTimeOffset dt = DateTimeOffset.FromUnixTimeSeconds(unixTimeInSeconds);
-			return dt.LocalDateTime;
+			if (unixTimeInSeconds.HasValue)
+			{
+				DateTimeOffset dt = DateTimeOffset.FromUnixTimeSeconds(unixTimeInSeconds.Value);
+				return dt.LocalDateTime;
+			}
+
+			return null;
 		}
 
-		public static long ToUnixTime(DateTime dateTime)
+		public static long? ToUnixTime(DateTime? dateTime)
 		{
-			DateTimeOffset dt = dateTime;
-			return dt.ToUnixTimeSeconds();
+			if (dateTime.HasValue)
+			{
+				DateTimeOffset dt = dateTime.Value;
+				return dt.ToUnixTimeSeconds();
+			}
+
+			return null;
 		}
 	}
 }

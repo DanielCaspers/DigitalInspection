@@ -4,6 +4,8 @@
 	ViewBag.Title = "Digital Inspection";
 }
 
+@using DigitalInspection.Views.Helpers;
+
 @section TabContainer {
 	@{ Html.RenderPartial("TabContainers/_WorkOrderDetailTabs", Model.TabViewModel);}
 }
@@ -18,16 +20,19 @@
 				Order @Model.WorkOrder.Id.Substring(3)
 			</a>
 
+			<span>@HtmlHelpers.Pluralizer(Model.WorkOrder.Customer.Name)</span>
+			<span>@Model.WorkOrder.Vehicle.Year</span>
+			<span>@Model.WorkOrder.Vehicle.Make</span>
+			<span>@Model.WorkOrder.Vehicle.Model</span>
 
-			<span>@Model.WorkOrder.Customer.Name's</span>
-
-			<span>
-				<span>@Model.WorkOrder.Vehicle.Color</span>
-				<span>@Model.WorkOrder.Vehicle.Year</span>
-				<span>@Model.WorkOrder.Vehicle.Make</span>
-				<span>@Model.WorkOrder.Vehicle.Model</span>
-			</span>
-
+			@if (String.IsNullOrWhiteSpace(Model.WorkOrder.Vehicle.Color))
+			{
+				<span class="car-color-indicator">?</span>
+			}
+			else
+			{
+				<span class="car-color-indicator" style="background-color: @Model.WorkOrder.Vehicle.Color;"></span>
+			}
 		</div>
 	</div>
 }

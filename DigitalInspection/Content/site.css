@@ -34,6 +34,14 @@ a.no-margin, button.no-margin {
 a.no-transform, button.no-transform {
   text-transform: none; }
 
+.car-color-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-bottom: -5px;
+  margin-left: 5px; }
+
 .field-validation-error, .field-validation-valid {
   color: #f44336; }
 

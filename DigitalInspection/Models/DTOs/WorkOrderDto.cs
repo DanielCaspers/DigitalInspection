@@ -1,16 +1,19 @@
 ﻿
+using System.Collections.Generic;
+
 namespace DigitalInspection.Models.DTOs
 {
 	public class WorkOrderDTO
 	{
 		public WorkOrderDTO() { }
 
-		public string orderId { get; set; }
-		public int orderStatus { get; set; }
-		public long orderDate { get; set; }
-		public string schedDate { get; set; }
-		public string completionDate { get; set; }
-		public string clientId { get; set; }
+		public string orderID { get; set; }
+		public WorkOrderStatusDTO orderStatus { get; set; }
+		public long? orderDate { get; set; }
+		public long? schedDate { get; set; }
+		public long? completionDate { get; set; }
+		public int techNum { get; set; }
+		public string clientID { get; set; }
 		public string clientName { get; set; }
 		public string clientAddr { get; set; }
 		public string clientAddr2 { get; set; }
@@ -18,7 +21,7 @@ namespace DigitalInspection.Models.DTOs
 		public string clientState { get; set; }
 		public string clientZip { get; set; }
 		public ClientPhoneDTO[] clientPhone { get; set; }
-		public string vehicleId { get; set; }
+		public string vehicleID { get; set; }
 		public int? vehicleYear { get; set; }
 		public string vehicleMake { get; set; }
 		public string vehicleModel { get; set; }
@@ -27,7 +30,7 @@ namespace DigitalInspection.Models.DTOs
 		public string vehicleEngine { get; set; }
 		public string vehicleTransmission { get; set; }
 		public int? vehicleOdometer { get; set; }
-		//public string[] workDesc { get; set; }
-		// work desc
+		//public IList<string> workDesc { get; set; }
+		public string[] workDesc { get; set; } = new string[0];
 	}
 }

@@ -13,14 +13,22 @@ namespace DigitalInspection.Models
 		[DisplayName("Contact Name *")]
 		public string ContactName { get; set; }
 
-		// TODO: Change to enum when defined with client
 		[Required(ErrorMessage = "Type is required")]
 		[DisplayName("Type *")]
 		public string Type { get; set; }
 
-		// TODO: Determine how in the world prefs work
-		//[Required(ErrorMessage = "Preferences is required")]
-		//[DisplayName("Preferences *")]
-		//public string Preferences { get; set; }
+		[Required(ErrorMessage = "SMS Preferences are required")]
+		[DisplayName("SMS Preferences *")]
+		public string SMSPreferences { get; set; }
+
+		public PhoneNumber() { }
+
+		public PhoneNumber(string number, string contact, string type, string smsPreferences)
+		{
+			Number = number;
+			ContactName = contact;
+			Type = type;
+			SMSPreferences = smsPreferences;
+		}
 	}
 }

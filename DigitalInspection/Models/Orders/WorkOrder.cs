@@ -1,20 +1,10 @@
-﻿using System;
+﻿using DigitalInspection.Models.Orders;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace DigitalInspection.Models
 {
-	// TODO: Make stakeholders decide possible statuses
-	public enum WorkOrderStatus {
-		[Display(Name = "Not Started")]
-		NotStarted,
-
-		[Display(Name = "In Progress")]
-		InProgress,
-
-		[Display(Name = "Complete")]
-		Complete
-	}
 
 	public class WorkOrder
 	{
@@ -34,10 +24,16 @@ namespace DigitalInspection.Models
 		[Required]
 		public Vehicle Vehicle { get; set; }
 
-		// TODO: Required?
+		[Required]
 		public WorkOrderStatus Status { get; set; }
 
-		// TODO: Add date(s)
-		public DateTime Date { get; set; }
+		public DateTime? Date { get; set; }
+
+		public DateTime? ScheduleDate { get; set; }
+
+		public DateTime? CompletionDate { get; set; }
+
+		//public IList<string> WorkDescription { get; set; }
+		public string[] WorkDescription { get; set; } = new string[0];
 	}
 }

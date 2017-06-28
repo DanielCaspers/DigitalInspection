@@ -32,41 +32,69 @@
 				</a>
 			}
 
+			<span>@HtmlHelpers.Pluralizer(Model.WorkOrder.Customer.Name)</span>
+			<span>@Model.WorkOrder.Vehicle.Year</span>
+			<span>@Model.WorkOrder.Vehicle.Make</span>
+			<span>@Model.WorkOrder.Vehicle.Model</span>
 
-			<span>@Model.WorkOrder.Customer.Name's</span>
+			@if (String.IsNullOrWhiteSpace(Model.WorkOrder.Vehicle.Color))
+			{
+				<span class="car-color-indicator">?</span>
+			}
+			else
+			{
+				<span class="car-color-indicator" style="background-color: @Model.WorkOrder.Vehicle.Color;"></span>
+			}
 
-			<span>
-				<span>@Model.WorkOrder.Vehicle.Color</span>
-				<span>@Model.WorkOrder.Vehicle.Year</span>
-				<span>@Model.WorkOrder.Vehicle.Make</span>
-				<span>@Model.WorkOrder.Vehicle.Model</span>
-			</span>
 
 		</div>
 
-		<div >
+		<div>
 			@if (Model.CanEdit)
 			{
 				<button type="button"
 						class="btn btn-default no-margin"
-						onclick="alert('Feature coming soon')">
+						onclick="$('#editVehicleForm').submit()">
 					<i class="material-icons">save</i>
 				</button>
 			}
 			else
 			{
-				<a href="@Url.Action("_Vehicle", "WorkOrders", new { id = Model.WorkOrder.Id, canEdit = true })"
-				   class="btn btn-default no-margin">
-					<i class="material-icons">edit</i>
-				</a>
+				@Ajax.RawActionLink(
+					"<i class=\"material-icons\">edit</i>",
+					"_Vehicle",
+					"WorkOrders",
+					new { id = Model.WorkOrder.Id, canEdit = true },
+					new AjaxOptions
+					{
+						UpdateTargetId = "ajaxContentWrapper",
+						InsertionMode = InsertionMode.ReplaceWith,
+						HttpMethod = "GET"
+					},
+					new { @class = "btn btn-default no-margin" })
 			}
 		</div>
 	</div>
 }
 
-<div class="container-fluid">
-	<div class="container-fluid">
-		<div class="jumbotron">
+<div class="container-fluid" id="editVehiclePage">
+	<div class="jumbotron">
+		@using (Ajax.BeginForm(
+					"SaveVehicle",
+					"WorkOrders",
+					new { id = Model.WorkOrder.Id },
+					new AjaxOptions
+					{
+						InsertionMode = InsertionMode.Replace,
+						UpdateTargetId = "ajaxContentWrapper"
+					}, new
+					{
+						id = "editVehicleForm",
+						autocomplete = "off"
+					}
+				)
+		)
+		{
 			<fieldset>
 				<div class="row">
 					<div class="col-sm-4 form-group">
@@ -128,7 +156,32 @@
 					</div>
 				</div>
 
+				<!-- Hidden fields for model binding -->
+				@Html.HiddenFor(m => m.WorkOrder.Id)
+				@Html.HiddenFor(m => m.WorkOrder.Date)
+				@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
+				@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
+
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line1)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line2)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.State)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.ZIP)
+
+				<!-- https://stackoverflow.com/a/26093533/2831961 -->
+				@for (int i = 0; i < Model.WorkOrder.Customer.PhoneNumbers.Count; i++)
+				{
+					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].ContactName)
+					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].Number)
+					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].Type)
+				}
 			</fieldset>
-		</div>
+		}
 	</div>
 </div>

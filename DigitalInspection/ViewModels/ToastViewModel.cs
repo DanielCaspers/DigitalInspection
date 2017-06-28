@@ -1,7 +1,7 @@
 ﻿namespace DigitalInspection.ViewModels
 {
 	public enum ToastType { Success, Warn, Error, Info }
-	public enum ToastActionType { Close, Unlock, Refresh, NavigateBack }
+	public enum ToastActionType { Close, Unlock, Refresh, NavigateBack, NavigateBackAjax }
 
 	public class ToastViewModel
 	{

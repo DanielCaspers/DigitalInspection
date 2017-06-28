@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using DigitalInspection.Utils;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 
 namespace DigitalInspection.Models
 {
@@ -42,5 +44,26 @@ namespace DigitalInspection.Models
 		[Required(ErrorMessage = "Mileage is required")]
 		[DisplayName("Mileage *")]
 		public int? Odometer { get; set; }
+
+		public Vehicle() { }
+
+		public Vehicle(string vin, int? year, string make, string model, string license, string color, string transmission, string engine, int? odometer)
+		{
+			VIN = vin;
+			Year = year;
+			Make = make?.ToTitleCase();
+			Model = model?.ToTitleCase();
+			License = license;
+
+			Color = color?.ToTitleCase();
+			if (System.Drawing.Color.FromName(Color).IsKnownColor == false)
+			{
+				Color = null;
+			}
+
+			Engine = engine;
+			Transmission = transmission?.ToTitleCase();
+			Odometer = odometer;
+		}
 	}
 }

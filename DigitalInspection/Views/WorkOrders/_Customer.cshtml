@@ -6,67 +6,105 @@
 
 @using DigitalInspection.Views.Helpers;
 
-@section DetailedNavigationInfo {
+@*@section DetailedNavigationInfo {
+	<div class="container-flex between">
+		<div>
+			@if (Model.CanEdit)
+			{
+				<a href="@Url.Action("_Customer", "WorkOrders")"
+					class="btn btn-default back-button no-margin pull-left">
+					<i class="material-icons">arrow_back</i>
+					Order @Model.WorkOrder.Id.Substring(3)
+				</a>
+			}
+			else
+			{
+				<a href="@Url.Action("Index", "WorkOrders")"
+					class="btn btn-default back-button no-margin pull-left">
+					<i class="material-icons">arrow_back</i>
+					Order @Model.WorkOrder.Id.Substring(3)
+				</a>
+			}
+		</div>
 
-<div class="container-flex between">
-	<div>
-		@if (Model.CanEdit)
-		{
-			<a href="@Url.Action("_Customer", "WorkOrders")"
-				class="btn btn-default back-button no-margin pull-left">
-				<i class="material-icons">arrow_back</i>
-				Order @Model.WorkOrder.Id.Substring(3)
-			</a>
-		}
-		else
-		{
-			<a href="@Url.Action("Index", "WorkOrders")"
-				class="btn btn-default back-button no-margin pull-left">
-				<i class="material-icons">arrow_back</i>
-				Order @Model.WorkOrder.Id.Substring(3)
-			</a>
-		}
+		<div>@Model.WorkOrder.Customer.Name</div>
+
+		<div style="border-bottom: 2px solid @Model.WorkOrder.Vehicle.Color">
+			<span>@Model.WorkOrder.Vehicle.Year</span>
+			<span>@Model.WorkOrder.Vehicle.Make</span>
+			<span>@Model.WorkOrder.Vehicle.Model</span>
+		</div>
 	</div>
-
-	<div>@Model.WorkOrder.Customer.Name</div>
-
-	<div style="border-bottom: 2px solid @Model.WorkOrder.Vehicle.Color">
-		<span>@Model.WorkOrder.Vehicle.Year</span>
-		<span>@Model.WorkOrder.Vehicle.Make</span>
-		<span>@Model.WorkOrder.Vehicle.Model</span>
-	</div>
-</div>
-
-
-
-}
+}*@
 
 @section TabContainer {
 	@{ Html.RenderPartial("TabContainers/_WorkOrderDetailTabs", Model.TabViewModel);}
 }
 
 @section Toolbar{
-	<div class="container-flex end">
+	<div class="container-flex between ma-nav-info">
+		<div>
+			@if (Model.CanEdit)
+			{
+				<a href="@Url.Action("_Customer", "WorkOrders")"
+				   class="btn btn-default back-button no-margin pull-left">
+					<i class="material-icons">arrow_back</i>
+					Order @Model.WorkOrder.Id.Substring(3)
+				</a>
+			}
+			else
+			{
+				<a href="@Url.Action("Index", "WorkOrders")"
+				   class="btn btn-default back-button no-margin pull-left">
+					<i class="material-icons">arrow_back</i>
+					Order @Model.WorkOrder.Id.Substring(3)
+				</a>
+			}
 
-		@if (Model.CanEdit)
-		{
-			<button type="button"
-					class="btn btn-default no-margin"
-					onclick="alert('Feature coming soon')">
-				<i class="material-icons">save</i>
-			</button>
-		}
-		else
-		{
-			<a href="@Url.Action("_Customer", "WorkOrders", new { id = Model.WorkOrder.Id, canEdit = true })"
-			   class="btn btn-default no-margin">
-				<i class="material-icons">edit</i>
-			</a>
-		}
+			<span>@HtmlHelpers.Pluralizer(Model.WorkOrder.Customer.Name)</span>
+			<span>@Model.WorkOrder.Vehicle.Year</span>
+			<span>@Model.WorkOrder.Vehicle.Make</span>
+			<span>@Model.WorkOrder.Vehicle.Model</span>
+
+			@if (String.IsNullOrWhiteSpace(Model.WorkOrder.Vehicle.Color))
+			{
+				<span class="car-color-indicator">?</span>
+			}
+			else
+			{
+				<span class="car-color-indicator" style="background-color: @Model.WorkOrder.Vehicle.Color;"></span>
+			}
+		</div>
+
+		<div>
+			@if (Model.CanEdit)
+			{
+				<button type="button"
+						class="btn btn-default no-margin"
+						onclick="alert('Feature coming soon')">
+					<i class="material-icons">save</i>
+				</button>
+			}
+			else
+			{
+				@Ajax.RawActionLink(
+					"<i class=\"material-icons\">edit</i>",
+					"_Customer",
+					"WorkOrders",
+					new { id = Model.WorkOrder.Id, canEdit = true },
+					new AjaxOptions
+					{
+						UpdateTargetId = "ajaxContentWrapper",
+						InsertionMode = InsertionMode.ReplaceWith,
+						HttpMethod = "GET"
+					},
+					new { @class = "btn btn-default no-margin" })
+			}
+		</div>
 	</div>
+
 }
 
-<div class="container-fluid">
 	<div class="container-fluid">
 		<div class="jumbotron">
 			<fieldset>
@@ -115,4 +153,3 @@
 
 		</div>
 	</div>
-</div>
