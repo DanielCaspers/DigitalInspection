@@ -161,10 +161,13 @@
 				@Html.HiddenFor(m => m.WorkOrder.Date)
 				@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
 				@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
+				@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
+				<!-- TODO may require binding like phone numbers-->
+				@Html.HiddenFor(m => m.WorkOrder.WorkDescription)
 
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Name)

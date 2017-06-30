@@ -78,6 +78,25 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		public async Task<ActionResult> SaveCustomer(string id, WorkOrderDetailViewModel vm)
+		{
+			var task = Task.Run(async () => {
+				return await WorkOrderService.SaveWorkOrder(vm.WorkOrder);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			if (task.Result.IsSuccessStatusCode)
+			{
+				return RedirectToAction("_Customer", new { id = id });
+			}
+			else
+			{
+				return DisplayErrorToast(task.Result);
+			}
+		}
+
+		[HttpPost]
 		public async Task<ActionResult> SaveVehicle(string id, WorkOrderDetailViewModel vm)
 		{
 			var task = Task.Run(async () => {

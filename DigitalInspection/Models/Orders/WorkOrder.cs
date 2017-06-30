@@ -19,12 +19,6 @@ namespace DigitalInspection.Models
 		public int EmployeeId { get; set; }
 
 		[Required]
-		public Customer Customer { get; set; }
-
-		[Required]
-		public Vehicle Vehicle { get; set; }
-
-		[Required]
 		public WorkOrderStatus Status { get; set; }
 
 		public DateTime? Date { get; set; }
@@ -32,6 +26,12 @@ namespace DigitalInspection.Models
 		public DateTime? ScheduleDate { get; set; }
 
 		public DateTime? CompletionDate { get; set; }
+
+		[Required]
+		public Customer Customer { get; set; }
+
+		[Required]
+		public Vehicle Vehicle { get; set; }
 
 		//public IList<string> WorkDescription { get; set; }
 		public string[] WorkDescription { get; set; } = new string[0];

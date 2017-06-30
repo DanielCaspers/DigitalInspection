@@ -81,7 +81,7 @@
 			{
 				<button type="button"
 						class="btn btn-default no-margin"
-						onclick="alert('Feature coming soon')">
+						onclick="$('#editCustomerForm').submit()">
 					<i class="material-icons">save</i>
 				</button>
 			}
@@ -105,8 +105,24 @@
 
 }
 
-	<div class="container-fluid">
-		<div class="jumbotron">
+<div class="container-fluid">
+	<div class="jumbotron">
+		@using (Ajax.BeginForm(
+					"SaveCustomer",
+					"WorkOrders",
+					new { id = Model.WorkOrder.Id },
+					new AjaxOptions
+					{
+						InsertionMode = InsertionMode.Replace,
+						UpdateTargetId = "ajaxContentWrapper"
+					}, new
+					{
+						id = "editCustomerForm",
+						autocomplete = "off"
+					}
+				)
+		)
+		{
 			<fieldset>
 				<div class="row">
 					<div class="col-sm-6 form-group">
@@ -149,7 +165,40 @@
 						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.ZIP)
 					</div>
 				</div>
-			</fieldset>
 
-		</div>
+				<!-- Hidden fields for model binding -->
+				@Html.HiddenFor(m => m.WorkOrder.Id)
+				@Html.HiddenFor(m => m.WorkOrder.Date)
+				@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
+				@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
+				@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
+				<!-- TODO may require binding like phone numbers-->
+				@Html.HiddenFor(m => m.WorkOrder.WorkDescription)
+
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
+				<!-- https://stackoverflow.com/a/26093533/2831961 -->
+				@for (int i = 0; i < Model.WorkOrder.Customer.PhoneNumbers.Count; i++)
+				{
+					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].ContactName)
+					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].Number)
+					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].Type)
+				}
+
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Year)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Make)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Model)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.License)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Odometer)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Color)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Engine)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Transmission)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.VIN)
+
+			</fieldset>
+		}
 	</div>
+</div>
