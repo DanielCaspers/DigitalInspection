@@ -45,6 +45,10 @@ a.no-transform, button.no-transform {
 .field-validation-error, .field-validation-valid {
   color: #f44336; }
 
+.form-control[disabled],
+.form-group .form-control[disabled] {
+  color: rgba(0, 0, 0, 0.4) !important; }
+
 .ma-dropdown-tray {
   width: 150px; }
   .ma-dropdown-tray li {

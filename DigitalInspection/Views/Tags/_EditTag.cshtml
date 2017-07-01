@@ -37,8 +37,7 @@
 			<i class="material-icons">arrow_back</i>
 			@Model.Tag.Name
 		</a>
-		<!-- Requires use of jQuery for submission because this is defined outside the form -->
-		<button onclick="$('#editTagForm').submit()"
+		<button form="editTagForm"
 				class="btn btn-default no-margin pull-right">
 			<i class="material-icons">save</i>
 		</button>

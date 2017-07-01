@@ -12,36 +12,27 @@ namespace DigitalInspection
 			const string LIB_DIR_PREFIX = "~/Scripts/Library/";
 			const string APP_DIR_PREFIX = "~/Scripts/App/Shared/Services";
 
-			bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-						LIB_DIR_PREFIX + "JQuery/jquery-{version}.js"));
+			bundles.Add(
+				new ScriptBundle("~/bundles/Library").Include(
+					LIB_DIR_PREFIX + "JQuery/jquery-{version}.js",
+					LIB_DIR_PREFIX + "JQuery-Ajax/jquery.unobtrusive-ajax.js",
+					LIB_DIR_PREFIX + "JQuery-Validate/jquery.validate*",
+					// Use the development version of Modernizr to develop with and learn from. Then, when you're
+					// ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
+					LIB_DIR_PREFIX + "Modernizr/modernizr-*",
+					LIB_DIR_PREFIX + "Bootstrap/bootstrap.js",
+					LIB_DIR_PREFIX + "Bootstrap/respond.js",
+					LIB_DIR_PREFIX + "DataTables/jquery.dataTables.min.js",
+					LIB_DIR_PREFIX + "DataTables/dataTables.select.min.js",
+					LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
+					LIB_DIR_PREFIX + "Bootstrap-Material/ripples.js",
+					LIB_DIR_PREFIX + "Bootstrap-Multiselect/bootstrap-multiselect.js"
+				)
+			);
 
-			bundles.Add(new ScriptBundle("~/bundles/jquery-ajax").Include(
-						LIB_DIR_PREFIX + "JQuery-Ajax/jquery.unobtrusive-ajax.js"));
 
-			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-						LIB_DIR_PREFIX + "JQuery-Validate/jquery.validate*"));
 
-			// Use the development version of Modernizr to develop with and learn from. Then, when you're
-			// ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-			bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-						LIB_DIR_PREFIX + "Modernizr/modernizr-*"));
-
-			bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-					  LIB_DIR_PREFIX + "Bootstrap/bootstrap.js",
-					  LIB_DIR_PREFIX + "Bootstrap/respond.js"));
-
-			bundles.Add(new ScriptBundle("~/bundles/data-tables").Include(
-						LIB_DIR_PREFIX + "DataTables/jquery.dataTables.min.js",
-						LIB_DIR_PREFIX + "DataTables/dataTables.select.min.js"));
-
-			bundles.Add(new ScriptBundle("~/bundles/material").Include(
-						LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
-						LIB_DIR_PREFIX + "Bootstrap-Material/ripples.js"));
-
-			bundles.Add(new ScriptBundle("~/bundles/multiselect").Include(
-						LIB_DIR_PREFIX + "Bootstrap-Multiselect/bootstrap-multiselect.js"));
-
-			bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory(
+			bundles.Add(new ScriptBundle("~/bundles/App").IncludeDirectory(
 						APP_DIR_PREFIX, "*.service.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(

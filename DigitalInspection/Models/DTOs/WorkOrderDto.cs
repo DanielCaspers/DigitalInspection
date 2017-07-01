@@ -30,7 +30,6 @@ namespace DigitalInspection.Models.DTOs
 		public string vehicleEngine { get; set; }
 		public string vehicleTransmission { get; set; }
 		public int? vehicleOdometer { get; set; }
-		//public IList<string> workDesc { get; set; }
-		public string[] workDesc { get; set; } = new string[0];
+		public string[] workDesc { get; set; }
 	}
 }

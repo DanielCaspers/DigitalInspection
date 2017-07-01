@@ -87,6 +87,13 @@
 			}
 			else
 			{
+				/*
+				 * The issue with duplicate scripts loading is because,
+				 * on AJAX request, we need to rerender the entire page, 
+				 * but when in AJAX mode, we end up rerunning the Layout
+				 * configuration at the top of this file.
+				 * 
+				 */
 				@Ajax.RawActionLink(
 					"<i class=\"material-icons\">edit</i>",
 					"_Customer",

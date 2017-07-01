@@ -1,5 +1,6 @@
 ﻿using DigitalInspection.Models.Orders;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -33,7 +34,6 @@ namespace DigitalInspection.Models
 		[Required]
 		public Vehicle Vehicle { get; set; }
 
-		//public IList<string> WorkDescription { get; set; }
-		public string[] WorkDescription { get; set; } = new string[0];
+		public IList<string> WorkDescription { get; set; }
 	}
 }

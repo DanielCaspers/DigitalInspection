@@ -47,7 +47,7 @@ namespace DigitalInspection.Models
 
 		public Vehicle() { }
 
-		public Vehicle(string vin, int? year, string make, string model, string license, string color, string transmission, string engine, int? odometer)
+		public Vehicle(string vin, int? year, string make, string model, string license, string color, string engine, string transmission, int? odometer)
 		{
 			VIN = vin;
 			Year = year;

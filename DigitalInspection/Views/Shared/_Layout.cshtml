@@ -9,18 +9,10 @@
 	<!-- Needs to go first because styles need to be overridden by other CSS files. Needs WWW access for fetching external images -->
 	<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet"> 
 	@Styles.Render("~/Content/css")
-	@Scripts.Render("~/bundles/modernizr")
+	@Scripts.Render("~/bundles/Library")
+	@Scripts.Render("~/bundles/App")
 </head>
 <body>
-	@Scripts.Render("~/bundles/jquery")
-	@Scripts.Render("~/bundles/jquery-ajax")
-	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/bootstrap")
-	@Scripts.Render("~/bundles/data-tables")
-	@Scripts.Render("~/bundles/material")
-	@Scripts.Render("~/bundles/multiselect")
-	@Scripts.Render("~/bundles/app")
-
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid ma-nav-container">
 			<div class="dropdown ma-nav-dropdown">
@@ -106,6 +98,5 @@
 			$.material.init();
 		});
 	</script>
-	@RenderSection("scripts", required: false)
 </body>
 </html>

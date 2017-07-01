@@ -2,6 +2,7 @@
 using DigitalInspection.Models.Orders;
 using DigitalInspection.Utils;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DigitalInspection.Models.Mappers
 {
@@ -31,15 +32,15 @@ namespace DigitalInspection.Models.Mappers
 				dto.clientState,
 				dto.clientZip);
 
-			IList<PhoneNumber> clientPhoneNumbers = new List<PhoneNumber>();
-
-			foreach (ClientPhoneDTO clientPhoneDto in dto.clientPhone)
+			IList<PhoneNumber> clientPhoneNumbers;
+			if (dto.clientPhone == null)
 			{
-				if (clientPhoneDto == null)
-				{
-					clientPhoneNumbers.Add(null);
-				}
-				else
+				clientPhoneNumbers = null;
+			}
+			else
+			{
+				clientPhoneNumbers = new List<PhoneNumber>();
+				foreach (ClientPhoneDTO clientPhoneDto in dto.clientPhone)
 				{
 					clientPhoneNumbers.Add(new PhoneNumber(
 						clientPhoneDto.number,
@@ -79,7 +80,7 @@ namespace DigitalInspection.Models.Mappers
 			dto.schedDate = DateTimeUtils.ToUnixTime(order.ScheduleDate);
 			dto.completionDate = DateTimeUtils.ToUnixTime(order.CompletionDate);
 			dto.techNum = order.EmployeeId;
-			dto.workDesc = order.WorkDescription;
+			dto.workDesc = order.WorkDescription.ToArray();
 
 			dto.orderStatus = new WorkOrderStatusDTO(
 				order.Status.Code,
@@ -96,14 +97,14 @@ namespace DigitalInspection.Models.Mappers
 			dto.clientState = order.Customer.Address.State;
 			dto.clientZip = order.Customer.Address.ZIP;
 
-			dto.clientPhone = new ClientPhoneDTO[order.Customer.PhoneNumbers.Count];
-			for(int i = 0; i < order.Customer.PhoneNumbers.Count; i++)
+			if (order.Customer.PhoneNumbers == null)
 			{
-				if (order.Customer.PhoneNumbers[i] == null)
-				{
-					dto.clientPhone[i] = null;
-				}
-				else
+				dto.clientPhone = null;
+			}
+			else
+			{
+				dto.clientPhone = new ClientPhoneDTO[order.Customer.PhoneNumbers.Count];
+				for (int i = 0; i < order.Customer.PhoneNumbers.Count; i++)
 				{
 					dto.clientPhone[i] = new ClientPhoneDTO(
 						order.Customer.PhoneNumbers[i].Number,

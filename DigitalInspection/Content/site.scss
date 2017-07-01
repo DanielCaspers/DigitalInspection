@@ -72,6 +72,14 @@ a, button {
 	color:#f44336 ;
 }
 
+
+// Overrides Bootstrap Material disabled look to be more obvious
+.form-control[disabled], 
+.form-group .form-control[disabled]
+{
+	color:rgba( 0, 0, 0, 0.4) !important;
+}
+
 @mixin dropdown-tray($trayWidth, $linkPadding) {
 	width: $trayWidth;
 	li{
