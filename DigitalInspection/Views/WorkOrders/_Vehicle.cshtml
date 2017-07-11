@@ -162,12 +162,15 @@
 				@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
 				@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
 				@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
+				@Html.HiddenFor(m => m.WorkOrder.TotalBill)
+				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
+				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary)
+				@Html.HiddenForEnumerable(m => m.WorkOrder.WorkDescription)
+
 				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
-				<!-- TODO may require binding like phone numbers-->
-				@Html.HiddenFor(m => m.WorkOrder.WorkDescription)
 
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
@@ -176,14 +179,8 @@
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.State)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.ZIP)
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, allPublicProps: true)
 
-				<!-- https://stackoverflow.com/a/26093533/2831961 -->
-				@for (int i = 0; i < Model.WorkOrder.Customer.PhoneNumbers.Count; i++)
-				{
-					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].ContactName)
-					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].Number)
-					@Html.HiddenFor(m => Model.WorkOrder.Customer.PhoneNumbers[i].Type)
-				}
 			</fieldset>
 		}
 	</div>

@@ -16,7 +16,7 @@ namespace DigitalInspection.Services
 		{
 			var httpClient = new HttpClient();
 			// TODO: Pass in custom configuration from file for store number and app key
-			httpClient.BaseAddress = new Uri("https://d3-devel.murphyauto.net/api/v1/004/");
+			httpClient.BaseAddress = new Uri("https://d3-devel.murphyauto.net/api/v2/004/");
 			httpClient.DefaultRequestHeaders.Accept.Clear();
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			httpClient.DefaultRequestHeaders.Add("x-appkey", "82kkf452j2lL41430SpqFd6Dwe027z");

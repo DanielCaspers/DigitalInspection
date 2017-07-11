@@ -18,6 +18,9 @@ namespace DigitalInspection.Models.Mappers
 			order.CompletionDate = DateTimeUtils.FromUnixTime(dto.completionDate);
 			order.EmployeeId = dto.techNum;
 			order.WorkDescription = dto.workDesc;
+			order.TotalBill = dto.totalBill;
+			order.ServiceAdvisor = dto.serviceAdvisor;
+			order.BillingSummary = dto.billingSummary;
 
 			order.Status = new WorkOrderStatus(
 				dto.orderStatus.statusCode,
@@ -80,7 +83,10 @@ namespace DigitalInspection.Models.Mappers
 			dto.schedDate = DateTimeUtils.ToUnixTime(order.ScheduleDate);
 			dto.completionDate = DateTimeUtils.ToUnixTime(order.CompletionDate);
 			dto.techNum = order.EmployeeId;
-			dto.workDesc = order.WorkDescription.ToArray();
+			dto.workDesc = order.WorkDescription;
+			dto.totalBill = order.TotalBill;
+			dto.serviceAdvisor = order.ServiceAdvisor;
+			dto.billingSummary = order.BillingSummary;
 
 			dto.orderStatus = new WorkOrderStatusDTO(
 				order.Status.Code,
@@ -103,14 +109,14 @@ namespace DigitalInspection.Models.Mappers
 			}
 			else
 			{
-				dto.clientPhone = new ClientPhoneDTO[order.Customer.PhoneNumbers.Count];
-				for (int i = 0; i < order.Customer.PhoneNumbers.Count; i++)
+				dto.clientPhone = new List<ClientPhoneDTO>();
+				foreach (PhoneNumber phone in order.Customer.PhoneNumbers)
 				{
-					dto.clientPhone[i] = new ClientPhoneDTO(
-						order.Customer.PhoneNumbers[i].Number,
-						order.Customer.PhoneNumbers[i].ContactName,
-						order.Customer.PhoneNumbers[i].Type,
-						order.Customer.PhoneNumbers[i].SMSPreferences
+					dto.clientPhone.Add(new ClientPhoneDTO(
+						phone.Number,
+						phone.ContactName,
+						phone.Type,
+						phone.SMSPreferences)
 					);
 				}
 			}
