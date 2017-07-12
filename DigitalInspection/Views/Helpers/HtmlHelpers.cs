@@ -39,6 +39,22 @@ namespace DigitalInspection.Views.Helpers
 			return noun.EndsWith("s") ? noun + "'" : noun + "'s";
 		}
 
+		public static MvcHtmlString ProgressBar()
+		{
+			var outerContainer = new TagBuilder("div");
+			outerContainer.AddCssClass("progress ma-progress-bar");
+
+			var innerProgress = new TagBuilder("div");
+			innerProgress.MergeAttribute("role", "progressbar");
+			innerProgress.MergeAttribute("aria-valuenow", "45");
+			innerProgress.MergeAttribute("aria-valuemin", "0");
+			innerProgress.MergeAttribute("aria-valuemax", "100");
+			innerProgress.AddCssClass("progress-bar");
+
+			outerContainer.InnerHtml = innerProgress.ToString();
+			return MvcHtmlString.Create(outerContainer.ToString());
+		}
+
 		public static MvcHtmlString HiddenForClass<TModel, TProperty>(
 			this HtmlHelper<TModel> helper,
 			Expression<Func<TModel, IEnumerable<TProperty>>> expression)

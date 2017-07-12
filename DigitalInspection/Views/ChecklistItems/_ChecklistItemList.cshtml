@@ -5,7 +5,9 @@
 	{
 		<div class="list-group-item">
 			<div class="container-flex align-center between">
-				<a style="padding: 0 0 0 100px;" href="@Url.Action("Edit", "ChecklistItems", new { id = checklistItem.Id} )">
+				<a style="padding: 0 0 0 100px;"
+				    href="@Url.Action("Edit", "ChecklistItems", new { id = checklistItem.Id} )"
+				   onclick="FormService.showProgress()">
 					<h4  class="list-group-item-heading">@checklistItem.Name</h4>
 				</a>
 

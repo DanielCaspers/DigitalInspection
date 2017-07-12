@@ -7,11 +7,12 @@
 @section Toolbar {
 	<div class="row">
 		<a href="@Url.Action("Index", "Checklists")"
+		   onclick="FormService.showProgress()"
 		   class="btn btn-default back-button no-margin pull-left">
 			<i class="material-icons">arrow_back</i>
 			@Model.Checklist.Name
 		</a>
-		<button form="editChecklistForm"
+		<button onclick="FormService.submit('editChecklistForm', true)"
 				class="btn btn-default no-margin pull-right">
 			<i class="material-icons">save</i>
 		</button>

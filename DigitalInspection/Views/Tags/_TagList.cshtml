@@ -5,7 +5,9 @@
 	{
 		<div class="list-group-item">
 			<div class="container-flex align-center between">
-				<a style="padding: 0 0 0 100px;" href="@Url.Action("Edit", "Tags", new { id = tag.Id} )">
+				<a style="padding: 0 0 0 100px;"
+				    href="@Url.Action("Edit", "Tags", new { id = tag.Id} )"
+				   onclick="FormService.showProgress()">
 					<h4  class="list-group-item-heading">@tag.Name</h4>
 				</a>
 

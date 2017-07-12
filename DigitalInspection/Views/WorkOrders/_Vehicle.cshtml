@@ -18,6 +18,7 @@
 			@if (Model.CanEdit)
 			{
 				<a href="@Url.Action("_Vehicle", "WorkOrders")"
+				   onclick="FormService.showProgress()"
 				   class="btn btn-default back-button no-margin pull-left">
 					<i class="material-icons">arrow_back</i>
 					Order @Model.WorkOrder.Id.Substring(3)
@@ -26,6 +27,7 @@
 			else
 			{
 				<a href="@Url.Action("Index", "WorkOrders")"
+				   onclick="FormService.showProgress()"
 				   class="btn btn-default back-button no-margin pull-left">
 					<i class="material-icons">arrow_back</i>
 					Order @Model.WorkOrder.Id.Substring(3)
@@ -54,7 +56,7 @@
 			{
 				<button type="button"
 						class="btn btn-default no-margin"
-						onclick="$('#editVehicleForm').submit()">
+						onclick="FormService.submit('editVehicleForm', true)">
 					<i class="material-icons">save</i>
 				</button>
 			}
@@ -71,7 +73,7 @@
 						InsertionMode = InsertionMode.ReplaceWith,
 						HttpMethod = "GET"
 					},
-					new { @class = "btn btn-default no-margin" })
+					new { @class = "btn btn-default no-margin", onclick = "FormService.showProgress()" })
 			}
 		</div>
 	</div>

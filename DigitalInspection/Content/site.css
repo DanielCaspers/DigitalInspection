@@ -47,7 +47,7 @@ a.no-transform, button.no-transform {
 
 .form-control[disabled],
 .form-group .form-control[disabled] {
-  color: rgba(0, 0, 0, 0.6) !important;
+  color: rgba(0, 0, 0, 0.75) !important;
   border-bottom: none !important; }
 
 .ma-dropdown-tray {
@@ -184,6 +184,12 @@ table tbody tr {
       padding: 0px 5px; }
     .ma-nav-container .ma-nav-account .ma-account-name {
       padding-right: 15px; }
+
+.ma-progress-bar {
+  visibility: hidden;
+  margin-top: -20px; }
+  .ma-progress-bar [role="progressbar"] {
+    width: 45%; }
 
 .ma-toast {
   display: flex !important;

@@ -13,6 +13,56 @@
 	MultiSelectService.autoSelectOptions('editTagSelect', tagIds);
 </script>
 
+@section Toolbar {
+	<div class="row">
+		<a href="@Url.Action("Index", "ChecklistItems")"
+		   onclick="FormService.showProgress()"
+		   class="btn btn-default back-button no-margin pull-left">
+			<i class="material-icons">arrow_back</i>
+			@Model.ChecklistItem.Name
+		</a>
+
+		<span class="pull-right">
+
+			@using (Html.BeginForm(
+			"AddCannedResponse",
+			"ChecklistItems",
+			new { id = Model.ChecklistItem.Id },
+			FormMethod.Post,
+			new { @class = "ma-inline-form" }
+		)
+	)
+			{
+				<button class="btn btn-primary no-margin"
+						onclick="FormService.showProgress()">
+					Add Canned Response
+				</button>
+			}
+
+			@using (Html.BeginForm(
+			"AddMeasurement",
+			"ChecklistItems",
+			new { id = Model.ChecklistItem.Id },
+			FormMethod.Post,
+			new { @class = "ma-inline-form" }
+		)
+	)
+			{
+				<button class="btn btn-primary no-margin"
+					onclick="FormService.showProgress()">
+					Add Measurement
+				</button>
+			}
+
+			<button onclick="FormService.submit('editChecklistItemForm', true)"
+					class="btn btn-default no-margin">
+				<i class="material-icons">save</i>
+			</button>
+		</span>
+
+	</div>
+}
+
 @using (Html.BeginForm(
 			"DeleteCannedResponse",
 			"ChecklistItems",
@@ -87,7 +137,7 @@
 							</div>
 
 							<div class="col-sm-1">
-								<button onclick="FormService.triggerExternalSubmit('deleteCannedResponseForm', '@Model.ChecklistItem.CannedResponses[i].Id')"
+								<button onclick="FormService.triggerExternalSubmit('deleteCannedResponseForm', '@Model.ChecklistItem.CannedResponses[i].Id', true)"
 										type="button"
 										style="position:relative; top:135px; right:35px;"
 										class="btn btn-default no-margin">
@@ -137,7 +187,7 @@
 							</div>
 
 							<div class="form-group col-sm-1">
-								<button onclick="FormService.triggerExternalSubmit('deleteMeasurementForm', '@Model.ChecklistItem.Measurements[i].Id')"
+								<button onclick="FormService.triggerExternalSubmit('deleteMeasurementForm', '@Model.ChecklistItem.Measurements[i].Id', true)"
 										type="button"
 										style="position:relative; top:30px; right:20px;"
 										class="btn btn-default no-margin">
@@ -149,52 +199,5 @@
 				}
 			</fieldset>
 		</div>
-	</div>
-}
-
-@section Toolbar {
-	<div class="row">
-		<a href="@Url.Action("Index", "ChecklistItems")"
-		   class="btn btn-default back-button no-margin pull-left">
-			<i class="material-icons">arrow_back</i>
-			@Model.ChecklistItem.Name
-		</a>
-
-		<span class="pull-right">
-
-			@using (Html.BeginForm(
-					"AddCannedResponse",
-					"ChecklistItems",
-					new { id = Model.ChecklistItem.Id },
-					FormMethod.Post,
-					new { @class = "ma-inline-form" }
-				)
-			)
-			{
-				<button class="btn btn-primary no-margin">
-					Add Canned Response
-				</button>
-			}
-
-			@using (Html.BeginForm(
-					"AddMeasurement",
-					"ChecklistItems",
-					new { id = Model.ChecklistItem.Id },
-					FormMethod.Post,
-					new { @class = "ma-inline-form"}
-				)
-			)
-			{
-				<button class="btn btn-primary no-margin">
-					Add Measurement
-				</button>
-			}
-
-			<button form="editChecklistItemForm"
-					class="btn btn-default no-margin">
-				<i class="material-icons">save</i>
-			</button>
-		</span>
-
 	</div>
 }

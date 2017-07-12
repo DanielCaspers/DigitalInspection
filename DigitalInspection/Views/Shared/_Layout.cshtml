@@ -1,4 +1,6 @@
 ﻿@model DigitalInspection.ViewModels.BaseViewModel
+@using DigitalInspection.Views.Helpers;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,19 +25,22 @@
 				</button>
 				<ul class="dropdown-menu ma-menu-tray">
 					<li>
-						<a href="@Url.Action("Index", "WorkOrders")">
+						<a href="@Url.Action("Index", "WorkOrders")"
+						   onclick="FormService.showProgress()">
 							<i class="material-icons">description</i>
 							<span>Work Orders</span>
 						</a>
 					</li>
 					<li>
-						<a href="@Url.Action("Index", "Checklists")">
+						<a href="@Url.Action("Index", "Checklists")"
+						   onclick="FormService.showProgress()">
 							<i class="material-icons">list</i>
 							<span>Checklists</span>
 						</a>
 					</li>
 					<li>
-						<a href="@Url.Action("About", "Home")">
+						<a href="@Url.Action("About", "Home")"
+						   onclick="FormService.showProgress()">
 							<i class="material-icons">info</i>
 							<span>About</span>
 						</a>
@@ -76,6 +81,7 @@
 			<div class="btn-toolbar ma-well well well-sm">
 				@RenderSection("Toolbar")
 			</div>
+			@HtmlHelpers.ProgressBar()
 		}
 
 		@RenderBody()

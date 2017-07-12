@@ -13,4 +13,4 @@ TabService.changeTab = function (event) {
 
 TabService.selectTab = function (tabId) {
 	$("#" + tabId).addClass(tabClasses);
-}
+};

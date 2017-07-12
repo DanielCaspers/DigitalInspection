@@ -1,18 +1,18 @@
 ﻿<a id="checklistsTab"
 	href="@Url.Action("Index", "Checklists")"
-	onclick="TabService.changeTab(event)"
+	onclick="TabService.changeTab(event); FormService.showProgress()"
 	class="btn">
 	Checklists
 </a>
 <a id="checklistItemsTab"
 	href="@Url.Action("Index", "ChecklistItems")"
-	onclick="TabService.changeTab(event)"
+	onclick="TabService.changeTab(event); FormService.showProgress()"
 	class="btn">
 	Checklist Items
 </a>
 <a id="tagsTab"
 	href="@Url.Action("Index", "Tags")"
-	onclick="TabService.changeTab(event)"
+	onclick="TabService.changeTab(event); FormService.showProgress()"
 	class="btn">
 	Tags
 </a>

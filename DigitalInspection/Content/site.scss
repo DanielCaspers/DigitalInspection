@@ -77,7 +77,7 @@ a, button {
 .form-control[disabled], 
 .form-group .form-control[disabled]
 {
-	color:rgba( 0, 0, 0, 0.6) !important;
+	color:rgba( 0, 0, 0, 0.75) !important;
 	border-bottom: none !important;
 }
 
@@ -286,6 +286,15 @@ table {
 		}
 	}
 
+}
+
+.ma-progress-bar {
+	visibility: hidden;
+	margin-top: -20px;
+
+	[role="progressbar"]{
+		width: 45%;
+	}
 }
 
 .ma-toast{

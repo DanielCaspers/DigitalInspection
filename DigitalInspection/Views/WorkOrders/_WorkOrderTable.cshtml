@@ -12,8 +12,9 @@
 		function (e, dataTableInstance, type, indexes) {
 			// console.log('Running onSelect', e, dataTableInstance, type, indexes);
 			if (type === 'row') {
-				var selectedRowElement = dataTableInstance.row(indexes).node();
+				FormService.showProgress();
 
+				var selectedRowElement = dataTableInstance.row(indexes).node();
 				window.location.href = selectedRowElement.attributes['data-url'].value;
 
 			}
