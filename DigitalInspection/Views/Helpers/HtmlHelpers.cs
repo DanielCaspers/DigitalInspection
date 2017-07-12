@@ -106,7 +106,7 @@ namespace DigitalInspection.Views.Helpers
 				return HiddenForEnumerable(helper, expression);
 			}
 
-			for (var i = 0; i < list.Count(); i++)
+			for (var i = 0; i < list?.Count(); i++)
 			{
 				var listItem = list.ElementAt(i);
 				foreach (var property in memberProperties)

@@ -9,40 +9,24 @@ namespace DigitalInspection.Models
 	public class Vehicle
 	{
 		[RegularExpression("[A-HJ-NPR-Z0-9]{13}[0-9]{4}", ErrorMessage = "Invalid VIN. Please check the format.")]
-		[Required(ErrorMessage = "VIN is required")]
-		[DisplayName("VIN *")]
 		public string VIN { get; set; }
 
-		[Required(ErrorMessage = "Year is required")]
-		[DisplayName("Year *")]
 		public int? Year { get; set; }
 
-		[Required(ErrorMessage = "Make is required")]
-		[DisplayName("Make *")]
 		public string Make { get; set; }
 
-		[Required(ErrorMessage = "Model is required")]
-		[DisplayName("Model *")]
 		public string Model { get; set; }
 
-		[Required(ErrorMessage = "Color is required")]
-		[DisplayName("Color *")]
 		public string Color { get; set; }
 
-		[Required(ErrorMessage = "License plate is required")]
-		[DisplayName("License plate *")]
+		[DisplayName("License plate")]
 		public string License { get; set; }
 
-		[Required(ErrorMessage = "Transmission is required")]
-		[DisplayName("Transmission *")]
 		public string Transmission { get; set; }
 
-		[Required(ErrorMessage = "Engine is required")]
-		[DisplayName("Engine *")]
 		public string Engine { get; set; }
 
-		[Required(ErrorMessage = "Mileage is required")]
-		[DisplayName("Mileage *")]
+		[DisplayName("Mileage")]
 		public int? Odometer { get; set; }
 
 		public Vehicle() { }
