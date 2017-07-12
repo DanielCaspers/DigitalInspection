@@ -77,7 +77,8 @@ a, button {
 .form-control[disabled], 
 .form-group .form-control[disabled]
 {
-	color:rgba( 0, 0, 0, 0.4) !important;
+	color:rgba( 0, 0, 0, 0.6) !important;
+	border-bottom: none !important;
 }
 
 @mixin dropdown-tray($trayWidth, $linkPadding) {
