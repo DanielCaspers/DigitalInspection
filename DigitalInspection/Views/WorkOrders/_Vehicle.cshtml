@@ -158,6 +158,17 @@
 					</div>
 				</div>
 
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						@Html.Label("Work Description", new { @class = "control-label" })
+
+						@for (int i = 0; i < Model.WorkOrder.WorkDescription.Count; i++)
+						{
+							@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(true, new { @class = "form-control" }))
+						}
+					</div>
+				</div>
+
 				<!-- Hidden fields for model binding -->
 				@Html.HiddenFor(m => m.WorkOrder.Id)
 				@Html.HiddenFor(m => m.WorkOrder.Date)
@@ -167,7 +178,6 @@
 				@Html.HiddenFor(m => m.WorkOrder.TotalBill)
 				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
 				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary)
-				@Html.HiddenForEnumerable(m => m.WorkOrder.WorkDescription)
 
 				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Description)

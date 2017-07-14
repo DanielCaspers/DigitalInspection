@@ -349,6 +349,8 @@
     <Content Include="Scripts\Library\DataTables\jquery.dataTables.min.js" />
     <Content Include="Scripts\Library\JQuery-Ajax\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\Library\JQuery-Ajax\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\Library\JQuery-DirtyForms\jquery.dirtyforms.dialogs.bootstrap.js" />
+    <Content Include="Scripts\Library\JQuery-DirtyForms\jquery.dirtyforms.min.js" />
     <Content Include="Scripts\Library\JQuery\jquery-3.1.1.js" />
     <Content Include="Scripts\Library\JQuery\jquery-3.1.1.min.js" />
     <Content Include="Scripts\Library\JQuery\jquery-3.1.1.slim.js" />

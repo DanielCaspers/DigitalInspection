@@ -78,7 +78,7 @@
 		}
 		@if (IsSectionDefined("Toolbar"))
 		{
-			<div class="btn-toolbar ma-well well well-sm">
+			<div class="btn-toolbar ma-well well well-sm" id="toolbarContainer">
 				@RenderSection("Toolbar")
 			</div>
 			@HtmlHelpers.ProgressBar()

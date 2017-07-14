@@ -16,6 +16,8 @@ namespace DigitalInspection
 				new ScriptBundle("~/bundles/Library").Include(
 					LIB_DIR_PREFIX + "JQuery/jquery-{version}.js",
 					LIB_DIR_PREFIX + "JQuery-Ajax/jquery.unobtrusive-ajax.js",
+					LIB_DIR_PREFIX + "JQuery-DirtyForms/jquery.dirtyforms.min.js",
+					LIB_DIR_PREFIX + "JQuery-DirtyForms/jquery.dirtyforms.dialogs.bootstrap.js",
 					LIB_DIR_PREFIX + "JQuery-Validate/jquery.validate*",
 					// Use the development version of Modernizr to develop with and learn from. Then, when you're
 					// ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

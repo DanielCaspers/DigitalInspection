@@ -1,5 +1,6 @@
 ﻿const FormService = function () { };
 
+
 FormService.triggerExternalSubmit = function(formId, resourceId, showProgress) {
 	var formElement = $('#' + formId);
 	var routingAction = formElement.attr('action');
@@ -20,16 +21,16 @@ FormService.submit = function (formId, showProgress) {
 	}
 };
 
+FormService.OUTER_PROGRESSBAR_SELECTOR = ".ma-progress-bar";
+FormService.INNER_PROGRESSBAR_SELECTOR = ".ma-progress-bar .progress-bar[role='progressbar']";
+
 FormService.showProgress = function () {
 	$(document).ready(function () {
-		const OUTER_SELECTOR = ".ma-progress-bar";
-		$(OUTER_SELECTOR).css({ visibility: "visible" });
+		$(FormService.OUTER_PROGRESSBAR_SELECTOR).css({ visibility: "visible" });
 
-		const INNER_SELECTOR = ".progress-bar[role='progressbar']";
-		const PROGRESS_BAR_SELECTOR = OUTER_SELECTOR + " " + INNER_SELECTOR;
 		function animateloop() {
-			$(PROGRESS_BAR_SELECTOR).css({ marginLeft: "-45%" });
-			$(PROGRESS_BAR_SELECTOR).animate(
+			$(FormService.INNER_PROGRESSBAR_SELECTOR).css({ marginLeft: "-45%" });
+			$(FormService.INNER_PROGRESSBAR_SELECTOR).animate(
 				{
 					marginLeft: "145%"
 				},
@@ -39,4 +40,9 @@ FormService.showProgress = function () {
 		}
 		animateloop();
 	});
+};
+
+FormService.hideProgress = function () {
+	$(FormService.OUTER_PROGRESSBAR_SELECTOR).css({ visibility: "hidden" });
+	$(FormService.INNER_PROGRESSBAR_SELECTOR).stop();
 };
