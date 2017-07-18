@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DigitalInspection.Models.DTOs
 {
@@ -12,7 +11,7 @@ namespace DigitalInspection.Models.DTOs
 		public long? orderDate { get; set; }
 		public long? schedDate { get; set; }
 		public long? completionDate { get; set; }
-		public int techNum { get; set; }
+		public string techNum { get; set; }
 		public string serviceAdvisor { get; set; }
 		public IList<string> billingSummary { get; set; }
 		public string totalBill { get; set; }
@@ -26,6 +25,7 @@ namespace DigitalInspection.Models.DTOs
 		public string clientState { get; set; }
 		public string clientZip { get; set; }
 		public IList<ClientPhoneDTO> clientPhone { get; set; }
+		public IList<string> clientNotes { get; set; }
 
 		public string vehicleID { get; set; }
 		public int? vehicleYear { get; set; }
@@ -36,5 +36,8 @@ namespace DigitalInspection.Models.DTOs
 		public string vehicleEngine { get; set; }
 		public string vehicleTransmission { get; set; }
 		public int? vehicleOdometer { get; set; }
+		public IList<string> vehicleNotes { get; set; }
+
+		public IList<RecommendedServiceDTO> vehicleRS { get; set; }
 	}
 }

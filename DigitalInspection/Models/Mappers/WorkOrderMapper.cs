@@ -58,7 +58,8 @@ namespace DigitalInspection.Models.Mappers
 				dto.clientID,
 				dto.clientName,
 				clientAddress,
-				clientPhoneNumbers);
+				clientPhoneNumbers,
+				dto.clientNotes);
 
 			order.Vehicle = new Vehicle(
 				dto.vehicleID,
@@ -69,7 +70,30 @@ namespace DigitalInspection.Models.Mappers
 				dto.vehicleColor,
 				dto.vehicleEngine,
 				dto.vehicleTransmission,
-				dto.vehicleOdometer);
+				dto.vehicleOdometer,
+				dto.vehicleNotes);
+
+			if (dto.vehicleRS != null)
+			{
+				order.RecommendedServices = new List<RecommendedService>();
+				foreach (RecommendedServiceDTO rsDto in dto.vehicleRS)
+				{
+					order.RecommendedServices.Add(new RecommendedService(
+						rsDto.id,
+						rsDto.desc,
+						rsDto.orderID,
+						rsDto.date,
+						rsDto.techNum,
+						rsDto.DIlink,
+						rsDto.estID,
+						rsDto.notificationCnt)
+					);
+				}
+			}
+			else
+			{
+				order.RecommendedServices = null;
+			}
 
 			return order;
 		}
@@ -96,6 +120,7 @@ namespace DigitalInspection.Models.Mappers
 
 			dto.clientID = order.Customer.Id;
 			dto.clientName = order.Customer.Name.ToUpper();
+			dto.clientNotes = order.Customer.Notes;
 
 			dto.clientAddr = order.Customer.Address.Line1?.ToUpper();
 			dto.clientAddr2 = order.Customer.Address.Line2?.ToUpper();
@@ -130,6 +155,29 @@ namespace DigitalInspection.Models.Mappers
 			dto.vehicleEngine = order.Vehicle.Engine;
 			dto.vehicleTransmission = order.Vehicle.Transmission?.ToUpper();
 			dto.vehicleOdometer = order.Vehicle.Odometer;
+			dto.vehicleNotes = order.Vehicle.Notes;
+
+			if (order.RecommendedServices == null)
+			{
+				dto.vehicleRS = null;
+			}
+			else
+			{
+				dto.vehicleRS = new List<RecommendedServiceDTO>();
+				foreach (RecommendedService rs in order.RecommendedServices)
+				{
+					dto.vehicleRS.Add(new RecommendedServiceDTO(
+						rs.Id,
+						rs.Description,
+						rs.OrderId,
+						rs.LastModifiedDate,
+						rs.TechnicianId,
+						rs.AppLink,
+						rs.EstimateId,
+						rs.NotificationCount)
+					);
+				}
+			}
 
 			return dto;
 		}

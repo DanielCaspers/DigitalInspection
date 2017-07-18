@@ -175,6 +175,17 @@
 					</div>
 				</div>
 
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						@Html.Label("Customer Notes", new { @class = "control-label" })
+
+						@for (int i = 0; i < Model.WorkOrder.Customer.Notes.Count; i++)
+						{
+							@Html.TextBoxFor(m => Model.WorkOrder.Customer.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						}
+					</div>
+				</div>
+
 				<!-- Hidden fields for model binding -->
 				@Html.HiddenFor(m => m.WorkOrder.Id)
 				@Html.HiddenFor(m => m.WorkOrder.Date)
@@ -185,6 +196,7 @@
 				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
 				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary)
 				@Html.HiddenForEnumerable(m => m.WorkOrder.WorkDescription)
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.RecommendedServices, allPublicProps: true)
 
 				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
@@ -203,6 +215,7 @@
 				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Engine)
 				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Transmission)
 				@Html.HiddenFor(m => m.WorkOrder.Vehicle.VIN)
+				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Notes)
 
 				@*@Html.HiddenForClass(m => m.WorkOrder.Vehicle)*@
 

@@ -17,7 +17,7 @@ namespace DigitalInspection.Models
 
 		[Required(ErrorMessage = "Employee # is required")]
 		[DisplayName("Employee # *")]
-		public int EmployeeId { get; set; }
+		public string EmployeeId { get; set; }
 
 		public string ServiceAdvisor { get; set; }
 
@@ -41,5 +41,8 @@ namespace DigitalInspection.Models
 
 		[Required]
 		public Vehicle Vehicle { get; set; }
+
+		[Required]
+		public IList<RecommendedService> RecommendedServices { get; set; }
 	}
 }

@@ -23,7 +23,11 @@ namespace DigitalInspection.Models
 
 		public PhoneNumber() { }
 
-		public PhoneNumber(string number, string contact, string type, string smsPreferences)
+		public PhoneNumber(
+			string number,
+			string contact,
+			string type,
+			string smsPreferences)
 		{
 			Number = number;
 			ContactName = contact;

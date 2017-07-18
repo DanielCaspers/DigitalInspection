@@ -164,7 +164,16 @@
 
 						@for (int i = 0; i < Model.WorkOrder.WorkDescription.Count; i++)
 						{
-							@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(true, new { @class = "form-control" }))
+							@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						}
+					</div>
+
+					<div class="col-sm-6 form-group">
+						@Html.Label("Vehicle Notes", new { @class = "control-label" })
+
+						@for (int i = 0; i < Model.WorkOrder.Vehicle.Notes.Count; i++)
+						{
+							@Html.TextBoxFor(m => Model.WorkOrder.Vehicle.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 						}
 					</div>
 				</div>
@@ -178,6 +187,7 @@
 				@Html.HiddenFor(m => m.WorkOrder.TotalBill)
 				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
 				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary)
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.RecommendedServices, allPublicProps: true)
 
 				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
@@ -186,6 +196,7 @@
 
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Notes)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line1)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line2)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)

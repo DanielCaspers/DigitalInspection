@@ -228,6 +228,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
     <Compile Include="Models\Mappers\WorkOrderMapper.cs" />
     <Compile Include="Migrations\201705132034143_Initial.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Orders\Address.cs" />
+    <Compile Include="Models\Orders\RecommendedService.cs" />
     <Compile Include="Models\Orders\WorkOrderStatus.cs" />
     <Compile Include="Models\Orders\Customer.cs" />
     <Compile Include="Models\DTOs\ClientPhoneDTO.cs" />

@@ -1,10 +1,4 @@
-﻿using AutoMapper;
-using DigitalInspection.Models;
-using DigitalInspection.Models.DTOs;
-using DigitalInspection.Utils;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 

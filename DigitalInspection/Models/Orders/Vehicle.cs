@@ -1,7 +1,7 @@
 ﻿using DigitalInspection.Utils;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 
 namespace DigitalInspection.Models
 {
@@ -29,9 +29,21 @@ namespace DigitalInspection.Models
 		[DisplayName("Mileage")]
 		public int? Odometer { get; set; }
 
+		public IList<string> Notes { get; set; }
+
 		public Vehicle() { }
 
-		public Vehicle(string vin, int? year, string make, string model, string license, string color, string engine, string transmission, int? odometer)
+		public Vehicle(
+			string vin,
+			int? year,
+			string make,
+			string model,
+			string license,
+			string color,
+			string engine,
+			string transmission,
+			int? odometer,
+			IList<string> notes)
 		{
 			VIN = vin;
 			Year = year;
@@ -48,6 +60,7 @@ namespace DigitalInspection.Models
 			Engine = engine;
 			Transmission = transmission?.ToTitleCase();
 			Odometer = odometer;
+			Notes = notes;
 		}
 	}
 }
