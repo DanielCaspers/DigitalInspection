@@ -1,16 +1,19 @@
-﻿const TabService = function () { };
-const tabClasses = "btn-info btn-raised";
+﻿if (typeof TabService === 'undefined') {
+	var TabService = function () { };
+}
+
+TabService.tabClasses = "btn-info btn-raised";
 
 TabService.changeTab = function (event) {
 	//Remove selected state from the child that has it
-	$("#tabContainer a.btn").removeClass(tabClasses);
+	$("#tabContainer a.btn").removeClass(TabService.tabClasses);
 
 	var sourceId = event.srcElement.id;
 
 	//Add selected state to clicked tab
-	$("#" + sourceId).addClass(tabClasses);
+	$("#" + sourceId).addClass(TabService.tabClasses);
 };
 
 TabService.selectTab = function (tabId) {
-	$("#" + tabId).addClass(tabClasses);
+	$("#" + tabId).addClass(TabService.tabClasses);
 };

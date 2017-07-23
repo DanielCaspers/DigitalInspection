@@ -1,5 +1,6 @@
-﻿const FormService = function () { };
-
+﻿if (typeof FormService === 'undefined') {
+	var FormService = function () { };
+}
 
 FormService.triggerExternalSubmit = function(formId, resourceId, showProgress) {
 	var formElement = $('#' + formId);

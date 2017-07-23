@@ -1,4 +1,6 @@
-﻿const TableService = function () { };
+﻿if (typeof TableService === 'undefined') {
+	var TableService = function () { };
+}
 
 TableService.showTable = function (elementId, pageSizeOptions, columnRules, onSelect) {
 	$(document).ready(function () {

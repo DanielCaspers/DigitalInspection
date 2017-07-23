@@ -1,4 +1,6 @@
-﻿const DialogService = function () { };
+﻿if (typeof DialogService === 'undefined') {
+	var DialogService = function () { };
+}
 
 DialogService.confirmDelete = function (formName) {
 
@@ -39,8 +41,10 @@ DialogService.show = function (dialogId, formName) {
 
 	dialogElement.on('hidden.bs.modal', function () {
 		// Reset values in the form for next open
-		formElement[0].reset();
-		validator.resetForm();
+		if (formElement[0]) {
+			formElement[0].reset();
+			validator.resetForm();
+		}
 
 		var selectInputs = $('#' + dialogId).find('select');
 		for(var selectInput of selectInputs) {

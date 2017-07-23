@@ -1,4 +1,6 @@
-﻿const MultiSelectService = function () { };
+﻿if (typeof MultiSelectService === 'undefined') {
+	var MultiSelectService = function () { };
+}
 
 MultiSelectService.show = function (elementId, config) {
 	
