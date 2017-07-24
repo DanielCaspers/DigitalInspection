@@ -170,7 +170,7 @@ namespace DigitalInspection.Models.Mappers
 						rs.Id,
 						rs.Description,
 						rs.OrderId,
-						rs.LastModifiedDate,
+						DateTimeUtils.ToUnixTime(rs.LastModifiedDate),
 						rs.TechnicianId,
 						rs.AppLink,
 						rs.EstimateId,

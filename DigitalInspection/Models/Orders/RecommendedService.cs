@@ -1,4 +1,5 @@
 ﻿using System;
+using DigitalInspection.Utils;
 
 namespace DigitalInspection.Models.Orders
 {
@@ -7,7 +8,7 @@ namespace DigitalInspection.Models.Orders
 		public string Id { get; set; }
 		public string Description { get; set; }
 		public string OrderId { get; set; }
-		public long? LastModifiedDate { get; set; }
+		public DateTime? LastModifiedDate { get; set; }
 		public string TechnicianId { get; set; }
 		public string AppLink { get; set; }
 		public string EstimateId { get; set; }
@@ -28,7 +29,7 @@ namespace DigitalInspection.Models.Orders
 			Id = id;
 			Description = desc;
 			OrderId = orderId;
-			LastModifiedDate = lastModifiedDate;
+			LastModifiedDate = DateTimeUtils.FromUnixTime(lastModifiedDate);
 			TechnicianId = technicianId;
 			AppLink = appLink;
 			EstimateId = estimateId;

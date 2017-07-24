@@ -34,27 +34,27 @@ namespace DigitalInspection.Controllers
 			return PartialView(task);
 		}
 
-		public async Task<PartialViewResult> _Customer(string id, bool canEdit = false)
+		public PartialViewResult _Customer(string id, bool canEdit = false)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
 			{
 				TabId = "customerTab",
 				RouteId = id
 			};
-			return await GetWorkOrderViewModel(id, tabVM, canEdit);
+			return GetWorkOrderViewModel(id, tabVM, canEdit);
 		}
 
-		public async Task<PartialViewResult> _Vehicle(string id, bool canEdit = false)
+		public PartialViewResult _Vehicle(string id, bool canEdit = false)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
 			{
 				TabId = "vehicleTab",
 				RouteId = id
 			};
-			return await GetWorkOrderViewModel(id, tabVM, canEdit);
+			return GetWorkOrderViewModel(id, tabVM, canEdit);
 		}
 
-		public async Task<PartialViewResult> _Inspection(string id)
+		public PartialViewResult _Inspection(string id)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
 			{
@@ -78,7 +78,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> SaveCustomer(string id, WorkOrderDetailViewModel vm)
+		public ActionResult SaveCustomer(string id, WorkOrderDetailViewModel vm)
 		{
 			var task = Task.Run(async () => {
 				return await WorkOrderService.SaveWorkOrder(vm.WorkOrder);
@@ -97,7 +97,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> SaveVehicle(string id, WorkOrderDetailViewModel vm)
+		public ActionResult SaveVehicle(string id, WorkOrderDetailViewModel vm)
 		{
 			var task = Task.Run(async () => {
 				return await WorkOrderService.SaveWorkOrder(vm.WorkOrder);
@@ -129,7 +129,7 @@ namespace DigitalInspection.Controllers
 			};
 		}
 
-		private async Task<PartialViewResult> GetWorkOrderViewModel(string id, TabContainerViewModel tabVM, bool canEdit = false)
+		private PartialViewResult GetWorkOrderViewModel(string id, TabContainerViewModel tabVM, bool canEdit = false)
 		{
 			var task = Task.Run(async () => {
 				return await WorkOrderService.GetWorkOrder(id, canEdit);

@@ -294,6 +294,7 @@
     <Compile Include="ViewModels\WorkOrders\WorkOrderInspectionViewModel.cs" />
     <Compile Include="ViewModels\WorkOrders\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModels\WorkOrders\WorkOrderMasterViewModel.cs" />
+    <Compile Include="Views\Helpers\HiddenFields.cs" />
     <Compile Include="Views\Helpers\HtmlHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -438,6 +439,7 @@
     <Content Include="Views\Shared\TabContainers\_WorkOrderDetailTabs.cshtml" />
     <Content Include="Views\WorkOrders\_Customer.cshtml" />
     <Content Include="Views\WorkOrders\_Inspection.cshtml" />
+    <Content Include="Views\WorkOrders\_EditRecommendedServicesDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

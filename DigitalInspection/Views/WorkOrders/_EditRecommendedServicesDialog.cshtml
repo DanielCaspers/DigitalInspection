@@ -1,0 +1,64 @@
+﻿@model DigitalInspection.ViewModels.WorkOrderDetailViewModel
+
+@{
+	const string TEMPLATE_NAMESPACE = "editRecommendedServicesDialog";
+	const string CANCEL = TEMPLATE_NAMESPACE + "_cancel";
+	//const string SUCCESS = TEMPLATE_NAMESPACE + "_success";
+}
+
+<div id="@TEMPLATE_NAMESPACE" class="modal fade">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Recommended Services</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<b class="col-sm-2">
+						Level
+					</b>
+					<b class="col-sm-6">
+						Description
+					</b>
+					<b class="col-sm-1">
+						Tech #
+					</b>
+					<b class="col-sm-1">
+						Order #
+					</b>
+					<b class="col-sm-2">
+						Date
+					</b>
+				</div>
+				@for (int i = 0; i < Model.WorkOrder.RecommendedServices.Count; i++)
+				{
+					<div class="row">
+						<div class="col-sm-2">
+							<i class="material-icons">error</i>
+						</div>
+						<div class="col-sm-6">
+							@Model.WorkOrder.RecommendedServices[i].Description
+						</div>
+						<div class="col-sm-1">
+							@Model.WorkOrder.RecommendedServices[i].TechnicianId
+						</div>
+						<div class="col-sm-1">
+							@Model.WorkOrder.RecommendedServices[i].OrderId
+						</div>
+						<div class="col-sm-2">
+							@String.Format("{0:d}", @Model.WorkOrder.RecommendedServices[i].LastModifiedDate)
+						</div>
+					</div>
+				}
+
+			</div>
+
+			<div class="modal-footer">
+				<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				@*<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Edit</button>*@
+			</div>
+		</div>
+	</div>
+</div>

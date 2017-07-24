@@ -181,7 +181,7 @@
 
 						@for (int i = 0; i < Model.WorkOrder.Customer.Notes.Count; i++)
 						{
-							@Html.TextBoxFor(m => Model.WorkOrder.Customer.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.TextBoxFor(m => Model.WorkOrder.Customer.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control no-vertical-padding" }))
 						}
 					</div>
 				</div>
@@ -194,9 +194,9 @@
 				@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
 				@Html.HiddenFor(m => m.WorkOrder.TotalBill)
 				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
-				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary)
-				@Html.HiddenForEnumerable(m => m.WorkOrder.WorkDescription)
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.RecommendedServices, allPublicProps: true)
+				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
+				@Html.HiddenForEnumerable(m => m.WorkOrder.WorkDescription, "WorkOrder")
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.RecommendedServices, true, "WorkOrder")
 
 				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
@@ -204,7 +204,7 @@
 				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
 
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, allPublicProps: true)
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, true, "WorkOrder.Customer")
 
 				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Year)
 				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Make)
@@ -215,10 +215,7 @@
 				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Engine)
 				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Transmission)
 				@Html.HiddenFor(m => m.WorkOrder.Vehicle.VIN)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Notes)
-
-				@*@Html.HiddenForClass(m => m.WorkOrder.Vehicle)*@
-
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.Vehicle.Notes, "WorkOrder.Vehicle")
 			</fieldset>
 		}
 	</div>

@@ -10,7 +10,11 @@ namespace DigitalInspection.Models.DTOs
 
 		public ClientPhoneDTO() { }
 
-		public ClientPhoneDTO(string phoneNumber, string contact, string phoneType, string smsPreferences) {
+		public ClientPhoneDTO(
+			string phoneNumber,
+			string contact,
+			string phoneType,
+			string smsPreferences) {
 			number = phoneNumber;
 			name = contact;
 			type = phoneType;

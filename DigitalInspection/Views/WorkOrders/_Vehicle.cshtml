@@ -52,6 +52,24 @@
 		</div>
 
 		<div>
+			@if (Model.WorkOrder.RecommendedServices != null)
+			{
+				<button type="button"
+						class="btn btn-default no-margin"
+						onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
+					<i class="material-icons">description</i>
+				</button>
+			}
+			else
+			{
+				<button type="button"
+						disabled="disabled"
+						class="btn btn-default no-margin"
+						onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
+					<i class="material-icons">description</i>
+				</button>
+			}
+
 			@if (Model.CanEdit)
 			{
 				<button type="button"
@@ -79,23 +97,28 @@
 	</div>
 }
 
+@if (Model.WorkOrder.RecommendedServices != null)
+{
+	@Html.Partial("_EditRecommendedServicesDialog", Model)
+}
+
 <div class="container-fluid" id="editVehiclePage">
 	<div class="jumbotron">
 		@using (Ajax.BeginForm(
-					"SaveVehicle",
-					"WorkOrders",
-					new { id = Model.WorkOrder.Id },
-					new AjaxOptions
-					{
-						InsertionMode = InsertionMode.Replace,
-						UpdateTargetId = "ajaxContentWrapper"
-					}, new
-					{
-						id = "editVehicleForm",
-						autocomplete = "off"
-					}
+							"SaveVehicle",
+							"WorkOrders",
+							new { id = Model.WorkOrder.Id },
+							new AjaxOptions
+							{
+								InsertionMode = InsertionMode.Replace,
+								UpdateTargetId = "ajaxContentWrapper"
+							}, new
+							{
+								id = "editVehicleForm",
+								autocomplete = "off"
+							}
+						)
 				)
-		)
 		{
 			<fieldset>
 				<div class="row">
@@ -159,6 +182,7 @@
 				</div>
 
 				<div class="row">
+					<!-- TODO: Fix the null issues!!!-->
 					<div class="col-sm-6 form-group">
 						@Html.Label("Work Description", new { @class = "control-label" })
 
@@ -186,8 +210,8 @@
 				@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
 				@Html.HiddenFor(m => m.WorkOrder.TotalBill)
 				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
-				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary)
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.RecommendedServices, allPublicProps: true)
+				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
+				@Html.HiddenForEnumerable(m => m.WorkOrder.RecommendedServices, true, "WorkOrder")
 
 				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
 				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
@@ -196,14 +220,13 @@
 
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Notes)
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.Notes, "WorkOrder.Customer")
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line1)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line2)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.State)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.ZIP)
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, allPublicProps: true)
-
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, true, "WorkOrder.Customer")
 			</fieldset>
 		}
 	</div>

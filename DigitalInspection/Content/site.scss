@@ -72,6 +72,11 @@ a, button {
 	color:#f44336 ;
 }
 
+.form-group .form-control.no-vertical-padding {
+	margin-bottom:0 !important;
+	height: 30px;
+}
+
 
 // Overrides Bootstrap Material disabled look to be more obvious
 .form-control[disabled], 
@@ -80,6 +85,13 @@ a, button {
 	color:rgba( 0, 0, 0, 0.75) !important;
 	border-bottom: none !important;
 }
+
+// Override Bootstrap Modal CSS
+.modal-dialog.modal-lg {
+	width: 95% !important;
+}
+
+
 
 @mixin dropdown-tray($trayWidth, $linkPadding) {
 	width: $trayWidth;
