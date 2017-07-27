@@ -440,6 +440,7 @@
     <Content Include="Views\WorkOrders\_Customer.cshtml" />
     <Content Include="Views\WorkOrders\_Inspection.cshtml" />
     <Content Include="Views\WorkOrders\_EditRecommendedServicesDialog.cshtml" />
+    <Content Include="Views\WorkOrders\_CustomerVehicleSummary.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

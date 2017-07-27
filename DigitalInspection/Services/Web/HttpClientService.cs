@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -9,6 +10,8 @@ namespace DigitalInspection.Services
 		protected static HttpClient InitializeHttpClient()
 		{
 			var httpClient = new HttpClient();
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
 			// TODO: Pass in custom configuration from file for store number and app key
 			httpClient.BaseAddress = new Uri("https://d3-devel.murphyauto.net/api/v1/004/");
 			httpClient.DefaultRequestHeaders.Accept.Clear();

@@ -47,7 +47,7 @@
 			@if (Model.CanEdit)
 			{
 				<a href="@Url.Action("_Customer", "WorkOrders")"
-					onclick="FormService.showProgress()"
+				   onclick="FormService.showProgress()"
 				   class="btn btn-default back-button no-margin pull-left">
 					<i class="material-icons">arrow_back</i>
 					Order @Model.WorkOrder.Id.Substring(3)
@@ -63,19 +63,7 @@
 				</a>
 			}
 
-			<span>@HtmlHelpers.Pluralizer(Model.WorkOrder.Customer.Name)</span>
-			<span>@Model.WorkOrder.Vehicle.Year</span>
-			<span>@Model.WorkOrder.Vehicle.Make</span>
-			<span>@Model.WorkOrder.Vehicle.Model</span>
-
-			@if (String.IsNullOrWhiteSpace(Model.WorkOrder.Vehicle.Color))
-			{
-				<span class="car-color-indicator">?</span>
-			}
-			else
-			{
-				<span class="car-color-indicator" style="background-color: @Model.WorkOrder.Vehicle.Color;"></span>
-			}
+			@Html.Partial("_CustomerVehicleSummary", Model)
 		</div>
 
 		<div>
@@ -91,10 +79,10 @@
 			{
 				/*
 				 * The issue with duplicate scripts loading is because,
-				 * on AJAX request, we need to rerender the entire page, 
+				 * on AJAX request, we need to rerender the entire page,
 				 * but when in AJAX mode, we end up rerunning the Layout
 				 * configuration at the top of this file.
-				 * 
+				 *
 				 */
 				@Ajax.RawActionLink(
 					"<i class=\"material-icons\">edit</i>",
@@ -117,20 +105,20 @@
 <div class="container-fluid">
 	<div class="jumbotron">
 		@using (Ajax.BeginForm(
-					"SaveCustomer",
-					"WorkOrders",
-					new { id = Model.WorkOrder.Id },
-					new AjaxOptions
-					{
-						InsertionMode = InsertionMode.Replace,
-						UpdateTargetId = "ajaxContentWrapper"
-					}, new
-					{
-						id = "editCustomerForm",
-						autocomplete = "off"
-					}
-				)
-		)
+						"SaveCustomer",
+						"WorkOrders",
+						new { id = Model.WorkOrder.Id },
+						new AjaxOptions
+						{
+							InsertionMode = InsertionMode.Replace,
+							UpdateTargetId = "ajaxContentWrapper"
+						}, new
+						{
+							id = "editCustomerForm",
+							autocomplete = "off"
+						}
+					)
+			)
 		{
 			<fieldset>
 				<div class="row">
