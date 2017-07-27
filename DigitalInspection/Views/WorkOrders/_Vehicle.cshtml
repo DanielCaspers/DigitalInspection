@@ -11,209 +11,212 @@
 }
 
 @section Toolbar{
+	@if (Model.WorkOrder != null)
+	{	
+		<div class="container-flex between ma-nav-info">
+			<div>
+				@if (Model.CanEdit)
+				{
+					<a href="@Url.Action("_Vehicle", "WorkOrders")"
+					   onclick="FormService.showProgress()"
+					   class="btn btn-default back-button no-margin pull-left">
+						<i class="material-icons">arrow_back</i>
+						Order @Model.WorkOrder.Id.Substring(3)
+					</a>
+				}
+				else
+				{
+					<a href="@Url.Action("Index", "WorkOrders")"
+					   onclick="FormService.showProgress()"
+					   class="btn btn-default back-button no-margin pull-left">
+						<i class="material-icons">arrow_back</i>
+						Order @Model.WorkOrder.Id.Substring(3)
+					</a>
+				}
 
-	<div class="container-flex between ma-nav-info">
+				@Html.Partial("_CustomerVehicleSummary", Model)
+			</div>
 
-		<div>
-			@if (Model.CanEdit)
-			{
-				<a href="@Url.Action("_Vehicle", "WorkOrders")"
-				   onclick="FormService.showProgress()"
-				   class="btn btn-default back-button no-margin pull-left">
-					<i class="material-icons">arrow_back</i>
-					Order @Model.WorkOrder.Id.Substring(3)
-				</a>
-			}
-			else
-			{
-				<a href="@Url.Action("Index", "WorkOrders")"
-				   onclick="FormService.showProgress()"
-				   class="btn btn-default back-button no-margin pull-left">
-					<i class="material-icons">arrow_back</i>
-					Order @Model.WorkOrder.Id.Substring(3)
-				</a>
-			}
+			<div>
+				@if (Model.WorkOrder.RecommendedServices != null)
+				{
+					<button type="button"
+							class="btn btn-default no-margin"
+							onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
+						<i class="material-icons">description</i>
+					</button>
+				}
+				else
+				{
+					<button type="button"
+							disabled="disabled"
+							class="btn btn-default no-margin"
+							onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
+						<i class="material-icons">description</i>
+					</button>
+				}
 
-			@Html.Partial("_CustomerVehicleSummary", Model)
+				@if (Model.CanEdit)
+				{
+					<button type="button"
+							class="btn btn-default no-margin"
+							onclick="FormService.submit('editVehicleForm', true)">
+						<i class="material-icons">save</i>
+					</button>
+				}
+				else
+				{
+					<a href="@Url.Action("_Vehicle", "WorkOrders", new { id = Model.WorkOrder.Id, canEdit = true })"
+					   class="btn btn-default no-margin"
+					   onclick="FormService.showProgress()">
+						<i class="material-icons">edit</i>
+					</a>
+				}
+			</div>
 		</div>
-
-		<div>
-			@if (Model.WorkOrder.RecommendedServices != null)
-			{
-				<button type="button"
-						class="btn btn-default no-margin"
-						onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
-					<i class="material-icons">description</i>
-				</button>
-			}
-			else
-			{
-				<button type="button"
-						disabled="disabled"
-						class="btn btn-default no-margin"
-						onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
-					<i class="material-icons">description</i>
-				</button>
-			}
-
-			@if (Model.CanEdit)
-			{
-				<button type="button"
-						class="btn btn-default no-margin"
-						onclick="FormService.submit('editVehicleForm', true)">
-					<i class="material-icons">save</i>
-				</button>
-			}
-			else
-			{
-				@Ajax.RawActionLink(
-					"<i class=\"material-icons\">edit</i>",
-					"_Vehicle",
-					"WorkOrders",
-					new { id = Model.WorkOrder.Id, canEdit = true },
-					new AjaxOptions
-					{
-						UpdateTargetId = "ajaxContentWrapper",
-						InsertionMode = InsertionMode.ReplaceWith,
-						HttpMethod = "GET"
-					},
-					new { @class = "btn btn-default no-margin", onclick = "FormService.showProgress()" })
-			}
-		</div>
-	</div>
+	}
 }
 
-@if (Model.WorkOrder.RecommendedServices != null)
+@if (Model.WorkOrder != null && Model.WorkOrder.RecommendedServices != null)
 {
 	@Html.Partial("_EditRecommendedServicesDialog", Model)
 }
 
-<div class="container-fluid" id="editVehiclePage">
-	<div class="jumbotron">
-		@using (Ajax.BeginForm(
-							"SaveVehicle",
-							"WorkOrders",
-							new { id = Model.WorkOrder.Id },
-							new AjaxOptions
+<script type="text/javascript">
+	DialogService.confirmLeavingUnsavedChanges_onProceed = function () {
+		FormService.triggerExternalSubmit('editVehicleForm', false, true, { name: 'releaselockonly', value: 'true' });
+	}
+</script>
+
+@if (Model.WorkOrder != null)
+{
+	<div class="container-fluid">
+		<div class="jumbotron">
+			@using (Ajax.BeginForm(
+						"SaveVehicle",
+						"WorkOrders",
+						new { id = Model.WorkOrder.Id },
+						new AjaxOptions
+						{
+							InsertionMode = InsertionMode.Replace,
+							UpdateTargetId = "ajaxContentWrapper"
+						}, new
+						{
+							id = "editVehicleForm",
+							autocomplete = "off"
+						}
+					)
+			)
+			{
+				<fieldset>
+					<div class="row">
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.Year, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Year, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", type = "number" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Year)
+						</div>
+
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.Make, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Make, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Make)
+						</div>
+
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.Model, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Model, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Model)
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.License, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.License, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.License)
+						</div>
+
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.Odometer, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Odometer, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", type = "number" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Odometer)
+						</div>
+
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.Color, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Color, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Color)
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.Engine, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Engine, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Engine)
+						</div>
+
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.Transmission, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Transmission, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Transmission)
+						</div>
+
+						<div class="col-sm-4 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.VIN, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.VIN, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.VIN)
+						</div>
+					</div>
+
+					<div class="row">
+						<!-- TODO: Fix the null issues!!!-->
+						<div class="col-sm-6 form-group">
+							@Html.Label("Work Description", new { @class = "control-label" })
+
+							@for (int i = 0; i < Model.WorkOrder.WorkDescription.Count; i++)
 							{
-								InsertionMode = InsertionMode.Replace,
-								UpdateTargetId = "ajaxContentWrapper"
-							}, new
-							{
-								id = "editVehicleForm",
-								autocomplete = "off"
+								@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 							}
-						)
-				)
-		{
-			<fieldset>
-				<div class="row">
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.Year, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Year, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", type = "number" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Year)
+						</div>
+
+						<div class="col-sm-6 form-group">
+							@Html.Label("Vehicle Notes", new { @class = "control-label" })
+
+							@for (int i = 0; i < Model.WorkOrder.Vehicle.Notes.Count; i++)
+							{
+								@Html.TextBoxFor(m => Model.WorkOrder.Vehicle.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							}
+						</div>
 					</div>
 
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.Make, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Make, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Make)
-					</div>
+					<!-- Hidden fields for model binding -->
+					@Html.HiddenFor(m => m.WorkOrder.Id)
+					@Html.HiddenFor(m => m.WorkOrder.Date)
+					@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
+					@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
+					@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
+					@Html.HiddenFor(m => m.WorkOrder.TotalBill)
+					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
+					@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
+					@Html.HiddenForEnumerable(m => m.WorkOrder.RecommendedServices, true, "WorkOrder")
 
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.Model, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Model, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Model)
-					</div>
-				</div>
+					@Html.HiddenFor(m => m.WorkOrder.Status.Code)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Description)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
 
-				<div class="row">
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.License, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.License, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.License)
-					</div>
-
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.Odometer, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Odometer, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", type = "number" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Odometer)
-					</div>
-
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.Color, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Color, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Color)
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.Engine, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Engine, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Engine)
-					</div>
-
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.Transmission, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Transmission, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Transmission)
-					</div>
-
-					<div class="col-sm-4 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Vehicle.VIN, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.VIN, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.VIN)
-					</div>
-				</div>
-
-				<div class="row">
-					<!-- TODO: Fix the null issues!!!-->
-					<div class="col-sm-6 form-group">
-						@Html.Label("Work Description", new { @class = "control-label" })
-
-						@for (int i = 0; i < Model.WorkOrder.WorkDescription.Count; i++)
-						{
-							@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						}
-					</div>
-
-					<div class="col-sm-6 form-group">
-						@Html.Label("Vehicle Notes", new { @class = "control-label" })
-
-						@for (int i = 0; i < Model.WorkOrder.Vehicle.Notes.Count; i++)
-						{
-							@Html.TextBoxFor(m => Model.WorkOrder.Vehicle.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						}
-					</div>
-				</div>
-
-				<!-- Hidden fields for model binding -->
-				@Html.HiddenFor(m => m.WorkOrder.Id)
-				@Html.HiddenFor(m => m.WorkOrder.Date)
-				@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
-				@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
-				@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
-				@Html.HiddenFor(m => m.WorkOrder.TotalBill)
-				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
-				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
-				@Html.HiddenForEnumerable(m => m.WorkOrder.RecommendedServices, true, "WorkOrder")
-
-				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
-
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.Notes, "WorkOrder.Customer")
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line1)
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line2)
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.State)
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.ZIP)
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, true, "WorkOrder.Customer")
-			</fieldset>
-		}
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
+					@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.Notes, "WorkOrder.Customer")
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line1)
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line2)
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.State)
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.ZIP)
+					@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, true, "WorkOrder.Customer")
+				</fieldset>
+			}
+		</div>
 	</div>
-</div>
+}

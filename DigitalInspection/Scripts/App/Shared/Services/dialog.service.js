@@ -91,7 +91,12 @@ DialogService.confirmLeavingUnsavedChanges = function () {
 		});
 
 		$(document).bind('proceed.dirtyforms', function () {
-			FormService.showProgress();
+			if (typeof DialogService.confirmLeavingUnsavedChanges_onProceed === 'function') {
+				DialogService.confirmLeavingUnsavedChanges_onProceed();
+			}
+			else {
+				FormService.showProgress();
+			}
 		});
 	});
 };

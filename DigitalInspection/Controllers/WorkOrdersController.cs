@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DigitalInspection.ViewModels.TabContainers;
 using System.Linq;
 using System.Net;
+using DigitalInspection.Models.DTOs;
 
 namespace DigitalInspection.Controllers
 {
@@ -78,10 +79,10 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult SaveCustomer(string id, WorkOrderDetailViewModel vm)
+		public ActionResult SaveCustomer(string id, WorkOrderDetailViewModel vm, bool releaselockonly = false)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.SaveWorkOrder(vm.WorkOrder);
+				return await WorkOrderService.SaveWorkOrder(vm.WorkOrder, releaselockonly);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -92,7 +93,9 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				return DisplayErrorToast(task.Result);
+				// TODO Return read only with toast
+				// return DisplayErrorToast(task.Result);
+				return new EmptyResult();
 			}
 		}
 
@@ -111,7 +114,9 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				return DisplayErrorToast(task.Result);
+				// TODO Return read only with toast
+				// return DisplayErrorToast(task.Result);
+				return new EmptyResult();
 			}
 		}
 
@@ -137,33 +142,32 @@ namespace DigitalInspection.Controllers
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
 
-			if (task.Result.IsSuccessStatusCode)
+			ToastViewModel toast = null;
+			if (task.Result.IsSuccessStatusCode == false)
 			{
-				return PartialView(new WorkOrderDetailViewModel
-				{
-					WorkOrder = task.Result.WorkOrder,
-					CanEdit = canEdit,
-					TabViewModel = tabVM
-				});
+				toast = DisplayErrorToast(task.Result);
 			}
-			else
+			return PartialView(new WorkOrderDetailViewModel
 			{
-				return DisplayErrorToast(task.Result);
-			}
+				WorkOrder = task.Result.WorkOrder,
+				CanEdit = canEdit,
+				TabViewModel = tabVM,
+				Toast = toast
+			});
 		}
 
-		private PartialViewResult DisplayErrorToast(WorkOrderResponse response)
+		private ToastViewModel DisplayErrorToast(WorkOrderResponse response)
 		{
 			switch (response.HTTPCode)
 			{
 				case HttpStatusCode.NotFound:
-					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource, ToastActionType.NavigateBack));
+					return ToastService.ResourceNotFound(_resource, ToastActionType.NavigateBack);
 				case (HttpStatusCode)423:
-					return PartialView("Toasts/_Toast", ToastService.FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh));
+					return ToastService.FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh);
 				case (HttpStatusCode)428:
-					return PartialView("Toasts/_Toast", ToastService.FileLockRequired());
+					return ToastService.FileLockRequired();
 				default:
-					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage));
+					return ToastService.UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage);
 			}
 		}
 	}

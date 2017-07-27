@@ -70,7 +70,7 @@ namespace DigitalInspection.Services
 		{
 			WorkOrderResponse workOrderResponse = new WorkOrderResponse();
 			workOrderResponse.IsSuccessStatusCode = httpResponse.IsSuccessStatusCode;
-			if (httpResponse.IsSuccessStatusCode)
+			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
 			{
 				WorkOrderDTO orderDto = JsonConvert.DeserializeObject<WorkOrderDTO>(responseContent);
 				workOrderResponse.WorkOrder = WorkOrderMapper.mapToWorkOrder(orderDto);

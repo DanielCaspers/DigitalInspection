@@ -57,8 +57,6 @@
 			<div class="ma-nav-account">
 				@Html.Partial("_LoginPartial")
 			</div>
-
-
 		</div>
 
 	</div>
@@ -82,6 +80,12 @@
 				@RenderSection("Toolbar")
 			</div>
 			@HtmlHelpers.ProgressBar()
+		}
+		@if (Model.Toast != null)
+		{
+			<div>
+				@Html.Partial("Toasts/_Toast", Model.Toast)
+			</div>
 		}
 
 		@RenderBody()

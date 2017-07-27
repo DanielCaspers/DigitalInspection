@@ -2,15 +2,35 @@
 	var FormService = function () { };
 }
 
-FormService.triggerExternalSubmit = function(formId, resourceId, showProgress) {
+FormService.triggerExternalSubmit = function(formId, resourceId, showProgress, urlParam) {
 	var formElement = $('#' + formId);
-	var routingAction = formElement.attr('action');
-	formElement.attr('action', routingAction + '/' + resourceId);
+
+	if (resourceId) {
+		FormService.addUrlResourceId(formId, resourceId);
+	}
+
+	if (urlParam) {
+		FormService.addUrlParameter(formId, urlParam);
+	}
+
 	formElement.submit();
 
 	if (showProgress) {
 		FormService.showProgress();
 	}
+};
+
+FormService.addUrlResourceId = function (formId, resourceId) {
+	var formElement = $('#' + formId);
+	var routingAction = formElement.attr('action');
+	formElement.attr('action', routingAction + '/' + resourceId);
+};
+
+FormService.addUrlParameter = function (formId, urlParam) {
+	var formElement = $('#' + formId);
+	var routingAction = formElement.attr('action');
+	var queryParameterString = "?" + urlParam.name + "=" + urlParam.value;
+	formElement.attr('action', routingAction + queryParameterString);
 };
 
 FormService.submit = function (formId, showProgress) {

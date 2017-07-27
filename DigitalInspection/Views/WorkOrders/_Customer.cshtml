@@ -6,105 +6,70 @@
 
 @using DigitalInspection.Views.Helpers;
 
-@*@section DetailedNavigationInfo {
-	<div class="container-flex between">
-		<div>
-			@if (Model.CanEdit)
-			{
-				<a href="@Url.Action("_Customer", "WorkOrders")"
-					class="btn btn-default back-button no-margin pull-left">
-					<i class="material-icons">arrow_back</i>
-					Order @Model.WorkOrder.Id.Substring(3)
-				</a>
-			}
-			else
-			{
-				<a href="@Url.Action("Index", "WorkOrders")"
-					class="btn btn-default back-button no-margin pull-left">
-					<i class="material-icons">arrow_back</i>
-					Order @Model.WorkOrder.Id.Substring(3)
-				</a>
-			}
-		</div>
-
-		<div>@Model.WorkOrder.Customer.Name</div>
-
-		<div style="border-bottom: 2px solid @Model.WorkOrder.Vehicle.Color">
-			<span>@Model.WorkOrder.Vehicle.Year</span>
-			<span>@Model.WorkOrder.Vehicle.Make</span>
-			<span>@Model.WorkOrder.Vehicle.Model</span>
-		</div>
-	</div>
-}*@
-
 @section TabContainer {
 	@{ Html.RenderPartial("TabContainers/_WorkOrderDetailTabs", Model.TabViewModel);}
 }
 
 @section Toolbar{
-	<div class="container-flex between ma-nav-info">
-		<div>
-			@if (Model.CanEdit)
-			{
-				<a href="@Url.Action("_Customer", "WorkOrders")"
-				   onclick="FormService.showProgress()"
-				   class="btn btn-default back-button no-margin pull-left">
-					<i class="material-icons">arrow_back</i>
-					Order @Model.WorkOrder.Id.Substring(3)
-				</a>
-			}
-			else
-			{
-				<a href="@Url.Action("Index", "WorkOrders")"
-				   onclick="FormService.showProgress()"
-				   class="btn btn-default back-button no-margin pull-left">
-					<i class="material-icons">arrow_back</i>
-					Order @Model.WorkOrder.Id.Substring(3)
-				</a>
-			}
+	@if (Model.WorkOrder != null)
+	{
+		<div class="container-flex between ma-nav-info">
+			<div>
+				@if (Model.CanEdit)
+				{
+					<a href="@Url.Action("_Customer", "WorkOrders")"
+					   onclick="FormService.showProgress()"
+					   class="btn btn-default back-button no-margin pull-left">
+						<i class="material-icons">arrow_back</i>
+						Order @Model.WorkOrder.Id.Substring(3)
+					</a>
+				}
+				else
+				{
+					<a href="@Url.Action("Index", "WorkOrders")"
+					   onclick="FormService.showProgress()"
+					   class="btn btn-default back-button no-margin pull-left">
+						<i class="material-icons">arrow_back</i>
+						Order @Model.WorkOrder.Id.Substring(3)
+					</a>
+				}
 
-			@Html.Partial("_CustomerVehicleSummary", Model)
+				@Html.Partial("_CustomerVehicleSummary", Model)
+			</div>
+
+			<div>
+				@if (Model.CanEdit)
+				{
+					<button type="button"
+							class="btn btn-default no-margin"
+							onclick="FormService.submit('editCustomerForm', true)">
+						<i class="material-icons">save</i>
+					</button>
+				}
+				else
+				{
+					<a href="@Url.Action("_Customer", "WorkOrders", new { id = Model.WorkOrder.Id, canEdit = true })"
+					   class="btn btn-default no-margin"
+					   onclick="FormService.showProgress()">
+						<i class="material-icons">edit</i>
+					</a>
+				}
+			</div>
 		</div>
-
-		<div>
-			@if (Model.CanEdit)
-			{
-				<button type="button"
-						class="btn btn-default no-margin"
-						onclick="FormService.submit('editCustomerForm', true)">
-					<i class="material-icons">save</i>
-				</button>
-			}
-			else
-			{
-				/*
-				 * The issue with duplicate scripts loading is because,
-				 * on AJAX request, we need to rerender the entire page,
-				 * but when in AJAX mode, we end up rerunning the Layout
-				 * configuration at the top of this file.
-				 *
-				 */
-				@Ajax.RawActionLink(
-					"<i class=\"material-icons\">edit</i>",
-					"_Customer",
-					"WorkOrders",
-					new { id = Model.WorkOrder.Id, canEdit = true },
-					new AjaxOptions
-					{
-						UpdateTargetId = "ajaxContentWrapper",
-						InsertionMode = InsertionMode.ReplaceWith,
-						HttpMethod = "GET"
-					},
-					new { @class = "btn btn-default no-margin", onclick = "FormService.showProgress()" })
-			}
-		</div>
-	</div>
-
+	}
 }
 
-<div class="container-fluid">
-	<div class="jumbotron">
-		@using (Ajax.BeginForm(
+<script type="text/javascript">
+	DialogService.confirmLeavingUnsavedChanges_onProceed = function () {
+		FormService.triggerExternalSubmit('editCustomerForm', false, true, { name: 'releaselockonly', value: 'true' });
+	}
+</script>
+
+@if (Model.WorkOrder != null)
+{
+	<div class="container-fluid">
+		<div class="jumbotron">
+			@using (Ajax.BeginForm(
 						"SaveCustomer",
 						"WorkOrders",
 						new { id = Model.WorkOrder.Id },
@@ -119,92 +84,93 @@
 						}
 					)
 			)
-		{
-			<fieldset>
-				<div class="row">
-					<div class="col-sm-6 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Customer.Name, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Customer.Name, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Name)
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-sm-6 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Customer.Address.Line1, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.Line1, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.Line1)
+			{
+				<fieldset>
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Customer.Name, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Customer.Name, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Name)
+						</div>
 					</div>
 
-					<div class="col-sm-6 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Customer.Address.Line2, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.Line2, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.Line2)
-					</div>
-				</div>
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Customer.Address.Line1, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.Line1, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.Line1)
+						</div>
 
-				<div class="row">
-					<div class="col-sm-6 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Customer.Address.City, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.City, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.City)
-					</div>
-
-					<div class="col-sm-3 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Customer.Address.State, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.State, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.State)
+						<div class="col-sm-6 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Customer.Address.Line2, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.Line2, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.Line2)
+						</div>
 					</div>
 
-					<div class="col-sm-3 form-group">
-						@Html.LabelFor(m => m.WorkOrder.Customer.Address.ZIP, new { @class = "control-label" })
-						@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.ZIP, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-						@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.ZIP)
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Customer.Address.City, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.City, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.City)
+						</div>
+
+						<div class="col-sm-3 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Customer.Address.State, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.State, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.State)
+						</div>
+
+						<div class="col-sm-3 form-group">
+							@Html.LabelFor(m => m.WorkOrder.Customer.Address.ZIP, new { @class = "control-label" })
+							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.ZIP, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.ZIP)
+						</div>
 					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-sm-6 form-group">
-						@Html.Label("Customer Notes", new { @class = "control-label" })
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							@Html.Label("Customer Notes", new { @class = "control-label" })
 
-						@for (int i = 0; i < Model.WorkOrder.Customer.Notes.Count; i++)
-						{
-							@Html.TextBoxFor(m => Model.WorkOrder.Customer.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control no-vertical-padding" }))
-						}
+							@for (int i = 0; i < Model.WorkOrder.Customer.Notes.Count; i++)
+							{
+								@Html.TextBoxFor(m => Model.WorkOrder.Customer.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control no-vertical-padding" }))
+							}
+						</div>
 					</div>
-				</div>
 
-				<!-- Hidden fields for model binding -->
-				@Html.HiddenFor(m => m.WorkOrder.Id)
-				@Html.HiddenFor(m => m.WorkOrder.Date)
-				@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
-				@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
-				@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
-				@Html.HiddenFor(m => m.WorkOrder.TotalBill)
-				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
-				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
-				@Html.HiddenForEnumerable(m => m.WorkOrder.WorkDescription, "WorkOrder")
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.RecommendedServices, true, "WorkOrder")
+					<!-- Hidden fields for model binding -->
+					@Html.HiddenFor(m => m.WorkOrder.Id)
+					@Html.HiddenFor(m => m.WorkOrder.Date)
+					@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
+					@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
+					@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
+					@Html.HiddenFor(m => m.WorkOrder.TotalBill)
+					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
+					@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
+					@Html.HiddenForEnumerable(m => m.WorkOrder.WorkDescription, "WorkOrder")
+					@Html.HiddenForEnumerable(m => Model.WorkOrder.RecommendedServices, true, "WorkOrder")
 
-				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Code)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Description)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
 
-				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, true, "WorkOrder.Customer")
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
+					@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, true, "WorkOrder.Customer")
 
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Year)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Make)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Model)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.License)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Odometer)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Color)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Engine)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.Transmission)
-				@Html.HiddenFor(m => m.WorkOrder.Vehicle.VIN)
-				@Html.HiddenForEnumerable(m => Model.WorkOrder.Vehicle.Notes, "WorkOrder.Vehicle")
-			</fieldset>
-		}
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Year)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Make)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Model)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.License)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Odometer)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Color)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Engine)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Transmission)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.VIN)
+					@Html.HiddenForEnumerable(m => Model.WorkOrder.Vehicle.Notes, "WorkOrder.Vehicle")
+				</fieldset>
+			}
+		</div>
 	</div>
-</div>
+}
