@@ -86,7 +86,8 @@ namespace DigitalInspection.Models.Mappers
 						rsDto.techNum,
 						rsDto.DIlink,
 						rsDto.estID,
-						rsDto.notificationCnt)
+						rsDto.notificationCnt,
+						rsDto.level)
 					);
 				}
 			}
@@ -174,7 +175,9 @@ namespace DigitalInspection.Models.Mappers
 						rs.TechnicianId,
 						rs.AppLink,
 						rs.EstimateId,
-						rs.NotificationCount)
+						rs.NotificationCount,
+						rs.Severity,
+						rs.IsCustomerConcern)
 					);
 				}
 			}

@@ -441,6 +441,7 @@
     <Content Include="Views\WorkOrders\_Inspection.cshtml" />
     <Content Include="Views\WorkOrders\_EditRecommendedServicesDialog.cshtml" />
     <Content Include="Views\WorkOrders\_CustomerVehicleSummary.cshtml" />
+    <Content Include="Views\WorkOrders\_RecommendedServiceSeverity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

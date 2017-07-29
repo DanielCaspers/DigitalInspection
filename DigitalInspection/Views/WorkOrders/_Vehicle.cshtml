@@ -41,18 +41,18 @@
 				@if (Model.WorkOrder.RecommendedServices != null)
 				{
 					<button type="button"
-							class="btn btn-default no-margin"
+							class="btn btn-default bold no-margin"
 							onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
-						<i class="material-icons">description</i>
+						<span>RS</span>
 					</button>
 				}
 				else
 				{
 					<button type="button"
 							disabled="disabled"
-							class="btn btn-default no-margin"
+							class="btn btn-default bold no-margin"
 							onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
-						<i class="material-icons">description</i>
+						<span>RS</span>
 					</button>
 				}
 
