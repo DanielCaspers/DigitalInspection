@@ -15,51 +15,55 @@
 	@Scripts.Render("~/bundles/App")
 </head>
 <body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid ma-nav-container">
-			<div class="dropdown ma-nav-dropdown">
-				<button type="button" class="btn btn-default" data-toggle="dropdown">
-					<i class="dropdown-toggle material-icons md-24 md-light">
-						menu
-					</i>
-				</button>
-				<ul class="dropdown-menu ma-menu-tray">
-					<li>
-						<a href="@Url.Action("Index", "WorkOrders")"
-						   onclick="FormService.showProgress()">
-							<i class="material-icons">description</i>
-							<span>Work Orders</span>
-						</a>
-					</li>
-					<li>
-						<a href="@Url.Action("Index", "Checklists")"
-						   onclick="FormService.showProgress()">
-							<i class="material-icons">list</i>
-							<span>Checklists</span>
-						</a>
-					</li>
-					<li>
-						<a href="@Url.Action("About", "Home")"
-						   onclick="FormService.showProgress()">
-							<i class="material-icons">info</i>
-							<span>About</span>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<span id="ma-nav-title" class="ma-nav-breadcrumb ma-nav-text">@Model.Resource</span>
+	@if (Model != null && !(Model.Resource == null || Model.Resource == string.Empty))
+	{
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid ma-nav-container">
+				<div class="dropdown ma-nav-dropdown">
+					<button type="button" class="btn btn-default" data-toggle="dropdown">
+						<i class="dropdown-toggle material-icons md-24 md-light">
+							menu
+						</i>
+					</button>
+					<ul class="dropdown-menu ma-menu-tray">
+						<li>
+							<a href="@Url.Action("Index", "WorkOrders")"
+							   onclick="FormService.showProgress()">
+								<i class="material-icons">description</i>
+								<span>Work Orders</span>
+							</a>
+						</li>
+						<li>
+							<a href="@Url.Action("Index", "Checklists")"
+							   onclick="FormService.showProgress()">
+								<i class="material-icons">list</i>
+								<span>Checklists</span>
+							</a>
+						</li>
+						<li>
+							<a href="@Url.Action("About", "Home")"
+							   onclick="FormService.showProgress()">
+								<i class="material-icons">info</i>
+								<span>About</span>
+							</a>
+						</li>
+					</ul>
+				</div>
 
-			<!-- Note: Using navbar-brand on the actionlink causes the height of the bar to increase, covering important tab containers or toolbars slightly.-->
-			<div class="ma-nav-brand">
-				@Html.ActionLink("Murphy Automotive", "Index", "Home", new { area = "" }, new { @class = "text-inverse" })
+				<span id="ma-nav-title" class="ma-nav-breadcrumb ma-nav-text">@Model.Resource</span>
+
+				<!-- Note: Using navbar-brand on the actionlink causes the height of the bar to increase, covering important tab containers or toolbars slightly.-->
+				<div class="ma-nav-brand">
+					@Html.ActionLink("Murphy Automotive", "Index", "Home", new { area = "" }, new { @class = "text-inverse" })
+				</div>
+
+				<div class="ma-nav-account">
+					@Html.Partial("_LoginPartial")
+				</div>
 			</div>
 
-			<div class="ma-nav-account">
-				@Html.Partial("_LoginPartial")
-			</div>
 		</div>
-
-	</div>
+	}
 
 	<div id="ajaxContentWrapper">
 		@if (IsSectionDefined("DetailedNavigationInfo"))
@@ -81,7 +85,7 @@
 			</div>
 			@HtmlHelpers.ProgressBar()
 		}
-		@if (Model.Toast != null)
+		@if (Model != null && Model.Toast != null)
 		{
 			<div>
 				@Html.Partial("Toasts/_Toast", Model.Toast)
@@ -89,16 +93,15 @@
 		}
 
 		@RenderBody()
+
 		<hr />
 		<footer>
-			<p>&copy; @DateTime.Now.Year - Digital Inspection</p>
+			<span>&copy; @DateTime.Now.Year - Digital Inspection</span>
 			<i class="material-icons">content_copy</i>
 			<i class="material-icons">photo_camera</i>
 			<i class="material-icons">add_a_photo</i>
 			<i class="material-icons">local_offer</i>
 			<i class="material-icons">label</i>
-			<i class="material-icons">account_circle</i>
-			<i class="material-icons ">person_add</i>
 			<i class="material-icons">note_add</i>
 		</footer>
 	</div>

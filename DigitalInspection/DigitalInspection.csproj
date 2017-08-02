@@ -249,7 +249,9 @@
     </Compile>
     <Compile Include="Migrations\DigitalInspectionMySqlMigrationSqlGenerator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Web\AuthenticationResponse.cs" />
+    <Compile Include="Models\Web\BaseResponse.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Orders\Address.cs" />
     <Compile Include="Models\Orders\RecommendedService.cs" />
     <Compile Include="Models\Orders\WorkOrderStatus.cs" />
@@ -269,6 +271,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Web\WorkOrderResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Web\AuthenticationService.cs" />
     <Compile Include="Services\Web\WorkOrderService.cs" />
     <Compile Include="Services\Web\HttpClientService.cs" />
     <Compile Include="Services\ExceptionHandlerService.cs" />
@@ -392,18 +395,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
