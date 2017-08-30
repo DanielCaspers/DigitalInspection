@@ -30,18 +30,21 @@ namespace DigitalInspection.Controllers
 		}
 
 		// GET: Checklist items page and return response to index.cshtml
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult Index()
 		{
 			return PartialView(GetChecklistItemViewModel());
 		}
 
-		// GET: _ChecklistItemList partial and return it to _ChecklistItemList.cshtml 
+		// GET: _ChecklistItemList partial and return it to _ChecklistItemList.cshtml
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult _ChecklistItemList()
 		{
 			return PartialView(GetChecklistItemViewModel());
 		}
 
 		//GET: ChecklistItems/Edit/:id
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult Edit(Guid id)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(c => c.Id == id);
@@ -65,6 +68,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost] //TODO: Move Tags parameter into viewModel??
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Create(AddChecklistItemViewModel checklistItem, IList<Guid> tags)
 		{
 			ChecklistItem newItem = new ChecklistItem
@@ -98,6 +102,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Update(Guid id, EditChecklistItemViewModel vm)
 		{
 			var checklistItemInDb = _context.ChecklistItems.SingleOrDefault(c => c.Id == id);
@@ -147,6 +152,7 @@ namespace DigitalInspection.Controllers
 
 		// POST: ChecklistItems/Delete/5
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Delete(Guid id)
 		{
 			try
@@ -188,6 +194,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult AddMeasurement(Guid id)
 		{
 			var checklistItemInDb = _context.ChecklistItems.Find(id);
@@ -212,6 +219,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult DeleteMeasurement(Guid id)
 		{
 			var checklistItemInDb = _context.ChecklistItems.FirstOrDefault(ci => ci.Measurements.Any(m => m.Id == id));
@@ -237,6 +245,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult AddCannedResponse(Guid id)
 		{
 			var checklistItemInDb = _context.ChecklistItems.Find(id);
@@ -265,6 +274,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult DeleteCannedResponse(Guid id)
 		{
 			var checklistItemInDb = _context.ChecklistItems.FirstOrDefault(ci => ci.CannedResponses.Any(m => m.Id == id));

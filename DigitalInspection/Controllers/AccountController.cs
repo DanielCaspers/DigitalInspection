@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using DigitalInspection.Models;
 using DigitalInspection.ViewModels;
 using System.Security.Claims;
 
@@ -79,13 +80,13 @@ namespace DigitalInspection.Controllers
 			  new Claim(ClaimTypes.Name, model.Username),
 
 			  // optionally you could add roles if any
-			  new Claim(ClaimTypes.Role, "RoleName"),
+			  new Claim(ClaimTypes.Role, AuthorizationRoles.ADMIN),
 
 				  },
 				  DefaultAuthenticationTypes.ApplicationCookie);
 
 				HttpContext.GetOwinContext().Authentication.SignIn(
-				   new AuthenticationProperties { IsPersistent = false }, ident);
+				   new AuthenticationProperties { IsPersistent = true }, ident);
 				return RedirectToLocal(returnUrl);
 			}
 			else

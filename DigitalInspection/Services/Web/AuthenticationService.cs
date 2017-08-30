@@ -29,6 +29,8 @@ namespace DigitalInspection.Services
 			{
 				// TODO: Append fields from JWT in responseContent to AuthResponse
 				// TODO: Mutate future instances of HTTPClientService to append the username and password headers if always needed
+				// Need this everywhere
+				// httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "Your Oauth token"); 
 			}
 			else
 			{

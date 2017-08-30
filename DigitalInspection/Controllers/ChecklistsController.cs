@@ -34,18 +34,21 @@ namespace DigitalInspection.Controllers
 		}
 
 		// GET: Checklists page and return response to index.cshtml
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult Index()
 		{
 			return PartialView(GetChecklistViewModel());
 		}
 
-		// GET: Checklists_ChecklistList partial and return it to _ChecklistList.cshtml 
+		// GET: Checklists_ChecklistList partial and return it to _ChecklistList.cshtml
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult _ChecklistList()
 		{
 			return PartialView(GetChecklistViewModel());
 		}
 
 		//GET: Checklists/Edit/:id
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult Edit(Guid id)
 		{
 			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == id);
@@ -74,6 +77,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Update(Guid id, EditChecklistViewModel vm)
 		{
 			var checklistInDb = _context.Checklists.SingleOrDefault(c => c.Id == id);
@@ -116,6 +120,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Create(AddChecklistViewModel list)
 		{
 			Checklist newList = new Checklist
@@ -134,6 +139,7 @@ namespace DigitalInspection.Controllers
 
 		// POST: Checklist/Delete/5
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Delete(Guid id)
 		{
 			try

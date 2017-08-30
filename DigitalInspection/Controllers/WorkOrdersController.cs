@@ -22,6 +22,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		// GET: Work Orders page and return response to index.cshtml
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public async Task<PartialViewResult> Index()
 		{
 			var task = await GetWorkOrdersViewModel();
@@ -29,12 +30,14 @@ namespace DigitalInspection.Controllers
 		}
 
 		// GET: _WorkOrderTable partial and return it to _WorkOrderTable.cshtml 
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public async Task<PartialViewResult> _WorkOrderTable()
 		{
 			var task = await GetWorkOrdersViewModel();
 			return PartialView(task);
 		}
 
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public PartialViewResult _Customer(string id, bool canEdit = false)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
@@ -45,6 +48,7 @@ namespace DigitalInspection.Controllers
 			return GetWorkOrderViewModel(id, tabVM, canEdit);
 		}
 
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public PartialViewResult _Vehicle(string id, bool canEdit = false)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
@@ -55,6 +59,7 @@ namespace DigitalInspection.Controllers
 			return GetWorkOrderViewModel(id, tabVM, canEdit);
 		}
 
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public PartialViewResult _Inspection(string id)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
@@ -79,6 +84,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult SaveCustomer(string id, WorkOrderDetailViewModel vm, bool releaselockonly = false)
 		{
 			var task = Task.Run(async () => {
@@ -100,6 +106,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult SaveVehicle(string id, WorkOrderDetailViewModel vm)
 		{
 			var task = Task.Run(async () => {

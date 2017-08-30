@@ -1,4 +1,5 @@
-﻿using DigitalInspection.ViewModels;
+﻿using DigitalInspection.Models;
+using DigitalInspection.ViewModels;
 using System.Web.Mvc;
 
 namespace DigitalInspection.Controllers
@@ -10,11 +11,13 @@ namespace DigitalInspection.Controllers
 		{
 		}
 
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult Index()
 		{
 			return View(new BaseHomeViewModel());
 		}
 
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult About()
 		{
 			return View(new BaseAboutViewModel());

@@ -228,6 +228,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AuthorizationRoles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
     <Compile Include="Models\Mappers\WorkOrderMapper.cs" />
