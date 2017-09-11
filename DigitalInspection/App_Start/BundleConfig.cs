@@ -11,6 +11,7 @@ namespace DigitalInspection
 		{
 			const string LIB_DIR_PREFIX = "~/Scripts/Library/";
 			const string APP_DIR_PREFIX = "~/Scripts/App/Shared/Services";
+			const string STYLE_LIB_DIR_PREFIX = "~/Content/Library/";
 
 			bundles.Add(
 				new ScriptBundle("~/bundles/Library").Include(
@@ -28,7 +29,9 @@ namespace DigitalInspection
 					LIB_DIR_PREFIX + "DataTables/dataTables.select.min.js",
 					LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
 					LIB_DIR_PREFIX + "Bootstrap-Material/ripples.js",
-					LIB_DIR_PREFIX + "Bootstrap-Multiselect/bootstrap-multiselect.js"
+					LIB_DIR_PREFIX + "Bootstrap-Multiselect/bootstrap-multiselect.js",
+					LIB_DIR_PREFIX + "Bootstrap-Select/bootstrap-select.min.js"
+
 				)
 			);
 
@@ -38,12 +41,13 @@ namespace DigitalInspection
 						APP_DIR_PREFIX, "*.service.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
-					  "~/Content/bootstrap.css",
-					  "~/Content/bootstrap-material-design.css",
-					  "~/Content/bootstrap-multiselect.css",
-					  "~/Content/material-icons.css",
-					  "~/Content/ripples.css",
-					  "~/Content/site.css"));
+					STYLE_LIB_DIR_PREFIX + "bootstrap.css",
+					STYLE_LIB_DIR_PREFIX + "bootstrap-material-design.css",
+					STYLE_LIB_DIR_PREFIX + "bootstrap-multiselect.css",
+					STYLE_LIB_DIR_PREFIX + "bootstrap-select.min.css",
+					STYLE_LIB_DIR_PREFIX + "material-icons.css",
+					STYLE_LIB_DIR_PREFIX + "ripples.css",
+					"~/Content/site.css"));
 		}
 	}
 }

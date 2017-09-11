@@ -4,48 +4,70 @@
 	ViewBag.Dan_Email = "daniel@caspersonline.us";
 	ViewBag.Steve_Name = "Steve Caspers";
 	ViewBag.Steve_Email = "steve.caspers@murphyauto.net";
-
+	ViewBag.Rick_Name = "Rick Murphy";
+	ViewBag.Rick_Email = "rick.murphy@murphyauto.net";
 }
 
 <h2 class="text-center">@ViewBag.Title</h2>
 
 <div class="row">
 
-	<div class="col-sm-6 col-md-4 col-md-offset-2">
+	<div class="col-sm-4">
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="panel-title">
 					<h4>@ViewBag.Steve_Name</h4>
-					<a href="mailto:@ViewBag.Steve_Email">@ViewBag.Steve_Email</a>
 				</div>
 			</div>
 			<div class="panel-body">
-				<img class="img-rounded center-image" 
-					 height="225"
-					 width="300"
-					 src="https://lh3.googleusercontent.com/08_-3r_kYamXOH8cNf_3KB_oYBDxzMpGccfunorGWBksQ5KNmNXnPcy5T9gRWMuhdqW60vXr2_P8LzPn4jKCYKqamY8_StdgTecng8sn8jDxarxn3DHX7n6X1nylX46dBZ9pItaoADM6drcxTgTRXBndGUtIUQpDhKI-dFI7qL98MCjnGaBee6mkiuGUGf-P1aGZVH07Ukenudj5I2zAdEL-WIiwGQbrtnyJNGsyhZVhG8hNKSBxh6h7hmRWbovA-BunVI6mMk9paJCCQA_6WiqLCNtE-_DsPC8dupBP73KY0oyD8mQWmVaGSqM1xJUUv0iPJWKCAGU5KPcuEN9cDl4fljh8xdFQAJw9RbxtK35lkh_R6YBziU1ye3TSgfTbfS0m5Ct9NVn_okMAPnPJwqdGjpRLSR_zdntVXiz0vFi99EGx60P5icZZVHd9nD38fH2n1H6bYFbvmO5gzhEy3ZvIVv57lwZRlluYlxmgcjHZrfaQqiB1hySxnVWX6IT1yiDLr6RJrBgCRuezpfUhTWwnKCtwEgqU_esKOXxSC2Y0LvjF4H4I3tNY7pygVPHCTOglqDPYm-dlwC5e26zab-6GLZRpNIJvjrpYRMTltfCJFvxn3XE7M7vv1jhyVMpO2FbSa-Xa1r60jn8qc5lTP97c8GoqGJkBfRL6-V8naw=w1682-h1261-no" 
-					 alt="icon"/>
-
+				<ul>
+					<li>Product owner</li>
+					<li>On-site support</li>
+					<li>Troubleshooting</li>
+					<li>"PICK" and Work Order System Support</li>
+				</ul>
 			</div>
 			<div class="panel-footer">
-				On-site support and troubleshooting
+				<a href="mailto:@ViewBag.Steve_Email">@ViewBag.Steve_Email</a>
 			</div>
 		</div>
 	</div>
 
-	<div class="col-sm-6 col-md-4">
+	<div class="col-sm-4">
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="panel-title">
 					<h4>@ViewBag.Dan_Name</h4>
-					<a href="mailto:@ViewBag.Dan_Email">@ViewBag.Dan_Email</a>
 				</div>
 			</div>
 			<div class="panel-body">
-				<img class="img-rounded center-image" src="http://likeabossa.com/img/band/Dan.jpg" alt="icon" />
+				<ul>
+					<li>User Experience Designer</li>
+					<li>Developer</li>
+					<li>Digital Inspection support</li>
+				</ul>
 			</div>
 			<div class="panel-footer">
-				Developer and Software support
+				<a href="mailto:@ViewBag.Dan_Email">@ViewBag.Dan_Email</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-4">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="panel-title">
+					<h4>@ViewBag.Rick_Name</h4>
+				</div>
+			</div>
+			<div class="panel-body">
+				<ul>
+					<li>Product owner</li>
+					<li>On-site support</li>
+				</ul>
+			</div>
+			<div class="panel-footer">
+				<a href="mailto:@ViewBag.Rick_Email">@ViewBag.Rick_Email</a>
 			</div>
 		</div>
 	</div>
@@ -65,7 +87,7 @@
 
 				<div class="row">
 					<div class="col-sm-3">
-						<a class="btn btn-primary" href="mailto:@ViewBag.Dan_Email,@ViewBag.Steve_Email">Email us</a>
+						<a class="btn btn-primary" href="mailto:@ViewBag.Dan_Email,@ViewBag.Steve_Email,@ViewBag.Rick_Email">Email us</a>
 					</div>
 					<div class="col-sm-9">
 						<a class="btn btn-primary" href="https://github.com/DanielCaspers/DigitalInspection/issues">Share your idea on the project site</a>
@@ -85,7 +107,7 @@
 
 				<div class="row">
 					<div class="col-sm-3">
-						<a class="btn btn-primary" href="mailto:@ViewBag.Dan_Email,@ViewBag.Steve_Email">Email us</a>
+						<a class="btn btn-primary" href="mailto:@ViewBag.Dan_Email,@ViewBag.Steve_Email,@ViewBag.Rick_Email">Email us</a>
 					</div>
 					<div class="col-sm-9">
 						<a class="btn btn-primary" href="https://github.com/DanielCaspers/DigitalInspection/issues/new">Log a bug in the issue tracker</a>

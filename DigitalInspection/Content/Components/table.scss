@@ -1,0 +1,82 @@
+﻿table {
+	&.dataTable{
+		&.no-footer{
+			border-bottom: none;
+		}
+
+		tbody tr:hover{
+			background-color: rgba(0,150,136, 0.08) !important;
+		}
+	}
+
+	.checkbox-with-label{
+		margin-right: 15px;
+	}
+
+	tbody tr {
+		cursor: pointer !important;
+
+		td {
+			vertical-align: middle !important;
+			
+			&.color-indicator{
+				width: 10px !important;
+				padding: 0px !important;
+				opacity: 0.8;
+				border:1px solid black;
+				border-top:none;
+				border-bottom:none;
+			}
+
+		}
+
+	}
+}
+
+.dataTables_wrapper {
+	.dataTables_info{
+		color: $material-info;
+	}
+	.dataTables_length{
+		padding-top: 10px;
+		label{
+			color: $material-primary;
+			select {
+				text-align: center;
+				text-align-last:center;
+
+				width: 80px;
+				border:none;
+			}
+		}
+	}
+
+	.dataTables_paginate{
+		%undo-bundled-styles{
+			border:none;
+			background:none !important;
+		}
+
+		//Emulate Bootstrap Material Button behavior
+		.paginate_button {
+			color: $material-primary !important;
+
+			&[disabled]{
+				color: rgba(0, 0, 0, 0.26);
+				background: transparent;
+			}
+
+			&:hover{
+				@extend %undo-bundled-styles;
+				color: $material-primary !important;
+				background-color: $material-disabled-button !important;
+			}
+
+			&.current, &.current:hover {
+				@extend %undo-bundled-styles;
+				color: #fff !important;
+				background-color: $material-primary !important;
+			}
+		}
+	}
+}

@@ -8,6 +8,9 @@ body {
 	padding-bottom: 20px;
 }
 
+@import "Components/components.scss";
+@import "Views/views.scss";
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -15,23 +18,13 @@ body {
 	white-space: normal;
 }
 
-//Compilation demo using webview essentials
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-	 -moz-border-radius: $radius;
-	  -ms-border-radius: $radius;
-		  border-radius: $radius;
-}
-
-.box { @include border-radius(15px); }
-
 //Convenience classes
 img.center-image{
 	margin:auto;
 	display:block;
 }
 
-.text-inverse{
+.text-inverse, .text-inverse:hover, a.text-inverse:hover{
 	color:#ffffff;
 }
 
@@ -49,354 +42,17 @@ a, button {
 		margin: 0px;
 	}
 
+	&.no-padding-horizontal {
+		padding-left: 5px !important;
+		padding-right: 5px !important;
+	}
+
 	&.no-transform{
 		text-transform:none;
 	}
-}
-
-@mixin circle($radius) {
-	width: $radius * 2;
-	height: $radius * 2;
-	border-radius: $radius;
-}
-
-.car-color-indicator{
-	@include circle(10px);
-	display: inline-block;
-	margin-bottom:-5px;
-	margin-left:5px;
-}
-
-// Form classes
-.field-validation-error, .field-validation-valid{
-	color:#f44336 ;
-}
-
-.form-group .form-control.no-vertical-padding {
-	margin-bottom:0 !important;
-	height: 30px;
-}
-
-
-// Overrides Bootstrap Material disabled look to be more obvious
-.form-control[disabled], 
-.form-group .form-control[disabled]
-{
-	color:rgba( 0, 0, 0, 0.75) !important;
-	border-bottom: none !important;
 }
 
 // Override Bootstrap Modal CSS
 .modal-dialog.modal-lg {
 	width: 95% !important;
 }
-
-
-
-@mixin dropdown-tray($trayWidth, $linkPadding) {
-	width: $trayWidth;
-	li{
-		justify-content: space-around;
-		align-items:center;
-
-		a{
-			line-height:44px;
-			display:flex;
-			flex: 1 1 auto;
-			padding: $linkPadding !important;
-		}
-
-		i.material-icons{
-			margin-top:9px;
-			margin-right:15px;
-			margin-left:10px;
-		}
-	} 
-}
-
-.ma-dropdown-tray{
-	@include dropdown-tray(150px, 0px);
-}
-
-//Flex classes
-.inline{
-	display: inline;
-}
-.container-flex{
-	display:flex;
-
-	&.align-center{
-		align-items:center;
-	}
-
-	&.around{
-		justify-content: space-around;
-	}
-
-	&.between{
-		justify-content: space-between;
-	}
-
-	&.center{
-		justify-content: center;
-	}
-
-	&.end{
-		justify-content: flex-end;
-	}
-}
-
-.flex-item{
-	flex: 0 1 auto;
-}
-
-// Tables
-table {
-	&.dataTable{
-		&.no-footer{
-			border-bottom: none;
-		}
-
-		tbody tr:hover{
-			background-color: rgba(0,150,136, 0.08) !important;
-		}
-	}
-
-	.checkbox-with-label{
-		margin-right: 15px;
-	}
-
-	tbody tr {
-		cursor: pointer !important;
-
-		td.color-indicator{
-			width: 10px !important;
-			padding: 0px !important;
-			opacity: 0.8;
-			border:1px solid black;
-			border-top:none;
-			border-bottom:none;
-		}
-	}
-}
-
-.dataTables_wrapper {
-	.dataTables_info{
-		color: $material-info;
-	}
-	.dataTables_length{
-		padding-top: 10px;
-		label{
-			color: $material-primary;
-			select {
-				text-align: center;
-				text-align-last:center;
-
-				width: 80px;
-				border:none;
-			}
-		}
-	}
-
-	.dataTables_paginate{
-		%undo-bundled-styles{
-			border:none;
-			background:none !important;
-		}
-
-		//Emulate Bootstrap Material Button behavior
-		.paginate_button {
-			color: $material-primary !important;
-
-			&[disabled]{
-				color: rgba(0, 0, 0, 0.26);
-				background: transparent;
-			}
-
-			&:hover{
-				@extend %undo-bundled-styles;
-				color: $material-primary !important;
-				background-color: $material-disabled-button !important;
-			}
-
-			&.current, &.current:hover {
-				@extend %undo-bundled-styles;
-				color: #fff !important;
-				background-color: $material-primary !important;
-			}
-		}
-	}
-}
-
-.ma-card{
-	.img-darkener{
-		background:#444444;
-	}
-
-	img {
-		// Match panel border radius
-		border-bottom-right-radius: 2px;
-		border-bottom-left-radius: 2px;
-
-		opacity: 0.7;
-
-		&:hover {
-			opacity: 1.0;
-		}
-	}
-}
-
-.ma-inline-form {
-	display: inline !important;
-}
-
-//_layout.cshtml
-.ma-nav-container{
-	display:flex;
-	justify-content: space-between;
-	align-items: center;
-
-	.ma-nav-text{
-		@extend .text-inverse;
-		text-transform: none !important;
-		font-weight: bold;
-		font-size: 16px;
-	}
-
-	.ma-nav-dropdown{
-		flex: 0 1 auto;
-
-		button{
-			margin: 0;
-			padding: 15px;
-		}
-
-		.ma-menu-tray {
-			@include dropdown-tray(200px, 3px);
-		}
-	}
-
-	.ma-nav-breadcrumb{
-		padding-left:10px;
-		flex:1 1 auto;
-	}
-
-	.ma-nav-brand{
-		flex: 1 1 auto;
-	}
-
-	.ma-nav-account{
-		flex: 0 1 auto;
-
-		button{
-			margin: 5px;
-			padding: 0px 5px;
-		}
-
-		.ma-account-name{
-			padding-right:15px;
-		}
-	}
-
-}
-
-.ma-progress-bar {
-	visibility: hidden;
-	margin-top: -20px;
-
-	[role="progressbar"]{
-		width: 45%;
-	}
-}
-
-.ma-toast{
-	display: flex !important;
-	align-items: center !important;
-	justify-content: space-between !important;
-
-	margin-top:20px;
-	padding-right: 0px;
-
-	button{
-		margin: 0px !important;
-	}
-}
-
-.ma-well{
-	background-color: #eeeeee;
-	-webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-
-	// Aligns items with list content in checklist and tags lists
-	padding: 9px 31px;
-}
-
-.ma-nav-info{
-	background-color: inherit;
-	margin-bottom: 0;
-	line-height: 40px;
-	font-weight:bold;
-}
-
-// BS MultiSelect - Using plugin defined classes http://davidstutz.github.io/bootstrap-multiselect/#styling
-.multiselect-native-select{
-	$multiselect-font-size: 16px;
-	.multiselect-container.dropdown-menu{
-
-		li {
-			&:not(.multiselect-filter){
-				height: 38px;
-			}
-
-			&.active label{
-				background-color:white;
-				color:$material-primary !important;
-				font-size: $multiselect-font-size;
-			}
-
-			label{
-				font-size: $multiselect-font-size;
-				color:#555;
-			}
-		}
-
-		button.multiselect-clear-filter i{
-			font-size: 18px;
-		}
-	}
-	
-	.multiselect-selected-text {
-		text-transform: none;
-		color:$material-primary;
-		font-size: $multiselect-font-size;
-	}
-}
-
-
-//_tabContainer.cshtml
-.ma-tab-container {
-	height: 60px;
-
-	a{
-		font-weight: bold !important;
-		padding-top: 17px;
-	}
-}
-
-
-/*
- ===Google Material Icons Styles===
-*/
-/* Rules for sizing the icon. */
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
-
-/* Rules for using icons as black on a light background. */
-.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
-.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
-
-/* Rules for using icons as white on a dark background. */
-.material-icons.md-light { color: rgba(255, 255, 255, 1); }
-.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }

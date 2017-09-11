@@ -1,0 +1,24 @@
+﻿@mixin dropdown-tray($trayWidth, $linkPadding) {
+	width: $trayWidth;
+	li{
+		justify-content: space-around;
+		align-items:center;
+
+		a{
+			line-height:44px;
+			display:flex;
+			flex: 1 1 auto;
+			padding: $linkPadding !important;
+		}
+
+		i.material-icons{
+			margin-top:9px;
+			margin-right:15px;
+			margin-left:10px;
+		}
+	} 
+}
+
+.ma-dropdown-tray{
+	@include dropdown-tray(150px, 0px);
+}

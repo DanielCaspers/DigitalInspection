@@ -10,7 +10,8 @@ namespace DigitalInspection.Models.Orders
 		SHOULD_WATCH = 3,
 		MAINTENANCE = 4,
 		NOTES = 5,
-		UNKNOWN = 6
+		// TODO add OK to 0 or 6  
+		UNKNOWN = 9
 	}
 
 	public class RecommendedService

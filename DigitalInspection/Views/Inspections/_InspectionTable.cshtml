@@ -1,0 +1,121 @@
+﻿@model DigitalInspection.ViewModels.InspectionDetailViewModel
+@using DigitalInspection.Views.Helpers;
+
+<script type="text/javascript">
+	TableService.showTable(
+		'inspectionTable',
+		[10, 15, 20, 40],
+		[{
+			targets: 3,
+			orderable: false,
+			searchable: false
+		}]
+	);
+
+	$('.selectpicker').selectpicker({
+		width: '100px'
+	});
+
+	// TODO - WARNING - This might not work with pagination
+	$(function () {
+		$('.condition-group button').click(function () {
+			$(this).addClass('active').siblings().removeClass('active');
+		});
+	});
+
+	// TODO - WARNING - This might not work with pagination
+	//http://stackoverflow.com/a/35651254/2831961
+	var selectBoxIds = JSON.parse('@Html.Raw(Json.Encode(Model.Checklist.ChecklistItems.Select(ci => ci.Id).ToList()  ))');
+	console.log(selectBoxIds);
+	for (var i = 0; i < selectBoxIds.length; i++) {
+		MultiSelectService.show(selectBoxIds[i]);
+	}
+</script>
+
+
+<div class="jumbotron">
+	<table id="inspectionTable" class="table table-striped table-condensed table-responsive form-group">
+		<thead>
+			<tr>
+				<th>Item</th>
+				<th>Condition</th>
+				<th>Canned Response</th>
+				<th>Notes</th>
+				<th>Photos</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var checklistItem in Model.Checklist.ChecklistItems)
+			{
+				<tr>
+					<td>@checklistItem.Name</td>
+					<td nowrap>
+						<div class="condition-group">
+								<button type="button"
+										class="btn btn-raised btn-success group-left no-margin no-padding-horizontal">
+									<i class="material-icons">check</i>
+								</button>
+							<select data-width="70px"
+									data-style="recommended-service-picker"
+									class="selectpicker group-center">
+								<option data-content="<i></i>" selected="selected" style="visibility:hidden;">
+								</option>
+								<option data-content="@RecommendedServiceHelpers.Immediate(true, true).ToString()">
+									Immediate
+								</option>
+								<option data-content="@RecommendedServiceHelpers.Moderate(true, true).ToString()">
+								<option data-content="@RecommendedServiceHelpers.Watch(true, true).ToString()">
+									Should watch
+								</option>
+								<option data-content="@RecommendedServiceHelpers.Maintenance(true, true).ToString()">
+									Maintenance
+								</option>
+								<option data-content="@RecommendedServiceHelpers.Notes(true, true).ToString()">
+									Notes
+								</option>
+							</select>
+
+								<button type="button"
+										class="btn btn-raised btn-info group-right no-margin no-padding-horizontal"
+										style="height: 40px;">
+									N/A
+								</button>
+						</div>
+					</td>
+					<td class="dropdown-cell">
+						@*@Html.LabelFor(m => m.ChecklistItem.Tags, new { @class = "control-label" })*@
+						<!-- TODO: Watch model binding here, was just trying to make it look like it works -->
+						<div style="max-width: 200px;">
+							@Html.ListBoxFor(
+								m => checklistItem.CannedResponses,
+								new MultiSelectList(checklistItem.CannedResponses, "Id", "Response"),
+								new
+								{
+									id = checklistItem.Id,
+									@class = "form-control ma-multi-select",
+									required = "required"
+								}
+							)
+						</div>
+
+						@*@Html.ValidationMessageFor(m => m.SelectedTagIds)*@
+					</td>
+					<td class="flex-item">
+						<button type="button"
+								class="btn btn-primary no-margin no-padding-horizontal"
+								onclick="DialogService.show('addInspectionNoteDialog', 'addInspectionNoteForm')">
+							<i class="material-icons">note_add</i>
+						</button>
+					</td>
+					<td class="flex-item">
+						<button type="button"
+								class="btn btn-primary no-margin no-padding-horizontal"
+								onclick="DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm')">
+							<i class="material-icons">add_a_photo</i>
+						</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

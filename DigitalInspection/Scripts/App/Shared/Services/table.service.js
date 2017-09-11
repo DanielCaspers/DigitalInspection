@@ -2,6 +2,7 @@
 	var TableService = function () { };
 }
 
+// TODO Improve API to prevent sorting for inspectionTable
 TableService.showTable = function (elementId, pageSizeOptions, columnRules, onSelect) {
 	$(document).ready(function () {
 		var tableSelector = '#' + elementId;

@@ -1,53 +1,41 @@
-﻿@using DigitalInspection.ViewModels
+﻿@using DigitalInspection.Views.Helpers
 @{
 	ViewBag.Title = "Digital Inspection";
 }
 
 <div class="container">
 
-	<!-- Begin throwaway code-->
-	Welcome to the toast playground. Check out what we can return with AJAX now.
+	<div class="col-sm-4" style="margin-top: 30px;">
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<div class="panel-title">
+					<h4>Widget Ideas?</h4>
+				</div>
+			</div>
+			<div class="panel-body">
+				<a href="https://github.com/DanielCaspers/DigitalInspection/issues/58">Share your ideas</a>
+				for what would be useful at-a-glance info. 
+			</div>
+		</div>
+	</div>
 
-	@Html.Partial("Toasts/_Toast", new ToastViewModel
-	{
-		Icon = "cloud_done",
-		Message = "Inspection has been sent to your service advisor!",
-		Type = ToastType.Success,
-		Action = ToastActionType.Close
-	})
-
-	Developer proposal for handling file lock. X-lube has lock that front counter wants
-	@Html.Partial("Toasts/_Toast", new ToastViewModel
-	{
-		Icon = "lock",
-		Message = "X-lube (192.168.2.2) has locked this work order. Request unlock?",
-		Type = ToastType.Warn,
-		Action = ToastActionType.Unlock
-	})
-
-	@Html.Partial("Toasts/_Toast", new ToastViewModel
-	{
-		Icon = "lock",
-		Message = "Front counter (192.168.2.3) wants to edit this work order. Grant unlock?",
-		Type = ToastType.Info,
-		Action = ToastActionType.Unlock
-	})
-
-	@Html.Partial("Toasts/_Toast", new ToastViewModel
-	{
-		Icon = "lock_open",
-		Message = "X-lube (192.168.2.2) unlocked the work order for you!",
-		Type = ToastType.Success,
-		Action = ToastActionType.Close
-	})
-
-	@Html.Partial("Toasts/_Toast", new ToastViewModel
-	{
-		Icon = "lock",
-		Message = "X-lube (192.168.2.2) isn't ready to unlock yet!",
-		Type = ToastType.Warn,
-		Action = ToastActionType.Close
-	})
+	<div class="col-sm-4" style="margin-top: 30px;">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<div class="panel-title">
+					<h4>Completed work orders this week</h4>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="progress progress-danger col-sm-8" style="margin-top: 10px;">
+					<div class="progress-bar" style="margin-left: -40px; width: 50%; height: 10px; background-color:red;"></div>
+					<div class="progress-bar" style="width: 35%; height: 10px; background-color:orange;"></div>
+					<div class="progress-bar" style="width: 35%; height: 10px; background-color:green;"></div>
+				</div>
+				<div class="col-sm-4">17 of 20</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 

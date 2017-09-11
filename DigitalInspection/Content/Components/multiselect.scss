@@ -1,0 +1,33 @@
+﻿// BS MultiSelect - Using plugin defined classes http://davidstutz.github.io/bootstrap-multiselect/#styling
+.multiselect-native-select{
+	$multiselect-font-size: 16px;
+	.multiselect-container.dropdown-menu{
+
+		li {
+			&:not(.multiselect-filter){
+				height: 38px;
+			}
+
+			&.active label{
+				background-color:white;
+				color:$material-primary !important;
+				font-size: $multiselect-font-size;
+			}
+
+			label{
+				font-size: $multiselect-font-size;
+				color:#555;
+			}
+		}
+
+		button.multiselect-clear-filter i{
+			font-size: 18px;
+		}
+	}
+	
+	.multiselect-selected-text {
+		text-transform: none;
+		color:$material-primary;
+		font-size: $multiselect-font-size;
+	}
+}

@@ -1,0 +1,56 @@
+﻿$recommended-service-immediate: red;
+$recommended-service-moderate: orange;
+$recommended-service-watch: #888;
+$recommended-service-maintenance: mediumblue;
+$recommended-service-notes: black;
+
+i.recommended-service {
+	&.immediate{
+		color: $recommended-service-immediate;
+	}
+
+	&.moderate{
+		color: $recommended-service-moderate;
+	}
+
+	&.watch{
+		color: $recommended-service-watch;
+	}
+
+	&.maintenance{
+		color: $recommended-service-maintenance;
+	}
+
+	&.notes{
+		color: $recommended-service-notes;
+	}
+}
+
+span.recommended-service.label {
+	border-radius:5px;
+
+	&.immediate{
+		color: #fff;
+		background-color:$recommended-service-immediate;
+	}
+
+	&.moderate{
+		color: #fff;
+		background-color:$recommended-service-moderate;
+	}
+
+	&.watch{
+		color: #fff;
+		background-color:$recommended-service-watch;
+	}
+
+	&.maintenance{
+		color: #fff;
+		background-color:$recommended-service-maintenance;
+	}
+
+	&.notes{
+		color: #fff;
+		background-color:$recommended-service-notes;
+	}
+}

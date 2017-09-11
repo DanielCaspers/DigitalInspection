@@ -1,21 +1,22 @@
 ﻿@model RecommendedService
 @using DigitalInspection.Models.Orders
+@using DigitalInspection.Views.Helpers
 
 @switch (Model.Severity)
 {
 	case RecommendedServiceSeverity.IMMEDIATE:
-		<i class="material-icons" style="color:red">warning</i>
+		@RecommendedServiceHelpers.Immediate(true, false);
 		break;
 	case RecommendedServiceSeverity.MODERATE:
-		<i class="material-icons" style="color:orange">alarm</i>
+		@RecommendedServiceHelpers.Moderate(true, false);
 		break;
 	case RecommendedServiceSeverity.SHOULD_WATCH:
-		<i class="material-icons" style="color:#888">remove_red_eye</i>
+		@RecommendedServiceHelpers.Watch(true, false);
 		break;
 	case RecommendedServiceSeverity.MAINTENANCE:
-		<i class="material-icons" style="color:mediumblue">date_range</i>
+		@RecommendedServiceHelpers.Maintenance(true, false);
 		break;
 	case RecommendedServiceSeverity.NOTES:
-		<i class="material-icons" style="color:black">description</i>
+		@RecommendedServiceHelpers.Notes(true, false);
 		break;
 }

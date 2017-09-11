@@ -2,38 +2,6 @@
   padding-top: 50px;
   padding-bottom: 20px; }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-  white-space: normal; }
-
-.box {
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  -ms-border-radius: 15px;
-  border-radius: 15px; }
-
-img.center-image {
-  margin: auto;
-  display: block; }
-
-.text-inverse, .ma-nav-container .ma-nav-text {
-  color: #ffffff; }
-
-a.back-button, button.back-button {
-  font-weight: bold;
-  text-transform: none; }
-
-a.bold, button.bold {
-  font-weight: bold; }
-
-a.no-margin, button.no-margin {
-  margin: 0px; }
-
-a.no-transform, button.no-transform {
-  text-transform: none; }
-
 .car-color-indicator {
   width: 20px;
   height: 20px;
@@ -42,20 +10,15 @@ a.no-transform, button.no-transform {
   margin-bottom: -5px;
   margin-left: 5px; }
 
-.field-validation-error, .field-validation-valid {
-  color: #f44336; }
+.ma-card .img-darkener {
+  background: #444444; }
 
-.form-group .form-control.no-vertical-padding {
-  margin-bottom: 0 !important;
-  height: 30px; }
-
-.form-control[disabled],
-.form-group .form-control[disabled] {
-  color: rgba(0, 0, 0, 0.75) !important;
-  border-bottom: none !important; }
-
-.modal-dialog.modal-lg {
-  width: 95% !important; }
+.ma-card img {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  opacity: 0.7; }
+  .ma-card img:hover {
+    opacity: 1.0; }
 
 .ma-dropdown-tray {
   width: 150px; }
@@ -91,6 +54,113 @@ a.no-transform, button.no-transform {
 .flex-item {
   flex: 0 1 auto; }
 
+.field-validation-error, .field-validation-valid {
+  color: #f44336; }
+
+.form-group .form-control.no-vertical-padding {
+  margin-bottom: 0 !important;
+  height: 30px; }
+
+.form-control[disabled],
+.form-group .form-control[disabled] {
+  color: rgba(0, 0, 0, 0.75) !important;
+  border-bottom: none !important; }
+
+.ma-inline-form {
+  display: inline !important; }
+
+/* Rules for sizing the icon. */
+.material-icons.md-18 {
+  font-size: 18px; }
+
+.material-icons.md-24 {
+  font-size: 24px; }
+
+.material-icons.md-36 {
+  font-size: 36px; }
+
+.material-icons.md-48 {
+  font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark {
+  color: rgba(0, 0, 0, 0.54); }
+
+.material-icons.md-dark.md-inactive {
+  color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light {
+  color: white; }
+
+.material-icons.md-light.md-inactive {
+  color: rgba(255, 255, 255, 0.3); }
+
+.multiselect-native-select .multiselect-container.dropdown-menu li:not(.multiselect-filter) {
+  height: 38px; }
+
+.multiselect-native-select .multiselect-container.dropdown-menu li.active label {
+  background-color: white;
+  color: #009688 !important;
+  font-size: 16px; }
+
+.multiselect-native-select .multiselect-container.dropdown-menu li label {
+  font-size: 16px;
+  color: #555; }
+
+.multiselect-native-select .multiselect-container.dropdown-menu button.multiselect-clear-filter i {
+  font-size: 18px; }
+
+.multiselect-native-select .multiselect-selected-text {
+  text-transform: none;
+  color: #009688;
+  font-size: 16px; }
+
+.ma-progress-bar {
+  visibility: hidden;
+  margin-top: -20px; }
+  .ma-progress-bar [role="progressbar"] {
+    width: 45%; }
+
+i.recommended-service.immediate {
+  color: red; }
+
+i.recommended-service.moderate {
+  color: orange; }
+
+i.recommended-service.watch {
+  color: #888; }
+
+i.recommended-service.maintenance {
+  color: mediumblue; }
+
+i.recommended-service.notes {
+  color: black; }
+
+span.recommended-service.label {
+  border-radius: 5px; }
+  span.recommended-service.label.immediate {
+    color: #fff;
+    background-color: red; }
+  span.recommended-service.label.moderate {
+    color: #fff;
+    background-color: orange; }
+  span.recommended-service.label.watch {
+    color: #fff;
+    background-color: #888; }
+  span.recommended-service.label.maintenance {
+    color: #fff;
+    background-color: mediumblue; }
+  span.recommended-service.label.notes {
+    color: #fff;
+    background-color: black; }
+
+.ma-tab-container {
+  height: 60px; }
+  .ma-tab-container a {
+    font-weight: bold !important;
+    padding-top: 17px; }
+
 table.dataTable.no-footer {
   border-bottom: none; }
 
@@ -102,13 +172,15 @@ table .checkbox-with-label {
 
 table tbody tr {
   cursor: pointer !important; }
-  table tbody tr td.color-indicator {
-    width: 10px !important;
-    padding: 0px !important;
-    opacity: 0.8;
-    border: 1px solid black;
-    border-top: none;
-    border-bottom: none; }
+  table tbody tr td {
+    vertical-align: middle !important; }
+    table tbody tr td.color-indicator {
+      width: 10px !important;
+      padding: 0px !important;
+      opacity: 0.8;
+      border: 1px solid black;
+      border-top: none;
+      border-bottom: none; }
 
 .dataTables_wrapper .dataTables_info {
   color: #03a9f4; }
@@ -139,18 +211,26 @@ table tbody tr {
     color: #fff !important;
     background-color: #009688 !important; }
 
-.ma-card .img-darkener {
-  background: #444444; }
+.ma-toast {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-top: 20px;
+  padding-right: 0px; }
+  .ma-toast button {
+    margin: 0px !important; }
 
-.ma-card img {
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
-  opacity: 0.7; }
-  .ma-card img:hover {
-    opacity: 1.0; }
+.ma-toolbar {
+  background-color: #eeeeee;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  padding: 9px 31px; }
 
-.ma-inline-form {
-  display: inline !important; }
+.ma-nav-info {
+  background-color: inherit;
+  margin-bottom: 0;
+  line-height: 40px;
+  font-weight: bold; }
 
 .ma-nav-container {
   display: flex;
@@ -192,86 +272,66 @@ table tbody tr {
     .ma-nav-container .ma-nav-account .ma-account-name {
       padding-right: 15px; }
 
-.ma-progress-bar {
-  visibility: hidden;
-  margin-top: -20px; }
-  .ma-progress-bar [role="progressbar"] {
-    width: 45%; }
+td.dropdown-cell button.multiselect.dropdown-toggle {
+  padding-left: 0px !important;
+  padding-right: 0px !important; }
 
-.ma-toast {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  margin-top: 20px;
-  padding-right: 0px; }
-  .ma-toast button {
-    margin: 0px !important; }
+.condition-group .group-left {
+  opacity: 0.35;
+  border-radius: 10px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  margin-right: -4px !important; }
+  .condition-group .group-left.active {
+    opacity: 1; }
 
-.ma-well {
-  background-color: #eeeeee;
-  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-  padding: 9px 31px; }
+.condition-group .group-center {
+  margin-right: -4px !important;
+  border-radius: 0px; }
 
-.ma-nav-info {
-  background-color: inherit;
-  margin-bottom: 0;
-  line-height: 40px;
+.condition-group .group-right {
+  opacity: 0.35;
+  border-radius: 10px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px; }
+  .condition-group .group-right.active {
+    opacity: 1; }
+
+.condition-group .bootstrap-select {
+  margin-top: 0px; }
+  .condition-group .bootstrap-select button.btn.dropdown-toggle {
+    padding-left: 21px !important; }
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+  white-space: normal; }
+
+img.center-image {
+  margin: auto;
+  display: block; }
+
+.text-inverse, .ma-nav-container .ma-nav-text, .text-inverse:hover, .ma-nav-container .ma-nav-text:hover, a.text-inverse:hover, .ma-nav-container a.ma-nav-text:hover {
+  color: #ffffff; }
+
+a.back-button, button.back-button {
+  font-weight: bold;
+  text-transform: none; }
+
+a.bold, button.bold {
   font-weight: bold; }
 
-.multiselect-native-select .multiselect-container.dropdown-menu li:not(.multiselect-filter) {
-  height: 38px; }
+a.no-margin, button.no-margin {
+  margin: 0px; }
 
-.multiselect-native-select .multiselect-container.dropdown-menu li.active label {
-  background-color: white;
-  color: #009688 !important;
-  font-size: 16px; }
+a.no-padding-horizontal, button.no-padding-horizontal {
+  padding-left: 5px !important;
+  padding-right: 5px !important; }
 
-.multiselect-native-select .multiselect-container.dropdown-menu li label {
-  font-size: 16px;
-  color: #555; }
+a.no-transform, button.no-transform {
+  text-transform: none; }
 
-.multiselect-native-select .multiselect-container.dropdown-menu button.multiselect-clear-filter i {
-  font-size: 18px; }
-
-.multiselect-native-select .multiselect-selected-text {
-  text-transform: none;
-  color: #009688;
-  font-size: 16px; }
-
-.ma-tab-container {
-  height: 60px; }
-  .ma-tab-container a {
-    font-weight: bold !important;
-    padding-top: 17px; }
-
-/*
- ===Google Material Icons Styles===
-*/
-/* Rules for sizing the icon. */
-.material-icons.md-18 {
-  font-size: 18px; }
-
-.material-icons.md-24 {
-  font-size: 24px; }
-
-.material-icons.md-36 {
-  font-size: 36px; }
-
-.material-icons.md-48 {
-  font-size: 48px; }
-
-/* Rules for using icons as black on a light background. */
-.material-icons.md-dark {
-  color: rgba(0, 0, 0, 0.54); }
-
-.material-icons.md-dark.md-inactive {
-  color: rgba(0, 0, 0, 0.26); }
-
-/* Rules for using icons as white on a dark background. */
-.material-icons.md-light {
-  color: white; }
-
-.material-icons.md-light.md-inactive {
-  color: rgba(255, 255, 255, 0.3); }
+.modal-dialog.modal-lg {
+  width: 95% !important; }
 

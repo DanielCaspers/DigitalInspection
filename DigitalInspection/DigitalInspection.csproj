@@ -49,43 +49,55 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=6.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.6.1.0\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.7\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.3.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.4.1\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.3.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.4.1\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.3.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.4.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.Web, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.3.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    <Reference Include="Microsoft.AI.Web, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.4.1\lib\net45\Microsoft.AI.Web.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AI.WindowsServer, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.3.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.4.1\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.2.3.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.4.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.0\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.1.4\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.1.4\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
@@ -131,13 +143,21 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.4\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -220,6 +240,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChecklistItemsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\InspectionsController.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\ChecklistsController.cs" />
@@ -281,8 +302,12 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="Utils\DateTimeUtils.cs" />
+    <Compile Include="ViewModels\Base\BaseInspectionsViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseWorkOrdersViewModel.cs" />
     <Compile Include="ViewModels\ChecklistItems\AddChecklistItemViewModel.cs" />
+    <Compile Include="ViewModels\Inspections\UploadInspectionPhotosViewModel.cs" />
+    <Compile Include="ViewModels\Inspections\AddInspectionNoteViewModel.cs" />
+    <Compile Include="ViewModels\Inspections\InspectionDetailViewModel.cs" />
     <Compile Include="ViewModels\TabContainers\TabContainerViewModel.cs" />
     <Compile Include="ViewModels\Tags\AddTagViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseHomeViewModel.cs" />
@@ -299,17 +324,19 @@
     <Compile Include="ViewModels\WorkOrders\WorkOrderDetailViewModel.cs" />
     <Compile Include="ViewModels\WorkOrders\WorkOrderMasterViewModel.cs" />
     <Compile Include="Views\Helpers\HiddenFields.cs" />
+    <Compile Include="Views\Helpers\RecommendedServiceHelpers.cs" />
     <Compile Include="Views\Helpers\HtmlHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-material-design.css" />
-    <Content Include="Content\bootstrap-material-design.min.css" />
-    <Content Include="Content\bootstrap-multiselect.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\material-icons.css" />
-    <Content Include="Content\ripples.css" />
-    <Content Include="Content\ripples.min.css" />
+    <Content Include="Content\Library\bootstrap-material-design.css" />
+    <Content Include="Content\Library\bootstrap-material-design.min.css" />
+    <Content Include="Content\Library\bootstrap-multiselect.css" />
+    <Content Include="Content\Library\bootstrap-select.min.css" />
+    <Content Include="Content\Library\bootstrap.css" />
+    <Content Include="Content\Library\bootstrap.min.css" />
+    <Content Include="Content\Library\material-icons.css" />
+    <Content Include="Content\Library\ripples.css" />
+    <Content Include="Content\Library\ripples.min.css" />
     <Content Include="Content\site.css">
       <DependentUpon>site.scss</DependentUpon>
     </Content>
@@ -323,10 +350,22 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
-    <Content Include="Content\bootstrap-material-design.css.map" />
-    <Content Include="Content\bootstrap-material-design.min.css.map" />
-    <Content Include="Content\ripples.css.map" />
-    <Content Include="Content\ripples.min.css.map" />
+    <Content Include="Content\Library\bootstrap-material-design.css.map" />
+    <Content Include="Content\Library\bootstrap-material-design.min.css.map" />
+    <Content Include="Content\Library\ripples.css.map" />
+    <Content Include="Content\Library\ripples.min.css.map" />
+    <Content Include="Content\Components\recommended-services.scss" />
+    <Content Include="Content\Components\material-icons.scss" />
+    <Content Include="Content\Components\multiselect.scss" />
+    <Content Include="Content\Components\dropdown-tray.scss" />
+    <Content Include="Content\Components\car-color-indicator.scss" />
+    <Content Include="Content\Components\form.scss" />
+    <Content Include="Content\Components\components.scss" />
+    <None Include="Content\Components\progress-bar.scss" />
+    <Content Include="Content\Views\inspection-table.scss" />
+    <Content Include="Content\Components\flex.scss" />
+    <Content Include="Content\Views\layout.scss" />
+    <Content Include="Content\Components\card.scss" />
     <None Include="Content\site.scss" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -335,8 +374,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\Library\bootstrap.min.css.map" />
+    <Content Include="Content\Library\bootstrap.css.map" />
+    <Content Include="Content\Components\table.scss" />
+    <Content Include="Content\Components\toast.scss" />
+    <Content Include="Content\Components\toolbar.scss" />
+    <Content Include="Content\Components\tab-container.scss" />
+    <Content Include="Content\Views\views.scss" />
     <None Include="Properties\PublishProfiles\MurphyAuto_Debug.pubxml" />
     <Content Include="Scripts\App\Shared\Services\dialog.service.js" />
     <Content Include="Scripts\App\Shared\Services\httpClient.service.js" />
@@ -345,6 +389,7 @@
     <Content Include="Scripts\App\Shared\Services\tab.service.js" />
     <Content Include="Scripts\App\Shared\Services\table.service.js" />
     <Content Include="Scripts\Library\Bootstrap-Multiselect\bootstrap-multiselect.js" />
+    <Content Include="Scripts\Library\Bootstrap-Select\bootstrap-select.min.js" />
     <Content Include="Scripts\Library\Bootstrap\bootstrap.js" />
     <Content Include="Scripts\Library\Bootstrap\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\Nightly A.pubxml" />
@@ -433,8 +478,12 @@
     <Content Include="Views\WorkOrders\_Customer.cshtml" />
     <Content Include="Views\WorkOrders\_Inspection.cshtml" />
     <Content Include="Views\WorkOrders\_EditRecommendedServicesDialog.cshtml" />
-    <Content Include="Views\WorkOrders\_CustomerVehicleSummary.cshtml" />
+    <Content Include="Views\Shared\_CustomerVehicleSummary.cshtml" />
     <Content Include="Views\WorkOrders\_RecommendedServiceSeverity.cshtml" />
+    <Content Include="Views\Inspections\Index.cshtml" />
+    <Content Include="Views\Inspections\_InspectionTable.cshtml" />
+    <Content Include="Views\Inspections\_AddInspectionNoteDialog.cshtml" />
+    <Content Include="Views\Inspections\_UploadInspectionPhotosDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

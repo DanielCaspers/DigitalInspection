@@ -1,0 +1,42 @@
+﻿@model DigitalInspection.ViewModels.InspectionDetailViewModel
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Digital Inspection";
+}
+
+@Html.Partial("_AddInspectionNoteDialog", Model.AddInspectionNoteVM)
+@Html.Partial("_UploadInspectionPhotosDialog", Model.UploadInspectionPhotosVM)
+
+@section DetailedNavigationInfo {
+	<div class="container-flex between">
+		<div>
+			<a href="@Url.Action("_Inspection", "WorkOrders", new { id = Model.WorkOrder.Id })"
+				class="btn btn-default back-button no-margin pull-left">
+				<i class="material-icons">arrow_back</i>
+				@Model.Checklist.Name
+			</a>
+
+		</div>
+
+		<div>
+			@Html.Partial("_CustomerVehicleSummary", Model.WorkOrder)
+		</div>
+	</div>
+}
+
+
+@section Toolbar{
+	<div class="container-flex between">
+		<div></div>
+		<button type="button"
+				class="btn btn-default no-margin"
+				onclick="alert('Filtering may be coming soon')">
+			<i class="material-icons">filter_list</i>
+		</button>
+	</div>
+}
+
+
+<div class="container-fluid">
+	@Html.Partial("_InspectionTable", Model)
+</div>

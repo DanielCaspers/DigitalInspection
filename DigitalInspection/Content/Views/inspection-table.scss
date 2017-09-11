@@ -1,0 +1,51 @@
+﻿td.dropdown-cell button.multiselect.dropdown-toggle {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.condition-group {
+	@mixin two-state-button{
+		opacity: 0.35;
+
+		&.active{
+			opacity: 1;
+		}
+	}
+	.group-left {
+		@include two-state-button;
+		border-radius: 10px;
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+		margin-right: -4px !important;
+	}
+
+	.group-center {
+		margin-right: -4px !important;
+		border-radius: 0px;
+	}
+
+	.group-right {
+		@include two-state-button;
+		border-radius: 10px;
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
+	}
+
+	// BS Select
+	.bootstrap-select {
+		margin-top: 0px;
+
+		// Hide the label next to the icon
+		button.btn.dropdown-toggle {
+			padding-left: 21px !important;
+		}
+
+		span.label {
+			font-size: 80%;
+		}
+	}
+
+	.recommended-service-picker{
+		// @include two-state-button;
+	}
+}

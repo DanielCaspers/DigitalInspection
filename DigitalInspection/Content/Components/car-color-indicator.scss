@@ -1,0 +1,12 @@
+﻿@mixin circle($radius) {
+	width: $radius * 2;
+	height: $radius * 2;
+	border-radius: $radius;
+}
+
+.car-color-indicator{
+	@include circle(10px);
+	display: inline-block;
+	margin-bottom:-5px;
+	margin-left:5px;
+}
