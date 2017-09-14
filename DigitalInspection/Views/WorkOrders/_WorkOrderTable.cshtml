@@ -1,25 +1,26 @@
 ﻿@model DigitalInspection.ViewModels.WorkOrderMasterViewModel
 
 <script type="text/javascript">
-	TableService.showTable(
-		'workOrderTable',
-		[10, 15, 20, 40],
-		[{
-			targets: 3,
-			orderable: false,
-			searchable: false
-		}],
-		function (e, dataTableInstance, type, indexes) {
-			// console.log('Running onSelect', e, dataTableInstance, type, indexes);
-			if (type === 'row') {
-				FormService.showProgress();
+	var onSelect = function (e, dataTableInstance, type, indexes) {
+		// console.log('Running onSelect', e, dataTableInstance, type, indexes);
+		if (type === 'row') {
+			FormService.showProgress();
 
-				var selectedRowElement = dataTableInstance.row(indexes).node();
-				window.location.href = selectedRowElement.attributes['data-url'].value;
+			var selectedRowElement = dataTableInstance.row(indexes).node();
+			window.location.href = selectedRowElement.attributes['data-url'].value;
 
-			}
 		}
-	);
+	};
+	var config = TableService.BASE_TABLE_CONFIG;
+	config.select = !!onSelect;
+	config.lengthMenu = [10, 15, 20, 40];
+	config.columnDefs = [{
+		targets: 3,
+		orderable: false,
+		searchable: false
+	}];
+
+	TableService.showTable('workOrderTable', config, onSelect);
 </script>
 
 

@@ -3,6 +3,7 @@ $recommended-service-moderate: orange;
 $recommended-service-watch: #888;
 $recommended-service-maintenance: mediumblue;
 $recommended-service-notes: black;
+$recommended-service-unknown: saddlebrown;
 
 i.recommended-service {
 	&.immediate{
@@ -23,6 +24,10 @@ i.recommended-service {
 
 	&.notes{
 		color: $recommended-service-notes;
+	}
+
+	&.unknown{
+		color: $recommended-service-unknown;
 	}
 }
 
@@ -52,5 +57,10 @@ span.recommended-service.label {
 	&.notes{
 		color: #fff;
 		background-color:$recommended-service-notes;
+	}
+
+	&.unknown{
+		color: #fff;
+		background-color:$recommended-service-unknown;
 	}
 }

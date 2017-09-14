@@ -2,32 +2,28 @@
 	var TableService = function () { };
 }
 
-// TODO Improve API to prevent sorting for inspectionTable
-TableService.showTable = function (elementId, pageSizeOptions, columnRules, onSelect) {
+TableService.BASE_TABLE_CONFIG = {
+	dom: 't<"container-flex between"lip>',
+	lengthMenu: [10, 20, 50, 100],
+	columnDefs: [],
+	language: {
+		info: "_TOTAL_ results",
+		infoFiltered: "(filtered from _MAX_)",
+		infoEmpty: "No results",
+		lengthMenu: "Page size _MENU_",
+		zeroRecords: ""
+	}
+};
+
+TableService.showTable = function (elementId, config, onSelect) {
 	$(document).ready(function () {
 		var tableSelector = '#' + elementId;
-		
-		if (!pageSizeOptions) {
-			pageSizeOptions = [10, 20, 50, 100];
+
+		if (!config) {
+			config = TableService.BASE_TABLE_CONFIG;
 		}
 
-		if (!columnRules) {
-			columnRules = [];
-		}
-
-		var table = $(tableSelector).DataTable({
-			dom: 't<"container-flex between"lip>',
-			select: !!onSelect,
-			lengthMenu: pageSizeOptions,
-			columnDefs: columnRules,
-			language: {
-				info: "_TOTAL_ results",
-				infoFiltered: "(filtered from _MAX_)",
-				infoEmpty: "No results",
-				lengthMenu: "Page size _MENU_",
-				zeroRecords: ""
-			}
-		});
+		var table = $(tableSelector).DataTable(config);
 
 		if (typeof onSelect === 'function') {
 			table.on('select', onSelect);
@@ -53,4 +49,3 @@ TableService.toggleCheckboxesForColumn = function (index, checkAllCheckbox) {
 	// Toggles checkbox DIRECTLY related to parent state, and has better handling of indeterminate state
 	$(jqSelector).prop("checked", checkAllCheckbox.checked);
 }
-

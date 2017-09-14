@@ -4,10 +4,10 @@
 }
 
 .condition-group {
-	@mixin two-state-button{
+	@mixin two-state-button {
 		opacity: 0.35;
 
-		&.active{
+		&.active {
 			opacity: 1;
 		}
 	}
@@ -46,6 +46,6 @@
 	}
 
 	.recommended-service-picker{
-		// @include two-state-button;
+		@include two-state-button;
 	}
 }

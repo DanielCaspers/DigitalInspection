@@ -30,6 +30,11 @@ namespace DigitalInspection.Views.Helpers
 			return CreateIndicator(hasIcon, hasLabel, "description", "Notes", "notes");
 		}
 
+		public static MvcHtmlString Unknown(bool hasIcon, bool hasLabel)
+		{
+			return CreateIndicator(hasIcon, hasLabel, "assignment_late", "Unknown", "unknown");
+		}
+
 		private static MvcHtmlString CreateIndicator(
 			bool hasIcon, bool hasLabel, string iconName, string labelText, string cssClass)
 		{

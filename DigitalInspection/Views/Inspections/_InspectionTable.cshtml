@@ -2,15 +2,18 @@
 @using DigitalInspection.Views.Helpers;
 
 <script type="text/javascript">
-	TableService.showTable(
-		'inspectionTable',
-		[10, 15, 20, 40],
-		[{
-			targets: 3,
-			orderable: false,
-			searchable: false
-		}]
-	);
+	var config = TableService.BASE_TABLE_CONFIG;
+	config.paging = false,
+	config.ordering = false;
+	config.info = false;
+	config.lengthMenu = [20];
+	config.columnDefs = [{
+		targets: 3,
+		orderable: false,
+		searchable: false
+	}];
+
+	TableService.showTable('inspectionTable', config);
 
 	$('.selectpicker').selectpicker({
 		width: '100px'
@@ -18,8 +21,26 @@
 
 	// TODO - WARNING - This might not work with pagination
 	$(function () {
-		$('.condition-group button').click(function () {
-			$(this).addClass('active').siblings().removeClass('active');
+		$('.condition-group button.group-left, .condition-group button.group-right').click(function () {
+			var sideButton = $(this);
+			// Add selected style to side button
+			sideButton.addClass('active').siblings().removeClass('active');
+
+			var imposterSelect = sideButton.closest('.condition-group').find('.recommended-service-picker');
+			// Remove selected style from button wrapping select
+			imposterSelect.removeClass('active');
+
+			// Reset value of select
+			imposterSelect.siblings('.selectpicker').selectpicker('val', 0);
+		});
+
+		$('.selectpicker').on('changed.bs.select', function (e) {
+			var imposterSelect = $(this);
+			// Add selected style to button wrapping select
+			imposterSelect.siblings('.recommended-service-picker').addClass('active');
+
+			// Remove selected style from side buttons
+			imposterSelect.closest('.condition-group').children('button.group-left, button.group-right').removeClass('active');
 		});
 	});
 
@@ -58,19 +79,33 @@
 							<select data-width="70px"
 									data-style="recommended-service-picker"
 									class="selectpicker group-center">
-								<option data-content="<i></i>" selected="selected" style="visibility:hidden;">
+								<!-- Values correspond to RecommendedService enum -->
+								<option 
+									data-content="@RecommendedServiceHelpers.Unknown(true, true).ToString()"
+									selected="selected"
+									value="0">
 								</option>
-								<option data-content="@RecommendedServiceHelpers.Immediate(true, true).ToString()">
+								<option 
+									data-content="@RecommendedServiceHelpers.Immediate(true, true).ToString()"
+									value="1">
 									Immediate
 								</option>
-								<option data-content="@RecommendedServiceHelpers.Moderate(true, true).ToString()">
-								<option data-content="@RecommendedServiceHelpers.Watch(true, true).ToString()">
+								<option 
+									data-content="@RecommendedServiceHelpers.Moderate(true, true).ToString()"
+									value="2">
+								<option
+									data-content="@RecommendedServiceHelpers.Watch(true, true).ToString()"
+									value="3">
 									Should watch
 								</option>
-								<option data-content="@RecommendedServiceHelpers.Maintenance(true, true).ToString()">
+								<option 
+									data-content="@RecommendedServiceHelpers.Maintenance(true, true).ToString()"
+									value="4">
 									Maintenance
 								</option>
-								<option data-content="@RecommendedServiceHelpers.Notes(true, true).ToString()">
+								<option 
+									data-content="@RecommendedServiceHelpers.Notes(true, true).ToString()"
+									value="5">
 									Notes
 								</option>
 							</select>

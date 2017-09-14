@@ -137,6 +137,9 @@ i.recommended-service.maintenance {
 i.recommended-service.notes {
   color: black; }
 
+i.recommended-service.unknown {
+  color: saddlebrown; }
+
 span.recommended-service.label {
   border-radius: 5px; }
   span.recommended-service.label.immediate {
@@ -154,6 +157,9 @@ span.recommended-service.label {
   span.recommended-service.label.notes {
     color: #fff;
     background-color: black; }
+  span.recommended-service.label.unknown {
+    color: #fff;
+    background-color: saddlebrown; }
 
 .ma-tab-container {
   height: 60px; }
@@ -301,6 +307,13 @@ td.dropdown-cell button.multiselect.dropdown-toggle {
   margin-top: 0px; }
   .condition-group .bootstrap-select button.btn.dropdown-toggle {
     padding-left: 21px !important; }
+  .condition-group .bootstrap-select span.label {
+    font-size: 80%; }
+
+.condition-group .recommended-service-picker {
+  opacity: 0.35; }
+  .condition-group .recommended-service-picker.active {
+    opacity: 1; }
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
