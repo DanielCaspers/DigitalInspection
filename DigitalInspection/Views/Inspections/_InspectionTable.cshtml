@@ -2,18 +2,32 @@
 @using DigitalInspection.Views.Helpers;
 
 <script type="text/javascript">
+	const onSelect = function (e, dataTableInstance, type, indexes) {
+		// console.log('Running onSelect', e, dataTableInstance, type, indexes);
+		if (type === 'row') {
+			var row = dataTableInstance.row(indexes).node();
+			console.log('Selected ' + row);
+			$('#inspectionToolbar').addClass('row-selected')
+			UrlRewriterService.addUrlResourceId('AddMeasurementDialogButton', row.attributes['data-checklistitem-id'].value);
+		}
+	};
+
+	// Prevent deselect action
+	const onPreSelect = function (e, dataTableInstance, type, cell, originalEvent) {
+		if ($(cell.node()).parent().hasClass('selected')) {
+			e.preventDefault();
+		}
+	};
+
 	var config = TableService.BASE_TABLE_CONFIG;
+	config.select = true,
 	config.paging = false,
 	config.ordering = false;
 	config.info = false;
 	config.lengthMenu = [20];
-	config.columnDefs = [{
-		targets: 3,
-		orderable: false,
-		searchable: false
-	}];
+	config.columnDefs = [];
 
-	TableService.showTable('inspectionTable', config);
+	TableService.showTable('inspectionTable', config, onSelect, onPreSelect);
 
 	$('.selectpicker').selectpicker({
 		width: '100px'
@@ -21,7 +35,7 @@
 
 	// TODO - WARNING - This might not work with pagination
 	$(function () {
-		$('.condition-group button.group-left, .condition-group button.group-right').click(function () {
+		$('.condition-group button.group-left, .condition-group button.group-right').click(function (event) {
 			var sideButton = $(this);
 			// Add selected style to side button
 			sideButton.addClass('active').siblings().removeClass('active');
@@ -61,14 +75,15 @@
 				<th>Item</th>
 				<th>Condition</th>
 				<th>Canned Response</th>
+				@*<th>Measurements</th>
 				<th>Notes</th>
-				<th>Photos</th>
+				<th>Photos</th>*@
 			</tr>
 		</thead>
 		<tbody>
 			@foreach (var checklistItem in Model.Checklist.ChecklistItems)
 			{
-				<tr>
+				<tr data-checklistitem-id="@checklistItem.Id">
 					<td>@checklistItem.Name</td>
 					<td nowrap>
 						<div class="condition-group">
@@ -135,7 +150,7 @@
 
 						@*@Html.ValidationMessageFor(m => m.SelectedTagIds)*@
 					</td>
-					<td class="flex-item">
+					@*<td class="flex-item">
 						<button type="button"
 								class="btn btn-primary no-margin no-padding-horizontal"
 								onclick="DialogService.show('addInspectionNoteDialog', 'addInspectionNoteForm')">
@@ -148,7 +163,7 @@
 								onclick="DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm')">
 							<i class="material-icons">add_a_photo</i>
 						</button>
-					</td>
+					</td>*@
 				</tr>
 			}
 		</tbody>

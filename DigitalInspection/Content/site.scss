@@ -56,3 +56,8 @@ a, button {
 .modal-dialog.modal-lg {
 	width: 95% !important;
 }
+
+i.mdi::before{
+	margin-top: -5px;
+	height: 24px;
+}

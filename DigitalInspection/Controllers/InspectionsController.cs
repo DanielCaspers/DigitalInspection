@@ -8,6 +8,7 @@ using DigitalInspection.ViewModels.TabContainers;
 using System.Net;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace DigitalInspection.Controllers
 {
@@ -23,6 +24,18 @@ namespace DigitalInspection.Controllers
 		{
 			return GetInspectionViewModel(workOrderId, checklistId);
 		}
+
+		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		public PartialViewResult GetAddMeasurementDialog(Guid id)
+		{
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == id);
+			return PartialView("_AddMeasurementDialog", new AddMeasurementViewModel
+			{
+				Measurements = checklistItem.Measurements
+			});
+		}
+
 
 		//[HttpPost]
 		//[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
@@ -56,7 +69,6 @@ namespace DigitalInspection.Controllers
 
 			ToastViewModel toast = null;
 
-			// TODO Get checklist for this work order;
 			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == checklistId);
 
 			if (task.Result.IsSuccessStatusCode == false)
@@ -72,6 +84,10 @@ namespace DigitalInspection.Controllers
 				WorkOrder = task.Result.WorkOrder,
 				Checklist = checklist,
 				Toast = toast,
+				AddMeasurementVM = new AddMeasurementViewModel
+				{
+					Measurements = new List<Measurement>() {}
+				},
 				AddInspectionNoteVM = new AddInspectionNoteViewModel { Note = ""},
 				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel { }
 			});

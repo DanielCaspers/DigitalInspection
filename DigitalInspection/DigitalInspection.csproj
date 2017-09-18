@@ -305,6 +305,7 @@
     <Compile Include="ViewModels\Base\BaseInspectionsViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseWorkOrdersViewModel.cs" />
     <Compile Include="ViewModels\ChecklistItems\AddChecklistItemViewModel.cs" />
+    <Compile Include="ViewModels\Inspections\AddMeasurementViewModel.cs" />
     <Compile Include="ViewModels\Inspections\UploadInspectionPhotosViewModel.cs" />
     <Compile Include="ViewModels\Inspections\AddInspectionNoteViewModel.cs" />
     <Compile Include="ViewModels\Inspections\InspectionDetailViewModel.cs" />
@@ -328,6 +329,9 @@
     <Compile Include="Views\Helpers\HtmlHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\fonts\materialdesignicons.css" />
+    <Content Include="Content\fonts\materialdesignicons.min.css" />
+    <Content Include="Content\fonts\materialdesignicons-webfont.svg" />
     <Content Include="Content\Library\bootstrap-material-design.css" />
     <Content Include="Content\Library\bootstrap-material-design.min.css" />
     <Content Include="Content\Library\bootstrap-multiselect.css" />
@@ -366,6 +370,13 @@
     <Content Include="Content\Components\flex.scss" />
     <Content Include="Content\Views\layout.scss" />
     <Content Include="Content\Components\card.scss" />
+    <Content Include="Content\fonts\license.md" />
+    <Content Include="Content\fonts\materialdesignicons.css.map" />
+    <Content Include="Content\fonts\materialdesignicons.min.css.map" />
+    <Content Include="Content\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Content\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Content\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Content\fonts\materialdesignicons-webfont.woff2" />
     <None Include="Content\site.scss" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -383,6 +394,7 @@
     <Content Include="Content\Views\views.scss" />
     <None Include="Properties\PublishProfiles\MurphyAuto_Debug.pubxml" />
     <Content Include="Scripts\App\Shared\Services\dialog.service.js" />
+    <Content Include="Scripts\App\Shared\Services\urlRewriter.service.js" />
     <Content Include="Scripts\App\Shared\Services\httpClient.service.js" />
     <Content Include="Scripts\App\Shared\Services\form.service.js" />
     <Content Include="Scripts\App\Shared\Services\multiSelect.service.js" />
@@ -484,6 +496,7 @@
     <Content Include="Views\Inspections\_InspectionTable.cshtml" />
     <Content Include="Views\Inspections\_AddInspectionNoteDialog.cshtml" />
     <Content Include="Views\Inspections\_UploadInspectionPhotosDialog.cshtml" />
+    <Content Include="Views\Inspections\_AddMeasurementDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

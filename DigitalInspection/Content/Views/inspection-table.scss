@@ -49,3 +49,11 @@
 		@include two-state-button;
 	}
 }
+
+#inspectionToolbar {
+	visibility: hidden;
+
+	&.row-selected {
+		visibility: visible;
+	}
+}

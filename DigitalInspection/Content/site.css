@@ -171,7 +171,10 @@ table.dataTable.no-footer {
   border-bottom: none; }
 
 table.dataTable tbody tr:hover {
-  background-color: rgba(0, 150, 136, 0.08) !important; }
+  background-color: rgba(0, 178, 178, 0.08) !important; }
+
+table.dataTable tbody tr.selected {
+  background-color: rgba(0, 178, 178, 0.2) !important; }
 
 table .checkbox-with-label {
   margin-right: 15px; }
@@ -315,6 +318,11 @@ td.dropdown-cell button.multiselect.dropdown-toggle {
   .condition-group .recommended-service-picker.active {
     opacity: 1; }
 
+#inspectionToolbar {
+  visibility: hidden; }
+  #inspectionToolbar.row-selected {
+    visibility: visible; }
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -347,4 +355,8 @@ a.no-transform, button.no-transform {
 
 .modal-dialog.modal-lg {
   width: 95% !important; }
+
+i.mdi::before {
+  margin-top: -5px;
+  height: 24px; }
 

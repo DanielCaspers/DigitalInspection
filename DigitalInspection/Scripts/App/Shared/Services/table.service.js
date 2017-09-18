@@ -15,7 +15,7 @@ TableService.BASE_TABLE_CONFIG = {
 	}
 };
 
-TableService.showTable = function (elementId, config, onSelect) {
+TableService.showTable = function (elementId, config, onSelect, onUserSelect) {
 	$(document).ready(function () {
 		var tableSelector = '#' + elementId;
 
@@ -27,6 +27,10 @@ TableService.showTable = function (elementId, config, onSelect) {
 
 		if (typeof onSelect === 'function') {
 			table.on('select', onSelect);
+		}
+
+		if (typeof onUserSelect === 'function') {
+			table.on('user-select', onUserSelect);
 		}
 
 		$(tableSelector + '_searchInput').on('keyup', function () {

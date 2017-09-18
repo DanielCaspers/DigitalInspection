@@ -1,8 +1,14 @@
 ﻿@model DigitalInspection.ViewModels.InspectionDetailViewModel
+@using DigitalInspection.Views.Helpers;
+
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Digital Inspection";
 }
+
+<div id="AddMeasurementDynamicDialogContainer">
+	@Html.Partial("_AddMeasurementDialog", Model.AddMeasurementVM)
+</div>
 
 @Html.Partial("_AddInspectionNoteDialog", Model.AddInspectionNoteVM)
 @Html.Partial("_UploadInspectionPhotosDialog", Model.UploadInspectionPhotosVM)
@@ -11,7 +17,7 @@
 	<div class="container-flex between">
 		<div>
 			<a href="@Url.Action("_Inspection", "WorkOrders", new { id = Model.WorkOrder.Id })"
-				class="btn btn-default back-button no-margin pull-left">
+			   class="btn btn-default back-button no-margin pull-left">
 				<i class="material-icons">arrow_back</i>
 				@Model.Checklist.Name
 			</a>
@@ -26,13 +32,42 @@
 
 
 @section Toolbar{
-	<div class="container-flex between">
+	<div id="inspectionToolbar" class="container-flex between">
 		<div></div>
-		<button type="button"
-				class="btn btn-default no-margin"
-				onclick="alert('Filtering may be coming soon')">
-			<i class="material-icons">filter_list</i>
-		</button>
+
+		<div>
+			@Ajax.RawActionLink("<i class='mdi mdi-ruler mdi-24px'></i>",
+							 "GetAddMeasurementDialog",
+							 "Inspections",
+							 null,
+							 new AjaxOptions
+							 {
+								 HttpMethod = "POST",
+								 InsertionMode = InsertionMode.Replace,
+								 UpdateTargetId = "AddMeasurementDynamicDialogContainer",
+								 OnComplete = "DialogService.show('addMeasurementDialog', 'addMeasurementForm')"
+							 },
+							 new
+							 {
+								 @class="btn no-margin",
+								 id="AddMeasurementDialogButton"
+							 })
+			<button type="button"
+					class="btn btn-default no-margin"
+					onclick="DialogService.show('addInspectionNoteDialog', 'addInspectionNoteForm')">
+				<i class="material-icons">note_add</i>
+			</button>
+			<button type="button"
+					class="btn btn-default no-margin"
+					onclick="DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm')">
+				<i class="material-icons">add_a_photo</i>
+			</button>
+			@*<button type="button"
+						class="btn btn-default no-margin"
+						onclick="alert('Filtering may be coming soon')">
+					<i class="material-icons">filter_list</i>
+				</button>*@
+		</div>
 	</div>
 }
 

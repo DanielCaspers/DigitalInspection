@@ -47,6 +47,7 @@ namespace DigitalInspection
 					STYLE_LIB_DIR_PREFIX + "bootstrap-select.min.css",
 					STYLE_LIB_DIR_PREFIX + "material-icons.css",
 					STYLE_LIB_DIR_PREFIX + "ripples.css",
+					"~/Content/fonts/materialdesignicons.min.css",
 					"~/Content/site.css"));
 		}
 	}
