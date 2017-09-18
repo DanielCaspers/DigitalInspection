@@ -55,6 +55,8 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
+				checklistItem.Measurements = checklistItem.Measurements.OrderBy(m => m.Label).ToList();
+				checklistItem.CannedResponses = checklistItem.CannedResponses.OrderBy(c => c.Response).ToList();
 				var tags = _context.Tags.OrderBy(t => t.Name).ToList();
 				var selectedTagIds = checklistItem.Tags.Select(t => t.Id);
 				var viewModel = new EditChecklistItemViewModel
