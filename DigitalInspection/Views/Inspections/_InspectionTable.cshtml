@@ -3,12 +3,12 @@
 
 <script type="text/javascript">
 	const onSelect = function (e, dataTableInstance, type, indexes) {
-		// console.log('Running onSelect', e, dataTableInstance, type, indexes);
 		if (type === 'row') {
 			var row = dataTableInstance.row(indexes).node();
 			console.log('Selected ' + row);
-			$('#inspectionToolbar').addClass('row-selected')
-			UrlRewriterService.addUrlResourceId('AddMeasurementDialogButton', row.attributes['data-checklistitem-id'].value);
+			// Removed because not using buttons in toolbar - See #62
+			//$('#inspectionToolbar').addClass('row-selected')
+			//UrlRewriterService.addUrlResourceId('AddMeasurementDialogButton', row.attributes['data-checklistitem-id'].value);
 		}
 	};
 
@@ -62,11 +62,26 @@
 	//http://stackoverflow.com/a/35651254/2831961
 	var selectBoxIds = JSON.parse('@Html.Raw(Json.Encode(Model.Checklist.ChecklistItems.Select(ci => ci.Id).ToList()  ))');
 	console.log(selectBoxIds);
+	var cannedResponseMultiSelectConfig = MultiSelectService.BASE_MULTISELECT_CONFIG;
+	cannedResponseMultiSelectConfig.buttonText = function (options, select) {
+		return options.length;
+	}
 	for (var i = 0; i < selectBoxIds.length; i++) {
-		MultiSelectService.show(selectBoxIds[i]);
+		MultiSelectService.show(selectBoxIds[i], cannedResponseMultiSelectConfig);
 	}
 </script>
 
+<div id="AddMeasurementDynamicDialogContainer">
+	@Html.Partial("_AddMeasurementDialog", Model.AddMeasurementVM)
+</div>
+
+<div id="AddInspectionNoteDynamicDialogContainer">
+	@Html.Partial("_AddInspectionNoteDialog", Model.AddInspectionNoteVM)
+</div>
+
+<div id="UploadInspectionPhotosDynamicDialogContainer">
+	@Html.Partial("_UploadInspectionPhotosDialog", Model.UploadInspectionPhotosVM)
+</div>
 
 <div class="jumbotron">
 	<table id="inspectionTable" class="table table-striped table-condensed table-responsive form-group">
@@ -75,9 +90,9 @@
 				<th>Item</th>
 				<th>Condition</th>
 				<th>Canned Response</th>
-				@*<th>Measurements</th>
+				<th>Measurements</th>
 				<th>Notes</th>
-				<th>Photos</th>*@
+				<th>Photos</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -135,7 +150,7 @@
 					<td class="dropdown-cell">
 						@*@Html.LabelFor(m => m.ChecklistItem.Tags, new { @class = "control-label" })*@
 						<!-- TODO: Watch model binding here, was just trying to make it look like it works -->
-						<div style="max-width: 200px;">
+						<div style="max-width: 80px;">
 							@Html.ListBoxFor(
 								m => checklistItem.CannedResponses,
 								new MultiSelectList(checklistItem.CannedResponses, "Id", "Response"),
@@ -150,20 +165,65 @@
 
 						@*@Html.ValidationMessageFor(m => m.SelectedTagIds)*@
 					</td>
-					@*<td class="flex-item">
-						<button type="button"
-								class="btn btn-primary no-margin no-padding-horizontal"
-								onclick="DialogService.show('addInspectionNoteDialog', 'addInspectionNoteForm')">
-							<i class="material-icons">note_add</i>
-						</button>
+					<td>
+						@Ajax.RawActionLink("<i class='mdi mdi-ruler mdi-24px'></i>",
+								"GetAddMeasurementDialog",
+								"Inspections",
+								new {
+									Id = checklistItem.Id
+								},
+								new AjaxOptions
+								{
+									HttpMethod = "POST",
+									InsertionMode = InsertionMode.Replace,
+									UpdateTargetId = "AddMeasurementDynamicDialogContainer",
+									OnComplete = "DialogService.show('addMeasurementDialog', 'addMeasurementForm')"
+								},
+								new
+								{
+									@class = "btn btn-primary no-margin no-padding-horizontal"
+								})
 					</td>
-					<td class="flex-item">
-						<button type="button"
-								class="btn btn-primary no-margin no-padding-horizontal"
-								onclick="DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm')">
-							<i class="material-icons">add_a_photo</i>
-						</button>
-					</td>*@
+					<td>
+						@Ajax.RawActionLink("<i class='material-icons'>note_add</i>",
+								"GetAddInspectionNoteDialog",
+								"Inspections",
+								new
+								{
+									Id = checklistItem.Id
+								},
+								new AjaxOptions
+								{
+									HttpMethod = "POST",
+									InsertionMode = InsertionMode.Replace,
+									UpdateTargetId = "AddInspectionNoteDynamicDialogContainer",
+									OnComplete = "DialogService.show('addInspectionNoteDialog', 'addInspectionNoteForm')"
+								},
+								new
+								{
+									@class = "btn btn-primary no-margin no-padding-horizontal"
+								})
+					</td>
+					<td>
+						@Ajax.RawActionLink("<i class='material-icons'>add_a_photo</i>",
+								"GetUploadInspectionPhotosDialog",
+								"Inspections",
+								new
+								{
+									Id = checklistItem.Id
+								},
+								new AjaxOptions
+								{
+									HttpMethod = "POST",
+									InsertionMode = InsertionMode.Replace,
+									UpdateTargetId = "UploadInspectionPhotosDynamicDialogContainer",
+									OnComplete = "DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm')"
+								},
+								new
+								{
+									@class = "btn btn-primary no-margin no-padding-horizontal"
+								})
+					</td>
 				</tr>
 			}
 		</tbody>

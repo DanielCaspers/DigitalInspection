@@ -32,10 +32,33 @@ namespace DigitalInspection.Controllers
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == id);
 			return PartialView("_AddMeasurementDialog", new AddMeasurementViewModel
 			{
+				ChecklistItem = checklistItem,
 				Measurements = checklistItem.Measurements
 			});
 		}
 
+		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		public PartialViewResult GetAddInspectionNoteDialog(Guid id)
+		{
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == id);
+			return PartialView("_AddInspectionNoteDialog", new AddInspectionNoteViewModel
+			{
+				ChecklistItem = checklistItem,
+				Note = ""
+			});
+		}
+
+		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		public PartialViewResult GetUploadInspectionPhotosDialog(Guid id)
+		{
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == id);
+			return PartialView("_UploadInspectionPhotosDialog", new UploadInspectionPhotosViewModel
+			{
+				ChecklistItem = checklistItem
+			});
+		}
 
 		//[HttpPost]
 		//[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
@@ -84,12 +107,9 @@ namespace DigitalInspection.Controllers
 				WorkOrder = task.Result.WorkOrder,
 				Checklist = checklist,
 				Toast = toast,
-				AddMeasurementVM = new AddMeasurementViewModel
-				{
-					Measurements = new List<Measurement>() {}
-				},
-				AddInspectionNoteVM = new AddInspectionNoteViewModel { Note = ""},
-				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel { }
+				AddMeasurementVM = new AddMeasurementViewModel {},
+				AddInspectionNoteVM = new AddInspectionNoteViewModel {},
+				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel {}
 			});
 		}
 

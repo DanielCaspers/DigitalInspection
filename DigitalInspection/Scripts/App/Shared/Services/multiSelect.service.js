@@ -2,20 +2,21 @@
 	var MultiSelectService = function () { };
 }
 
+MultiSelectService.BASE_MULTISELECT_CONFIG = {
+	buttonWidth: '100%',
+	enableFiltering: true,
+	enableCaseInsensitiveFiltering: true,
+	onDropdownHide: function () {
+		$('button.multiselect-clear-filter').click();
+	}
+};
+
 MultiSelectService.show = function (elementId, config) {
-	
 	$(document).ready(function () {
 		var element = $('#' + elementId);
 
 		if (!config) {
-			config = {
-				buttonWidth: '100%',
-				enableFiltering: true,
-				enableCaseInsensitiveFiltering: true,
-				onDropdownHide: function () {
-					$('button.multiselect-clear-filter').click();
-				}
-			};
+			config = MultiSelectService.BASE_MULTISELECT_CONFIG;
 		}
 
 		element.multiselect(config);

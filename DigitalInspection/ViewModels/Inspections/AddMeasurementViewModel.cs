@@ -6,6 +6,7 @@ namespace DigitalInspection.ViewModels
 {
 	public class AddMeasurementViewModel
 	{
+		public ChecklistItem ChecklistItem { get; set; }
 		public IList<Measurement> Measurements { get; set; }
 	}
 }
