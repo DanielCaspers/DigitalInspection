@@ -435,6 +435,29 @@
     <Content Include="Scripts\Library\Bootstrap\respond.min.js" />
     <Content Include="Scripts\Library\Bootstrap-Material\ripples.js" />
     <Content Include="Scripts\Library\Bootstrap-Material\ripples.min.js" />
+    <Content Include="Scripts\Library\WebcamJS\demos\basic.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\click-to-run.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\combo.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\constraints.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\continuous.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\crop-large.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\crop.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\events.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\flash-disabled.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\flash.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\flip-flash.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\flip.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\hd.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\ios-large.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\large.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\preview.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\reset.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\sfx.html" />
+    <Content Include="Scripts\Library\WebcamJS\demos\shutter.mp3" />
+    <Content Include="Scripts\Library\WebcamJS\flash\README.txt" />
+    <Content Include="Scripts\Library\WebcamJS\webcam.js" />
+    <Content Include="Scripts\Library\WebcamJS\webcam.min.js" />
+    <Content Include="Scripts\Library\WebcamJS\webcam.swf" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -497,6 +520,19 @@
     <Content Include="Views\Inspections\_AddInspectionNoteDialog.cshtml" />
     <Content Include="Views\Inspections\_UploadInspectionPhotosDialog.cshtml" />
     <Content Include="Views\Inspections\_AddMeasurementDialog.cshtml" />
+    <Content Include="Scripts\Library\WebcamJS\LICENSE" />
+    <Content Include="Scripts\Library\WebcamJS\flash\com\adobe\images\BitString.as" />
+    <Content Include="Scripts\Library\WebcamJS\flash\com\adobe\images\JPGEncoder.as" />
+    <Content Include="Scripts\Library\WebcamJS\flash\com\adobe\images\PNGEncoder.as" />
+    <Content Include="Scripts\Library\WebcamJS\flash\mx\utils\Base64Encoder.as" />
+    <Content Include="Scripts\Library\WebcamJS\flash\Webcam.as" />
+    <Content Include="Scripts\Library\WebcamJS\flash\Webcam.fla" />
+    <Content Include="Scripts\Library\WebcamJS\bower.json" />
+    <Content Include="Scripts\Library\WebcamJS\build.sh" />
+    <Content Include="Scripts\Library\WebcamJS\demos\shutter.ogg" />
+    <Content Include="Scripts\Library\WebcamJS\DOCS.md" />
+    <Content Include="Scripts\Library\WebcamJS\package.json" />
+    <Content Include="Scripts\Library\WebcamJS\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

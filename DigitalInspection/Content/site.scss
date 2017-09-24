@@ -61,3 +61,46 @@ i.mdi::before{
 	margin-top: -5px;
 	height: 24px;
 }
+
+.image-capture {
+	position: relative;
+
+	button {
+		position: absolute;
+		left: 400px;
+		top: 195px;
+	}
+}
+
+/*
+	FIXME: Cleanup before committing
+*/
+.color-primary{
+	color: $material-primary;
+}
+
+.carousel-control {
+	visibility: hidden;
+	&.visible {
+		visibility: visible;
+	}
+}
+
+.photo-control {
+	&.capture-control, &.acceptance-control {
+		display: none;
+
+		&.visible {
+			display: block;
+		}
+	}
+}
+
+.carousel-caption {
+	span {
+		background-color: rgba(25,25,25,0.7) !important;
+		border-radius: 3px;
+		font-size:16px;
+		padding: 5px;
+	}
+}
