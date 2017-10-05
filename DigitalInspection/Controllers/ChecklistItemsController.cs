@@ -259,7 +259,7 @@ namespace DigitalInspection.Controllers
 
 			var cannedResponse = new CannedResponse()
 			{
-				Response = "New response"
+				Response = "A new response"
 			};
 			checklistItemInDb.CannedResponses.Add(cannedResponse);
 
