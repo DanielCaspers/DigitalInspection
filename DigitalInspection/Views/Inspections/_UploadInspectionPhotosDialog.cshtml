@@ -8,85 +8,10 @@
 
 @if (Model.ChecklistItem != null)
 {
-	<script>
-		var CAPTURE_PHOTO_TEXT = "Take a photo";
-		var ACCEPTANCE_PHOTO_TEXT = "Retake or keep going"
-		var carouselInsertionIndex = 1;
-		Webcam.set({
-			width: 480,
-			height: 360,
-			dest_width: 480,
-			dest_height: 360,
-			image_format: 'jpeg',
-			jpeg_quality: 90,
-			//force_flash: false
-		});
-		Webcam.attach('#camera-viewfinder');
-
-		function setCameraViewfinderCaption(message){
-			$("#camera-viewfinder-caption").text(message);
-		}
-
-		/*
-			mode - "capture" or "acceptance"
-		*/
-		function setControlVisibilityMode(mode) {
-			if (mode === "capture") {
-				$(".photo-control.capture-control").addClass("visible");
-				$(".photo-control.acceptance-control").removeClass("visible");
-			}
-			else if (mode === "acceptance") {
-				$(".photo-control.acceptance-control").addClass("visible");
-				$(".photo-control.capture-control").removeClass("visible");
-			}
-		}
-
-		function savePhotoToDOM(data_uri) {
-			$(".carousel-inner").append(
-				'<div class="item">' +
-					'<div class="snapshot-display">' +
-						'<img src="' + data_uri + '"/>' +
-					'</div>' +
-					'<div class="carousel-caption">' +
-						'<span>Pretty neat, huh?</span>' +
-					'</div>' +
-				'</div>'
-			);
-		}
-
-		function freezePhoto() {
-			Webcam.freeze();
-			setCameraViewfinderCaption(ACCEPTANCE_PHOTO_TEXT);
-			setControlVisibilityMode("acceptance");
-		}
-
-		function retryPhoto() {
-			Webcam.unfreeze();
-			setCameraViewfinderCaption(CAPTURE_PHOTO_TEXT);
-			setControlVisibilityMode("capture");
-		}
-
-		function acceptPhoto() {
-			// take snapshot and get image data
-			Webcam.snap(function (data_uri) {
-				// Push into next carousel index
-
-				// Dynamically add <li>
-				$(".carousel-indicators")
-					.append("<li data-target='#myCarousel' data-slide-to='" + carouselInsertionIndex + "'></li>");
-
-				// Enable left and right chevron on the first time
-				if (carouselInsertionIndex === 1) {
-					$(".carousel-control").addClass("visible");
-				}
-				carouselInsertionIndex++;
-
-				setCameraViewfinderCaption(CAPTURE_PHOTO_TEXT);
-				setControlVisibilityMode("capture");
-				savePhotoToDOM(data_uri);
-			});
-		}
+	<script type="text/javascript">
+		UploadInspectionPhotosDialog.initialize();
 	</script>
+
 	<div id="@TEMPLATE_NAMESPACE" class="modal fade">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -140,7 +65,7 @@
 						<div class="photo-control capture-control visible">
 							<button class="btn btn-primary"
 									type="button"
-									onclick="freezePhoto()">
+									onclick="UploadInspectionPhotosDialog.freezePhoto()">
 								<i class="material-icons md-36">camera_alt</i>
 							</button>
 						</div>
@@ -148,12 +73,12 @@
 						<div class="photo-control acceptance-control">
 							<button class="btn btn-primary"
 									type="button"
-									onclick="retryPhoto()">
+									onclick="UploadInspectionPhotosDialog.retryPhoto()">
 								<i class="material-icons md-36">undo</i>
 							</button>
 							<button class="btn btn-primary"
 									type="button"
-									onclick="acceptPhoto()">
+									onclick="UploadInspectionPhotosDialog.acceptPhoto()">
 								<i class="material-icons md-36">check</i>
 							</button>
 						</div>

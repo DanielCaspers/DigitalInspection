@@ -414,12 +414,14 @@
     <TypeScriptCompile Include="Scripts\App\Shared\Services\multiSelect.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\tab.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\table.service.ts" />
-    <Content Include="Scripts\compiledTS\dialog.service.js" />
-    <Content Include="Scripts\compiledTS\form.service.js" />
-    <Content Include="Scripts\compiledTS\multiSelect.service.js" />
-    <Content Include="Scripts\compiledTS\tab.service.js" />
-    <Content Include="Scripts\compiledTS\table.service.js" />
-    <Content Include="Scripts\compiledTS\urlRewriter.service.js" />
+    <Content Include="Scripts\compiledTS\Shared\Services\dialog.service.js" />
+    <Content Include="Scripts\compiledTS\Shared\Services\form.service.js" />
+    <Content Include="Scripts\compiledTS\Shared\Services\multiSelect.service.js" />
+    <Content Include="Scripts\compiledTS\Shared\Services\tab.service.js" />
+    <Content Include="Scripts\compiledTS\Shared\Services\table.service.js" />
+    <Content Include="Scripts\compiledTS\Shared\Services\urlRewriter.service.js" />
+    <Content Include="Scripts\compiledTS\Views\inspectionTable.js" />
+    <Content Include="Scripts\compiledTS\Views\uploadInspectionPhotosDialog.js" />
     <Content Include="Scripts\Library\Bootstrap-Multiselect\bootstrap-multiselect.js" />
     <Content Include="Scripts\Library\Bootstrap-Select\bootstrap-select.min.js" />
     <Content Include="Scripts\Library\Bootstrap\bootstrap.js" />
@@ -428,12 +430,6 @@
     <None Include="Properties\PublishProfiles\Nightly B.pubxml" />
     <None Include="Properties\PublishProfiles\Stable Dev.pubxml" />
     <None Include="Properties\PublishProfiles\Weekly.pubxml" />
-    <Content Include="Scripts\compiledTS\dialog.service.js.map" />
-    <Content Include="Scripts\compiledTS\form.service.js.map" />
-    <Content Include="Scripts\compiledTS\multiSelect.service.js.map" />
-    <Content Include="Scripts\compiledTS\tab.service.js.map" />
-    <Content Include="Scripts\compiledTS\table.service.js.map" />
-    <Content Include="Scripts\compiledTS\urlRewriter.service.js.map" />
     <None Include="Scripts\Library\JQuery\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\Library\DataTables\dataTables.select.min.js" />
     <Content Include="Scripts\Library\DataTables\jquery.dataTables.min.js" />
@@ -560,7 +556,10 @@
     <Content Include="Scripts\Library\WebcamJS\DOCS.md" />
     <Content Include="Scripts\Library\WebcamJS\package.json" />
     <Content Include="Scripts\Library\WebcamJS\README.md" />
+    <TypeScriptCompile Include="Scripts\App\Views\inspectionTable.ts" />
+    <TypeScriptCompile Include="Scripts\App\Views\uploadInspectionPhotosDialog.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\WebcamJS\webcam.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

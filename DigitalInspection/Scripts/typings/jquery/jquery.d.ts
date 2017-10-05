@@ -631,8 +631,8 @@ interface JQueryEasingFunctions {
 interface JQueryStatic {
 
 	// DJC: NOTE Custom additions
-
 	multiselect(any): any;
+	material: any;
 
 	/**
 	 * Perform an asynchronous HTTP (Ajax) request.

@@ -2,73 +2,22 @@
 @using DigitalInspection.Views.Helpers;
 
 <script type="text/javascript">
-	const onSelect = function (e, dataTableInstance, type, indexes) {
-		if (type === 'row') {
-			var row = dataTableInstance.row(indexes).node();
-			console.log('Selected ' + row);
-			// Removed because not using buttons in toolbar - See #62
-			//$('#inspectionToolbar').addClass('row-selected')
-			//UrlRewriterService.addUrlResourceId('AddMeasurementDialogButton', row.attributes['data-checklistitem-id'].value);
+	const initializeMultiSelects = function () {
+		// TODO - WARNING - This might not work with pagination
+		//http://stackoverflow.com/a/35651254/2831961
+		var selectBoxIds = JSON.parse('@Html.Raw(Json.Encode(Model.Checklist.ChecklistItems.Select(ci => ci.Id).ToList()  ))');
+		console.log(selectBoxIds);
+		var cannedResponseMultiSelectConfig = MultiSelectService.BASE_MULTISELECT_CONFIG;
+		cannedResponseMultiSelectConfig.buttonText = function (options, select) {
+			return options.length;
 		}
-	};
-
-	// Prevent deselect action
-	const onPreSelect = function (e, dataTableInstance, type, cell, originalEvent) {
-		if ($(cell.node()).parent().hasClass('selected')) {
-			e.preventDefault();
+		for (var i = 0; i < selectBoxIds.length; i++) {
+			MultiSelectService.show(selectBoxIds[i], cannedResponseMultiSelectConfig);
 		}
-	};
-
-	var config = TableService.BASE_TABLE_CONFIG;
-	config.select = true,
-	config.paging = false,
-	config.ordering = false;
-	config.info = false;
-	config.lengthMenu = [20];
-	config.columnDefs = [];
-
-	TableService.showTable('inspectionTable', config, onSelect, onPreSelect);
-
-	$('.selectpicker').selectpicker({
-		width: '100px'
-	});
-
-	// TODO - WARNING - This might not work with pagination
-	$(function () {
-		$('.condition-group button.group-left, .condition-group button.group-right').click(function (event) {
-			var sideButton = $(this);
-			// Add selected style to side button
-			sideButton.addClass('active').siblings().removeClass('active');
-
-			var imposterSelect = sideButton.closest('.condition-group').find('.recommended-service-picker');
-			// Remove selected style from button wrapping select
-			imposterSelect.removeClass('active');
-
-			// Reset value of select
-			imposterSelect.siblings('.selectpicker').selectpicker('val', 0);
-		});
-
-		$('.selectpicker').on('changed.bs.select', function (e) {
-			var imposterSelect = $(this);
-			// Add selected style to button wrapping select
-			imposterSelect.siblings('.recommended-service-picker').addClass('active');
-
-			// Remove selected style from side buttons
-			imposterSelect.closest('.condition-group').children('button.group-left, button.group-right').removeClass('active');
-		});
-	});
-
-	// TODO - WARNING - This might not work with pagination
-	//http://stackoverflow.com/a/35651254/2831961
-	var selectBoxIds = JSON.parse('@Html.Raw(Json.Encode(Model.Checklist.ChecklistItems.Select(ci => ci.Id).ToList()  ))');
-	console.log(selectBoxIds);
-	var cannedResponseMultiSelectConfig = MultiSelectService.BASE_MULTISELECT_CONFIG;
-	cannedResponseMultiSelectConfig.buttonText = function (options, select) {
-		return options.length;
 	}
-	for (var i = 0; i < selectBoxIds.length; i++) {
-		MultiSelectService.show(selectBoxIds[i], cannedResponseMultiSelectConfig);
-	}
+
+	InspectionTable.initialize();
+	initializeMultiSelects();
 </script>
 
 <div id="AddMeasurementDynamicDialogContainer">

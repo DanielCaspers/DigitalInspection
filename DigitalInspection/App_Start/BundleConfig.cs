@@ -36,12 +36,12 @@ namespace DigitalInspection
 				)
 			);
 
-
-
 			bundles.Add(new ScriptBundle("~/bundles/App")
-				.IncludeDirectory(TYPESCRIPT_DIR_PREFIX, "*.service.js")
-				//.IncludeDirectory(TYPESCRIPT_DIR_PREFIX, "*.service.js.map")
-				//.IncludeDirectory(APP_DIR_PREFIX, "*.service.ts")
+				.IncludeDirectory(TYPESCRIPT_DIR_PREFIX + "/Shared/Services", "*.js")
+				.IncludeDirectory(TYPESCRIPT_DIR_PREFIX + "/Views", "*.js")
+
+			//.IncludeDirectory(TYPESCRIPT_DIR_PREFIX, "*.service.js.map")
+			//.IncludeDirectory(APP_DIR_PREFIX, "*.service.ts")
 			);
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
