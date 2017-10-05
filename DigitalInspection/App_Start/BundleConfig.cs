@@ -11,6 +11,7 @@ namespace DigitalInspection
 		{
 			const string LIB_DIR_PREFIX = "~/Scripts/Library/";
 			const string APP_DIR_PREFIX = "~/Scripts/App/Shared/Services";
+			const string TYPESCRIPT_DIR_PREFIX = "~/Scripts/compiledTS";
 			const string STYLE_LIB_DIR_PREFIX = "~/Content/Library/";
 
 			bundles.Add(
@@ -37,8 +38,11 @@ namespace DigitalInspection
 
 
 
-			bundles.Add(new ScriptBundle("~/bundles/App").IncludeDirectory(
-						APP_DIR_PREFIX, "*.service.js"));
+			bundles.Add(new ScriptBundle("~/bundles/App")
+				.IncludeDirectory(TYPESCRIPT_DIR_PREFIX, "*.service.js")
+				//.IncludeDirectory(TYPESCRIPT_DIR_PREFIX, "*.service.js.map")
+				//.IncludeDirectory(APP_DIR_PREFIX, "*.service.ts")
+			);
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 					STYLE_LIB_DIR_PREFIX + "bootstrap.css",
