@@ -1,4 +1,5 @@
 ﻿@model DigitalInspection.ViewModels.ManageChecklistMasterViewModel
+@using System.Web.Hosting
 
 <div class="list-group" id="checklistList">
 	@foreach (var checklist in Model.Checklists)
@@ -19,7 +20,7 @@
 		{
 			<div class="list-group-item">
 				<div class="row-picture">
-					<img class="img-rounded" src="/Uploads/Checklists/@checklist.Image.Title" style="height:64px; width:64px;" alt="checklist-image">
+					<img class="img-rounded" src="@Path.Combine(HostingEnvironment.ApplicationVirtualPath, "/Uploads/Checklists/", @checklist.Image.Title)" style="height:64px; width:64px;" alt="checklist-image">
 				</div>
 				<div class="row-content">
 					<div class="col-xs-10">
@@ -41,5 +42,4 @@
 			<div class="list-group-separator"></div>
 		}
 	}
-
 </div>

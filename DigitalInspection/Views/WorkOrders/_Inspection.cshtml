@@ -1,4 +1,6 @@
 ﻿@model DigitalInspection.ViewModels.WorkOrderInspectionViewModel
+@using System.Web.Hosting
+
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Digital Inspection";
@@ -35,10 +37,19 @@
 					</div>
 				</div>
 
-				<a href="@Url.Action("Index", "Inspections", new { workOrderId = Model.WorkOrder.Id, checklistId = checklist.Id } )">
+				<a href="@Url.Action("Index", "Inspections", new { workOrderId = Model.WorkOrder.Id, checklistId = checklist.Id })">
 					<div class="img-darkener">
-						<img src="/Uploads/Checklists/@checklist.Image.Title"
-							 alt="Image could not be found" />
+						@if (HostingEnvironment.ApplicationVirtualPath == "/" || HostingEnvironment.ApplicationVirtualPath == "\\")
+						{
+							<img src="@Path.Combine("/Uploads/Checklists/", @checklist.Image.Title)"
+								 alt="Image could not be found" />
+						}
+						else
+						{
+							<img src="@(HostingEnvironment.ApplicationVirtualPath + "/Uploads/Checklists/" + @checklist.Image.Title)"
+								 alt="Image could not be found" />
+						}
+
 					</div>
 				</a>
 

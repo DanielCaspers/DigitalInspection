@@ -7,6 +7,7 @@
 	ViewBag.Rick_Name = "Rick Murphy";
 	ViewBag.Rick_Email = "rick.murphy@murphyauto.net";
 }
+@using System.Web.Hosting
 
 <h2 class="text-center">@ViewBag.Title</h2>
 
@@ -117,3 +118,36 @@
 		</div>
 	</div>
 </div>
+
+<h3 class="text-center">Server Diagnostics</h3>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h1 class="panel-title">HostingEnvironment</h1>
+			</div>
+			<div class="panel-body">
+				<div>Application Virtual Path: @HostingEnvironment.ApplicationVirtualPath</div>
+				<div>Application Physical Path: @HostingEnvironment.ApplicationPhysicalPath</div>
+				<a class="btn btn-primary" href="https://msdn.microsoft.com/en-us/library/system.web.hosting.hostingenvironment(v=vs.110).aspx">Docs</a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h1 class="panel-title">HttpContext Request</h1>
+			</div>
+			<div class="panel-body">
+				<div>Physical Path: @HttpContext.Current.Request.PhysicalPath</div>
+				<div>Physical Application Path: @HttpContext.Current.Request.PhysicalApplicationPath</div>
+				<div>File Path: @HttpContext.Current.Request.FilePath</div>
+				<a class="btn btn-primary" href="https://msdn.microsoft.com/en-us/library/ms178116.aspx">Docs</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
