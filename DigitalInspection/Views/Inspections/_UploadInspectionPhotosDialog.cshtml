@@ -8,16 +8,12 @@
 
 @if (Model.ChecklistItem != null)
 {
-	<script type="text/javascript">
-		UploadInspectionPhotosDialog.initialize();
-	</script>
-
 	<div id="@TEMPLATE_NAMESPACE" class="modal fade">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title">Upload photos - @Model.ChecklistItem.Name</h4>
+					<h4 class="modal-title">Upload photo - @Model.ChecklistItem.Name</h4>
 				</div>
 				@*@using (Ajax.BeginForm(
 						"Create",
@@ -33,55 +29,19 @@
 					{*@
 				<form id="uploadInspectionPhotosForm">
 					<div class="modal-body">
-						<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-							<!-- Indicators -->
-							<ol class="carousel-indicators">
-								<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-							</ol>
-
-							<!-- Wrapper for slides -->
-							<div class="carousel-inner container-flex center">
-								<div class="item active">
-									<div id="camera-viewfinder"></div>
-									<div class="carousel-caption">
-										<span id="camera-viewfinder-caption">Take a photo</span>
-									</div>
-								</div>
+						<div class="container-flex center">
+							<!-- Center the image using extra div wrapper + flex, while preventing flex from messing with aspect ratio -->
+							<div>
+								<img id="camera-viewfinder" class="img-responsive" style="max-height:55vh" src="#" />
 							</div>
-
-							<!-- Left and right controls -->
-							<a class="left carousel-control" href="#myCarousel" data-slide="prev">
-								<span class="glyphicon glyphicon-chevron-left"></span>
-								<span class="sr-only">Previous</span>
-							</a>
-							<a class="right carousel-control" href="#myCarousel" data-slide="next">
-								<span class="glyphicon glyphicon-chevron-right material-primary"></span>
-								<span class="sr-only">Next</span>
-							</a>
 						</div>
 					</div>
 
 					<div class="container-flex center">
-						<div class="photo-control capture-control visible">
-							<button class="btn btn-primary"
-									type="button"
-									onclick="UploadInspectionPhotosDialog.freezePhoto()">
-								<i class="material-icons md-36">camera_alt</i>
-							</button>
-						</div>
-
-						<div class="photo-control acceptance-control">
-							<button class="btn btn-primary"
-									type="button"
-									onclick="UploadInspectionPhotosDialog.retryPhoto()">
-								<i class="material-icons md-36">undo</i>
-							</button>
-							<button class="btn btn-primary"
-									type="button"
-									onclick="UploadInspectionPhotosDialog.acceptPhoto()">
-								<i class="material-icons md-36">check</i>
-							</button>
-						</div>
+						<label for="fileInput" class="btn btn-primary">
+							<i id="camera-button" class="material-icons md-36">camera_alt</i>
+						</label>
+						<input id="fileInput" type="file" accept=".jpg" style="position: absolute; top: -100px;" />
 					</div>
 
 					<div class="modal-footer">

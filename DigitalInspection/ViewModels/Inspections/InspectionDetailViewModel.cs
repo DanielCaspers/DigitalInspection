@@ -15,5 +15,7 @@ namespace DigitalInspection.ViewModels
 		public AddInspectionNoteViewModel AddInspectionNoteVM { get; set; }
 
 		public UploadInspectionPhotosViewModel UploadInspectionPhotosVM { get; set; }
+
+		public ViewInspectionPhotosViewModel ViewInspectionPhotosVM { get; set; }
 	}
 }

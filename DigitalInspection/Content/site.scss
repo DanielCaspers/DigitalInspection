@@ -79,23 +79,6 @@ i.mdi::before{
 	color: $material-primary;
 }
 
-.carousel-control {
-	visibility: hidden;
-	&.visible {
-		visibility: visible;
-	}
-}
-
-.photo-control {
-	&.capture-control, &.acceptance-control {
-		display: none;
-
-		&.visible {
-			display: block;
-		}
-	}
-}
-
 .carousel-caption {
 	span {
 		background-color: rgba(25,25,25,0.7) !important;

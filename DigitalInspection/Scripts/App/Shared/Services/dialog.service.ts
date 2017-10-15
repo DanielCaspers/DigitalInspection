@@ -14,11 +14,17 @@
 		// });
 	}
 
-	public static show(dialogId: string, formName: string): void {
+	public static show(dialogId: string, formName?: string, onShow?: () => void): void {
 		let dialogElement: JQuery = $('#' + dialogId);
-		let formElement: JQuery = $('#' + formName);
+		let formElement: JQuery | null = null;
+		let validator: any;
+		
+		if (formName) {
+			formElement = $('#' + formName);
+			validator = formElement.validate();
+		}
+
 		dialogElement.modal();
-		let validator: any = formElement.validate();
 
 		$(`#${dialogId}_success`).click((e: Event) => {
 			// Prevent stacking instances of submission if one after another occur without navigating away.
@@ -26,7 +32,7 @@
 			e.preventDefault();
 			e.stopImmediatePropagation();
 
-			if (formElement.valid()) {
+			if (formElement && formElement.valid()) {
 				formElement.submit();
 
 				dialogElement.modal('hide');
@@ -35,7 +41,7 @@
 
 		dialogElement.on('hidden.bs.modal', () => {
 			// Reset values in the form for next open
-			if (formElement[0]) {
+			if (formElement && formElement[0]) {
 				(formElement[0] as any).reset();
 				validator.resetForm();
 			}
@@ -46,6 +52,11 @@
 				$(selectInput).multiselect('updateButtonText');
 			}
 		});
+
+		if (onShow) {
+			dialogElement.on('shown.bs.modal', onShow);
+		}
+
 	}
 
 	public static confirmLeavingUnsavedChanges(): void {

@@ -324,6 +324,7 @@
     <Compile Include="ViewModels\Inspections\UploadInspectionPhotosViewModel.cs" />
     <Compile Include="ViewModels\Inspections\AddInspectionNoteViewModel.cs" />
     <Compile Include="ViewModels\Inspections\InspectionDetailViewModel.cs" />
+    <Compile Include="ViewModels\Inspections\ViewInspectionPhotosViewModel.cs" />
     <Compile Include="ViewModels\TabContainers\TabContainerViewModel.cs" />
     <Compile Include="ViewModels\Tags\AddTagViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseHomeViewModel.cs" />
@@ -408,6 +409,7 @@
     <Content Include="Content\Components\tab-container.scss" />
     <Content Include="Content\Views\views.scss" />
     <None Include="Properties\PublishProfiles\MurphyAuto_Debug.pubxml" />
+    <Content Include="Views\Inspections\_ViewInspectionPhotosDialog.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\urlRewriter.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\form.service.ts" />
