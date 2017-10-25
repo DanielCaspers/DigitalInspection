@@ -117,6 +117,13 @@ namespace DigitalInspection.Controllers
 			{
 				toast = ToastService.ResourceNotFound(_resource, ToastActionType.NavigateBack);
 			}
+
+			// Sort all canned responses by response
+			checklist.ChecklistItems.ToList().ForEach(ci =>
+			{
+				ci.CannedResponses = ci.CannedResponses.OrderBy(cr => cr.Response).ToList();
+			});
+			
 			return PartialView(new InspectionDetailViewModel
 			{
 				WorkOrder = task.Result.WorkOrder,

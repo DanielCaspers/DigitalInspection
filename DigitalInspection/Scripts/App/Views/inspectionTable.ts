@@ -10,7 +10,8 @@
 	private static onSelect(e: Event, dataTableInstance: any, type: string, indexes: any): void {
 		if (type === 'row') {
 			var row = dataTableInstance.row(indexes).node();
-			console.log('Selected ' + row);
+			console.log('Selected ' + row, e);
+			//window.scrollTo(0, (e.target as any).clientHeight);
 			// Removed because not using buttons in toolbar - See #62
 			//$('#inspectionToolbar').addClass('row-selected')
 			//UrlRewriterService.addUrlResourceId('AddMeasurementDialogButton', row.attributes['data-checklistitem-id'].value);

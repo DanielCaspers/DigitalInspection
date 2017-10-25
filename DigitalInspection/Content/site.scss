@@ -87,3 +87,11 @@ i.mdi::before{
 		padding: 5px;
 	}
 }
+
+.carousel-control {
+	color: $material-primary;
+	opacity: 1;
+	&:focus {
+		color: $material-primary;
+	}
+}

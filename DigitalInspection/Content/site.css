@@ -373,19 +373,15 @@ i.mdi::before {
 .color-primary {
   color: #009688; }
 
-.carousel-control {
-  visibility: hidden; }
-  .carousel-control.visible {
-    visibility: visible; }
-
-.photo-control.capture-control, .photo-control.acceptance-control {
-  display: none; }
-  .photo-control.capture-control.visible, .photo-control.acceptance-control.visible {
-    display: block; }
-
 .carousel-caption span {
   background-color: rgba(25, 25, 25, 0.7) !important;
   border-radius: 3px;
   font-size: 16px;
   padding: 5px; }
+
+.carousel-control {
+  color: #009688;
+  opacity: 1; }
+  .carousel-control:focus {
+    color: #009688; }
 

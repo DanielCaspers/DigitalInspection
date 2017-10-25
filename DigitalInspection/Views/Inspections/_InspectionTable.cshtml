@@ -11,6 +11,8 @@
 		cannedResponseMultiSelectConfig.buttonText = function (options, select) {
 			return options.length;
 		}
+		cannedResponseMultiSelectConfig.maxHeight = 300;
+
 		for (var i = 0; i < selectBoxIds.length; i++) {
 			MultiSelectService.show(selectBoxIds[i], cannedResponseMultiSelectConfig);
 		}
