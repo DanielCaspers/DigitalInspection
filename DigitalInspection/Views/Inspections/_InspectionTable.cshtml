@@ -1,5 +1,6 @@
 ﻿@model DigitalInspection.ViewModels.InspectionDetailViewModel
 @using DigitalInspection.Views.Helpers;
+@using DigitalInspection.Models.Orders;
 
 <script type="text/javascript">
 	const initializeMultiSelects = function () {
@@ -38,6 +39,8 @@
 	@Html.Partial("_ViewInspectionPhotosDialog", Model.ViewInspectionPhotosVM)
 </div>
 
+<div id="inspectionTableErrorContainer"></div>
+
 <div class="jumbotron">
 	<table id="inspectionTable" class="table table-striped table-condensed table-responsive form-group">
 		<thead>
@@ -57,51 +60,79 @@
 				<tr data-checklistitem-id="@checklistItem.Id">
 					<td>@checklistItem.Name</td>
 					<td nowrap>
-						<div class="condition-group">
-								<button type="button"
-										class="btn btn-raised btn-success group-left no-margin no-padding-horizontal">
-									<i class="material-icons">check</i>
-								</button>
-							<select data-width="70px"
-									data-style="recommended-service-picker"
-									class="selectpicker group-center">
-								<!-- Values correspond to RecommendedService enum -->
-								<option 
-									data-content="@RecommendedServiceHelpers.Unknown(true, true).ToString()"
-									selected="selected"
-									value="0">
-								</option>
-								<option 
-									data-content="@RecommendedServiceHelpers.Immediate(true, true).ToString()"
-									value="1">
-									Immediate
-								</option>
-								<option 
-									data-content="@RecommendedServiceHelpers.Moderate(true, true).ToString()"
-									value="2">
-								<option
-									data-content="@RecommendedServiceHelpers.Watch(true, true).ToString()"
-									value="3">
-									Should watch
-								</option>
-								<option 
-									data-content="@RecommendedServiceHelpers.Maintenance(true, true).ToString()"
-									value="4">
-									Maintenance
-								</option>
-								<option 
-									data-content="@RecommendedServiceHelpers.Notes(true, true).ToString()"
-									value="5">
-									Notes
-								</option>
-							</select>
+						@using (Ajax.BeginForm(
+							"Condition",
+							"Inspections",
+							new {
+								inspectionId = Guid.Empty,
+								checklistItemId = checklistItem.Id
+							},
+							new AjaxOptions
+							{
+								InsertionMode = InsertionMode.Replace,
+								UpdateTargetId = "inspectionTableErrorContainer"
+							},
+							null))
+						{
 
-								<button type="button"
-										class="btn btn-raised btn-info group-right no-margin no-padding-horizontal"
-										style="height: 40px;">
-									N/A
-								</button>
-						</div>
+								<div class="condition-group">
+									<button type="submit"
+											value="@RecommendedServiceSeverity.OK"
+											name="inspectionItemCondition"
+											class="btn btn-raised btn-success group-left no-margin no-padding-horizontal
+											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.OK ? "active" : "")">
+										<!-- TODO Adjust all anonymous expressions to use inspectionItem.condition  -->
+										<i class="material-icons">check</i>
+									</button>
+									<select data-width="70px"
+											name="inspectionItemCondition"
+											title=""
+											data-style="recommended-service-picker"
+											class="selectpicker group-center">
+										<option 
+											data-content="@RecommendedServiceHelpers.Unknown(true, true).ToString()"
+											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.UNKNOWN ? "selected" : "")
+											value="@RecommendedServiceSeverity.UNKNOWN">
+										</option>
+										<option 
+											data-content="@RecommendedServiceHelpers.Immediate(true, true).ToString()"
+											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.IMMEDIATE ? "selected" : "")
+											value="@RecommendedServiceSeverity.IMMEDIATE">
+											Immediate
+										</option>
+										<option 
+											data-content="@RecommendedServiceHelpers.Moderate(true, true).ToString()"
+											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.MODERATE ? "selected" : "")
+											value="@RecommendedServiceSeverity.MODERATE">
+										<option
+											data-content="@RecommendedServiceHelpers.Watch(true, true).ToString()"
+											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.SHOULD_WATCH ? "selected" : "")
+											value="@RecommendedServiceSeverity.SHOULD_WATCH">
+											Should watch
+										</option>
+										<option 
+											data-content="@RecommendedServiceHelpers.Maintenance(true, true).ToString()"
+											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.MAINTENANCE ? "selected" : "")
+											value="@RecommendedServiceSeverity.MAINTENANCE">
+											Maintenance
+										</option>
+										<option 
+											data-content="@RecommendedServiceHelpers.Notes(true, true).ToString()"
+											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.NOTES ? "selected" : "")
+											value="@RecommendedServiceSeverity.NOTES">
+											Notes
+										</option>
+									</select>
+									<button type="submit"
+											value="@RecommendedServiceSeverity.NOT_APPLICABLE"
+											name="inspectionItemCondition"
+											class="btn btn-raised btn-info group-right no-margin no-padding-horizontal
+											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.NOT_APPLICABLE ? "active" : "")"
+											style="height: 40px;">
+										N/A
+									</button>
+								</div>
+							}
 					</td>
 					<td class="dropdown-cell">
 						@*@Html.LabelFor(m => m.ChecklistItem.Tags, new { @class = "control-label" })*@
@@ -129,7 +160,8 @@
 								"Inspections",
 								new
 								{
-									Id = checklistItem.Id
+									inspectionId = Guid.Empty,
+									checklistItemId = checklistItem.Id
 								},
 								new AjaxOptions
 								{
@@ -147,7 +179,8 @@
 								"Inspections",
 								new
 								{
-									Id = checklistItem.Id
+									inspectionId = Guid.Empty,
+									checklistItemId = checklistItem.Id
 								},
 								new AjaxOptions
 								{
@@ -167,7 +200,8 @@
 								"Inspections",
 								new
 								{
-									Id = checklistItem.Id
+									inspectionId = Guid.Empty,
+									checklistItemId = checklistItem.Id
 								},
 								new AjaxOptions
 								{
@@ -187,7 +221,8 @@
 								"Inspections",
 								new
 								{
-									Id = checklistItem.Id
+									inspectionId = Guid.Empty,
+									checklistItemId = checklistItem.Id
 								},
 								new AjaxOptions
 								{

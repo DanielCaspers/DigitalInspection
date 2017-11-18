@@ -49,7 +49,7 @@
 	private static initializeConditionGroupControls(): void {
 		// TODO - WARNING - This might not work with pagination
 		$(function () {
-			$('.condition-group button.group-left, .condition-group button.group-right').click(function (e) {
+			$('.condition-group button.group-left, .condition-group button.group-right').click(function () {
 				let sideButton = $(this);
 				// Add selected style to side button
 				sideButton.addClass('active').siblings().removeClass('active');
@@ -62,13 +62,15 @@
 				imposterSelect.siblings('.selectpicker').selectpicker('val', 0);
 			});
 
-			$('.selectpicker').on('changed.bs.select', function (e) {
+			$('.selectpicker').on('changed.bs.select', function () {
 				let imposterSelect = $(this);
 				// Add selected style to button wrapping select
 				imposterSelect.siblings('.recommended-service-picker').addClass('active');
 
 				// Remove selected style from side buttons
 				imposterSelect.closest('.condition-group').children('button.group-left, button.group-right').removeClass('active');
+
+				imposterSelect.closest('form').submit();
 			});
 		});
 	}

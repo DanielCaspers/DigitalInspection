@@ -16,45 +16,44 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 					<h4 class="modal-title">Add measurements - @Model.ChecklistItem.Name </h4>
 				</div>
-				@*@using (Ajax.BeginForm(
-						"Create",
-						"Tags",
+				@using (Ajax.BeginForm(
+						"Measurements",
+						"Inspections",
 						FormMethod.Post,
 						new AjaxOptions
 						{
 							InsertionMode = InsertionMode.Replace,
-							UpdateTargetId = "tagList"
+							UpdateTargetId = "inspectionTableErrorContainer"
 						},
-						new { id = "addTagForm", autocomplete = "off" })
+						new { id = "addMeasurementForm", autocomplete = "off" })
 					)
-					{*@
-				<form id="addMeasurementForm">
+					{
 					<div class="modal-body">
 						@for (int i = 0; i < Model.Measurements.Count; i++)
 						{
 							<div class="form-group">
 								@Html.Label(Model.Measurements[i].Label + " (" + Model.Measurements[i].Unit + ")",
-						new { @class = "control-label" })
-								@Html.TextBoxFor(m => m.Measurements[i], new
-					   {
-						   @class = "form-control",
-						   type = "number",
-						   min = Model.Measurements[i].MinValue,
-						   max = Model.Measurements[i].MaxValue,
-						   step = Model.Measurements[i].StepSize
-					   })
-								@*@Html.ValidationMessageFor(m => m.Measurements[i])*@
+								new { @class = "control-label" })
+								@Html.TextBoxFor(m => m.Measurements[i], 
+								new {
+									   @class = "form-control",
+									   type = "number",
+									   min = Model.Measurements[i].MinValue,
+									   max = Model.Measurements[i].MaxValue,
+									   step = Model.Measurements[i].StepSize
+								   })
+									@*@Html.ValidationMessageFor(m => m.Measurements[i])*@
 							</div>
 						}
 					</div>
 
 					<div class="modal-footer">
 						<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Add</button>
+						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
 					</div>
-				</form>
 
-				@*}*@
+					@Html.HiddenFor(m => m.ChecklistItem)
+				}
 			</div>
 		</div>
 	</div>

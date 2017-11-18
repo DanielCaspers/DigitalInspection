@@ -9,6 +9,7 @@ using System.Net;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using DigitalInspection.Models.Orders;
 
 namespace DigitalInspection.Controllers
 {
@@ -27,21 +28,54 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetAddMeasurementDialog(Guid id)
+		public ActionResult Condition(Guid inspectionId, Guid checklistItemId, RecommendedServiceSeverity inspectionItemCondition)
 		{
-			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == id);
+			if(inspectionItemCondition == RecommendedServiceSeverity.UNKNOWN)
+			{
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+			}
+
+			return new EmptyResult();
+		}
+
+		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		public ActionResult Note(AddInspectionNoteViewModel NoteVM)
+		{
+			// TODO Needs to take an inspection somehow
+			if(NoteVM.Note == "Make an error")
+			{
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+			}
+			return new EmptyResult();
+		}
+
+		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		public ActionResult Measurements(AddMeasurementViewModel MeasurementsVM)
+		{
+			// TODO Needs to take an inspection somehow
+			return new EmptyResult();
+		}
+
+		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		public PartialViewResult GetAddMeasurementDialog(Guid inspectionId, Guid checklistItemId)
+		{
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			return PartialView("_AddMeasurementDialog", new AddMeasurementViewModel
 			{
 				ChecklistItem = checklistItem,
 				Measurements = checklistItem.Measurements
+				// Needs to know about inspection measurements, and should be able to match up measurements and inspection measurements
 			});
 		}
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetAddInspectionNoteDialog(Guid id)
+		public PartialViewResult GetAddInspectionNoteDialog(Guid inspectionId, Guid checklistItemId)
 		{
-			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == id);
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			return PartialView("_AddInspectionNoteDialog", new AddInspectionNoteViewModel
 			{
 				ChecklistItem = checklistItem,
@@ -51,9 +85,9 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetUploadInspectionPhotosDialog(Guid id)
+		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionId, Guid checklistItemId)
 		{
-			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == id);
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			return PartialView("_UploadInspectionPhotosDialog", new UploadInspectionPhotosViewModel
 			{
 				ChecklistItem = checklistItem
@@ -62,9 +96,9 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetViewInspectionPhotosDialog(Guid id)
+		public PartialViewResult GetViewInspectionPhotosDialog(Guid inspectionId, Guid checklistItemId)
 		{
-			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == id);
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			return PartialView("_ViewInspectionPhotosDialog", new ViewInspectionPhotosViewModel
 			{
 				ChecklistItem = checklistItem,

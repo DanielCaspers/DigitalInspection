@@ -6,7 +6,7 @@
 	const string SUCCESS = TEMPLATE_NAMESPACE + "_success";
 }
 
-@if(Model.ChecklistItem != null)
+@if (Model.ChecklistItem != null)
 {
 	<div id="@TEMPLATE_NAMESPACE" class="modal fade">
 		<div class="modal-dialog">
@@ -15,19 +15,18 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 					<h4 class="modal-title">Add a note - @Model.ChecklistItem.Name</h4>
 				</div>
-				@*@using (Ajax.BeginForm(
-					"Create",
-					"Tags",
+				@using (Ajax.BeginForm(
+					"Note",
+					"Inspections",
 					FormMethod.Post,
 					new AjaxOptions
 					{
 						InsertionMode = InsertionMode.Replace,
-						UpdateTargetId = "tagList"
+						UpdateTargetId = "inspectionTableErrorContainer"
 					},
-					new { id = "addTagForm", autocomplete = "off" })
+					new { id = "addInspectionNoteForm", autocomplete = "off" })
 				)
-				{*@
-				<form id="addInspectionNoteForm">
+				{
 					<div class="modal-body">
 						<div class="form-group">
 							@Html.LabelFor(m => m.Note, new { @class = "control-label" })
@@ -38,10 +37,9 @@
 
 					<div class="modal-footer">
 						<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Add</button>
+						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
 					</div>
-				</form>
-				@*}*@
+				}
 			</div>
 		</div>
 	</div>
