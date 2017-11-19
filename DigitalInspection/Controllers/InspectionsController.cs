@@ -10,11 +10,14 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using DigitalInspection.Models.Orders;
+using System.Web;
 
 namespace DigitalInspection.Controllers
 {
 	public class InspectionsController : BaseController
 	{
+		private static readonly string IMAGE_DIRECTORY = "Inspections";
+
 		public InspectionsController()
 		{
 			_resource = "Inspection";
@@ -28,6 +31,7 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		// TODO: All of these inspectionIds and checklistIds should probably become inspectionItemId once available
 		public ActionResult Condition(Guid inspectionId, Guid checklistItemId, RecommendedServiceSeverity inspectionItemCondition)
 		{
 			if(inspectionItemCondition == RecommendedServiceSeverity.UNKNOWN)
@@ -60,6 +64,22 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		public ActionResult Photo(UploadInspectionPhotosViewModel photoVM)
+		{
+			// TODO: Use inspections and a real id instead of fake guid
+
+			// TODO make Guid in file path use inspectionItemId
+			Image image = ImageService.SaveImage(photoVM.Picture, new string[] { IMAGE_DIRECTORY, photoVM.WorkOrderId, "35066ff7-ebd7-4157-9e5b-b3af0fdd0000" }, Guid.NewGuid().ToString(), false);
+
+			// Local test
+			// return RedirectToAction("Index", new { workOrderId= "004584155" , checklistId=Guid.Parse("35066ff7-ebd7-4157-9e5b-b3af0fddcd98") });
+			// Weekly staging server test - Mechanics checklist
+			return RedirectToAction("Index", new { workOrderId = "004584155", checklistId = Guid.Parse("a8231f45-6d7c-4384-93d4-28fcc892fe57") });
+
+		}
+
+		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public PartialViewResult GetAddMeasurementDialog(Guid inspectionId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
@@ -85,12 +105,13 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionId, Guid checklistItemId)
+		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionId, Guid checklistItemId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			return PartialView("_UploadInspectionPhotosDialog", new UploadInspectionPhotosViewModel
 			{
-				ChecklistItem = checklistItem
+				ChecklistItem = checklistItem,
+				WorkOrderId = workOrderId
 			});
 		}
 
@@ -108,28 +129,6 @@ namespace DigitalInspection.Controllers
 				}
 			});
 		}
-
-		//[HttpPost]
-		//[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		//public ActionResult SaveInspection(string id, WorkOrderDetailViewModel vm, bool releaselockonly = false)
-		//{
-		//	var task = Task.Run(async () => {
-		//		return await WorkOrderService.SaveWorkOrder(vm.WorkOrder, releaselockonly);
-		//	});
-		//	// Force Synchronous run for Mono to work. See Issue #37
-		//	task.Wait();
-
-		//	if (task.Result.IsSuccessStatusCode)
-		//	{
-		//		return RedirectToAction("_Customer", new { id = id });
-		//	}
-		//	else
-		//	{
-		//		// TODO Return read only with toast
-		//		// return DisplayErrorToast(task.Result);
-		//		return new EmptyResult();
-		//	}
-		//}
 
 		private PartialViewResult GetInspectionViewModel(string workOrderId, Guid checklistId)
 		{

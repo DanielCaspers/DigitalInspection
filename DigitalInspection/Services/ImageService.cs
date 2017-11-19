@@ -13,23 +13,26 @@ namespace DigitalInspection.Services
 	{
 		private static readonly string UPLOAD_DIR = "~/Uploads/";
 
-		public static Models.Image SaveImage(HttpPostedFileBase picture, string uploadSubdirectory, string fileNamePrefix)
+		public static Models.Image SaveImage(HttpPostedFileBase picture, string uploadSubdirectory, string fileNamePrefix, bool compress = true)
 		{
 			// TODO Improve error handling and prevent NPEs
 			if (picture != null && picture.ContentLength > 0)
 			{
-				var imageDirectoryPath = CreateStorageFolders(UPLOAD_DIR, uploadSubdirectory);
-				var imageFileName = fileNamePrefix + "_" + picture.FileName;
-				var imagePath = Path.Combine(imageDirectoryPath, imageFileName);
-				// TODO: Allow users of function to pass in image quality, or decide whether or not to save at some setting. Maybe custom enum model for image quality?
-				Bitmap processedImage = ReduceImageSize(picture, 240, 320);
-				processedImage.Save(imagePath);
+				var imageDirectoryPath = CreateFolderTree(UPLOAD_DIR, new string[] { uploadSubdirectory });
+				return SaveImageInternal(picture, imageDirectoryPath, fileNamePrefix, compress);
+			}
 
-				return new Models.Image
-				{
-					Title = imageFileName,
-					ImageUrl = imagePath
-				};
+			return null;
+		}
+
+		// uploadDirectoryTree represents a route tree, like the Angular router. 
+		public static Models.Image SaveImage(HttpPostedFileBase picture, string[] uploadDirectoryTree, string fileNamePrefix, bool compress = true)
+		{
+			// TODO Improve error handling and prevent NPEs
+			if (picture != null && picture.ContentLength > 0)
+			{
+				var imageDirectoryPath = CreateFolderTree(UPLOAD_DIR, uploadDirectoryTree);
+				return SaveImageInternal(picture, imageDirectoryPath, fileNamePrefix, compress);
 			}
 
 			return null;
@@ -50,12 +53,39 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		private static string CreateStorageFolders(string uploadDir, string subdir)
+		private static string CreateFolderTree(string baseDir, string[] dirTree)
 		{
-			var imageDirectoryPath = Path.Combine(HttpContext.Current.Server.MapPath(UPLOAD_DIR), subdir);
-			DirectoryInfo di = Directory.CreateDirectory(imageDirectoryPath); // No folders are created if they already exist
-			// SetPathAccessControl(imageDirectoryPath);
-			return imageDirectoryPath;
+			// Starts with already created directory, and incrementally builds to solution
+			string folderPath = HttpContext.Current.Server.MapPath(UPLOAD_DIR);
+			foreach(string folderToCreate in dirTree)
+			{
+				folderPath = Path.Combine(folderPath, folderToCreate);
+				DirectoryInfo di = Directory.CreateDirectory(folderPath); // No folders are created if they already exist
+				// SetPathAccessControl(folderPath);
+			}
+
+			return folderPath;
+		}
+
+		private static Models.Image SaveImageInternal(HttpPostedFileBase picture, string imageDirectoryPath, string fileNamePrefix, bool compress)
+		{
+			var imageFileName = fileNamePrefix + "_" + picture.FileName;
+			var imagePath = Path.Combine(imageDirectoryPath, imageFileName);
+			System.Drawing.Image image = System.Drawing.Image.FromStream(picture.InputStream, true, true);
+			// TODO: Allow users of function to pass in image quality, or decide whether or not to save at some setting. Maybe custom enum model for image quality?
+
+			if (compress)
+			{
+				image = ReduceImageSize(image, 240, 320);
+			}
+
+			image.Save(imagePath);
+
+			return new Models.Image
+			{
+				Title = imageFileName,
+				ImageUrl = imagePath
+			};
 		}
 
 		// http://stackoverflow.com/a/5398398/2831961
@@ -69,10 +99,8 @@ namespace DigitalInspection.Services
 		}
 
 		// http://stackoverflow.com/a/21394605/2831961
-		private static Bitmap ReduceImageSize(HttpPostedFileBase imageFile, int height, int width)
+		private static Bitmap ReduceImageSize(System.Drawing.Image image, int height, int width)
 		{
-			System.Drawing.Image image = System.Drawing.Image.FromStream(imageFile.InputStream, true, true);
-
 			Bitmap newImg = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 			Graphics newGraphic = Graphics.FromImage(newImg);
 

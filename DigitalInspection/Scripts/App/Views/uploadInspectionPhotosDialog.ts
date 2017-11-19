@@ -5,7 +5,6 @@
 
 		$("#fileInput").change(function () {
 			UploadInspectionPhotosDialog.previewPhotoUpload(this);
-			UploadInspectionPhotosDialog.updateActionButtonIcon();
 		});
 	}
 
@@ -19,10 +18,6 @@
 
 			reader.readAsDataURL(input.files[0]);
 		}
-	}
-
-	private static updateActionButtonIcon(): void {
-		document.getElementById('camera-button').innerText = "redo";
 	}
 
 	private static launchFilePicker(): void {

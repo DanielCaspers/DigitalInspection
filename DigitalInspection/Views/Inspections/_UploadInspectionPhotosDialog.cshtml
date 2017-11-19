@@ -16,18 +16,33 @@
 					<h4 class="modal-title">Upload photo - @Model.ChecklistItem.Name</h4>
 				</div>
 				@*@using (Ajax.BeginForm(
-						"Create",
-						"Tags",
+						"Photo",
+						"Inspections",
 						FormMethod.Post,
 						new AjaxOptions
 						{
 							InsertionMode = InsertionMode.Replace,
-							UpdateTargetId = "tagList"
+							UpdateTargetId = "inspectionTableErrorContainer"
 						},
-						new { id = "addTagForm", autocomplete = "off" })
+						new {
+							id = "uploadInspectionPhotosForm",
+							autocomplete = "off",
+							enctype = "multipart/form-data"
+						})
 					)
-					{*@
-				<form id="uploadInspectionPhotosForm">
+				{*@
+					@using (Html.BeginForm(
+							"Photo",
+							"Inspections",
+							FormMethod.Post,
+							new
+							{
+								id = "uploadInspectionPhotosForm",
+								autocomplete = "off",
+								enctype = "multipart/form-data"
+							})
+						)
+					{
 					<div class="modal-body">
 						<div class="container-flex center">
 							<!-- Center the image using extra div wrapper + flex, while preventing flex from messing with aspect ratio -->
@@ -38,18 +53,23 @@
 					</div>
 
 					<div class="container-flex center">
-						<label for="fileInput" class="btn btn-primary">
-							<i id="camera-button" class="material-icons md-36">camera_alt</i>
-						</label>
-						<input id="fileInput" type="file" accept=".jpg" style="position: absolute; top: -100px;" />
+						<div class="form-group">
+							<label for="fileInput" class="btn btn-primary">
+								<i class="material-icons md-36">camera_alt</i>
+							</label>
+							@Html.TextBoxFor(m => m.Picture, new { type = "file", accept = "image/*", id="fileInput" })
+						</div>
 					</div>
+
+					<div class="container-flex center text-warning">Max Size is 8 MB</div>
 
 					<div class="modal-footer">
 						<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Upload</button>
+						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Upload</button>
 					</div>
-				</form>
-				@*}*@
+
+					@Html.HiddenFor(m => m.WorkOrderId)
+				}
 			</div>
 		</div>
 	</div>
