@@ -264,6 +264,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.cs" />
+    <Compile Include="Migrations\201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.Designer.cs">
+      <DependentUpon>201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AuthorizationRoles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
@@ -588,6 +592,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705132255239_FixingChecklistModel.resx">
       <DependentUpon>201705132255239_FixingChecklistModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.resx">
+      <DependentUpon>201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

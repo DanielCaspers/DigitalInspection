@@ -8,15 +8,15 @@
 		}
 	};
 
-	public static show(elementId: string, config: any): void {
+	public static show(selector: string, config: any): void {
 		$(document).ready(() => {
-			let element = $('#' + elementId);
+			let selectedElements = $(selector);
 
 			if (!config) {
 				config = MultiSelectService.BASE_MULTISELECT_CONFIG;
 			}
 
-			element.multiselect(config);
+			selectedElements.multiselect(config);
 		});
 	}
 

@@ -13,14 +13,20 @@
 			return options.length;
 		}
 		cannedResponseMultiSelectConfig.maxHeight = 300;
+		cannedResponseMultiSelectConfig.enableFiltering = false;
+		cannedResponseMultiSelectConfig.enableCaseInsensitiveFiltering = false;
 
 		for (var i = 0; i < selectBoxIds.length; i++) {
-			MultiSelectService.show(selectBoxIds[i], cannedResponseMultiSelectConfig);
+			MultiSelectService.show('#' + selectBoxIds[i], cannedResponseMultiSelectConfig);
 		}
 	}
 
 	InspectionTable.initialize();
 	initializeMultiSelects();
+
+	function OnInspectionItemConditionChange(data) {
+		$('#' + data.checklistItemId).multiselect('dataprovider', data.filteredCannedResponses);
+	}
 </script>
 
 <div id="AddMeasurementDynamicDialogContainer">
@@ -70,7 +76,8 @@
 							new AjaxOptions
 							{
 								InsertionMode = InsertionMode.Replace,
-								UpdateTargetId = "inspectionTableErrorContainer"
+								OnSuccess = "OnInspectionItemConditionChange",
+								UpdateTargetId = checklistItem.Id.ToString()
 							},
 							null))
 						{
@@ -135,7 +142,6 @@
 							}
 					</td>
 					<td class="dropdown-cell">
-						@*@Html.LabelFor(m => m.ChecklistItem.Tags, new { @class = "control-label" })*@
 						<!-- TODO: Watch model binding here, was just trying to make it look like it works -->
 						<div style="max-width: 80px;">
 							@Html.ListBoxFor(
@@ -149,8 +155,6 @@
 								}
 							)
 						</div>
-
-						@*@Html.ValidationMessageFor(m => m.SelectedTagIds)*@
 					</td>
 					<td>
 						@if (checklistItem.Measurements.Count > 0)

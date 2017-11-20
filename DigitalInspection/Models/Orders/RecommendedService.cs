@@ -1,18 +1,34 @@
 ﻿using System;
 using DigitalInspection.Utils;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace DigitalInspection.Models.Orders
 {
 	public enum RecommendedServiceSeverity
 	{
+		[Display(Name = "Immediate")]
 		IMMEDIATE = 1,
+
+		[Display(Name = "Moderate")]
 		MODERATE = 2,
+
+		[Display(Name = "Should Watch")]
 		SHOULD_WATCH = 3,
+
+		[Display(Name = "Maintenance")]
 		MAINTENANCE = 4,
+
+		[Display(Name = "Notes")]
 		NOTES = 5,
 
+		[Display(Name = "OK")]
 		OK = 10,
+
+		[Display(Name = "N/A")]
 		NOT_APPLICABLE = 11,
+
+		[Display(Name = "Unknown")]
 		UNKNOWN = 12
 	}
 

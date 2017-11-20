@@ -1,6 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using DigitalInspection.Models.Orders;
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections;
 
 namespace DigitalInspection.Models
 {
@@ -24,5 +28,27 @@ namespace DigitalInspection.Models
 
 		[DisplayName("Description")]
 		public string Description { get; set; } = String.Empty;
+
+		[DisplayName("Levels of Concern *")]
+		[Required(ErrorMessage = "One or more levels of concern are required")]
+		public IList<RecommendedServiceSeverity> LevelsOfConcern { get; set; } = new List<RecommendedServiceSeverity>();
+
+		// Trick to force DB to hold onto enum values
+		public string LevelsOfConcernInDb
+		{
+			get { return string.Join(",", LevelsOfConcern); }
+			set {
+				if (String.IsNullOrEmpty(value))
+				{
+					value = "";
+					LevelsOfConcern = new List<RecommendedServiceSeverity>();
+				}
+				else
+				{
+					IList<string> stringList = value.Split(',').ToList();
+					LevelsOfConcern = (IList<RecommendedServiceSeverity>) stringList.Select(s => (RecommendedServiceSeverity) Enum.Parse(typeof(RecommendedServiceSeverity), s)).ToList();
+				}
+			}
+		}
 	}
 }
