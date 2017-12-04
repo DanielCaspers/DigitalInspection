@@ -7,6 +7,8 @@ namespace DigitalInspection.ViewModels
 	{
 		public ChecklistItem ChecklistItem { get; set; }
 
+		public InspectionItem InspectionItem { get; set; }
+
 		[DisplayName("Note")]
 		public string Note { get; set; }
 	}

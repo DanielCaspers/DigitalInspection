@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace DigitalInspection.Models
 {
@@ -21,5 +19,7 @@ namespace DigitalInspection.Models
 
 		//[Required]
 		public Image Image { get; set; }
+
+		public virtual IList<Inspection> Inspections { get; set; } = new List<Inspection>();
 	}
 }

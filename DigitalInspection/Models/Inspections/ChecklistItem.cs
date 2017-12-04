@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace DigitalInspection.Models
 {
@@ -13,6 +10,10 @@ namespace DigitalInspection.Models
 
 		// Many to Many navigation property
 		public virtual IList<Checklist> Checklists { get; set; } = new List<Checklist>();
+
+		public virtual IList<Inspection> Inspections { get; set; } = new List<Inspection>();
+
+		public virtual IList<InspectionItem> InspectionItems { get; set; } = new List<InspectionItem>();
 
 		//[Required(ErrorMessage = "Checklist item name is required")]
 		//[DisplayName("Checklist item name *")]

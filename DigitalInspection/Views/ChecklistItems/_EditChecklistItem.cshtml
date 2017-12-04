@@ -5,12 +5,7 @@
 }
 
 <script type="text/javascript">
-	//http://stackoverflow.com/a/35651254/2831961
-	var tagIds = JSON.parse('@Html.Raw(Json.Encode(Model.ChecklistItem.Tags.Select(t => t.Id).ToList()  ))');
-	console.log(tagIds);
-
 	MultiSelectService.show('#editTagSelect');
-	MultiSelectService.autoSelectOptions('editTagSelect', tagIds);
 
 	var levelOfConcernMultiSelectConfig = MultiSelectService.BASE_MULTISELECT_CONFIG;
 	levelOfConcernMultiSelectConfig.enableFiltering = false;
@@ -110,7 +105,7 @@
 
 				<div class="form-group" style="margin-top:0px;">
 					@Html.LabelFor(m => m.ChecklistItem.Tags, new { @class = "control-label" })
-					@Html.ListBoxFor(m => m.SelectedTagIds, new MultiSelectList(Model.Tags, "Id", "Name"),
+					@Html.ListBoxFor(m => m.SelectedTagIds, new MultiSelectList(Model.Tags, "Id", "Name", Model.SelectedTagIds),
 						new { id = "editTagSelect", @class = "form-control ma-multi-select", required = "required" })
 					@Html.ValidationMessageFor(m => m.SelectedTagIds)
 				</div>

@@ -268,9 +268,47 @@
     <Compile Include="Migrations\201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.Designer.cs">
       <DependentUpon>201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712031727454_AddInspectionTable.cs" />
+    <Compile Include="Migrations\201712031727454_AddInspectionTable.Designer.cs">
+      <DependentUpon>201712031727454_AddInspectionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712031733432_InspectionChecklistRelationship.cs" />
+    <Compile Include="Migrations\201712031733432_InspectionChecklistRelationship.Designer.cs">
+      <DependentUpon>201712031733432_InspectionChecklistRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712031737096_InspectionChecklistItemRelationship.cs" />
+    <Compile Include="Migrations\201712031737096_InspectionChecklistItemRelationship.Designer.cs">
+      <DependentUpon>201712031737096_InspectionChecklistItemRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712031740574_InspectionItemTable.cs" />
+    <Compile Include="Migrations\201712031740574_InspectionItemTable.Designer.cs">
+      <DependentUpon>201712031740574_InspectionItemTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712031742284_InspectionInspectionItemsRelationship.cs" />
+    <Compile Include="Migrations\201712031742284_InspectionInspectionItemsRelationship.Designer.cs">
+      <DependentUpon>201712031742284_InspectionInspectionItemsRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712031745108_InspectionItemChecklistItemRelationship.cs" />
+    <Compile Include="Migrations\201712031745108_InspectionItemChecklistItemRelationship.Designer.cs">
+      <DependentUpon>201712031745108_InspectionItemChecklistItemRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712031748339_InspectionItemAddNoteAndConditionFields.cs" />
+    <Compile Include="Migrations\201712031748339_InspectionItemAddNoteAndConditionFields.Designer.cs">
+      <DependentUpon>201712031748339_InspectionItemAddNoteAndConditionFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712031827331_InspectionItemCannedResponseRelationship.cs" />
+    <Compile Include="Migrations\201712031827331_InspectionItemCannedResponseRelationship.Designer.cs">
+      <DependentUpon>201712031827331_InspectionItemCannedResponseRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712032227271_UpdatedInspectionItemCannedResponseRelationship.cs" />
+    <Compile Include="Migrations\201712032227271_UpdatedInspectionItemCannedResponseRelationship.Designer.cs">
+      <DependentUpon>201712032227271_UpdatedInspectionItemCannedResponseRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AuthorizationRoles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
+    <Compile Include="Models\Inspections\Inspection.cs" />
+    <Compile Include="Models\Inspections\InspectionItem.cs" />
     <Compile Include="Models\Mappers\WorkOrderMapper.cs" />
     <Compile Include="Migrations\201705132034143_Initial.cs" />
     <Compile Include="Migrations\201705132034143_Initial.Designer.cs">
@@ -595,6 +633,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.resx">
       <DependentUpon>201711200150378_CannedResponsesHaveLevelsOfConcern_AsString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031727454_AddInspectionTable.resx">
+      <DependentUpon>201712031727454_AddInspectionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031733432_InspectionChecklistRelationship.resx">
+      <DependentUpon>201712031733432_InspectionChecklistRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031737096_InspectionChecklistItemRelationship.resx">
+      <DependentUpon>201712031737096_InspectionChecklistItemRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031740574_InspectionItemTable.resx">
+      <DependentUpon>201712031740574_InspectionItemTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031742284_InspectionInspectionItemsRelationship.resx">
+      <DependentUpon>201712031742284_InspectionInspectionItemsRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031745108_InspectionItemChecklistItemRelationship.resx">
+      <DependentUpon>201712031745108_InspectionItemChecklistItemRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031748339_InspectionItemAddNoteAndConditionFields.resx">
+      <DependentUpon>201712031748339_InspectionItemAddNoteAndConditionFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712031827331_InspectionItemCannedResponseRelationship.resx">
+      <DependentUpon>201712031827331_InspectionItemCannedResponseRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712032227271_UpdatedInspectionItemCannedResponseRelationship.resx">
+      <DependentUpon>201712032227271_UpdatedInspectionItemCannedResponseRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

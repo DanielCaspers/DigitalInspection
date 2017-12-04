@@ -19,12 +19,4 @@
 			selectedElements.multiselect(config);
 		});
 	}
-
-	public static autoSelectOptions(elementId: string, optionIds: string[]): void {
-		$(document).ready(() => {
-			let element = $('#' + elementId);
-
-			element.multiselect('select', optionIds);
-		});
-	}
 }

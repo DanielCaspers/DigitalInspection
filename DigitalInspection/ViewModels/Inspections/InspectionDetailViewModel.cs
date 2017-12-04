@@ -8,7 +8,10 @@ namespace DigitalInspection.ViewModels
 
 		public Checklist Checklist { get; set; }
 
+		// TODO: Remove. Not sure why added separately
 		public string InspectionId { get; set; }
+
+		public Inspection Inspection { get; set; }
 
 		public AddMeasurementViewModel AddMeasurementVM { get; set; }
 

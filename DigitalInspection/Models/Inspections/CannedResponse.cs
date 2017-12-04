@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using DigitalInspection.Models.Orders;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
 
 namespace DigitalInspection.Models
 {
@@ -18,6 +17,8 @@ namespace DigitalInspection.Models
 
 		// Navigation properties for model binding
 		public virtual ChecklistItem ChecklistItem { get; set; }
+
+		public virtual IList<InspectionItem> InspectionItems { get; set; }
 
 		[Required(ErrorMessage = "Canned response is required")]
 		[DisplayName("Canned Response *")]

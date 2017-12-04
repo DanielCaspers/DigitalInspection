@@ -12,12 +12,14 @@ using System.Collections.Generic;
 using DigitalInspection.Models.Orders;
 using System.Web;
 using System.Web.Helpers;
+using System.Data.Entity.Validation;
 
 namespace DigitalInspection.Controllers
 {
 	public class InspectionsController : BaseController
 	{
 		private static readonly string IMAGE_DIRECTORY = "Inspections";
+		private static readonly string _subresource = "Inspection Item";
 
 		public InspectionsController()
 		{
@@ -32,14 +34,29 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		// TODO: All of these inspectionIds and checklistIds should probably become inspectionItemId once available
-		public ActionResult Condition(Guid inspectionId, Guid checklistItemId, RecommendedServiceSeverity inspectionItemCondition)
+		// TODO: ChecklistItemId can be removed since it will exist on the InspectionItem.ChecklistItem.Id property
+		public ActionResult Condition(Guid inspectionItemId, Guid checklistItemId, RecommendedServiceSeverity inspectionItemCondition)
 		{
-			if(inspectionItemCondition == RecommendedServiceSeverity.UNKNOWN)
+			// Save Condition
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+
+			if (inspectionItemInDb == null)
 			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+			}
+			inspectionItemInDb.Condition = inspectionItemCondition;
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
 
+			// Prepare updated multiselect list for client
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			var filteredCRs = checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(inspectionItemCondition)).ToList();
 			var options = filteredCRs.Select(cr => new { label = cr.Response, title = cr.Response, value = cr.Id }).ToList();
@@ -53,13 +70,63 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		// TODO: All of these inspectionIds and checklistIds should probably become inspectionItemId once available
+		public ActionResult CannedResponse(Guid inspectionItemId, InspectionDetailViewModel vm)
+		{
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+
+			IList<Guid> selectedCannedResponseIds = vm.Inspection.InspectionItems
+											.SingleOrDefault(inspItem => inspItem.Id == inspectionItemId)
+											?.SelectedCannedResponseIds;
+
+			foreach (var cannedResponse in inspectionItemInDb.CannedResponses)
+			{
+				_context.CannedResponses.Attach(cannedResponse);
+			}
+
+			IList<CannedResponse> cannedResponsesInDb = new List<CannedResponse>();
+			foreach (Guid crId in selectedCannedResponseIds)
+			{
+				cannedResponsesInDb.Add(_context.CannedResponses.Single(cr => cr.Id == crId));
+			}
+
+			inspectionItemInDb.CannedResponses = cannedResponsesInDb;
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+			}
+
+			return new EmptyResult();
+		}
+
+		[HttpPost]
+		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult Note(AddInspectionNoteViewModel NoteVM)
 		{
-			// TODO Needs to take an inspection somehow
-			if(NoteVM.Note == "Make an error")
+			// Save Note
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == NoteVM.InspectionItem.Id);
+
+			if (inspectionItemInDb == null)
 			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+			}
+			inspectionItemInDb.Note = NoteVM.Note;
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
+
 			return new EmptyResult();
 		}
 
@@ -102,13 +169,16 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetAddInspectionNoteDialog(Guid inspectionId, Guid checklistItemId)
+		public PartialViewResult GetAddInspectionNoteDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
+			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+
 			return PartialView("_AddInspectionNoteDialog", new AddInspectionNoteViewModel
 			{
+				InspectionItem = inspectionItem,
 				ChecklistItem = checklistItem,
-				Note = ""
+				Note = inspectionItem.Note
 			});
 		}
 
@@ -169,14 +239,26 @@ namespace DigitalInspection.Controllers
 			{
 				ci.CannedResponses = ci.CannedResponses.OrderBy(cr => cr.Response).ToList();
 			});
-			
+
+			// TODO: Remove fake code once merge is working
+			var inspectionItems = _context.InspectionItems.ToList();
+			inspectionItems[0].Id = Guid.Parse("4c5501c2-7cd6-4311-96cc-cbbbcf3d6cbb");
+			inspectionItems[0].SelectedCannedResponseIds = inspectionItems[0].CannedResponses.Select(cr => cr.Id).ToList();
+			var inspection = new Inspection
+			{
+				InspectionItems = inspectionItems
+			};
 			return PartialView(new InspectionDetailViewModel
 			{
 				WorkOrder = task.Result.WorkOrder,
 				Checklist = checklist,
+				Inspection = inspection,
 				Toast = toast,
-				AddMeasurementVM = new AddMeasurementViewModel {},
-				AddInspectionNoteVM = new AddInspectionNoteViewModel {},
+				AddMeasurementVM = new AddMeasurementViewModel { },
+				AddInspectionNoteVM = new AddInspectionNoteViewModel {
+					InspectionItem = inspectionItems[0],
+					Note = inspectionItems[0].Note
+				},
 				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel {},
 				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel {}
 			});

@@ -15,6 +15,9 @@
 		cannedResponseMultiSelectConfig.maxHeight = 300;
 		cannedResponseMultiSelectConfig.enableFiltering = false;
 		cannedResponseMultiSelectConfig.enableCaseInsensitiveFiltering = false;
+		cannedResponseMultiSelectConfig.onDropdownHide = function (event) {
+			$(event.target).closest('form').submit();
+		}
 
 		for (var i = 0; i < selectBoxIds.length; i++) {
 			MultiSelectService.show('#' + selectBoxIds[i], cannedResponseMultiSelectConfig);
@@ -61,8 +64,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var checklistItem in Model.Checklist.ChecklistItems)
+			@for (int i = 0; i < Model.Inspection.InspectionItems.Count; i++)
 			{
+				var inspectionItem = Model.Inspection.InspectionItems[i];
+
+				var checklistItem = inspectionItem.ChecklistItem;
+				// TODO: Get this working post merge
+				//var inspectionItem = Model.Inspection.InspectionItems.Where(inspItem => inspItem.ChecklistItem.Id == checklistItem.Id).First();
+
 				<tr data-checklistitem-id="@checklistItem.Id">
 					<td>@checklistItem.Name</td>
 					<td nowrap>
@@ -70,91 +79,106 @@
 							"Condition",
 							"Inspections",
 							new {
-								inspectionId = Guid.Empty,
+								inspectionItemId = inspectionItem.Id,
 								checklistItemId = checklistItem.Id
 							},
 							new AjaxOptions
 							{
 								InsertionMode = InsertionMode.Replace,
-								OnSuccess = "OnInspectionItemConditionChange",
-								UpdateTargetId = checklistItem.Id.ToString()
+								OnSuccess = "OnInspectionItemConditionChange"
 							},
 							null))
 						{
-
-								<div class="condition-group">
-									<button type="submit"
-											value="@RecommendedServiceSeverity.OK"
-											name="inspectionItemCondition"
-											class="btn btn-raised btn-success group-left no-margin no-padding-horizontal
-											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.OK ? "active" : "")">
-										<!-- TODO Adjust all anonymous expressions to use inspectionItem.condition  -->
-										<i class="material-icons">check</i>
-									</button>
-									<select data-width="70px"
-											name="inspectionItemCondition"
-											title=""
-											data-style="recommended-service-picker"
-											class="selectpicker group-center">
-										<option 
-											data-content="@RecommendedServiceHelpers.Unknown(true, true).ToString()"
-											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.UNKNOWN ? "selected" : "")
-											value="@RecommendedServiceSeverity.UNKNOWN">
-										</option>
-										<option 
-											data-content="@RecommendedServiceHelpers.Immediate(true, true).ToString()"
-											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.IMMEDIATE ? "selected" : "")
-											value="@RecommendedServiceSeverity.IMMEDIATE">
-											Immediate
-										</option>
-										<option 
-											data-content="@RecommendedServiceHelpers.Moderate(true, true).ToString()"
-											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.MODERATE ? "selected" : "")
-											value="@RecommendedServiceSeverity.MODERATE">
-										<option
-											data-content="@RecommendedServiceHelpers.Watch(true, true).ToString()"
-											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.SHOULD_WATCH ? "selected" : "")
-											value="@RecommendedServiceSeverity.SHOULD_WATCH">
-											Should watch
-										</option>
-										<option 
-											data-content="@RecommendedServiceHelpers.Maintenance(true, true).ToString()"
-											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.MAINTENANCE ? "selected" : "")
-											value="@RecommendedServiceSeverity.MAINTENANCE">
-											Maintenance
-										</option>
-										<option 
-											data-content="@RecommendedServiceHelpers.Notes(true, true).ToString()"
-											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.NOTES ? "selected" : "")
-											value="@RecommendedServiceSeverity.NOTES">
-											Notes
-										</option>
-									</select>
-									<button type="submit"
-											value="@RecommendedServiceSeverity.NOT_APPLICABLE"
-											name="inspectionItemCondition"
-											class="btn btn-raised btn-info group-right no-margin no-padding-horizontal
-											@(RecommendedServiceSeverity.UNKNOWN == RecommendedServiceSeverity.NOT_APPLICABLE ? "active" : "")"
-											style="height: 40px;">
-										N/A
-									</button>
-								</div>
-							}
+							<div class="condition-group">
+								<button type="submit"
+										value="@RecommendedServiceSeverity.OK"
+										name="inspectionItemCondition"
+										class="btn btn-raised btn-success group-left no-margin no-padding-horizontal
+										@(inspectionItem.Condition == RecommendedServiceSeverity.OK ? "active" : "")">
+									<!-- TODO Adjust all anonymous expressions to use inspectionItem.condition  -->
+									<i class="material-icons">check</i>
+								</button>
+								<select data-width="70px"
+										name="inspectionItemCondition"
+										title=""
+										data-style="recommended-service-picker"
+										class="selectpicker group-center">
+									<option 
+										data-content="@RecommendedServiceHelpers.Unknown(true, true).ToString()"
+										@(inspectionItem.Condition == RecommendedServiceSeverity.UNKNOWN ? "selected" : "")
+										value="@RecommendedServiceSeverity.UNKNOWN">
+									</option>
+									<option 
+										data-content="@RecommendedServiceHelpers.Immediate(true, true).ToString()"
+										@(inspectionItem.Condition == RecommendedServiceSeverity.IMMEDIATE ? "selected" : "")
+										value="@RecommendedServiceSeverity.IMMEDIATE">
+										Immediate
+									</option>
+									<option 
+										data-content="@RecommendedServiceHelpers.Moderate(true, true).ToString()"
+										@(inspectionItem.Condition == RecommendedServiceSeverity.MODERATE ? "selected" : "")
+										value="@RecommendedServiceSeverity.MODERATE">
+									<option
+										data-content="@RecommendedServiceHelpers.Watch(true, true).ToString()"
+										@(inspectionItem.Condition == RecommendedServiceSeverity.SHOULD_WATCH ? "selected" : "")
+										value="@RecommendedServiceSeverity.SHOULD_WATCH">
+										Should watch
+									</option>
+									<option 
+										data-content="@RecommendedServiceHelpers.Maintenance(true, true).ToString()"
+										@(inspectionItem.Condition == RecommendedServiceSeverity.MAINTENANCE ? "selected" : "")
+										value="@RecommendedServiceSeverity.MAINTENANCE">
+										Maintenance
+									</option>
+									<option 
+										data-content="@RecommendedServiceHelpers.Notes(true, true).ToString()"
+										@(inspectionItem.Condition == RecommendedServiceSeverity.NOTES ? "selected" : "")
+										value="@RecommendedServiceSeverity.NOTES">
+										Notes
+									</option>
+								</select>
+								<button type="submit"
+										value="@RecommendedServiceSeverity.NOT_APPLICABLE"
+										name="inspectionItemCondition"
+										class="btn btn-raised btn-info group-right no-margin no-padding-horizontal
+										@(inspectionItem.Condition == RecommendedServiceSeverity.NOT_APPLICABLE ? "active" : "")"
+										style="height: 40px;">
+									N/A
+								</button>
+							</div>
+						}
 					</td>
 					<td class="dropdown-cell">
-						<!-- TODO: Watch model binding here, was just trying to make it look like it works -->
-						<div style="max-width: 80px;">
-							@Html.ListBoxFor(
-								m => checklistItem.CannedResponses,
-								new MultiSelectList(checklistItem.CannedResponses, "Id", "Response"),
-								new
-								{
-									id = checklistItem.Id,
-									@class = "form-control ma-multi-select",
-									required = "required"
-								}
-							)
-						</div>
+						@using (Ajax.BeginForm(
+							"CannedResponse",
+							"Inspections",
+							new
+							{
+								inspectionItemId = inspectionItem.Id
+							},
+							new AjaxOptions
+							{
+							},
+							null))
+						{
+							<div style="max-width: 80px;">
+								<!-- Canned response LINQ query filters by applicable canned response -->
+								@Html.ListBoxFor(
+									 m => m.Inspection.InspectionItems[i].SelectedCannedResponseIds,
+									 new MultiSelectList(
+										 checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(Model.Inspection.InspectionItems[i].Condition)).ToList(),
+										 "Id", "Response", Model.Inspection.InspectionItems[i].SelectedCannedResponseIds),
+									 new
+									 {
+										 id = checklistItem.Id,
+										 @class = "form-control ma-multi-select",
+										 required = "required"
+									 }
+								 )
+							</div>
+
+							@Html.HiddenFor(m => m.Inspection.InspectionItems[i].Id)
+						}
 					</td>
 					<td>
 						@if (checklistItem.Measurements.Count > 0)
@@ -183,7 +207,7 @@
 								"Inspections",
 								new
 								{
-									inspectionId = Guid.Empty,
+									inspectionItemId = inspectionItem.Id,
 									checklistItemId = checklistItem.Id
 								},
 								new AjaxOptions
