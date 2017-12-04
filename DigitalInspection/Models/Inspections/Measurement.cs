@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,6 +17,8 @@ namespace DigitalInspection.Models
 
 		// Navigation properties for model binding
 		public virtual ChecklistItem ChecklistItem { get; set; }
+
+		public virtual IList<InspectionMeasurement> InspectionMeasurements { get; set; }
 
 		[Required(AllowEmptyStrings = true)]
 		[DisplayName("Label *")]

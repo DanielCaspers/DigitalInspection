@@ -22,6 +22,7 @@ namespace DigitalInspection.Models
 	{
 		public DbSet<Inspection> Inspections { get; set; }
 		public DbSet<InspectionItem> InspectionItems { get; set; }
+		public DbSet<InspectionMeasurement> InspectionMeasurements { get; set; }
 		public DbSet<CannedResponse> CannedResponses { get; set; }
 		public DbSet<Measurement> Measurements { get; set; }
 		public DbSet<Checklist> Checklists { get; set; }

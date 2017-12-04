@@ -13,6 +13,8 @@ namespace DigitalInspection.Models
 
 		public virtual ChecklistItem ChecklistItem { get; set; }
 
+		public virtual IList<InspectionMeasurement> InspectionMeasurements { get; set; } = new List<InspectionMeasurement>();
+
 		public string Note { get; set; }
 
 		public RecommendedServiceSeverity Condition { get; set; }

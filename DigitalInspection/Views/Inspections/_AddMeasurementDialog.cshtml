@@ -29,21 +29,24 @@
 					)
 					{
 					<div class="modal-body">
-						@for (int i = 0; i < Model.Measurements.Count; i++)
+						@for (int i = 0; i < Model.InspectionItem.InspectionMeasurements.Count; i++)
 						{
+							var measurement = Model.InspectionItem.InspectionMeasurements[i].Measurement;
 							<div class="form-group">
-								@Html.Label(Model.Measurements[i].Label + " (" + Model.Measurements[i].Unit + ")",
+								@Html.Label(measurement.Label + " (" + measurement.Unit + ")",
 								new { @class = "control-label" })
-								@Html.TextBoxFor(m => m.Measurements[i], 
+								@Html.TextBoxFor(m => Model.InspectionItem.InspectionMeasurements[i].Value, 
 								new {
 									   @class = "form-control",
 									   type = "number",
-									   min = Model.Measurements[i].MinValue,
-									   max = Model.Measurements[i].MaxValue,
-									   step = Model.Measurements[i].StepSize
+									   min = measurement.MinValue,
+									   max = measurement.MaxValue,
+									   step = measurement.StepSize
 								   })
 									@*@Html.ValidationMessageFor(m => m.Measurements[i])*@
 							</div>
+
+							@Html.HiddenFor(m => Model.InspectionItem.InspectionMeasurements[i].Id)
 						}
 					</div>
 
@@ -52,7 +55,7 @@
 						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
 					</div>
 
-					@Html.HiddenFor(m => m.ChecklistItem)
+					@Html.HiddenFor(m => Model.InspectionItem.Id)
 				}
 			</div>
 		</div>

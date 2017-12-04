@@ -134,7 +134,30 @@ namespace DigitalInspection.Controllers
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult Measurements(AddMeasurementViewModel MeasurementsVM)
 		{
-			// TODO Needs to take an inspection somehow
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == MeasurementsVM.InspectionItem.Id);
+
+			if (inspectionItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+			}
+
+			InspectionMeasurement inspectionMeasurementInDb;
+			foreach (InspectionMeasurement inspectionMeasurement in MeasurementsVM.InspectionItem.InspectionMeasurements)
+			{
+				inspectionMeasurementInDb = _context.InspectionMeasurements.SingleOrDefault(im => im.Id == inspectionMeasurement.Id);
+				inspectionMeasurementInDb.Value = inspectionMeasurement.Value;
+			}
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+			}
+
 			return new EmptyResult();
 		}
 
@@ -156,12 +179,15 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetAddMeasurementDialog(Guid inspectionId, Guid checklistItemId)
+		public PartialViewResult GetAddMeasurementDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
+			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+
 			return PartialView("_AddMeasurementDialog", new AddMeasurementViewModel
 			{
 				ChecklistItem = checklistItem,
+				InspectionItem = inspectionItem,
 				Measurements = checklistItem.Measurements
 				// Needs to know about inspection measurements, and should be able to match up measurements and inspection measurements
 			});
@@ -240,10 +266,14 @@ namespace DigitalInspection.Controllers
 				ci.CannedResponses = ci.CannedResponses.OrderBy(cr => cr.Response).ToList();
 			});
 
-			// TODO: Remove fake code once merge is working
+			// TODO: Remove fake code to end of func once merge is working
 			var inspectionItems = _context.InspectionItems.ToList();
-			inspectionItems[0].Id = Guid.Parse("4c5501c2-7cd6-4311-96cc-cbbbcf3d6cbb");
+			var fakeInspectionItemId = Guid.Parse("4c5501c2-7cd6-4311-96cc-cbbbcf3d6cbb");
+			inspectionItems[0].Id = fakeInspectionItemId;
+
+			// Filter canned responses down to IDs
 			inspectionItems[0].SelectedCannedResponseIds = inspectionItems[0].CannedResponses.Select(cr => cr.Id).ToList();
+			inspectionItems[0].InspectionMeasurements = _context.InspectionMeasurements.Where(im => im.InspectionItem.Id == fakeInspectionItemId).ToList();
 			var inspection = new Inspection
 			{
 				InspectionItems = inspectionItems

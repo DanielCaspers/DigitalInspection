@@ -304,11 +304,20 @@
     <Compile Include="Migrations\201712032227271_UpdatedInspectionItemCannedResponseRelationship.Designer.cs">
       <DependentUpon>201712032227271_UpdatedInspectionItemCannedResponseRelationship.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712040310416_InspectionItemInspectionMeasurementRelationship.cs" />
+    <Compile Include="Migrations\201712040310416_InspectionItemInspectionMeasurementRelationship.Designer.cs">
+      <DependentUpon>201712040310416_InspectionItemInspectionMeasurementRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712040313381_MeasurementInspectionMeasurementRelationship.cs" />
+    <Compile Include="Migrations\201712040313381_MeasurementInspectionMeasurementRelationship.Designer.cs">
+      <DependentUpon>201712040313381_MeasurementInspectionMeasurementRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AuthorizationRoles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
     <Compile Include="Models\Inspections\Inspection.cs" />
     <Compile Include="Models\Inspections\InspectionItem.cs" />
+    <Compile Include="Models\Inspections\InspectionMeasurement.cs" />
     <Compile Include="Models\Mappers\WorkOrderMapper.cs" />
     <Compile Include="Migrations\201705132034143_Initial.cs" />
     <Compile Include="Migrations\201705132034143_Initial.Designer.cs">
@@ -660,6 +669,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712032227271_UpdatedInspectionItemCannedResponseRelationship.resx">
       <DependentUpon>201712032227271_UpdatedInspectionItemCannedResponseRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712040310416_InspectionItemInspectionMeasurementRelationship.resx">
+      <DependentUpon>201712040310416_InspectionItemInspectionMeasurementRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712040313381_MeasurementInspectionMeasurementRelationship.resx">
+      <DependentUpon>201712040313381_MeasurementInspectionMeasurementRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
