@@ -76,18 +76,22 @@
 					<td>@checklistItem.Name</td>
 					<td nowrap>
 						@using (Ajax.BeginForm(
-							"Condition",
-							"Inspections",
-							new {
-								inspectionItemId = inspectionItem.Id,
-								checklistItemId = checklistItem.Id
-							},
-							new AjaxOptions
-							{
-								InsertionMode = InsertionMode.Replace,
-								OnSuccess = "OnInspectionItemConditionChange"
-							},
-							null))
+								"Condition",
+								"Inspections",
+								new {
+									inspectionItemId = inspectionItem.Id,
+									checklistItemId = checklistItem.Id
+								},
+								new AjaxOptions
+								{
+									InsertionMode = InsertionMode.Replace,
+									OnSuccess = "OnInspectionItemConditionChange"
+								},
+								new {
+									// Used for preventing 'Confirm unsaved changes' dialog
+									ma_dirtyforms_ignore = ""
+								}
+								))
 						{
 							<div class="condition-group">
 								<button type="submit"
@@ -159,7 +163,11 @@
 							new AjaxOptions
 							{
 							},
-							null))
+							new
+							{
+								// Used for preventing 'Confirm unsaved changes' dialog
+								ma_dirtyforms_ignore = ""
+							}))
 						{
 							<div style="max-width: 80px;">
 								<!-- Canned response LINQ query filters by applicable canned response -->
@@ -228,10 +236,10 @@
 								"Inspections",
 								new
 								{
-									inspectionId = Guid.Empty,
+									inspectionItemId = inspectionItem.Id,
 									checklistItemId = checklistItem.Id,
-									// TODO: Plugin real WO Id when available
-									workOrderId = "007007007"
+									checklistId = Model.Checklist.Id,
+									workOrderId = Model.WorkOrder.Id
 								},
 								new AjaxOptions
 								{
@@ -246,13 +254,16 @@
 								})
 					</td>
 					<td>
-						@Ajax.RawActionLink("<i class='material-icons'>collections</i>",
+						@if (inspectionItem.InspectionImages.Count > 0)
+						{
+							@Ajax.RawActionLink("<i class='material-icons'>collections</i>",
 								"GetViewInspectionPhotosDialog",
 								"Inspections",
 								new
 								{
-									inspectionId = Guid.Empty,
-									checklistItemId = checklistItem.Id
+									inspectionItemId = inspectionItem.Id,
+									checklistItemId = checklistItem.Id,
+									workOrderId = Model.WorkOrder.Id
 								},
 								new AjaxOptions
 								{
@@ -265,6 +276,7 @@
 								{
 									@class = "btn btn-primary no-margin no-padding-horizontal"
 								})
+						}
 					</td>
 				</tr>
 			}

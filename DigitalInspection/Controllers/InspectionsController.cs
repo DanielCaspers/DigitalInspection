@@ -13,6 +13,7 @@ using DigitalInspection.Models.Orders;
 using System.Web;
 using System.Web.Helpers;
 using System.Data.Entity.Validation;
+using System.IO;
 
 namespace DigitalInspection.Controllers
 {
@@ -165,16 +166,38 @@ namespace DigitalInspection.Controllers
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult Photo(UploadInspectionPhotosViewModel photoVM)
 		{
-			// TODO: Use inspections and a real id instead of fake guid
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == photoVM.InspectionItem.Id);
 
-			// TODO make Guid in file path use inspectionItemId
-			Image image = ImageService.SaveImage(photoVM.Picture, new string[] { IMAGE_DIRECTORY, photoVM.WorkOrderId, "35066ff7-ebd7-4157-9e5b-b3af0fdd0000" }, Guid.NewGuid().ToString(), false);
+			if (inspectionItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+			}
+			// New guid is used as a random prefix to the filename to ensure uniqueness
+			Image imageDto = ImageService.SaveImage(photoVM.Picture, new string[] { IMAGE_DIRECTORY, photoVM.WorkOrderId, photoVM.InspectionItem.Id.ToString() }, Guid.NewGuid().ToString(), false);
 
-			// Local test
-			// return RedirectToAction("Index", new { workOrderId= "004584155" , checklistId=Guid.Parse("35066ff7-ebd7-4157-9e5b-b3af0fddcd98") });
-			// Weekly staging server test - Mechanics checklist
-			return RedirectToAction("Index", new { workOrderId = "004584155", checklistId = Guid.Parse("a8231f45-6d7c-4384-93d4-28fcc892fe57") });
+			InspectionImage image = new InspectionImage
+			{
+				Id = imageDto.Id,
+				Title = imageDto.Title,
+				CreatedDate = imageDto.CreatedDate,
+				ImageUrl = imageDto.ImageUrl,
+				InspectionItem = inspectionItemInDb
+			};
 
+			inspectionItemInDb.InspectionImages.Add(image);
+			_context.InspectionImages.Add(image);
+
+			try
+			{
+				_context.SaveChanges();
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+			}
+
+			return RedirectToAction("Index", new { workOrderId = photoVM.WorkOrderId, checklistId = photoVM.ChecklistId });
 		}
 
 		[HttpPost]
@@ -210,11 +233,15 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionId, Guid checklistItemId, string workOrderId)
+		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, Guid checklistId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
+			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+
 			return PartialView("_UploadInspectionPhotosDialog", new UploadInspectionPhotosViewModel
 			{
+
+				InspectionItem = inspectionItem,
 				ChecklistItem = checklistItem,
 				WorkOrderId = workOrderId
 			});
@@ -222,16 +249,15 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetViewInspectionPhotosDialog(Guid inspectionId, Guid checklistItemId)
+		public PartialViewResult GetViewInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
+			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
 
-			var imageSources = new List<string>();
-			// TODO
-			//foreach (Image image in inspectionItem)
-			//{
-			//	imageSources.Add(Path.Combine("/Uploads/Inspections/", workOrderId, image.Title));
-			//}
+			IList<string> imageSources = inspectionItem.InspectionImages
+				.Select((image) => Path.Combine($"/Uploads/{IMAGE_DIRECTORY}/{workOrderId}/{inspectionItemId.ToString()}/", image.Title))
+				.ToList();
+
 			return PartialView("_ViewInspectionPhotosDialog", new ViewInspectionPhotosViewModel
 			{
 				ChecklistItem = checklistItem,
@@ -289,7 +315,9 @@ namespace DigitalInspection.Controllers
 					InspectionItem = inspectionItems[0],
 					Note = inspectionItems[0].Note
 				},
-				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel {},
+				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel {
+					WorkOrderId = workOrderId
+				},
 				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel {}
 			});
 		}

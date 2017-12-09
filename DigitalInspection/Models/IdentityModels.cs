@@ -20,6 +20,7 @@ namespace DigitalInspection.Models
 
 	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
+		public DbSet<InspectionImage> InspectionImages { get; set; }
 		public DbSet<Inspection> Inspections { get; set; }
 		public DbSet<InspectionItem> InspectionItems { get; set; }
 		public DbSet<InspectionMeasurement> InspectionMeasurements { get; set; }

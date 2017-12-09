@@ -312,10 +312,15 @@
     <Compile Include="Migrations\201712040313381_MeasurementInspectionMeasurementRelationship.Designer.cs">
       <DependentUpon>201712040313381_MeasurementInspectionMeasurementRelationship.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712060411495_InspectionItemImageRelationship.cs" />
+    <Compile Include="Migrations\201712060411495_InspectionItemImageRelationship.Designer.cs">
+      <DependentUpon>201712060411495_InspectionItemImageRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AuthorizationRoles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
     <Compile Include="Models\Inspections\Inspection.cs" />
+    <Compile Include="Models\Inspections\InspectionImage.cs" />
     <Compile Include="Models\Inspections\InspectionItem.cs" />
     <Compile Include="Models\Inspections\InspectionMeasurement.cs" />
     <Compile Include="Models\Mappers\WorkOrderMapper.cs" />
@@ -675,6 +680,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712040313381_MeasurementInspectionMeasurementRelationship.resx">
       <DependentUpon>201712040313381_MeasurementInspectionMeasurementRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712060411495_InspectionItemImageRelationship.resx">
+      <DependentUpon>201712060411495_InspectionItemImageRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

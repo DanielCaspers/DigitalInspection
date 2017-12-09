@@ -80,7 +80,7 @@
 				}
 			});
 
-			$('form').dirtyForms({
+			$('form').not('[ma-dirtyforms-ignore]').dirtyForms({
 				dialog: {
 					title: 'Discard changes and leave page?',
 					proceedButtonText: 'Discard',

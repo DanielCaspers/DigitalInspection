@@ -23,5 +23,7 @@ namespace DigitalInspection.Models
 
 		[NotMapped]
 		public IList<Guid> SelectedCannedResponseIds { get; set; } = new List<Guid>();
+
+		public virtual IList<InspectionImage> InspectionImages { get; set; } = new List<InspectionImage>();
 	}
 }

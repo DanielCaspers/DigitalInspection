@@ -20,7 +20,10 @@
 		{
 			<div class="list-group-item">
 				<div class="row-picture">
-					<img class="img-rounded" src="@Path.Combine(HostingEnvironment.ApplicationVirtualPath, "/Uploads/Checklists/", @checklist.Image.Title)" style="height:64px; width:64px;" alt="checklist-image">
+					@if (checklist.Image != null)
+					{
+						<img class="img-rounded" src="@Path.Combine(HostingEnvironment.ApplicationVirtualPath, "/Uploads/Checklists/", @checklist.Image.Title)" style="height:64px; width:64px;" alt="checklist-image">
+					}
 				</div>
 				<div class="row-content">
 					<div class="col-xs-10">
