@@ -4,14 +4,11 @@ using DigitalInspection.Models.Web;
 using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Threading.Tasks;
-using DigitalInspection.ViewModels.TabContainers;
 using System.Net;
 using System.Linq;
 using System;
 using System.Collections.Generic;
 using DigitalInspection.Models.Orders;
-using System.Web;
-using System.Web.Helpers;
 using System.Data.Entity.Validation;
 using System.IO;
 
@@ -47,13 +44,8 @@ namespace DigitalInspection.Controllers
 			}
 			inspectionItemInDb.Condition = inspectionItemCondition;
 
-			try
+			if (TrySave() == false)
 			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
 
@@ -71,11 +63,9 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		// TODO: All of these inspectionIds and checklistIds should probably become inspectionItemId once available
 		public ActionResult CannedResponse(Guid inspectionItemId, InspectionDetailViewModel vm)
 		{
 			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
-
 			IList<Guid> selectedCannedResponseIds = vm.Inspection.InspectionItems
 											.SingleOrDefault(inspItem => inspItem.Id == inspectionItemId)
 											?.SelectedCannedResponseIds;
@@ -93,15 +83,7 @@ namespace DigitalInspection.Controllers
 
 			inspectionItemInDb.CannedResponses = cannedResponsesInDb;
 
-			try
-			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-			}
-
+			TrySave();
 			return new EmptyResult();
 		}
 
@@ -109,7 +91,6 @@ namespace DigitalInspection.Controllers
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult Note(AddInspectionNoteViewModel NoteVM)
 		{
-			// Save Note
 			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == NoteVM.InspectionItem.Id);
 
 			if (inspectionItemInDb == null)
@@ -118,16 +99,10 @@ namespace DigitalInspection.Controllers
 			}
 			inspectionItemInDb.Note = NoteVM.Note;
 
-			try
+			if (TrySave() == false)
 			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
-
 			return new EmptyResult();
 		}
 
@@ -149,16 +124,9 @@ namespace DigitalInspection.Controllers
 				inspectionMeasurementInDb.Value = inspectionMeasurement.Value;
 			}
 
-			try
-			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
+			if (TrySave() == false) {
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
-
 			return new EmptyResult();
 		}
 
@@ -212,7 +180,6 @@ namespace DigitalInspection.Controllers
 				ChecklistItem = checklistItem,
 				InspectionItem = inspectionItem,
 				Measurements = checklistItem.Measurements
-				// Needs to know about inspection measurements, and should be able to match up measurements and inspection measurements
 			});
 		}
 
@@ -273,6 +240,7 @@ namespace DigitalInspection.Controllers
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
 
+			var workOrder = task.Result.WorkOrder;
 			ToastViewModel toast = null;
 
 			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == checklistId);
@@ -281,7 +249,7 @@ namespace DigitalInspection.Controllers
 			{
 				toast = DisplayErrorToast(task.Result);
 			}
-			else if(checklist == null)
+			else if (checklist == null)
 			{
 				toast = ToastService.ResourceNotFound(_resource, ToastActionType.NavigateBack);
 			}
@@ -292,34 +260,129 @@ namespace DigitalInspection.Controllers
 				ci.CannedResponses = ci.CannedResponses.OrderBy(cr => cr.Response).ToList();
 			});
 
-			// TODO: Remove fake code to end of func once merge is working
-			var inspectionItems = _context.InspectionItems.ToList();
-			var fakeInspectionItemId = Guid.Parse("4c5501c2-7cd6-4311-96cc-cbbbcf3d6cbb");
-			inspectionItems[0].Id = fakeInspectionItemId;
+			var realInspection = GetOrCreateInspection(workOrder.Id, checklist);
+			realInspection = GetOrCreateInspectionItems(checklist, realInspection);
+			realInspection = GetOrCreateInspectionMeasurements(checklist, realInspection);
 
-			// Filter canned responses down to IDs
-			inspectionItems[0].SelectedCannedResponseIds = inspectionItems[0].CannedResponses.Select(cr => cr.Id).ToList();
-			inspectionItems[0].InspectionMeasurements = _context.InspectionMeasurements.Where(im => im.InspectionItem.Id == fakeInspectionItemId).ToList();
-			var inspection = new Inspection
+			realInspection.InspectionItems = realInspection.InspectionItems
+				.Where(ii => ii.ChecklistItem.Checklists.Any(c => c.Id == checklistId))
+				.OrderBy(ii => ii.ChecklistItem.Name)
+				.ToList();
+			foreach(var inspectionItem in realInspection.InspectionItems)
 			{
-				InspectionItems = inspectionItems
-			};
+				inspectionItem.SelectedCannedResponseIds = inspectionItem.CannedResponses.Select(cr => cr.Id).ToList();
+			}
+
 			return PartialView(new InspectionDetailViewModel
 			{
-				WorkOrder = task.Result.WorkOrder,
+				WorkOrder = workOrder,
 				Checklist = checklist,
-				Inspection = inspection,
+				Inspection = realInspection,
 				Toast = toast,
 				AddMeasurementVM = new AddMeasurementViewModel { },
-				AddInspectionNoteVM = new AddInspectionNoteViewModel {
-					InspectionItem = inspectionItems[0],
-					Note = inspectionItems[0].Note
-				},
+				AddInspectionNoteVM = new AddInspectionNoteViewModel { },
 				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel {
 					WorkOrderId = workOrderId
 				},
-				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel {}
+				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel { }
 			});
+		}
+
+		/**
+		 * Gets inspection from DB if already exists, or create one in the DB and then return it. 
+		 */
+		private Inspection GetOrCreateInspection(string workOrderId, Checklist checklist)
+		{
+			var inspection = _context.Inspections.SingleOrDefault(i => i.WorkOrderId == workOrderId);
+			if (inspection == null)
+			{
+				inspection = new Inspection
+				{
+					WorkOrderId = workOrderId,
+					Checklists = new List<Checklist> { checklist }
+				};
+
+				_context.Inspections.Add(inspection);
+			}
+			else if (inspection.Checklists.Any(c => c.Id == checklist.Id) == false)
+			{
+				inspection.Checklists.Add(checklist);
+			}
+
+			TrySave();
+
+			return inspection;
+		}
+
+		/**
+		 * Gets all inspectionitems from DB if they already exists, and creates them if they don't already 
+		 */
+		private Inspection GetOrCreateInspectionItems(Checklist checklist, Inspection inspection)
+		{
+			foreach (var ci in checklist.ChecklistItems)
+			{
+				var inspectionItem = inspection.InspectionItems.SingleOrDefault(item => item.ChecklistItem.Id == ci.Id);
+				if (inspectionItem == null)
+				{
+					inspectionItem = new InspectionItem
+					{
+						ChecklistItem = ci,
+						Inspection = inspection
+					};
+
+					inspection.InspectionItems.Add(inspectionItem);
+					_context.InspectionItems.Add(inspectionItem);
+				}
+			}
+
+			TrySave();
+
+			return inspection;
+		}
+
+		/**
+		 * Gets all inspectionmeasurements from DB if they already exist, and creates them if they don't already 
+		 */
+		private Inspection GetOrCreateInspectionMeasurements(Checklist checklist, Inspection inspection)
+		{
+			foreach (var item in inspection.InspectionItems)
+			{
+				var measurements = _context.Measurements.Where(m => m.ChecklistItem.Id == item.ChecklistItem.Id).ToList();
+
+				foreach(var measurement in measurements)
+				{
+					if (item.InspectionMeasurements.Any(im => im.Measurement.Id == measurement.Id) == false)
+					{
+						var inspectionMeasurement = new InspectionMeasurement
+						{
+							InspectionItem = item,
+							Measurement = measurement,
+							Value = measurement.MinValue
+						};
+						_context.InspectionMeasurements.Add(inspectionMeasurement);
+					}
+				}
+			}
+
+			TrySave();
+
+			return _context.Inspections.Single(i => i.Id == inspection.Id);
+		}
+
+		private bool TrySave()
+		{
+			bool wasSuccessful = false;
+			try
+			{
+				_context.SaveChanges();
+				wasSuccessful = true;
+			}
+			catch (DbEntityValidationException dbEx)
+			{
+				ExceptionHandlerService.HandleException(dbEx);
+			}
+
+			return wasSuccessful;
 		}
 
 		private ToastViewModel DisplayErrorToast(WorkOrderResponse response)

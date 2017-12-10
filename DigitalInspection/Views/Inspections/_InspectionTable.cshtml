@@ -16,6 +16,7 @@
 		cannedResponseMultiSelectConfig.enableFiltering = false;
 		cannedResponseMultiSelectConfig.enableCaseInsensitiveFiltering = false;
 		cannedResponseMultiSelectConfig.onDropdownHide = function (event) {
+			console.log('Closing canned response dropdown is triggering form submit on ', $(event.target).closest('form'));
 			$(event.target).closest('form').submit();
 		}
 
@@ -69,8 +70,6 @@
 				var inspectionItem = Model.Inspection.InspectionItems[i];
 
 				var checklistItem = inspectionItem.ChecklistItem;
-				// TODO: Get this working post merge
-				//var inspectionItem = Model.Inspection.InspectionItems.Where(inspItem => inspItem.ChecklistItem.Id == checklistItem.Id).First();
 
 				<tr data-checklistitem-id="@checklistItem.Id">
 					<td>@checklistItem.Name</td>
@@ -99,7 +98,6 @@
 										name="inspectionItemCondition"
 										class="btn btn-raised btn-success group-left no-margin no-padding-horizontal
 										@(inspectionItem.Condition == RecommendedServiceSeverity.OK ? "active" : "")">
-									<!-- TODO Adjust all anonymous expressions to use inspectionItem.condition  -->
 									<i class="material-icons">check</i>
 								</button>
 								<select data-width="70px"
@@ -108,7 +106,7 @@
 										data-style="recommended-service-picker"
 										class="selectpicker group-center">
 									<option 
-										data-content="@RecommendedServiceHelpers.Unknown(true, true).ToString()"
+										data-content="@RecommendedServiceHelpers.Unknown(false, false).ToString()"
 										@(inspectionItem.Condition == RecommendedServiceSeverity.UNKNOWN ? "selected" : "")
 										value="@RecommendedServiceSeverity.UNKNOWN">
 									</option>
@@ -185,7 +183,13 @@
 								 )
 							</div>
 
-							@Html.HiddenFor(m => m.Inspection.InspectionItems[i].Id)
+							
+							for (int k = 0; k <= i; k++)
+							{
+								// The model binder must have a contiguous array of items at all times in order to take the form posted data
+								// and re-serialize once it hits the controller. Thus, we send a partial array of Ids from 0 to i.
+								@Html.HiddenFor(m => m.Inspection.InspectionItems[k].Id)
+							}
 						}
 					</td>
 					<td>
