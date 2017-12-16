@@ -1,0 +1,45 @@
+﻿$scrtabs-tabs-height: 55px;
+
+@import "../Library/jquery.scrolling-tabs.scss";
+@import "colors.scss";
+
+.scrtabs-tab-scroll-arrow {
+	&.scrtabs-tab-scroll-arrow-left,
+	&.scrtabs-tab-scroll-arrow-right {
+		padding: 0;
+		width: 38px;
+
+		&.scrtabs-disable {
+			opacity: 0.3;
+		}
+
+		a {
+			line-height: 40px;
+		}
+	}
+}
+
+.scrtabs-tab-container {
+
+	.nav.nav-tabs {
+		background-color: transparent;
+
+		li {
+			height: $scrtabs-tabs-height;
+
+			&.active {
+				background-color: $material-info;
+
+				a {
+					color: #fff !important;
+				}
+			}
+
+			a {
+				color: #000 !important;
+				line-height: 35px;
+				font-weight: bold;
+			}
+		}
+	}
+}

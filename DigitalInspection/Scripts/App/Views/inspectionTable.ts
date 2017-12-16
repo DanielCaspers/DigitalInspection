@@ -1,10 +1,13 @@
 ﻿class InspectionTable {
+	public static tabs: ScrollableTab[] = []; 
+
 	private static TABLE_CONFIG = TableService.BASE_TABLE_CONFIG;
 
 	public static initialize(): void {
 		InspectionTable.initializeTable();
 		InspectionTable.initializeSelect();
 		InspectionTable.initializeConditionGroupControls();
+		$(InspectionTable.initializeScrollableTabs);
 	}
 
 	private static onSelect(e: Event, dataTableInstance: any, type: string, indexes: any): void {
@@ -73,5 +76,10 @@
 				imposterSelect.closest('form').submit();
 			});
 		});
+	}
+
+	private static initializeScrollableTabs() {
+		const config = ScrollableTabService.getConfig(InspectionTable.tabs);
+		ScrollableTabService.initialize(config);
 	}
 }

@@ -25,6 +25,8 @@
 		}
 	}
 
+	InspectionTable.tabs = JSON.parse(' @Html.Raw(Json.Encode(Model.ScrollableTabContainerVM.Tabs)) ');
+
 	InspectionTable.initialize();
 	initializeMultiSelects();
 
@@ -87,8 +89,8 @@
 									OnSuccess = "OnInspectionItemConditionChange"
 								},
 								new {
-									// Used for preventing 'Confirm unsaved changes' dialog
-									ma_dirtyforms_ignore = ""
+											// Used for preventing 'Confirm unsaved changes' dialog
+											ma_dirtyforms_ignore = ""
 								}
 								))
 						{
@@ -107,35 +109,35 @@
 										class="selectpicker group-center">
 									<option 
 										data-content="@RecommendedServiceHelpers.Unknown(false, false).ToString()"
-										@(inspectionItem.Condition == RecommendedServiceSeverity.UNKNOWN ? "selected" : "")
+											@(inspectionItem.Condition == RecommendedServiceSeverity.UNKNOWN ? "selected" : "")
 										value="@RecommendedServiceSeverity.UNKNOWN">
 									</option>
 									<option 
 										data-content="@RecommendedServiceHelpers.Immediate(true, true).ToString()"
-										@(inspectionItem.Condition == RecommendedServiceSeverity.IMMEDIATE ? "selected" : "")
-										value="@RecommendedServiceSeverity.IMMEDIATE">
+											@(inspectionItem.Condition == RecommendedServiceSeverity.IMMEDIATE ? "selected" : "")
+											value="@RecommendedServiceSeverity.IMMEDIATE">
 										Immediate
 									</option>
 									<option 
 										data-content="@RecommendedServiceHelpers.Moderate(true, true).ToString()"
-										@(inspectionItem.Condition == RecommendedServiceSeverity.MODERATE ? "selected" : "")
-										value="@RecommendedServiceSeverity.MODERATE">
+											@(inspectionItem.Condition == RecommendedServiceSeverity.MODERATE ? "selected" : "")
+											value="@RecommendedServiceSeverity.MODERATE">
 									<option
 										data-content="@RecommendedServiceHelpers.Watch(true, true).ToString()"
-										@(inspectionItem.Condition == RecommendedServiceSeverity.SHOULD_WATCH ? "selected" : "")
-										value="@RecommendedServiceSeverity.SHOULD_WATCH">
+											@(inspectionItem.Condition == RecommendedServiceSeverity.SHOULD_WATCH ? "selected" : "")
+											value="@RecommendedServiceSeverity.SHOULD_WATCH">
 										Should watch
 									</option>
 									<option 
 										data-content="@RecommendedServiceHelpers.Maintenance(true, true).ToString()"
-										@(inspectionItem.Condition == RecommendedServiceSeverity.MAINTENANCE ? "selected" : "")
-										value="@RecommendedServiceSeverity.MAINTENANCE">
+											@(inspectionItem.Condition == RecommendedServiceSeverity.MAINTENANCE ? "selected" : "")
+											value="@RecommendedServiceSeverity.MAINTENANCE">
 										Maintenance
 									</option>
 									<option 
 										data-content="@RecommendedServiceHelpers.Notes(true, true).ToString()"
-										@(inspectionItem.Condition == RecommendedServiceSeverity.NOTES ? "selected" : "")
-										value="@RecommendedServiceSeverity.NOTES">
+											@(inspectionItem.Condition == RecommendedServiceSeverity.NOTES ? "selected" : "")
+											value="@RecommendedServiceSeverity.NOTES">
 										Notes
 									</option>
 								</select>
@@ -163,27 +165,27 @@
 							},
 							new
 							{
-								// Used for preventing 'Confirm unsaved changes' dialog
-								ma_dirtyforms_ignore = ""
+										// Used for preventing 'Confirm unsaved changes' dialog
+										ma_dirtyforms_ignore = ""
 							}))
 						{
 							<div style="max-width: 80px;">
 								<!-- Canned response LINQ query filters by applicable canned response -->
 								@Html.ListBoxFor(
-									 m => m.Inspection.InspectionItems[i].SelectedCannedResponseIds,
-									 new MultiSelectList(
-										 checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(Model.Inspection.InspectionItems[i].Condition)).ToList(),
-										 "Id", "Response", Model.Inspection.InspectionItems[i].SelectedCannedResponseIds),
-									 new
-									 {
-										 id = checklistItem.Id,
-										 @class = "form-control ma-multi-select",
-										 required = "required"
-									 }
-								 )
+															  m => m.Inspection.InspectionItems[i].SelectedCannedResponseIds,
+															  new MultiSelectList(
+																  checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(Model.Inspection.InspectionItems[i].Condition)).ToList(),
+																  "Id", "Response", Model.Inspection.InspectionItems[i].SelectedCannedResponseIds),
+															  new
+															  {
+																  id = checklistItem.Id,
+																  @class = "form-control ma-multi-select",
+																  required = "required"
+															  }
+														  )
 							</div>
 
-							
+
 							for (int k = 0; k <= i; k++)
 							{
 								// The model binder must have a contiguous array of items at all times in order to take the form posted data
@@ -196,90 +198,91 @@
 						@if (checklistItem.Measurements.Count > 0)
 						{
 							@Ajax.RawActionLink("<i class='mdi mdi-ruler mdi-24px'></i>",
-								"GetAddMeasurementDialog",
-								"Inspections",
-								new
-								{
-									inspectionItemId = inspectionItem.Id,
-									checklistItemId = checklistItem.Id
-								},
-								new AjaxOptions
-								{
-									HttpMethod = "POST",
-									InsertionMode = InsertionMode.Replace,
-									UpdateTargetId = "AddMeasurementDynamicDialogContainer",
-									OnComplete = "DialogService.show('addMeasurementDialog', 'addMeasurementForm')"
-								},
-								new { @class = "btn btn-primary no-margin no-padding-horizontal" })
+														 "GetAddMeasurementDialog",
+														 "Inspections",
+														 new
+														 {
+															 inspectionItemId = inspectionItem.Id,
+															 checklistItemId = checklistItem.Id
+														 },
+														 new AjaxOptions
+														 {
+															 HttpMethod = "POST",
+															 InsertionMode = InsertionMode.Replace,
+															 UpdateTargetId = "AddMeasurementDynamicDialogContainer",
+															 OnComplete = "DialogService.show('addMeasurementDialog', 'addMeasurementForm')"
+														 },
+														 new { @class = "btn btn-primary no-margin no-padding-horizontal" })
 						}
 					</td>
 					<td>
 						@Ajax.RawActionLink("<i class='material-icons'>note_add</i>",
-								"GetAddInspectionNoteDialog",
-								"Inspections",
-								new
-								{
-									inspectionItemId = inspectionItem.Id,
-									checklistItemId = checklistItem.Id
-								},
-								new AjaxOptions
-								{
-									HttpMethod = "POST",
-									InsertionMode = InsertionMode.Replace,
-									UpdateTargetId = "AddInspectionNoteDynamicDialogContainer",
-									OnComplete = "DialogService.show('addInspectionNoteDialog', 'addInspectionNoteForm')"
-								},
-								new
-								{
-									@class = "btn btn-primary no-margin no-padding-horizontal"
-								})
+														 "GetAddInspectionNoteDialog",
+														 "Inspections",
+														 new
+														 {
+															 inspectionItemId = inspectionItem.Id,
+															 checklistItemId = checklistItem.Id
+														 },
+														 new AjaxOptions
+														 {
+															 HttpMethod = "POST",
+															 InsertionMode = InsertionMode.Replace,
+															 UpdateTargetId = "AddInspectionNoteDynamicDialogContainer",
+															 OnComplete = "DialogService.show('addInspectionNoteDialog', 'addInspectionNoteForm')"
+														 },
+														 new
+														 {
+															 @class = "btn btn-primary no-margin no-padding-horizontal"
+														 })
 					</td>
 					<td>
 						@Ajax.RawActionLink("<i class='material-icons'>add_a_photo</i>",
-								"GetUploadInspectionPhotosDialog",
-								"Inspections",
-								new
-								{
-									inspectionItemId = inspectionItem.Id,
-									checklistItemId = checklistItem.Id,
-									checklistId = Model.Checklist.Id,
-									workOrderId = Model.WorkOrder.Id
-								},
-								new AjaxOptions
-								{
-									HttpMethod = "POST",
-									InsertionMode = InsertionMode.Replace,
-									UpdateTargetId = "UploadInspectionPhotosDynamicDialogContainer",
-									OnComplete = "DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm',  UploadInspectionPhotosDialog.initialize)"
-								},
-								new
-								{
-									@class = "btn btn-primary no-margin no-padding-horizontal"
-								})
+														 "GetUploadInspectionPhotosDialog",
+														 "Inspections",
+														 new
+														 {
+															 inspectionItemId = inspectionItem.Id,
+															 checklistItemId = checklistItem.Id,
+															 checklistId = Model.Checklist.Id,
+															 tagId = Model.FilteringTagId,
+															 workOrderId = Model.WorkOrder.Id
+														 },
+														 new AjaxOptions
+														 {
+															 HttpMethod = "POST",
+															 InsertionMode = InsertionMode.Replace,
+															 UpdateTargetId = "UploadInspectionPhotosDynamicDialogContainer",
+															 OnComplete = "DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm',  UploadInspectionPhotosDialog.initialize)"
+														 },
+														 new
+														 {
+															 @class = "btn btn-primary no-margin no-padding-horizontal"
+														 })
 					</td>
 					<td>
 						@if (inspectionItem.InspectionImages.Count > 0)
 						{
 							@Ajax.RawActionLink("<i class='material-icons'>collections</i>",
-								"GetViewInspectionPhotosDialog",
-								"Inspections",
-								new
-								{
-									inspectionItemId = inspectionItem.Id,
-									checklistItemId = checklistItem.Id,
-									workOrderId = Model.WorkOrder.Id
-								},
-								new AjaxOptions
-								{
-									HttpMethod = "POST",
-									InsertionMode = InsertionMode.Replace,
-									UpdateTargetId = "ViewInspectionPhotosDynamicDialogContainer",
-									OnComplete = "DialogService.show('viewInspectionPhotosDialog')"
-								},
-								new
-								{
-									@class = "btn btn-primary no-margin no-padding-horizontal"
-								})
+														 "GetViewInspectionPhotosDialog",
+														 "Inspections",
+														 new
+														 {
+															 inspectionItemId = inspectionItem.Id,
+															 checklistItemId = checklistItem.Id,
+															 workOrderId = Model.WorkOrder.Id
+														 },
+														 new AjaxOptions
+														 {
+															 HttpMethod = "POST",
+															 InsertionMode = InsertionMode.Replace,
+															 UpdateTargetId = "ViewInspectionPhotosDynamicDialogContainer",
+															 OnComplete = "DialogService.show('viewInspectionPhotosDialog')"
+														 },
+														 new
+														 {
+															 @class = "btn btn-primary no-margin no-padding-horizontal"
+														 })
 						}
 					</td>
 				</tr>

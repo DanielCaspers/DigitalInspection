@@ -1,4 +1,6 @@
-﻿table {
+﻿@import "colors.scss";
+
+table {
 	&.dataTable{
 		&.no-footer{
 			border-bottom: none;

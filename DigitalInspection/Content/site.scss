@@ -1,6 +1,4 @@
-﻿$material-primary: #009688;
-$material-info: rgb(3, 169, 244);
-$material-disabled-button: rgba(153,153,153, 0.2);
+﻿@import "Components/colors.scss";
 
 body {
 	//TODO: DJC This needs to be 75px for normal views, but 50px with tab containers... It would be better handled by the stacked partials instead of body?

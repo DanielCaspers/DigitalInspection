@@ -381,6 +381,7 @@
     <Compile Include="ViewModels\Inspections\AddInspectionNoteViewModel.cs" />
     <Compile Include="ViewModels\Inspections\InspectionDetailViewModel.cs" />
     <Compile Include="ViewModels\Inspections\ViewInspectionPhotosViewModel.cs" />
+    <Compile Include="ViewModels\TabContainers\ScrollableTabContainerViewModel.cs" />
     <Compile Include="ViewModels\TabContainers\TabContainerViewModel.cs" />
     <Compile Include="ViewModels\Tags\AddTagViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseHomeViewModel.cs" />
@@ -437,6 +438,8 @@
     <Content Include="Content\Components\car-color-indicator.scss" />
     <Content Include="Content\Components\form.scss" />
     <Content Include="Content\Components\components.scss" />
+    <Content Include="Content\Components\scrollable-tabs.scss" />
+    <Content Include="Content\Components\colors.scss" />
     <None Include="Content\Components\progress-bar.scss" />
     <Content Include="Content\Views\inspection-table.scss" />
     <Content Include="Content\Components\flex.scss" />
@@ -449,6 +452,7 @@
     <Content Include="Content\fonts\materialdesignicons-webfont.ttf" />
     <Content Include="Content\fonts\materialdesignicons-webfont.woff" />
     <Content Include="Content\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Content\Library\jquery.scrolling-tabs.scss" />
     <None Include="Content\site.scss" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -465,12 +469,16 @@
     <Content Include="Content\Components\tab-container.scss" />
     <Content Include="Content\Views\views.scss" />
     <None Include="Properties\PublishProfiles\MurphyAuto_Debug.pubxml" />
+    <Content Include="Scripts\compiledTS\Shared\Services\location.service.js" />
+    <Content Include="Scripts\Library\JQuery-Bootstrap-Scrolling-Tabs\jquery.scrolling-tabs.min.js" />
     <Content Include="Views\Inspections\_ViewInspectionPhotosDialog.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
+    <TypeScriptCompile Include="Scripts\App\Shared\Services\location.service.ts" />
+    <TypeScriptCompile Include="Scripts\App\Shared\Services\tab.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\urlRewriter.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\form.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\multiSelect.service.ts" />
-    <TypeScriptCompile Include="Scripts\App\Shared\Services\tab.service.ts" />
+    <TypeScriptCompile Include="Scripts\App\Shared\Services\scrollableTab.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\table.service.ts" />
     <Content Include="Scripts\compiledTS\Shared\Services\dialog.service.js" />
     <Content Include="Scripts\compiledTS\Shared\Services\form.service.js" />

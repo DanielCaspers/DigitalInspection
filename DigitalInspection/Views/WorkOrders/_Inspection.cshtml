@@ -38,18 +38,21 @@
 				</div>
 
 				<a href="@Url.Action("Index", "Inspections", new { workOrderId = Model.WorkOrder.Id, checklistId = checklist.Id })">
-					<div class="img-darkener">
-						@if (HostingEnvironment.ApplicationVirtualPath == "/" || HostingEnvironment.ApplicationVirtualPath == "\\")
+					<div class="img-darkener" style="min-height: 150px;">
+						@if(checklist.Image != null)
 						{
-							<img src="@Path.Combine("/Uploads/Checklists/", @checklist.Image.Title)"
-								 alt="Image could not be found" />
-						}
-						else
-						{
-							<img src="@(HostingEnvironment.ApplicationVirtualPath + "/Uploads/Checklists/" + @checklist.Image.Title)"
-								 alt="Image could not be found" />
-						}
+							if (HostingEnvironment.ApplicationVirtualPath == "/" || HostingEnvironment.ApplicationVirtualPath == "\\")
+							{
+								<img src="@Path.Combine("/Uploads/Checklists/", @checklist.Image.Title)"
+										alt="Image could not be found" />
+							}
+							else
+							{
+								<img src="@(HostingEnvironment.ApplicationVirtualPath + "/Uploads/Checklists/" + @checklist.Image.Title)"
+										alt="Image could not be found" />
+							}
 
+						}
 					</div>
 				</a>
 

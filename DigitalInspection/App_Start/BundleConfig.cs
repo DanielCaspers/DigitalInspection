@@ -26,6 +26,7 @@ namespace DigitalInspection
 					LIB_DIR_PREFIX + "Modernizr/modernizr-*",
 					LIB_DIR_PREFIX + "Bootstrap/bootstrap.js",
 					LIB_DIR_PREFIX + "Bootstrap/respond.js",
+					LIB_DIR_PREFIX + "JQuery-Bootstrap-Scrolling-Tabs/jquery.scrolling-tabs.min.js",
 					LIB_DIR_PREFIX + "DataTables/jquery.dataTables.min.js",
 					LIB_DIR_PREFIX + "DataTables/dataTables.select.min.js",
 					LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
@@ -51,6 +52,7 @@ namespace DigitalInspection
 					STYLE_LIB_DIR_PREFIX + "bootstrap-select.min.css",
 					STYLE_LIB_DIR_PREFIX + "material-icons.css",
 					STYLE_LIB_DIR_PREFIX + "ripples.css",
+					// Scrolling tabs is not included here because it is imported via SASS into its component
 					"~/Content/fonts/materialdesignicons.min.css",
 					"~/Content/site.css"));
 		}

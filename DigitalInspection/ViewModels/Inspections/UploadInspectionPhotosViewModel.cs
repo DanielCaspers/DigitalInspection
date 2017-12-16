@@ -14,6 +14,7 @@ namespace DigitalInspection.ViewModels
 
 		// Used for refreshing the view properly in the RedirectToAction() call in the controller after upload
 		public Guid ChecklistId { get; set; }
+		public Guid? TagId { get; set; }
 
 		// Used for the naming scheme of the saved image for easier recognition outside of DI
 		// for the use case of pruning old inspection images which no longer need to be kept on file.

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using DigitalInspection.Models.Orders;
 using System.Data.Entity.Validation;
 using System.IO;
+using DigitalInspection.ViewModels.TabContainers;
 
 namespace DigitalInspection.Controllers
 {
@@ -25,9 +26,9 @@ namespace DigitalInspection.Controllers
 		}
 
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult Index(string workOrderId, Guid checklistId)
+		public PartialViewResult Index(string workOrderId, Guid checklistId, Guid? tagId)
 		{
-			return GetInspectionViewModel(workOrderId, checklistId);
+			return GetInspectionViewModel(workOrderId, checklistId, tagId);
 		}
 
 		[HttpPost]
@@ -165,7 +166,7 @@ namespace DigitalInspection.Controllers
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
 
-			return RedirectToAction("Index", new { workOrderId = photoVM.WorkOrderId, checklistId = photoVM.ChecklistId });
+			return RedirectToAction("Index", new { workOrderId = photoVM.WorkOrderId, checklistId = photoVM.ChecklistId, tagId = photoVM.TagId });
 		}
 
 		[HttpPost]
@@ -200,7 +201,7 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, Guid checklistId, string workOrderId)
+		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, Guid checklistId, Guid? tagId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
@@ -210,6 +211,7 @@ namespace DigitalInspection.Controllers
 
 				InspectionItem = inspectionItem,
 				ChecklistItem = checklistItem,
+				TagId = tagId,
 				WorkOrderId = workOrderId
 			});
 		}
@@ -232,7 +234,7 @@ namespace DigitalInspection.Controllers
 			});
 		}
 
-		private PartialViewResult GetInspectionViewModel(string workOrderId, Guid checklistId)
+		private PartialViewResult GetInspectionViewModel(string workOrderId, Guid checklistId, Guid? tagId)
 		{
 			var task = Task.Run(async () => {
 				return await WorkOrderService.GetWorkOrder(workOrderId, false);
@@ -264,10 +266,15 @@ namespace DigitalInspection.Controllers
 			realInspection = GetOrCreateInspectionItems(checklist, realInspection);
 			realInspection = GetOrCreateInspectionMeasurements(checklist, realInspection);
 
+			// Filter inspection items
+			Func<InspectionItem, bool> filterByChecklistsAndTags = ii => ii.ChecklistItem.Checklists.Any(c => c.Id == checklistId) && ii.ChecklistItem.Tags.Any(t => t.Id == tagId);
+			Func<InspectionItem, bool> filterByChecklists = ii => ii.ChecklistItem.Checklists.Any(c => c.Id == checklistId);
+
 			realInspection.InspectionItems = realInspection.InspectionItems
-				.Where(ii => ii.ChecklistItem.Checklists.Any(c => c.Id == checklistId))
+				.Where(tagId.HasValue ? filterByChecklistsAndTags : filterByChecklists)
 				.OrderBy(ii => ii.ChecklistItem.Name)
 				.ToList();
+
 			foreach(var inspectionItem in realInspection.InspectionItems)
 			{
 				inspectionItem.SelectedCannedResponseIds = inspectionItem.CannedResponses.Select(cr => cr.Id).ToList();
@@ -284,7 +291,9 @@ namespace DigitalInspection.Controllers
 				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel {
 					WorkOrderId = workOrderId
 				},
-				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel { }
+				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel { },
+				ScrollableTabContainerVM = GetScrollableTabContainerViewModel(tagId),
+				FilteringTagId = tagId
 			});
 		}
 
@@ -367,6 +376,43 @@ namespace DigitalInspection.Controllers
 			TrySave();
 
 			return _context.Inspections.Single(i => i.Id == inspection.Id);
+		}
+
+		private ScrollableTabContainerViewModel GetScrollableTabContainerViewModel(Guid? tagId)
+		{
+			// Construct tabs based on current selection
+			var applicableTags = _context.Tags
+				.OrderBy(t => t.Name)
+				.ToList();
+
+			IList<ScrollableTab> tabs = new List<ScrollableTab>
+			{
+				new ScrollableTab {
+					paneId = null,
+					title = "All tags"
+				}
+			};
+
+			foreach (Tag tag in applicableTags)
+			{
+				tabs.Add(new ScrollableTab { paneId = tag.Id, title = tag.Name });
+			}
+
+			if (tagId.HasValue)
+			{
+				// Make matching tag active
+				tabs.Where(tab => tab.paneId == tagId).ElementAt(0).active = true;
+			}
+			else
+			{
+				// Make default (All tags) appear active
+				tabs.ElementAt(0).active = true;
+			}
+
+			return new ScrollableTabContainerViewModel
+			{
+				Tabs = tabs
+			};
 		}
 
 		private bool TrySave()
