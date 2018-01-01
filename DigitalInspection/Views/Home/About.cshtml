@@ -144,6 +144,7 @@
 				<div>Physical Path: @HttpContext.Current.Request.PhysicalPath</div>
 				<div>Physical Application Path: @HttpContext.Current.Request.PhysicalApplicationPath</div>
 				<div>File Path: @HttpContext.Current.Request.FilePath</div>
+				<div>Base URL: @HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)</div>
 				<a class="btn btn-primary" href="https://msdn.microsoft.com/en-us/library/ms178116.aspx">Docs</a>
 			</div>
 		</div>

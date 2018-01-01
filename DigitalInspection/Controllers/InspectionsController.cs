@@ -31,6 +31,47 @@ namespace DigitalInspection.Controllers
 			return GetInspectionViewModel(workOrderId, checklistId, tagId);
 		}
 
+		[AllowAnonymous]
+		public JsonResult Report(string workOrderId)
+		{
+
+			var task = Task.Run(async () => {
+				return await WorkOrderService.GetWorkOrder(workOrderId, false);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var workOrder = task.Result.WorkOrder;
+			var inspection = _context.Inspections.Where(i => i.WorkOrderId == workOrderId).SingleOrDefault();
+
+			var BASE_URL = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
+			var inspectionReportItems = inspection.InspectionItems
+				.OrderBy(ii => ii.Condition)
+				// TODO REVISIT GROUPBY LOGIC
+				//.GroupBy(ii => ii.ChecklistItem.Tags.FirstOrDefault())
+				.Select(ii => new {
+					ii.Condition,
+					ii.Note,
+					ii.ChecklistItem.Name,
+					CannedResponses = ii.CannedResponses.Select(cr => new { cr.Response, cr.Description, cr.Url } ),
+					Measurements = ii.InspectionMeasurements.Select(im => new { im.Value, im.Measurement.Label, im.Measurement.Unit }),
+					Images = ii.InspectionImages
+						.Select(image => new {
+							// url = image.ImageUrl,
+							title = ii.ChecklistItem.Name,
+							altText = ii.ChecklistItem.Name,
+							url = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
+						})
+				});
+			var response = new
+			{
+				WorkOrder = workOrder,
+				InspectionReportItems = inspectionReportItems
+			};
+
+			return Json(response, JsonRequestBehavior.AllowGet);
+		}
+
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		// TODO: ChecklistItemId can be removed since it will exist on the InspectionItem.ChecklistItem.Id property
