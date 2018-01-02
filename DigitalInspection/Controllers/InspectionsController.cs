@@ -60,7 +60,8 @@ namespace DigitalInspection.Controllers
 							// url = image.ImageUrl,
 							title = ii.ChecklistItem.Name,
 							altText = ii.ChecklistItem.Name,
-							url = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
+							url = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}",
+							extUrl = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
 						})
 				});
 			var response = new
