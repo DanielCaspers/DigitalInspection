@@ -83,6 +83,20 @@ namespace DigitalInspection.Controllers
 			});
 		}
 
+		[AllowAnonymous]
+		public JsonResult Json(string workOrderId)
+		{
+			var task = Task.Run(async () => {
+				return await WorkOrderService.GetWorkOrder(workOrderId, false);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var workOrder = task.Result.WorkOrder;
+
+			return Json(workOrder, JsonRequestBehavior.AllowGet);
+		}
+
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
 		public ActionResult SaveCustomer(string id, WorkOrderDetailViewModel vm, bool releaselockonly = false)

@@ -316,6 +316,10 @@
     <Compile Include="Migrations\201712060411495_InspectionItemImageRelationship.Designer.cs">
       <DependentUpon>201712060411495_InspectionItemImageRelationship.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801070513525_TagVisibilityPropertiesForInspectionReporting.cs" />
+    <Compile Include="Migrations\201801070513525_TagVisibilityPropertiesForInspectionReporting.Designer.cs">
+      <DependentUpon>201801070513525_TagVisibilityPropertiesForInspectionReporting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AuthorizationRoles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
@@ -691,6 +695,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712060411495_InspectionItemImageRelationship.resx">
       <DependentUpon>201712060411495_InspectionItemImageRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801070513525_TagVisibilityPropertiesForInspectionReporting.resx">
+      <DependentUpon>201801070513525_TagVisibilityPropertiesForInspectionReporting.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

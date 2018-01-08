@@ -406,6 +406,9 @@ img.center-image {
 .text-inverse, .ma-nav-container .ma-nav-text, .text-inverse:hover, .ma-nav-container .ma-nav-text:hover, a.text-inverse:hover, .ma-nav-container a.ma-nav-text:hover {
   color: #ffffff; }
 
+.form-group.ma-form-group {
+  margin: 0; }
+
 a.back-button, button.back-button {
   font-weight: bold;
   text-transform: none; }

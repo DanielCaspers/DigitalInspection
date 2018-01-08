@@ -87,7 +87,7 @@
 			{
 				<fieldset>
 					<div class="row">
-						<div class="col-sm-6 form-group">
+						<div class="col-sm-6 form-group ma-form-group">
 							@Html.LabelFor(m => m.WorkOrder.Customer.Name, new { @class = "control-label" })
 							@Html.TextBoxFor(m => m.WorkOrder.Customer.Name, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Name)
@@ -95,13 +95,13 @@
 					</div>
 
 					<div class="row">
-						<div class="col-sm-6 form-group">
+						<div class="col-xs-6 form-group ma-form-group">
 							@Html.LabelFor(m => m.WorkOrder.Customer.Address.Line1, new { @class = "control-label" })
 							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.Line1, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.Line1)
 						</div>
 
-						<div class="col-sm-6 form-group">
+						<div class="col-xs-6 form-group ma-form-group">
 							@Html.LabelFor(m => m.WorkOrder.Customer.Address.Line2, new { @class = "control-label" })
 							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.Line2, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.Line2)
@@ -109,19 +109,19 @@
 					</div>
 
 					<div class="row">
-						<div class="col-sm-6 form-group">
+						<div class="col-xs-6 form-group ma-form-group">
 							@Html.LabelFor(m => m.WorkOrder.Customer.Address.City, new { @class = "control-label" })
 							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.City, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.City)
 						</div>
 
-						<div class="col-sm-3 form-group">
+						<div class="col-xs-3 form-group ma-form-group">
 							@Html.LabelFor(m => m.WorkOrder.Customer.Address.State, new { @class = "control-label" })
 							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.State, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.State)
 						</div>
 
-						<div class="col-sm-3 form-group">
+						<div class="col-xs-3 form-group ma-form-group">
 							@Html.LabelFor(m => m.WorkOrder.Customer.Address.ZIP, new { @class = "control-label" })
 							@Html.TextBoxFor(m => m.WorkOrder.Customer.Address.ZIP, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Address.ZIP)
@@ -129,7 +129,7 @@
 					</div>
 
 					<div class="row">
-						<div class="col-sm-6 form-group">
+						<div class="col-sm-6 form-group ma-form-group">
 							@Html.Label("Customer Notes", new { @class = "control-label" })
 
 							@for (int i = 0; i < Model.WorkOrder.Customer.Notes.Count; i++)

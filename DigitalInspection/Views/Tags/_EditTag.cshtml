@@ -40,6 +40,34 @@
 					@Html.TextBoxFor(m => m.Tag.Name, new { @class = "form-control" })
 					@Html.ValidationMessageFor(m => m.Tag.Name)
 				</div>
+
+				<div class="form-group">
+					<div class="container-flex space-between">
+						<div class="flex-item">
+							@Html.LabelFor(m => m.Tag.IsVisibleToCustomer, new { @class = "control-label" })
+						</div>
+						<div class="checkbox" style="float: right; position:absolute; left: 160px;">
+							<label>
+								@Html.CheckBoxFor(m => m.Tag.IsVisibleToCustomer)
+							</label>
+						</div>
+						@Html.ValidationMessageFor(m => m.Tag.IsVisibleToCustomer)
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="container-flex space-between">
+						<div class="flex-item">
+							@Html.LabelFor(m => m.Tag.IsVisibleToEmployee, new { @class = "control-label" })
+						</div>
+						<div class="checkbox" style="float: right; position:absolute; left: 160px;">
+							<label>
+								@Html.CheckBoxFor(m => m.Tag.IsVisibleToEmployee)
+							</label>
+						</div>
+						@Html.ValidationMessageFor(m => m.Tag.IsVisibleToEmployee)
+					</div>
+				</div>
 			</fieldset>
 		</div>
 	</div>

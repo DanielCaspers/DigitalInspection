@@ -32,45 +32,56 @@ namespace DigitalInspection.Controllers
 		}
 
 		[AllowAnonymous]
-		public JsonResult Report(string workOrderId)
+		public JsonResult Report(string workOrderId, bool grouped = false)
 		{
+			var inspection = _context.Inspections
+				.Where(i => i.WorkOrderId == workOrderId)
+				.SingleOrDefault();
 
-			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(workOrderId, false);
-			});
-			// Force Synchronous run for Mono to work. See Issue #37
-			task.Wait();
+			string BASE_URL = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
 
-			var workOrder = task.Result.WorkOrder;
-			var inspection = _context.Inspections.Where(i => i.WorkOrderId == workOrderId).SingleOrDefault();
-
-			var BASE_URL = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
-			var inspectionReportItems = inspection.InspectionItems
-				.OrderBy(ii => ii.Condition)
-				// TODO REVISIT GROUPBY LOGIC
-				//.GroupBy(ii => ii.ChecklistItem.Tags.FirstOrDefault())
-				.Select(ii => new {
-					ii.Condition,
-					ii.Note,
-					ii.ChecklistItem.Name,
-					CannedResponses = ii.CannedResponses.Select(cr => new { cr.Response, cr.Description, cr.Url } ),
-					Measurements = ii.InspectionMeasurements.Select(im => new { im.Value, im.Measurement.Label, im.Measurement.Unit }),
-					Images = ii.InspectionImages
-						.Select(image => new {
-							// url = image.ImageUrl,
-							title = ii.ChecklistItem.Name,
-							altText = ii.ChecklistItem.Name,
-							url = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}",
-							extUrl = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
-						})
-				});
-			var response = new
+			if (grouped)
 			{
-				WorkOrder = workOrder,
-				InspectionReportItems = inspectionReportItems
-			};
+				// Prepare to group items by tag
+				var applicableTags = _context.Tags
+					.Where(t => t.IsVisibleToCustomer)
+					.Select(t => t.Id)
+					.ToList();
 
-			return Json(response, JsonRequestBehavior.AllowGet);
+				var inspectionReportGroups = 
+					inspection.InspectionItems
+						// Only show inspection items which correspond to one or more customer visible tags
+						.Where(ii => ii.ChecklistItem.Tags
+										.Select(t => t.Id)
+										.Intersect(applicableTags)
+										.Any()
+						)
+						.GroupBy(ii => ii.ChecklistItem.Tags
+											.Where(t => t.IsVisibleToCustomer)
+											.Select(t => t.Name)
+											.First()
+						)
+						.OrderBy(ig => ig.OrderBy(ii => ii.Condition).ToList().FirstOrDefault().Condition)
+						.Select(ig => {
+							var items = ig.OrderBy(ii => ii.Condition).ToList();
+							return new
+							{
+								Name = ig.Key,
+								items.FirstOrDefault().Condition,
+								Items = items.Select(ii => BuildInspectionReportItem(ii, workOrderId, BASE_URL))
+							};
+						});
+
+				return Json(inspectionReportGroups, JsonRequestBehavior.AllowGet);
+			}
+			else
+			{
+				var inspectionReportItems = inspection.InspectionItems
+					.OrderBy(ii => ii.Condition)
+					.Select(ii => BuildInspectionReportItem(ii, workOrderId, BASE_URL));
+
+				return Json(inspectionReportItems, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		[HttpPost]
@@ -424,6 +435,7 @@ namespace DigitalInspection.Controllers
 		{
 			// Construct tabs based on current selection
 			var applicableTags = _context.Tags
+				.Where(t => t.IsVisibleToEmployee)
 				.OrderBy(t => t.Name)
 				.ToList();
 
@@ -486,6 +498,28 @@ namespace DigitalInspection.Controllers
 				default:
 					return ToastService.UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage);
 			}
+		}
+
+		private object BuildInspectionReportItem(InspectionItem ii, string workOrderId, string BASE_URL)
+		{
+			return new
+			{
+				InspectionItemId = ii.Id,
+				ii.Condition,
+				ii.Note,
+				ii.ChecklistItem.Name,
+				CannedResponses = ii.CannedResponses.Select(cr => new { cr.Response, cr.Description, cr.Url }),
+				Measurements = ii.InspectionMeasurements.Select(im => new { im.Value, im.Measurement.Label, im.Measurement.Unit }),
+				Images = ii.InspectionImages
+							.Select(image => new
+							{
+								// url = image.ImageUrl,
+								title = ii.ChecklistItem.Name,
+								altText = ii.ChecklistItem.Name,
+								url = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}",
+								extUrl = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
+							})
+			};
 		}
 	}
 }

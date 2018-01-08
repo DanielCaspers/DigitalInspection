@@ -70,6 +70,8 @@ namespace DigitalInspection.Controllers
 			else
 			{
 				tagInDb.Name = tag.Name;
+				tagInDb.IsVisibleToCustomer = tag.IsVisibleToCustomer;
+				tagInDb.IsVisibleToEmployee = tag.IsVisibleToEmployee;
 
 				_context.SaveChanges();
 				return RedirectToAction("Edit", new { id = tagInDb.Id });
@@ -83,7 +85,8 @@ namespace DigitalInspection.Controllers
 			Tag newTag = new Tag
 			{
 				Name = tag.Name,
-				Id = Guid.NewGuid()
+				IsVisibleToCustomer = tag.IsVisibleToCustomer,
+				IsVisibleToEmployee = tag.IsVisibleToEmployee
 			};
 
 			_context.Tags.Add(newTag);

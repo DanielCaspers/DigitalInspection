@@ -65,6 +65,14 @@
 				imposterSelect.siblings('.selectpicker').selectpicker('val', 0);
 			});
 
+			$('.selectpicker').on('loaded.bs.select', function (e) {
+				if ( (e.currentTarget as any).selectedOptions) {
+					let imposterSelect = $(this);
+					// Add selected style to button wrapping select
+					imposterSelect.siblings('.recommended-service-picker').addClass('active');
+				}
+			});
+				
 			$('.selectpicker').on('changed.bs.select', function () {
 				let imposterSelect = $(this);
 				// Add selected style to button wrapping select
