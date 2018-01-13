@@ -34,32 +34,32 @@ namespace DigitalInspection.Controllers
 		[AllowAnonymous]
 		public JsonResult Report(string workOrderId, bool grouped = false)
 		{
-			var inspection = _context.Inspections
+			var applicableTags = _context.Tags
+				.Where(t => t.IsVisibleToCustomer)
+				.Select(t => t.Id)
+				.ToList();
+
+			var inspectionItems = _context.Inspections
 				.Where(i => i.WorkOrderId == workOrderId)
-				.SingleOrDefault();
+				.SingleOrDefault()
+				.InspectionItems
+				// Only show inspection items which correspond to one or more customer visible tags
+				.Where(ii => ii.ChecklistItem.Tags
+					.Select(t => t.Id)
+					.Intersect(applicableTags)
+					.Any()
+				);
 
 			string BASE_URL = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
 
 			if (grouped)
 			{
-				// Prepare to group items by tag
-				var applicableTags = _context.Tags
-					.Where(t => t.IsVisibleToCustomer)
-					.Select(t => t.Id)
-					.ToList();
-
-				var inspectionReportGroups = 
-					inspection.InspectionItems
-						// Only show inspection items which correspond to one or more customer visible tags
-						.Where(ii => ii.ChecklistItem.Tags
-										.Select(t => t.Id)
-										.Intersect(applicableTags)
-										.Any()
-						)
-						.GroupBy(ii => ii.ChecklistItem.Tags
-											.Where(t => t.IsVisibleToCustomer)
-											.Select(t => t.Name)
-											.First()
+				var inspectionReportGroups = inspectionItems
+						.GroupBy(ii => 
+							ii.ChecklistItem.Tags
+								.Where(t => t.IsVisibleToCustomer)
+								.Select(t => t.Name)
+								.First()
 						)
 						.OrderBy(ig => ig.OrderBy(ii => ii.Condition).ToList().FirstOrDefault().Condition)
 						.Select(ig => {
@@ -76,7 +76,7 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				var inspectionReportItems = inspection.InspectionItems
+				var inspectionReportItems = inspectionItems
 					.OrderBy(ii => ii.Condition)
 					.Select(ii => BuildInspectionReportItem(ii, workOrderId, BASE_URL));
 
