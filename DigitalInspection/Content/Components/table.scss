@@ -1,21 +1,21 @@
 ﻿@import "colors.scss";
 
 table {
-	&.dataTable{
-		&.no-footer{
+	&.dataTable {
+		&.no-footer {
 			border-bottom: none;
 		}
 
-		tbody tr:hover{
+		tbody tr:hover {
 			background-color: rgba(0,178,178, 0.08) !important;
 		}
 
-		tbody tr.selected{
+		tbody tr.selected {
 			background-color: rgba(0,178,178, 0.2) !important;
 		}
 	}
 
-	.checkbox-with-label{
+	.checkbox-with-label {
 		margin-right: 15px;
 	}
 
@@ -24,55 +24,54 @@ table {
 
 		td {
 			vertical-align: middle !important;
-			
-			&.color-indicator{
+
+			&.color-indicator {
 				width: 10px !important;
 				padding: 0px !important;
 				opacity: 0.8;
-				border:1px solid black;
-				border-top:none;
-				border-bottom:none;
+				border: 1px solid black;
+				border-top: none;
+				border-bottom: none;
 			}
-
 		}
-
 	}
 }
 
 .dataTables_wrapper {
-	.dataTables_info{
+	.dataTables_info {
 		color: $material-info;
 	}
-	.dataTables_length{
+
+	.dataTables_length {
 		padding-top: 10px;
-		label{
+
+		label {
 			color: $material-primary;
+
 			select {
 				text-align: center;
-				text-align-last:center;
-
+				text-align-last: center;
 				width: 80px;
-				border:none;
+				border: none;
 			}
 		}
 	}
 
-	.dataTables_paginate{
-		%undo-bundled-styles{
-			border:none;
-			background:none !important;
+	.dataTables_paginate {
+		%undo-bundled-styles {
+			border: none;
+			background: none !important;
 		}
-
 		//Emulate Bootstrap Material Button behavior
 		.paginate_button {
 			color: $material-primary !important;
 
-			&[disabled]{
+			&[disabled] {
 				color: rgba(0, 0, 0, 0.26);
 				background: transparent;
 			}
 
-			&:hover{
+			&:hover {
 				@extend %undo-bundled-styles;
 				color: $material-primary !important;
 				background-color: $material-disabled-button !important;

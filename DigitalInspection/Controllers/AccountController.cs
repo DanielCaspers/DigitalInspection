@@ -103,14 +103,6 @@ namespace DigitalInspection.Controllers
 		}
 
 		//
-		// GET: /Account/Register
-		[AllowAnonymous]
-		public ActionResult Register()
-		{
-			return View();
-		}
-
-		//
 		// POST: /Account/ExternalLogin
 		[HttpPost]
 		[AllowAnonymous]

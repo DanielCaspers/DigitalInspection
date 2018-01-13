@@ -21,19 +21,14 @@ namespace DigitalInspection
 					LIB_DIR_PREFIX + "JQuery-DirtyForms/jquery.dirtyforms.min.js",
 					LIB_DIR_PREFIX + "JQuery-DirtyForms/jquery.dirtyforms.dialogs.bootstrap.js",
 					LIB_DIR_PREFIX + "JQuery-Validate/jquery.validate*",
-					// Use the development version of Modernizr to develop with and learn from. Then, when you're
-					// ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-					LIB_DIR_PREFIX + "Modernizr/modernizr-*",
 					LIB_DIR_PREFIX + "Bootstrap/bootstrap.js",
-					LIB_DIR_PREFIX + "Bootstrap/respond.js",
 					LIB_DIR_PREFIX + "JQuery-Bootstrap-Scrolling-Tabs/jquery.scrolling-tabs.min.js",
 					LIB_DIR_PREFIX + "DataTables/jquery.dataTables.min.js",
 					LIB_DIR_PREFIX + "DataTables/dataTables.select.min.js",
 					LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
 					LIB_DIR_PREFIX + "Bootstrap-Material/ripples.js",
 					LIB_DIR_PREFIX + "Bootstrap-Multiselect/bootstrap-multiselect.js",
-					LIB_DIR_PREFIX + "Bootstrap-Select/bootstrap-select.min.js",
-					LIB_DIR_PREFIX + "WebcamJS/webcam.min.js"
+					LIB_DIR_PREFIX + "Bootstrap-Select/bootstrap-select.min.js"
 				)
 			);
 

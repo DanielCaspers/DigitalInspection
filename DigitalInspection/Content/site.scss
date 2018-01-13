@@ -17,13 +17,13 @@ body {
 }
 
 //Convenience classes
-img.center-image{
-	margin:auto;
-	display:block;
+img.center-image {
+	margin: auto;
+	display: block;
 }
 
-.text-inverse, .text-inverse:hover, a.text-inverse:hover{
-	color:#ffffff;
+.text-inverse, .text-inverse:hover, a.text-inverse:hover {
+	color: #ffffff;
 }
 
 .form-group.ma-form-group {
@@ -31,13 +31,13 @@ img.center-image{
 }
 
 a, button {
-	&.back-button{
-		font-weight:bold;
-		text-transform:none;
+	&.back-button {
+		font-weight: bold;
+		text-transform: none;
 	}
 
-	&.bold{
-		font-weight:bold;
+	&.bold {
+		font-weight: bold;
 	}
 
 	&.no-margin {
@@ -49,8 +49,8 @@ a, button {
 		padding-right: 5px !important;
 	}
 
-	&.no-transform{
-		text-transform:none;
+	&.no-transform {
+		text-transform: none;
 	}
 }
 
@@ -59,7 +59,7 @@ a, button {
 	width: 95% !important;
 }
 
-i.mdi::before{
+i.mdi::before {
 	margin-top: -5px;
 	height: 24px;
 }
@@ -77,7 +77,7 @@ i.mdi::before{
 /*
 	FIXME: Cleanup before committing
 */
-.color-primary{
+.color-primary {
 	color: $material-primary;
 }
 
@@ -85,7 +85,7 @@ i.mdi::before{
 	span {
 		background-color: rgba(25,25,25,0.7) !important;
 		border-radius: 3px;
-		font-size:16px;
+		font-size: 16px;
 		padding: 5px;
 	}
 }
@@ -93,6 +93,7 @@ i.mdi::before{
 .carousel-control {
 	color: $material-primary;
 	opacity: 1;
+
 	&:focus {
 		color: $material-primary;
 	}

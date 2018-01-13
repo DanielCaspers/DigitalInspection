@@ -10,9 +10,6 @@ namespace DigitalInspection.ViewModels
 
 		public Checklist Checklist { get; set; }
 
-		// TODO: Remove. Not sure why added separately
-		public string InspectionId { get; set; }
-
 		// Used for refreshing the view properly in the RedirectToAction() call in the controller after upload
 		public Guid? FilteringTagId { get; set; }
 

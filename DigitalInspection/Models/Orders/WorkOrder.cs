@@ -13,8 +13,6 @@ namespace DigitalInspection.Models
 		[DisplayName("Work Order # *")]
 		public string Id { get; set; }
 
-		// TODO: Add relation to a checklist
-
 		[Required(ErrorMessage = "Employee # is required")]
 		[DisplayName("Employee # *")]
 		public string EmployeeId { get; set; }

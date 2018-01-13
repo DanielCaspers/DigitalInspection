@@ -1,13 +1,12 @@
-﻿.ma-card{
-	.img-darkener{
-		background:#444444;
+﻿.ma-card {
+	.img-darkener {
+		background: #444444;
 	}
 
 	img {
 		// Match panel border radius
 		border-bottom-right-radius: 2px;
 		border-bottom-left-radius: 2px;
-
 		opacity: 0.7;
 
 		&:hover {

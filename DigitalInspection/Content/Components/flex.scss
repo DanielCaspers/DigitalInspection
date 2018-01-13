@@ -1,31 +1,32 @@
 ﻿//Flex classes
-.inline{
+.inline {
 	display: inline;
 }
-.container-flex{
-	display:flex;
 
-	&.align-center{
-		align-items:center;
+.container-flex {
+	display: flex;
+
+	&.align-center {
+		align-items: center;
 	}
 
-	&.around{
+	&.around {
 		justify-content: space-around;
 	}
 
-	&.between{
+	&.between {
 		justify-content: space-between;
 	}
 
-	&.center{
+	&.center {
 		justify-content: center;
 	}
 
-	&.end{
+	&.end {
 		justify-content: flex-end;
 	}
 }
 
-.flex-item{
+.flex-item {
 	flex: 0 1 auto;
 }

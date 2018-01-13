@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DigitalInspection.Models;
+﻿using DigitalInspection.Models;
 using DigitalInspection.Models.DTOs;
 using DigitalInspection.Models.Mappers;
 using DigitalInspection.Models.Web;

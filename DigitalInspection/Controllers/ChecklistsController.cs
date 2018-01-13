@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DigitalInspection.Models;
+using DigitalInspection.Services;
+using DigitalInspection.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using DigitalInspection.Models;
-using DigitalInspection.ViewModels;
-using DigitalInspection.Services;
 
 namespace DigitalInspection.Controllers
 {
