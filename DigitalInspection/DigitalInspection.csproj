@@ -296,6 +296,10 @@
     <Compile Include="Migrations\201801070513525_TagVisibilityPropertiesForInspectionReporting.Designer.cs">
       <DependentUpon>201801070513525_TagVisibilityPropertiesForInspectionReporting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801131618522_RemoveLocalIdentityTables.cs" />
+    <Compile Include="Migrations\201801131618522_RemoveLocalIdentityTables.Designer.cs">
+      <DependentUpon>201801131618522_RemoveLocalIdentityTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AuthorizationRoles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
@@ -623,6 +627,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801070513525_TagVisibilityPropertiesForInspectionReporting.resx">
       <DependentUpon>201801070513525_TagVisibilityPropertiesForInspectionReporting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801131618522_RemoveLocalIdentityTables.resx">
+      <DependentUpon>201801131618522_RemoveLocalIdentityTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

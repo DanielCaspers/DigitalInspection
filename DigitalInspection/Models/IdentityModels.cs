@@ -39,5 +39,23 @@ namespace DigitalInspection.Models
 		{
 			return new ApplicationDbContext();
 		}
+
+		// https://stackoverflow.com/a/28950804/2831961
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		{
+			// base.OnModelCreating(modelBuilder);
+
+			// Needed to ensure subclasses share the same table
+			var user = modelBuilder.Entity<ApplicationUser>()
+				.ToTable("AspNetUsers");
+
+			// modelBuilder.Ignore<ApplicationUser>();
+			modelBuilder.Ignore<IdentityUserLogin>();
+			modelBuilder.Ignore<IdentityRole>();
+			modelBuilder.Ignore<IdentityUserRole>();
+			modelBuilder.Ignore<IdentityUserClaim>();
+
+
+		}
 	}
 }
