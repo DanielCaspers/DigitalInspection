@@ -1,7 +1,6 @@
 ﻿using System;
 using DigitalInspection.Utils;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 
 namespace DigitalInspection.Models.Orders
 {

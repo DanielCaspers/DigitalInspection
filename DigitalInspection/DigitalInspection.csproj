@@ -233,6 +233,7 @@
     <Compile Include="Controllers\ChecklistItemsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\InspectionsController.cs" />
+    <Compile Include="Controllers\StoreInfoController.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\ChecklistsController.cs" />
@@ -302,11 +303,13 @@
     </Compile>
     <Compile Include="Models\AuthorizationRoles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
+    <Compile Include="Models\DTOs\WorkOrderDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />
     <Compile Include="Models\Inspections\Inspection.cs" />
     <Compile Include="Models\Inspections\InspectionImage.cs" />
     <Compile Include="Models\Inspections\InspectionItem.cs" />
     <Compile Include="Models\Inspections\InspectionMeasurement.cs" />
+    <Compile Include="Models\Mappers\StoreInfoMapper.cs" />
     <Compile Include="Models\Mappers\WorkOrderMapper.cs" />
     <Compile Include="Migrations\201705132034143_Initial.cs" />
     <Compile Include="Migrations\201705132034143_Initial.Designer.cs">
@@ -326,15 +329,23 @@
     </Compile>
     <Compile Include="Migrations\DigitalInspectionMySqlMigrationSqlGenerator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Store\StoreFeatures.cs" />
+    <Compile Include="Models\Store\StoreIntegrations.cs" />
+    <Compile Include="Models\Store\StoreWebAssets.cs" />
+    <Compile Include="Models\Store\StoreAddress.cs" />
+    <Compile Include="Models\Store\WebPhoneNumber.cs" />
     <Compile Include="Models\Web\AuthenticationResponse.cs" />
     <Compile Include="Models\Web\BaseResponse.cs" />
+    <Compile Include="Models\Store\StoreInfo.cs" />
+    <Compile Include="Models\Web\StoreInfoResponse.cs" />
+    <Compile Include="Services\Web\StoreInfoService.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Orders\Address.cs" />
     <Compile Include="Models\Orders\RecommendedService.cs" />
     <Compile Include="Models\Orders\WorkOrderStatus.cs" />
     <Compile Include="Models\Orders\Customer.cs" />
     <Compile Include="Models\DTOs\ClientPhoneDTO.cs" />
-    <Compile Include="Models\DTOs\WorkOrderDTO.cs" />
+    <Compile Include="Models\DTOs\StoreInfoDTO.cs" />
     <Compile Include="Models\Orders\PhoneNumber.cs" />
     <Compile Include="Models\Orders\Vehicle.cs" />
     <Compile Include="Models\Orders\WorkOrder.cs" />

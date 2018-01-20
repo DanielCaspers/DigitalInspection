@@ -11,15 +11,35 @@
 				height: 38px;
 			}
 
-			&.active label {
-				background-color: white;
-				color: $material-primary !important;
-				font-size: $multiselect-font-size;
+			&.active {
+				background-color: #e5e5e5;
+
+				label {
+					background-color: #e5e5e5;
+					color: $material-primary !important;
+					font-size: $multiselect-font-size;
+
+					input[type=checkbox] {
+						opacity: 1;
+						height: 20px;
+						width: 20px;
+						left: 10px;
+						top: 5px;
+						z-index: 1;
+						// Change this to hide/show checkboxes
+						-webkit-appearance: checkbox;
+						-webkit-appearance: none;
+						-moz-appearance: none;
+					}
+				}
 			}
 
 			label {
 				font-size: $multiselect-font-size;
 				color: #555;
+				user-select: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
 			}
 		}
 

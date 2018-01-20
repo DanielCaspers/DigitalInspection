@@ -19,6 +19,8 @@ namespace DigitalInspection.Models
 
 		public string ServiceAdvisor { get; set; }
 
+		public string ServiceAdvisorName { get; set; }
+
 		public IList<string> BillingSummary { get; set; }
 
 		public string TotalBill { get; set; }

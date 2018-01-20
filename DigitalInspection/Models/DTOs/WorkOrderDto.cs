@@ -13,6 +13,7 @@ namespace DigitalInspection.Models.DTOs
 		public long? completionDate { get; set; }
 		public string techNum { get; set; }
 		public string serviceAdvisor { get; set; }
+		public string serviceAdvisorName { get; set; }
 		public IList<string> billingSummary { get; set; }
 		public string totalBill { get; set; }
 		public IList<string> workDesc { get; set; }

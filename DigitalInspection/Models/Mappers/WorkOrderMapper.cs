@@ -2,7 +2,6 @@
 using DigitalInspection.Models.Orders;
 using DigitalInspection.Utils;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DigitalInspection.Models.Mappers
 {
@@ -20,6 +19,7 @@ namespace DigitalInspection.Models.Mappers
 			order.WorkDescription = dto.workDesc;
 			order.TotalBill = dto.totalBill;
 			order.ServiceAdvisor = dto.serviceAdvisor;
+			order.ServiceAdvisorName = dto.serviceAdvisorName;
 			order.BillingSummary = dto.billingSummary;
 
 			order.Status = new WorkOrderStatus(
@@ -111,6 +111,7 @@ namespace DigitalInspection.Models.Mappers
 			dto.workDesc = order.WorkDescription;
 			dto.totalBill = order.TotalBill;
 			dto.serviceAdvisor = order.ServiceAdvisor;
+			dto.serviceAdvisorName = order.ServiceAdvisorName;
 			dto.billingSummary = order.BillingSummary;
 
 			dto.orderStatus = new WorkOrderStatusDTO(

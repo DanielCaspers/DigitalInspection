@@ -51,7 +51,7 @@ namespace DigitalInspection.Models
 			Model = model?.ToTitleCase();
 			License = license;
 
-			Color = color?.ToTitleCase();
+			Color = color?.TrimStart().TrimEnd().ToTitleCase();
 			if (System.Drawing.Color.FromName(Color).IsKnownColor == false)
 			{
 				Color = null;

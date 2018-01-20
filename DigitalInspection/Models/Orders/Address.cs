@@ -1,6 +1,5 @@
 ﻿using DigitalInspection.Utils;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace DigitalInspection.Models
 {

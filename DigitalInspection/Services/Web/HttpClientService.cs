@@ -7,13 +7,18 @@ namespace DigitalInspection.Services
 {
 	public class HttpClientService
 	{
-		protected static HttpClient InitializeHttpClient()
+		protected static HttpClient InitializeHttpClient(bool includeCompanyNumber = true)
 		{
 			var httpClient = new HttpClient();
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 			// TODO: Pass in custom configuration from file for store number and app key
-			httpClient.BaseAddress = new Uri("https://d3-devel.murphyauto.net/api/v1/004/");
+			string baseAddress = "https://d3-devel.murphyauto.net/api/v1/";
+			if (includeCompanyNumber)
+			{
+				baseAddress += "004/";
+			}
+			httpClient.BaseAddress = new Uri(baseAddress);
 			httpClient.DefaultRequestHeaders.Accept.Clear();
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			httpClient.DefaultRequestHeaders.Add("x-appkey", "82kkf452j2lL41430SpqFd6Dwe027z");

@@ -108,110 +108,111 @@
 					)
 			)
 			{
-				<fieldset>
-					<div class="row">
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.Year, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Year, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", type = "number" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Year)
-						</div>
-
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.Make, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Make, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Make)
-						</div>
-
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.Model, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Model, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Model)
-						</div>
-
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.License, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.License, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.License)
-						</div>
-
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.Odometer, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Odometer, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", type = "number" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Odometer)
-						</div>
-
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.Color, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Color, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Color)
-						</div>
-
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.Engine, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Engine, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Engine)
-						</div>
-
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.Transmission, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Transmission, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Transmission)
-						</div>
-
-						<div class="col-xs-6 col-sm-4 form-group ma-form-group">
-							@Html.LabelFor(m => m.WorkOrder.Vehicle.VIN, new { @class = "control-label" })
-							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.VIN, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.VIN)
-						</div>
+			<fieldset>
+				<div class="row">
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Year, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Year, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", type = "number" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Year)
 					</div>
 
-					<div class="row">
-						<!-- TODO: Fix the null issues!!!-->
-						<div class="col-sm-6 form-group ma-form-group">
-							@Html.Label("Work Description", new { @class = "control-label" })
-
-							@for (int i = 0; i < Model.WorkOrder.WorkDescription.Count; i++)
-							{
-								@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							}
-						</div>
-
-						<div class="col-sm-6 form-group ma-form-group">
-							@Html.Label("Vehicle Notes", new { @class = "control-label" })
-
-							@for (int i = 0; i < Model.WorkOrder.Vehicle.Notes.Count; i++)
-							{
-								@Html.TextBoxFor(m => Model.WorkOrder.Vehicle.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							}
-						</div>
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Make, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Make, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Make)
 					</div>
 
-					<!-- Hidden fields for model binding -->
-					@Html.HiddenFor(m => m.WorkOrder.Id)
-					@Html.HiddenFor(m => m.WorkOrder.Date)
-					@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
-					@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
-					@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
-					@Html.HiddenFor(m => m.WorkOrder.TotalBill)
-					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
-					@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
-					@Html.HiddenForEnumerable(m => m.WorkOrder.RecommendedServices, true, "WorkOrder")
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Model, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Model, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Model)
+					</div>
 
-					@Html.HiddenFor(m => m.WorkOrder.Status.Code)
-					@Html.HiddenFor(m => m.WorkOrder.Status.Description)
-					@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
-					@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.License, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.License, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.License)
+					</div>
 
-					@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
-					@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
-					@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.Notes, "WorkOrder.Customer")
-					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line1)
-					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line2)
-					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)
-					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.State)
-					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.ZIP)
-					@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, true, "WorkOrder.Customer")
-				</fieldset>
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Odometer, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Odometer, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", type = "number" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Odometer)
+					</div>
+
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Color, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Color, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Color)
+					</div>
+
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Engine, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Engine, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Engine)
+					</div>
+
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.Transmission, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.Transmission, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Transmission)
+					</div>
+
+					<div class="col-xs-6 col-sm-4 form-group ma-form-group">
+						@Html.LabelFor(m => m.WorkOrder.Vehicle.VIN, new { @class = "control-label" })
+						@Html.TextBoxFor(m => m.WorkOrder.Vehicle.VIN, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.VIN)
+					</div>
+				</div>
+
+				<div class="row">
+					<!-- TODO: Fix the null issues!!!-->
+					<div class="col-sm-6 form-group ma-form-group">
+						@Html.Label("Work Description", new { @class = "control-label" })
+
+						@for (int i = 0; i < Model.WorkOrder.WorkDescription.Count; i++)
+			{
+				@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+}
+					</div>
+
+					<div class="col-sm-6 form-group ma-form-group">
+						@Html.Label("Vehicle Notes", new { @class = "control-label" })
+
+						@for (int i = 0; i < Model.WorkOrder.Vehicle.Notes.Count; i++)
+			{
+				@Html.TextBoxFor(m => Model.WorkOrder.Vehicle.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+}
+					</div>
+				</div>
+
+				<!-- Hidden fields for model binding -->
+				@Html.HiddenFor(m => m.WorkOrder.Id)
+				@Html.HiddenFor(m => m.WorkOrder.Date)
+				@Html.HiddenFor(m => m.WorkOrder.ScheduleDate)
+				@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
+				@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
+				@Html.HiddenFor(m => m.WorkOrder.TotalBill)
+				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
+				@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisorName)
+				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
+				@Html.HiddenForEnumerable(m => m.WorkOrder.RecommendedServices, true, "WorkOrder")
+
+				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
+				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
+
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.Notes, "WorkOrder.Customer")
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line1)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line2)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.State)
+				@Html.HiddenFor(m => m.WorkOrder.Customer.Address.ZIP)
+				@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.PhoneNumbers, true, "WorkOrder.Customer")
+			</fieldset>
 			}
 		</div>
 	</div>
