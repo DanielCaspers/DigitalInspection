@@ -48,7 +48,9 @@ namespace DigitalInspection.Controllers
 					.Select(t => t.Id)
 					.Intersect(applicableTags)
 					.Any()
-				);
+				)
+				// Only show inspection items which have had a marked condition
+				.Where(ii => ii.Condition != RecommendedServiceSeverity.UNKNOWN);
 
 			string BASE_URL = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
 

@@ -6,6 +6,11 @@ namespace DigitalInspection.Models.Orders
 {
 	public enum RecommendedServiceSeverity
 	{
+		// The unset value of the enum should be 0, so that this is also the default constructed value
+		// We need this to remain this way so that we can filter these out from the customer's view
+		[Display(Name = "Unknown")]
+		UNKNOWN = 0,
+
 		[Display(Name = "Immediate")]
 		IMMEDIATE = 1,
 
@@ -25,10 +30,7 @@ namespace DigitalInspection.Models.Orders
 		OK = 10,
 
 		[Display(Name = "N/A")]
-		NOT_APPLICABLE = 11,
-
-		[Display(Name = "Unknown")]
-		UNKNOWN = 12
+		NOT_APPLICABLE = 11
 	}
 
 	public class RecommendedService
