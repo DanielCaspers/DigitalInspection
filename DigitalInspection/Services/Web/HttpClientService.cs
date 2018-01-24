@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -12,18 +13,30 @@ namespace DigitalInspection.Services
 			var httpClient = new HttpClient();
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-			// TODO: Pass in custom configuration from file for store number and app key
-			string baseAddress = "https://d3-devel.murphyauto.net/api/v1/";
-			if (includeCompanyNumber)
-			{
-				baseAddress += "004/";
-			}
-			httpClient.BaseAddress = new Uri(baseAddress);
+			httpClient.BaseAddress = ConstructBaseUri(includeCompanyNumber);
 			httpClient.DefaultRequestHeaders.Accept.Clear();
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-			httpClient.DefaultRequestHeaders.Add("x-appkey", "82kkf452j2lL41430SpqFd6Dwe027z");
-			httpClient.DefaultRequestHeaders.Add("x-authtoken", "eyJhbGciOiJub25lIiwidHlwIjoiRDNKV1QiLCJwQnl0ZXMiOiJlOTRjYzE5NGI0M2UyNTdmMmFhZTI4OTI0ZTYxZThlNyJ9.eyJ1c2VySUQiOiJzY2FzcGVycyIsImlhdCI6IjE0OTQwNzk5MzAiLCJleHAiOiIxNDk0MTY2MzMwIiwiYWRtaW4iOiJ0cnVlIn0.MWMzZTg0ZDM3YWEwNTI1Yjg3OGU1ZmRkZjBmOGFhYTU1M2MyZDgyMWI1NWEwOGFiNzg2MDA3Nzg2NTYwZDg1OA==");
+			httpClient.DefaultRequestHeaders.Add("x-appkey", ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppKey"));
+			httpClient.DefaultRequestHeaders.Add("x-authtoken", ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppSecret"));
 			return httpClient;
+		}
+
+		private static Uri ConstructBaseUri(bool includeCompanyNumber)
+		{
+			string uri;
+			string apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
+
+			if (includeCompanyNumber)
+			{
+				string companyNumber = ConfigurationManager.AppSettings.Get("MurphyAutomotiveCompanyNumber");
+				uri = string.Format("{0}/{1}/", apiBaseUrl, companyNumber);
+			}
+			else
+			{
+				uri = string.Format("{0}/", apiBaseUrl);
+			}				
+
+			return new Uri(uri);
 		}
 	}
 }
