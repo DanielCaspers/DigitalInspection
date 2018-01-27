@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using DigitalInspection.Models;
 using DigitalInspection.Models.Web;
@@ -8,6 +9,8 @@ using System.Threading.Tasks;
 using DigitalInspection.ViewModels.TabContainers;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using System.Web;
 using DigitalInspection.Models.DTOs;
 
 namespace DigitalInspection.Controllers
@@ -143,15 +146,35 @@ namespace DigitalInspection.Controllers
 
 		private async Task<WorkOrderMasterViewModel> GetWorkOrdersViewModel()
 		{
-			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrders();
-			});
-			// Force Synchronous run for Mono to work. See Issue #37
-			task.Wait();
+			IList<WorkOrder> workOrders;
+
+			if (HttpContext.User.IsInRole(AuthorizationRoles.ADMIN))
+			{
+				var task = Task.Run(async () => {
+					return await WorkOrderService.GetWorkOrders();
+				});
+				// Force Synchronous run for Mono to work. See Issue #37
+				task.Wait();
+				workOrders = task.Result;
+			}
+			else
+			{
+				var task = Task.Run(async () => {
+					return await WorkOrderService.GetWorkOrdersForTech(
+						Request.GetOwinContext().Authentication.User.Claims
+							.Where(c => c.Type.ToString() == ClaimTypes.NameIdentifier)
+							.Select(c => c.Value)
+							.FirstOrDefault()
+						);
+				});
+				// Force Synchronous run for Mono to work. See Issue #37
+				task.Wait();
+				workOrders = task.Result;
+			}
 
 			return new WorkOrderMasterViewModel
 			{
-				WorkOrders = task.Result
+				WorkOrders = workOrders
 			};
 		}
 

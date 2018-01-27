@@ -73,14 +73,14 @@ namespace DigitalInspection.Controllers
 				var ident = new ClaimsIdentity(
 				  new[] { 
 			  // adding following 2 claim just for supporting default antiforgery provider
-			  new Claim(ClaimTypes.NameIdentifier, model.Username),
+			  new Claim(ClaimTypes.NameIdentifier, "4067"),
 			  new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
 
 			  // TODO: Change to extract this from the JWT returned
 			  new Claim(ClaimTypes.Name, model.Username),
 
 			  // optionally you could add roles if any
-			  new Claim(ClaimTypes.Role, AuthorizationRoles.ADMIN),
+			  new Claim(ClaimTypes.Role, model.Password == "admin"? AuthorizationRoles.ADMIN : AuthorizationRoles.USER),
 
 				  },
 				  DefaultAuthenticationTypes.ApplicationCookie);

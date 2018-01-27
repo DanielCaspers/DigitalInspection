@@ -17,6 +17,8 @@ namespace DigitalInspection.Services
 			httpClient.DefaultRequestHeaders.Accept.Clear();
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			httpClient.DefaultRequestHeaders.Add("x-appkey", ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppKey"));
+
+			// TODO Remove when putting in real auth stack. This will be present on JWT returned from auth server. Only app key is necessary in web.config
 			httpClient.DefaultRequestHeaders.Add("x-authtoken", ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppSecret"));
 			return httpClient;
 		}

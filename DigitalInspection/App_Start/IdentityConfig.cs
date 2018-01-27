@@ -26,7 +26,7 @@ namespace DigitalInspection
 		{ 
 			// TODO: Make web request
 			// Handle HTTP 400/401/Default
-			return (password == "admin");
+			return (password == "admin" || password == "tech");
 		}
 
 		public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 

@@ -22,15 +22,19 @@ namespace DigitalInspection.Services
 				var response = await httpClient.GetAsync(url);
 				string json = await response.Content.ReadAsStringAsync();
 
-				IList<WorkOrderDTO> orderDtos = new List<WorkOrderDTO>();
-				orderDtos = JsonConvert.DeserializeObject<List<WorkOrderDTO>>(json);
+				return GetWorkOrdersInternal(json);
+			}
+		}
 
-				IList<WorkOrder> workOrders = new List<WorkOrder>();
-				foreach (WorkOrderDTO orderDto in orderDtos)
-				{
-					workOrders.Add(WorkOrderMapper.mapToWorkOrder(orderDto));
-				}
-				return workOrders;
+		public static async Task<IList<WorkOrder>> GetWorkOrdersForTech(string employeeNumber)
+		{
+			using (HttpClient httpClient = InitializeHttpClient())
+			{
+				string url = string.Format("orders/tech/{0}", employeeNumber);
+				var response = await httpClient.GetAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				return GetWorkOrdersInternal(json);
 			}
 		}
 
@@ -81,5 +85,19 @@ namespace DigitalInspection.Services
 			}
 			return workOrderResponse;
 		}
+
+		private static IList<WorkOrder> GetWorkOrdersInternal(string json)
+		{
+			IList<WorkOrderDTO> orderDtos = new List<WorkOrderDTO>();
+			orderDtos = JsonConvert.DeserializeObject<List<WorkOrderDTO>>(json);
+
+			IList<WorkOrder> workOrders = new List<WorkOrder>();
+			foreach (WorkOrderDTO orderDto in orderDtos)
+			{
+				workOrders.Add(WorkOrderMapper.mapToWorkOrder(orderDto));
+			}
+			return workOrders;
+		}
+
 	}
 }
