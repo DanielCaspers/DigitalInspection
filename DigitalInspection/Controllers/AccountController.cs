@@ -7,6 +7,7 @@ using Microsoft.Owin.Security;
 using DigitalInspection.Models;
 using DigitalInspection.ViewModels;
 using System.Security.Claims;
+using DigitalInspection.Services;
 
 namespace DigitalInspection.Controllers
 {
@@ -68,25 +69,18 @@ namespace DigitalInspection.Controllers
 		public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
 		{
 
-			if (UserManager.IsValid(model.Username, model.Password))
+			var task = Task.Run(async () => {
+				return await AuthenticationService.Login(model.Username, model.Password);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+			var response = task.Result;
+
+			//if (UserManager.IsValid(model.Username, model.Password))
+			if (task.Result.IsSuccessStatusCode)
 			{
-				var ident = new ClaimsIdentity(
-				  new[] { 
-			  // adding following 2 claim just for supporting default antiforgery provider
-			  new Claim(ClaimTypes.NameIdentifier, "4067"),
-			  new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
-
-			  // TODO: Change to extract this from the JWT returned
-			  new Claim(ClaimTypes.Name, model.Username),
-
-			  // optionally you could add roles if any
-			  new Claim(ClaimTypes.Role, model.Password == "admin"? AuthorizationRoles.ADMIN : AuthorizationRoles.USER),
-
-				  },
-				  DefaultAuthenticationTypes.ApplicationCookie);
-
 				HttpContext.GetOwinContext().Authentication.SignIn(
-				   new AuthenticationProperties { IsPersistent = true }, ident);
+				   new AuthenticationProperties { IsPersistent = true }, response.ClaimsIdentity);
 				return RedirectToLocal(returnUrl);
 			}
 			else
@@ -110,7 +104,8 @@ namespace DigitalInspection.Controllers
 		public ActionResult ExternalLogin(string provider, string returnUrl)
 		{
 			// Request a redirect to the external login provider
-			return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+			return new ChallengeResult(provider, Url.Action("Index", "Home", new { ReturnUrl = returnUrl }));
+			//return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
 		}
 
 		//

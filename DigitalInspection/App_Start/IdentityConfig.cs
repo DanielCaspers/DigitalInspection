@@ -22,12 +22,12 @@ namespace DigitalInspection
 		{
 		}
 
-		public bool IsValid(string username, string password)
-		{ 
-			// TODO: Make web request
-			// Handle HTTP 400/401/Default
-			return (password == "admin" || password == "tech");
-		}
+		//public bool IsValid(string username, string password)
+		//{ 
+		//	// TODO: Make web request
+		//	// Handle HTTP 400/401/Default
+		//	return (password == "admin" || password == "tech");
+		//}
 
 		public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
 		{

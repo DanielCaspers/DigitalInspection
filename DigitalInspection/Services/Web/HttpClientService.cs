@@ -8,6 +8,10 @@ namespace DigitalInspection.Services
 {
 	public class HttpClientService
 	{
+		// TODO FIXME this can't be static. We need it from the user context cookie
+		public static bool AppendBearer;
+		public static string BearerToken;
+
 		protected static HttpClient InitializeHttpClient(bool includeCompanyNumber = true)
 		{
 			var httpClient = new HttpClient();
@@ -20,6 +24,12 @@ namespace DigitalInspection.Services
 
 			// TODO Remove when putting in real auth stack. This will be present on JWT returned from auth server. Only app key is necessary in web.config
 			httpClient.DefaultRequestHeaders.Add("x-authtoken", ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppSecret"));
+
+			if (AppendBearer)
+			{
+				httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", BearerToken);
+			}
+
 			return httpClient;
 		}
 

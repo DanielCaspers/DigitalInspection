@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using DigitalInspection.Models;
+using Microsoft.Owin.Security.OAuth;
 
 namespace DigitalInspection
 {
@@ -18,6 +20,13 @@ namespace DigitalInspection
 			app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 			app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
+			//var OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
+			//app.UseOAuthBearerAuthentication(OAuthBearerOptions);
+
+			app.UseMurphyAutomotiveAuthentication(
+				clientId: ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppKey"),
+				clientSecret: ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppSecret"));
+
 			// Enable the application to use a cookie to store information for the signed in user
 			// and to use a cookie to temporarily store information about a user logging in with a third party login provider
 			// Configure the sign in cookie
@@ -25,6 +34,7 @@ namespace DigitalInspection
 			{
 				AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
 				LoginPath = new PathString("/Account/Login"),
+				//LoginPath = new PathString("/Account/Login"),
 				Provider = new CookieAuthenticationProvider
 				{
 					// Enables the application to validate the security stamp when the user logs in.
@@ -34,7 +44,7 @@ namespace DigitalInspection
 						validateInterval: TimeSpan.FromMinutes(480),
 						regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
 				}
-			});            
+			});
 			app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 		}
 	}
