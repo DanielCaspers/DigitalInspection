@@ -1,4 +1,5 @@
-﻿using DigitalInspection.ViewModels;
+﻿using System;
+using DigitalInspection.ViewModels;
 using System.Net;
 
 namespace DigitalInspection.Services
@@ -8,13 +9,7 @@ namespace DigitalInspection.Services
 
 		public static ToastViewModel FileLockRequired()
 		{
-			return new ToastViewModel
-			{
-				Icon = "error",
-				Message = "Please request edit rights again.",
-				Type = ToastType.Error,
-				Action = ToastActionType.Refresh
-			};
+			return ErrorInternal("Please request edit rights again.");
 		}
 
 		public static ToastViewModel FileLockedByAnotherClient(string message, ToastActionType action = ToastActionType.NavigateBack)
@@ -52,24 +47,43 @@ namespace DigitalInspection.Services
 
 		public static ToastViewModel UnknownErrorOccurred()
 		{
+			return ErrorInternal("An unknown error occurred.");
+		}
+
+		public static ToastViewModel UnknownErrorOccurred(Exception e)
+		{
+			return ErrorInternal("An unknown error occurred." + Environment.NewLine + Environment.NewLine + GetInnermostException(e)?.Message);
+		}
+
+		public static ToastViewModel UnknownErrorOccurred(HttpStatusCode httpCode, string errorMessage)
+		{
+			return ErrorInternal("An unknown error occurred. Write down these details! " + httpCode + ":" + errorMessage);
+		}
+
+		public static ToastViewModel DatabaseException(Exception e)
+		{
+			return ErrorInternal("Could not perform operation on the database: " + Environment.NewLine + Environment.NewLine + GetInnermostException(e)?.Message);
+		}
+
+		private static ToastViewModel ErrorInternal(string message)
+		{
 			return new ToastViewModel
 			{
 				Icon = "error",
-				Message = "An unknown error occurred.",
+				Message = message,
 				Type = ToastType.Error,
 				Action = ToastActionType.Refresh
 			};
 		}
 
-		public static ToastViewModel UnknownErrorOccurred(HttpStatusCode httpCode, string errorMessage)
+		private static Exception GetInnermostException(Exception e)
 		{
-			return new ToastViewModel
+			while (e.InnerException != null)
 			{
-				Icon = "error",
-				Message = "An unknown error occurred. Write down these details! " + httpCode + ":" + errorMessage,
-				Type = ToastType.Error,
-				Action = ToastActionType.Refresh
-			};
+				e = e.InnerException;
+			}
+
+			return e;
 		}
 	}
 }

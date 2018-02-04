@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Web.Mvc;
 using DigitalInspection.Models;
@@ -131,13 +132,33 @@ namespace DigitalInspection.Controllers
 					_context.Tags.Attach(tag);
 				}
 
-				IList<Tag> selectedTagsInDb = _context.Tags.Where(t => vm.SelectedTagIds.Contains(t.Id)).ToList();
+				foreach (var measurementInVm in vm.ChecklistItem.Measurements)
+				{
+					var measurementInDb = checklistItemInDb.Measurements.SingleOrDefault(cm => cm.Id == measurementInVm.Id);
+					if (measurementInDb != null)
+					{
+						measurementInDb.Label = measurementInVm.Label;
+						measurementInDb.Unit = measurementInVm.Unit;
+						measurementInDb.MinValue = measurementInVm.MinValue;
+						measurementInDb.MaxValue = measurementInVm.MaxValue;
+						measurementInDb.StepSize = measurementInVm.StepSize;
+					}
+				}
+
+				foreach (var cannedResponseInVm in vm.ChecklistItem.CannedResponses)
+				{
+					var cannedResponseInDb = checklistItemInDb.CannedResponses.SingleOrDefault(cr => cr.Id == cannedResponseInVm.Id);
+					if (cannedResponseInDb != null)
+					{
+						cannedResponseInDb.Response = cannedResponseInVm.Response;
+						cannedResponseInDb.LevelsOfConcern = cannedResponseInVm.LevelsOfConcern;
+						cannedResponseInDb.Url = cannedResponseInVm.Url;
+						cannedResponseInDb.Description = cannedResponseInVm.Description;
+					}
+				}
 
 				checklistItemInDb.Name = vm.ChecklistItem.Name;
-				checklistItemInDb.Measurements = vm.ChecklistItem.Measurements;
-				checklistItemInDb.CannedResponses = vm.ChecklistItem.CannedResponses;
-
-				checklistItemInDb.Tags = selectedTagsInDb;
+				checklistItemInDb.Tags = _context.Tags.Where(t => vm.SelectedTagIds.Contains(t.Id)).ToList();
 
 				try
 				{
@@ -167,9 +188,9 @@ namespace DigitalInspection.Controllers
 				}
 
 				// TODO: DJC Should cascade delete work from checklistitem to measurement and canned response
-				foreach(var measurement in _context.Measurements)
+				foreach (var measurement in _context.Measurements)
 				{
-					if(measurement.ChecklistItemId == id)
+					if (measurement.ChecklistItemId == id)
 					{
 						_context.Measurements.Remove(measurement);
 					}
@@ -190,7 +211,11 @@ namespace DigitalInspection.Controllers
 			catch (DbEntityValidationException dbEx)
 			{
 				ExceptionHandlerService.HandleException(dbEx);
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred(dbEx));
+			}
+			catch (Exception e)
+			{
+				return PartialView("Toasts/_Toast", ToastService.DatabaseException(e));
 			}
 			return RedirectToAction("_ChecklistItemList");
 		}
@@ -234,6 +259,10 @@ namespace DigitalInspection.Controllers
 			var measurementToRemove = checklistItemInDb.Measurements.Single(m => m.Id == id);
 			checklistItemInDb.Measurements.Remove(measurementToRemove);
 
+			// Uncomment this line if it is desired to remove all notions of this measurement from the APP.
+			// Leaving this commented out only removes its association from a checklist for new items, but allows
+			// old inspections to remain historically accurate. 
+			//_context.Measurements.Remove(measurementToRemove);
 			try
 			{
 				_context.SaveChanges();
@@ -288,6 +317,11 @@ namespace DigitalInspection.Controllers
 
 			var cannedResponseToRemove = checklistItemInDb.CannedResponses.Single(m => m.Id == id);
 			checklistItemInDb.CannedResponses.Remove(cannedResponseToRemove);
+
+			// Uncomment this line if it is desired to remove all notions of this canned response from the APP.
+			// Leaving this commented out only removes its association from a checklist for new items, but allows
+			// old inspections to remain historically accurate. 
+			//_context.CannedResponses.Remove(cannedResponseToRemove);
 			try
 			{
 				_context.SaveChanges();

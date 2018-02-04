@@ -88,8 +88,7 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
-		// TODO: ChecklistItemId can be removed since it will exist on the InspectionItem.ChecklistItem.Id property
-		public ActionResult Condition(Guid inspectionItemId, Guid checklistItemId, RecommendedServiceSeverity inspectionItemCondition)
+		public ActionResult Condition(Guid inspectionItemId, RecommendedServiceSeverity inspectionItemCondition)
 		{
 			// Save Condition
 			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
@@ -98,17 +97,33 @@ namespace DigitalInspection.Controllers
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
-			inspectionItemInDb.Condition = inspectionItemCondition;
 
-			if (TrySave() == false)
+			// Only change condition and canned response if different from previous condition
+			if (inspectionItemInDb.Condition != inspectionItemCondition)
 			{
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+				inspectionItemInDb.Condition = inspectionItemCondition;
+
+				// Clear canned response IDs when switching conditions.
+				// This is because otherwise, the inspection table's select box and the DB (and thus the report) can get out of sync
+				foreach (var cannedResponse in inspectionItemInDb.CannedResponses)
+				{
+					_context.CannedResponses.Attach(cannedResponse);
+				}
+				inspectionItemInDb.CannedResponses = new List<CannedResponse>();
+
+				if (TrySave() == false)
+				{
+					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+				}
 			}
 
+
 			// Prepare updated multiselect list for client
-			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == inspectionItemInDb.ChecklistItem.Id);
 			var filteredCRs = checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(inspectionItemCondition)).ToList();
-			var options = filteredCRs.Select(cr => new { label = cr.Response, title = cr.Response, value = cr.Id }).ToList();
+
+			// Options may be selected in the case where we haven't changed to a new condition
+			var options = filteredCRs.Select(cr => new { label = cr.Response, title = cr.Response, value = cr.Id, selected = inspectionItemInDb.CannedResponses.Any(c => c.Id == cr.Id) }).ToList();
 			var response = new
 			{
 				filteredCannedResponses = options,

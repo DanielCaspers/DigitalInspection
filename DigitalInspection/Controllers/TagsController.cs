@@ -112,9 +112,9 @@ namespace DigitalInspection.Controllers
 				_context.Tags.Remove(tagInDb);
 				_context.SaveChanges();
 			}
-			catch
+			catch (Exception e)
 			{
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred(e));
 			}
 			return RedirectToAction("_TagList");
 		}
