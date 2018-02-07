@@ -81,22 +81,22 @@ namespace DigitalInspection.Controllers
 			{
 				WorkOrder = task.Result.WorkOrder,
 				TabViewModel = tabVM,
-				Checklists = checklists
+				Checklists = checklists,
+				InspectionId = _context.Inspections.Where(i => i.WorkOrderId == id).Select(i => i.Id).SingleOrDefault()
 			});
 		}
 
 		[AllowAnonymous]
-		public JsonResult Json(string workOrderId)
+		public ActionResult Json(Guid inspectionId)
 		{
-			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(workOrderId, false);
-			});
-			// Force Synchronous run for Mono to work. See Issue #37
-			task.Wait();
+			var workOrderId = _context.Inspections.Where(i => i.Id == inspectionId).Select(i => i.WorkOrderId).SingleOrDefault();
+			return BuildJsonInternal(workOrderId);
+		}
 
-			var workOrder = task.Result.WorkOrder;
-
-			return Json(workOrder, JsonRequestBehavior.AllowGet);
+		[AllowAnonymous]
+		public ActionResult JsonForOrder(string workOrderId)
+		{
+			return BuildJsonInternal(workOrderId);
 		}
 
 		[HttpPost]
@@ -197,6 +197,24 @@ namespace DigitalInspection.Controllers
 				TabViewModel = tabVM,
 				Toast = toast
 			});
+		}
+
+		private ActionResult BuildJsonInternal(string workOrderId)
+		{
+			if (workOrderId == null)
+			{
+				return HttpNotFound();
+			}
+
+			var task = Task.Run(async () => {
+				return await WorkOrderService.GetWorkOrder(workOrderId, false);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var workOrder = task.Result.WorkOrder;
+
+			return Json(workOrder, JsonRequestBehavior.AllowGet);
 		}
 
 		private ToastViewModel DisplayErrorToast(WorkOrderResponse response)

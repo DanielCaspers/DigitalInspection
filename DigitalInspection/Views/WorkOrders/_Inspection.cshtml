@@ -1,4 +1,5 @@
 ﻿@model DigitalInspection.ViewModels.WorkOrderInspectionViewModel
+@using System.Configuration
 @using System.Web.Hosting
 
 @{
@@ -12,17 +13,38 @@
 
 @section Toolbar{
 
-	<div class="container-flex between ma-nav-info">
-		<div>
-			<a href="@Url.Action("Index", "WorkOrders")"
-				class="btn btn-default back-button no-margin pull-left">
-				<i class="material-icons">arrow_back</i>
-				Order @Model.WorkOrder.Id.Substring(3)
-			</a>
+<div class="container-flex between ma-nav-info">
+	<div>
+		<a href="@Url.Action("Index", "WorkOrders")"
+		   class="btn btn-default back-button no-margin pull-left">
+			<i class="material-icons">arrow_back</i>
+			Order @Model.WorkOrder.Id.Substring(3)
+		</a>
 
-			@Html.Partial("_CustomerVehicleSummary", Model.WorkOrder)
-		</div>
+		@Html.Partial("_CustomerVehicleSummary", Model.WorkOrder)
 	</div>
+
+	@if (Model.InspectionId != Guid.Empty)
+	{
+		var customerAccessPortalUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveCustomerAccessPortalBaseUrl") + "/#/inspections/" + Model.InspectionId;
+		<!-- Input cannot have display:none for copy to be allowed, so instead position off screen -->
+		<input style="position: absolute; left: -1000px;"
+		       value="@(customerAccessPortalUrl)" id="copy-link" />
+
+		<div>
+			<button class="btn btn-default no-margin"
+			        onclick="document.getElementById('copy-link').select(); document.execCommand('copy'); alert('Copied inspection link successfully');">
+				<i class="material-icons">link</i>
+			</button>
+
+			<a class="btn btn-default no-margin"
+			   href="@(customerAccessPortalUrl)"
+			   target="_blank">
+				<i class="material-icons">open_in_new</i>
+			</a>
+		</div>
+	}
+</div>
 }
 
 <div class="container-fluid">

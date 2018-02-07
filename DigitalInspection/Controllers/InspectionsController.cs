@@ -32,58 +32,25 @@ namespace DigitalInspection.Controllers
 		}
 
 		[AllowAnonymous]
-		public JsonResult Report(string workOrderId, bool grouped = false)
+		public JsonResult ReportForOrder(string workOrderId, bool grouped = false)
 		{
-			var applicableTags = _context.Tags
-				.Where(t => t.IsVisibleToCustomer)
-				.Select(t => t.Id)
-				.ToList();
+			var inspectionItems = _context.Inspections
+				.Single(i => i.WorkOrderId == workOrderId)
+				.InspectionItems;
+
+			return BuildInspectionReportInternal(inspectionItems, grouped, workOrderId);
+		}
+
+		[AllowAnonymous]
+		public JsonResult Report(Guid inspectionId, bool grouped = false)
+		{
+			string workOrderId = _context.Inspections.Where(i => i.Id == inspectionId).Select(i => i.WorkOrderId).Single();
 
 			var inspectionItems = _context.Inspections
-				.Where(i => i.WorkOrderId == workOrderId)
-				.SingleOrDefault()
-				.InspectionItems
-				// Only show inspection items which correspond to one or more customer visible tags
-				.Where(ii => ii.ChecklistItem.Tags
-					.Select(t => t.Id)
-					.Intersect(applicableTags)
-					.Any()
-				)
-				// Only show inspection items which have had a marked condition
-				.Where(ii => ii.Condition != RecommendedServiceSeverity.UNKNOWN);
+				.Single(i => i.Id == inspectionId)
+				.InspectionItems;
 
-			string BASE_URL = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
-
-			if (grouped)
-			{
-				var inspectionReportGroups = inspectionItems
-						.GroupBy(ii => 
-							ii.ChecklistItem.Tags
-								.Where(t => t.IsVisibleToCustomer)
-								.Select(t => t.Name)
-								.First()
-						)
-						.OrderBy(ig => ig.OrderBy(ii => ii.Condition).ToList().FirstOrDefault().Condition)
-						.Select(ig => {
-							var items = ig.OrderBy(ii => ii.Condition).ToList();
-							return new
-							{
-								Name = ig.Key,
-								items.FirstOrDefault().Condition,
-								Items = items.Select(ii => BuildInspectionReportItem(ii, workOrderId, BASE_URL))
-							};
-						});
-
-				return Json(inspectionReportGroups, JsonRequestBehavior.AllowGet);
-			}
-			else
-			{
-				var inspectionReportItems = inspectionItems
-					.OrderBy(ii => ii.Condition)
-					.Select(ii => BuildInspectionReportItem(ii, workOrderId, BASE_URL));
-
-				return Json(inspectionReportItems, JsonRequestBehavior.AllowGet);
-			}
+			return BuildInspectionReportInternal(inspectionItems, grouped, workOrderId);
 		}
 
 		[HttpPost]
@@ -517,7 +484,58 @@ namespace DigitalInspection.Controllers
 			}
 		}
 
-		private object BuildInspectionReportItem(InspectionItem ii, string workOrderId, string BASE_URL)
+		private JsonResult BuildInspectionReportInternal(IEnumerable<InspectionItem> unfilteredInspectionItems, bool grouped, string workOrderId)
+		{
+			var applicableTags = _context.Tags
+				.Where(t => t.IsVisibleToCustomer)
+				.Select(t => t.Id)
+				.ToList();
+
+			// Only show inspection items which correspond to one or more customer visible tags
+			var inspectionItems = unfilteredInspectionItems
+				.Where(ii => ii.ChecklistItem.Tags
+					.Select(t => t.Id)
+					.Intersect(applicableTags)
+					.Any()
+				)
+				// Only show inspection items which have had a marked condition
+				.Where(ii => ii.Condition != RecommendedServiceSeverity.UNKNOWN);
+
+			string baseUrl = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
+
+			if (grouped)
+			{
+				var inspectionReportGroups = inspectionItems
+					.GroupBy(ii =>
+						ii.ChecklistItem.Tags
+							.Where(t => t.IsVisibleToCustomer)
+							.Select(t => t.Name)
+							.First()
+					)
+					.OrderBy(ig => ig.OrderBy(ii => ii.Condition).ToList().FirstOrDefault().Condition)
+					.Select(ig => {
+						var items = ig.OrderBy(ii => ii.Condition).ToList();
+						return new
+						{
+							Name = ig.Key,
+							items.FirstOrDefault().Condition,
+							Items = items.Select(ii => BuildInspectionReportItem(ii, workOrderId, baseUrl))
+						};
+					});
+
+				return Json(inspectionReportGroups, JsonRequestBehavior.AllowGet);
+			}
+			else
+			{
+				var inspectionReportItems = inspectionItems
+					.OrderBy(ii => ii.Condition)
+					.Select(ii => BuildInspectionReportItem(ii, workOrderId, baseUrl));
+
+				return Json(inspectionReportItems, JsonRequestBehavior.AllowGet);
+			}
+		}
+
+		private object BuildInspectionReportItem(InspectionItem ii, string workOrderId, string baseUrl)
 		{
 			return new
 			{
@@ -533,8 +551,8 @@ namespace DigitalInspection.Controllers
 								// url = image.ImageUrl,
 								title = ii.ChecklistItem.Name,
 								altText = ii.ChecklistItem.Name,
-								url = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}",
-								extUrl = $"{BASE_URL}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
+								url = $"{baseUrl}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}",
+								extUrl = $"{baseUrl}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
 							})
 			};
 		}
