@@ -11,7 +11,7 @@ namespace DigitalInspection.Controllers
 	{
 		public TagsController()
 		{
-			_resource = "Tag";
+			ResourceName = "Tag";
 		}
 
 		private ManageTagsViewModel GetTagViewModel()
@@ -46,7 +46,7 @@ namespace DigitalInspection.Controllers
 
 			if (tag == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 			else
 			{
@@ -65,7 +65,7 @@ namespace DigitalInspection.Controllers
 			var tagInDb = _context.Tags.SingleOrDefault(t => t.Id == id);
 			if(tagInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 			else
 			{
@@ -106,7 +106,7 @@ namespace DigitalInspection.Controllers
 
 				if (tagInDb == null)
 				{
-					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 				}
 
 				_context.Tags.Remove(tagInDb);

@@ -4,7 +4,9 @@
 	{
 		public BaseAboutViewModel()
 		{
-			Resource = "About";
+			ResourceName = "About";
+			ResourceControllerName = "Home";
+			ResourceMethodName = "About";
 		}
 	}
 }

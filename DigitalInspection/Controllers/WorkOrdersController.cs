@@ -17,11 +17,10 @@ namespace DigitalInspection.Controllers
 {
 	public class WorkOrdersController : BaseController
 	{
-		// TODO: Determine how to store WorkOrder -> Checklist relationship for persistence
 
 		public WorkOrdersController()
 		{
-			_resource = "Work order";
+			ResourceName = "Work order";
 		}
 
 		// GET: Work Orders page and return response to index.cshtml
@@ -205,7 +204,7 @@ namespace DigitalInspection.Controllers
 			switch (response.HTTPCode)
 			{
 				case HttpStatusCode.NotFound:
-					return ToastService.ResourceNotFound(_resource, ToastActionType.NavigateBack);
+					return ToastService.ResourceNotFound(ResourceName, ToastActionType.NavigateBack);
 				case (HttpStatusCode)423:
 					return ToastService.FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh);
 				case (HttpStatusCode)428:

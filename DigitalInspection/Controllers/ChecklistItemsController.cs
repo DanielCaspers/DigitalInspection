@@ -14,7 +14,7 @@ namespace DigitalInspection.Controllers
 	{
 		public ChecklistItemsController()
 		{
-			_resource = "Checklist item";
+			ResourceName = "Checklist item";
 		}
 
 		private ManageChecklistItemsViewModel GetChecklistItemViewModel()
@@ -52,7 +52,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItem == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 			else
 			{
@@ -111,7 +111,7 @@ namespace DigitalInspection.Controllers
 			var checklistItemInDb = _context.ChecklistItems.SingleOrDefault(c => c.Id == id);
 			if(checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 			else
 			{
@@ -184,7 +184,7 @@ namespace DigitalInspection.Controllers
 
 				if (checklistItemInDb == null)
 				{
-					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 				}
 
 				// TODO: DJC Should cascade delete work from checklistitem to measurement and canned response
@@ -228,7 +228,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 
 			checklistItemInDb.Measurements.Add(new Measurement());
@@ -253,7 +253,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 
 			var measurementToRemove = checklistItemInDb.Measurements.Single(m => m.Id == id);
@@ -283,7 +283,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 
 			var cannedResponse = new CannedResponse()
@@ -312,7 +312,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklistItemInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 
 			var cannedResponseToRemove = checklistItemInDb.CannedResponses.Single(m => m.Id == id);

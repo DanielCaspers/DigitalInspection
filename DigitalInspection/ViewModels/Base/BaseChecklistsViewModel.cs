@@ -4,7 +4,9 @@
 	{
 		public BaseChecklistsViewModel()
 		{
-			Resource = "Checklists";
+			ResourceName = "Checklists";
+			ResourceControllerName = "Checklists";
+			ResourceMethodName = "Index";
 		}
 	}
 }

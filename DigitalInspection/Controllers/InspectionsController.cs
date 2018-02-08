@@ -22,7 +22,7 @@ namespace DigitalInspection.Controllers
 
 		public InspectionsController()
 		{
-			_resource = "Inspection";
+			ResourceName = "Inspection";
 		}
 
 		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
@@ -323,7 +323,7 @@ namespace DigitalInspection.Controllers
 			}
 			else if (checklist == null)
 			{
-				toast = ToastService.ResourceNotFound(_resource, ToastActionType.NavigateBack);
+				toast = ToastService.ResourceNotFound(ResourceName, ToastActionType.NavigateBack);
 			}
 
 			// Sort all canned responses by response
@@ -507,7 +507,7 @@ namespace DigitalInspection.Controllers
 			switch (response.HTTPCode)
 			{
 				case HttpStatusCode.NotFound:
-					return ToastService.ResourceNotFound(_resource, ToastActionType.NavigateBack);
+					return ToastService.ResourceNotFound(ResourceName, ToastActionType.NavigateBack);
 				case (HttpStatusCode)423:
 					return ToastService.FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh);
 				case (HttpStatusCode)428:

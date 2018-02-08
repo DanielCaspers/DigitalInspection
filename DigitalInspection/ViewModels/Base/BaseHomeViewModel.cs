@@ -4,7 +4,9 @@
 	{
 		public BaseHomeViewModel()
 		{
-			Resource = "Home";
+			ResourceName = "Home";
+			ResourceControllerName = "Home";
+			ResourceMethodName = "Index";
 		}
 	}
 }

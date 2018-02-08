@@ -4,7 +4,9 @@
 	{
 		public BaseWorkOrdersViewModel()
 		{
-			Resource = "Work Orders";
+			ResourceName = "Work Orders";
+			ResourceControllerName = "WorkOrders";
+			ResourceMethodName = "Index";
 		}
 	}
 }

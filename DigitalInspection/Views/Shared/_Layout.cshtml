@@ -16,7 +16,7 @@
 	@Scripts.Render("~/bundles/App")
 </head>
 <body>
-	@if (Model != null && !(Model.Resource == null || Model.Resource == string.Empty))
+	@if (Model != null && !(Model.ResourceName == null || Model.ResourceName == string.Empty))
 	{
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container-fluid ma-nav-container">
@@ -53,8 +53,12 @@
 						</li>
 					</ul>
 				</div>
-
-				<span id="ma-nav-title" class="ma-nav-breadcrumb ma-nav-text">@Model.Resource</span>
+				
+				<a href="@Url.Action(@Model.ResourceMethodName, @Model.ResourceControllerName)"
+				   id="ma-nav-title"
+				   class="ma-nav-breadcrumb ma-nav-text">
+					@Model.ResourceName
+				</a>
 
 				<!-- Note: Using navbar-brand on the actionlink causes the height of the bar to increase, covering important tab containers or toolbars slightly.-->
 				<div class="ma-nav-brand">

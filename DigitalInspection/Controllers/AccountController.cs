@@ -18,7 +18,7 @@ namespace DigitalInspection.Controllers
 
 		public AccountController()
 		{
-			_resource = "Accounts";
+			ResourceName = "Accounts";
 		}
 
 		public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )

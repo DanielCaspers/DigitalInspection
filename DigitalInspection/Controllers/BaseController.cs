@@ -3,12 +3,13 @@ using System.Web.Mvc;
 
 namespace DigitalInspection.Controllers
 {
-	public class BaseController : Controller
+	public abstract class BaseController : Controller
 	{
-		protected string _resource;
+		protected string ResourceName;
+
 		protected ApplicationDbContext _context;
 
-		public BaseController()
+		protected BaseController()
 		{
 			_context = new ApplicationDbContext();
 		}

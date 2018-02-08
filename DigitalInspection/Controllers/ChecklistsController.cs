@@ -15,7 +15,7 @@ namespace DigitalInspection.Controllers
 
 		public ChecklistsController()
 		{
-			_resource = "Checklist";
+			ResourceName = "Checklist";
 		}
 
 		private ManageChecklistMasterViewModel GetChecklistViewModel()
@@ -63,7 +63,7 @@ namespace DigitalInspection.Controllers
 
 			if (checklist == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 			else
 			{
@@ -83,7 +83,7 @@ namespace DigitalInspection.Controllers
 			var checklistInDb = _context.Checklists.SingleOrDefault(c => c.Id == id);
 			if(checklistInDb == null)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 			else
 			{
@@ -148,7 +148,7 @@ namespace DigitalInspection.Controllers
 
 				if (checklist == null)
 				{
-					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_resource));
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 				}
 
 				ImageService.DeleteImage(checklist.Image, IMAGE_SUBDIRECTORY);
