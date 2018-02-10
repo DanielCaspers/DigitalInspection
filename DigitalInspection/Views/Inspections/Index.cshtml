@@ -11,7 +11,7 @@
 			<a href="@Url.Action("_Inspection", "WorkOrders", new { id = Model.WorkOrder.Id })"
 			   class="btn btn-default back-button no-margin pull-left">
 				<i class="material-icons">arrow_back</i>
-				@Model.Checklist.Name
+				@Model.Checklist.Name - @Model.WorkOrder.Id.Substring(3)
 			</a>
 
 		</div>
