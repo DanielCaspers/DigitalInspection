@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 using DigitalInspection.ViewModels.TabContainers;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
-using System.Web;
-using DigitalInspection.Models.DTOs;
+using Claim = System.Security.Claims.Claim;
 
 namespace DigitalInspection.Controllers
 {
@@ -69,17 +67,14 @@ namespace DigitalInspection.Controllers
 				TabId = "inspectionTab",
 				RouteId = id
 			};
-			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(id);
-			});
-			var checklists = _context.Checklists.OrderBy(c => c.Name).ToList();
 
-			// Force Synchronous run for Mono to work. See Issue #37
-			task.Wait();
+			var workOrder = GetWorkOrderResponse(CurrentUserClaims, id).WorkOrder;
+
+			var checklists = _context.Checklists.OrderBy(c => c.Name).ToList();
 
 			return PartialView(new WorkOrderInspectionViewModel
 			{
-				WorkOrder = task.Result.WorkOrder,
+				WorkOrder = workOrder,
 				TabViewModel = tabVM,
 				Checklists = checklists,
 				InspectionId = _context.Inspections.Where(i => i.WorkOrderId == id).Select(i => i.Id).SingleOrDefault()
@@ -89,7 +84,7 @@ namespace DigitalInspection.Controllers
 		[AllowAnonymous]
 		public ActionResult Json(Guid inspectionId)
 		{
-			var workOrderId = _context.Inspections.Where(i => i.Id == inspectionId).Select(i => i.WorkOrderId).SingleOrDefault();
+			var workOrderId = _context.Inspections.Where(i => i.Id == inspectionId).Select(i => i.WorkOrderId).Single();
 			return BuildJsonInternal(workOrderId);
 		}
 
@@ -104,7 +99,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult SaveCustomer(string id, WorkOrderDetailViewModel vm, bool releaselockonly = false)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.SaveWorkOrder(vm.WorkOrder, releaselockonly);
+				return await WorkOrderService.SaveWorkOrder(CurrentUserClaims, vm.WorkOrder, releaselockonly);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -126,7 +121,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult SaveVehicle(string id, WorkOrderDetailViewModel vm)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.SaveWorkOrder(vm.WorkOrder);
+				return await WorkOrderService.SaveWorkOrder(CurrentUserClaims, vm.WorkOrder);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -150,7 +145,7 @@ namespace DigitalInspection.Controllers
 			if (HttpContext.User.IsInRole(AuthorizationRoles.ADMIN))
 			{
 				var task = Task.Run(async () => {
-					return await WorkOrderService.GetWorkOrders();
+					return await WorkOrderService.GetWorkOrders(CurrentUserClaims);
 				});
 				// Force Synchronous run for Mono to work. See Issue #37
 				task.Wait();
@@ -159,12 +154,7 @@ namespace DigitalInspection.Controllers
 			else
 			{
 				var task = Task.Run(async () => {
-					return await WorkOrderService.GetWorkOrdersForTech(
-						Request.GetOwinContext().Authentication.User.Claims
-							.Where(c => c.Type.ToString() == ClaimTypes.NameIdentifier)
-							.Select(c => c.Value)
-							.FirstOrDefault()
-						);
+					return await WorkOrderService.GetWorkOrdersForTech(CurrentUserClaims);
 				});
 				// Force Synchronous run for Mono to work. See Issue #37
 				task.Wait();
@@ -179,24 +169,42 @@ namespace DigitalInspection.Controllers
 
 		private PartialViewResult GetWorkOrderViewModel(string id, TabContainerViewModel tabVM, bool canEdit = false)
 		{
-			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(id, canEdit);
-			});
-			// Force Synchronous run for Mono to work. See Issue #37
-			task.Wait();
+			var workOrderResponse = GetWorkOrderResponse(CurrentUserClaims, id, canEdit);
 
 			ToastViewModel toast = null;
-			if (task.Result.IsSuccessStatusCode == false)
+			if (workOrderResponse.IsSuccessStatusCode == false)
 			{
-				toast = DisplayErrorToast(task.Result);
+				toast = DisplayErrorToast(workOrderResponse);
 			}
 			return PartialView(new WorkOrderDetailViewModel
 			{
-				WorkOrder = task.Result.WorkOrder,
+				WorkOrder = workOrderResponse.WorkOrder,
 				CanEdit = canEdit,
 				TabViewModel = tabVM,
 				Toast = toast
 			});
+		}
+
+		private WorkOrderResponse GetWorkOrderResponse(string workOrderId, bool canEdit = false)
+		{
+			var task = Task.Run(async () => {
+				return await WorkOrderService.GetWorkOrder(workOrderId, canEdit);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			return task.Result;
+		}
+
+		private WorkOrderResponse GetWorkOrderResponse(IEnumerable<Claim> userClaims, string workOrderId, bool canEdit = false)
+		{
+			var task = Task.Run(async () => {
+				return await WorkOrderService.GetWorkOrder(userClaims, workOrderId, canEdit);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			return task.Result;
 		}
 
 		private ActionResult BuildJsonInternal(string workOrderId)
@@ -206,13 +214,7 @@ namespace DigitalInspection.Controllers
 				return HttpNotFound();
 			}
 
-			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(workOrderId, false);
-			});
-			// Force Synchronous run for Mono to work. See Issue #37
-			task.Wait();
-
-			var workOrder = task.Result.WorkOrder;
+			var workOrder = GetWorkOrderResponse(workOrderId).WorkOrder;
 
 			return Json(workOrder, JsonRequestBehavior.AllowGet);
 		}

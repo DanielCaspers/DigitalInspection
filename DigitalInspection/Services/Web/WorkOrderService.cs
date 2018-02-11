@@ -5,7 +5,9 @@ using DigitalInspection.Models.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,9 +16,11 @@ namespace DigitalInspection.Services
 	public class WorkOrderService : HttpClientService
 	{
 		// https://stackoverflow.com/questions/31129873/make-http-client-synchronous-wait-for-response
-		public static async Task<IList<WorkOrder>> GetWorkOrders(int numOrders = 20)
+
+		#region Get Multiple Orders
+		public static async Task<IList<WorkOrder>> GetWorkOrders(IEnumerable<Claim> userClaims, int numOrders = 20)
 		{
-			using (HttpClient httpClient = InitializeHttpClient())
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
 			{
 				string url = string.Format("orders/?$top={0}", numOrders);
 				var response = await httpClient.GetAsync(url);
@@ -26,9 +30,15 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<IList<WorkOrder>> GetWorkOrdersForTech(string employeeNumber)
+		public static async Task<IList<WorkOrder>> GetWorkOrdersForTech(IEnumerable<Claim> userClaims)
 		{
-			using (HttpClient httpClient = InitializeHttpClient())
+		   // Takes 4 digit employee number. 7 digit will fail
+			var employeeNumber = userClaims
+				.Where(c => c.Type == ClaimTypes.NameIdentifier)
+				.Select(c => c.Value.Substring(3))
+				.Single();
+
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
 			{
 				string url = string.Format("orders/tech/{0}", employeeNumber);
 				var response = await httpClient.GetAsync(url);
@@ -37,10 +47,27 @@ namespace DigitalInspection.Services
 				return GetWorkOrdersInternal(json);
 			}
 		}
+		#endregion
 
+		#region Get Single Work Order
+
+		// For the overload without user claims, we must manually infer the company number from the order number
 		public static async Task<WorkOrderResponse> GetWorkOrder(string id, bool requestlock = false)
 		{
-			using (HttpClient httpClient = InitializeHttpClient())
+			using (HttpClient httpClient = InitializeAnonymousHttpClient())
+			{
+				string url = string.Format("{0}/orders/{1}?$requestlock={2}", id.Substring(0,3), id, Convert.ToInt32(requestlock));
+				HttpResponseMessage response = await httpClient.GetAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				return CreateWorkOrderResponse(response, json);
+			}
+		}
+
+		// For the overload with user claims, we grab the user's company number from their employee ID
+		public static async Task<WorkOrderResponse> GetWorkOrder(IEnumerable<Claim> userClaims, string id, bool requestlock = false)
+		{
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
 			{
 				string url = string.Format("orders/{0}?$requestlock={1}", id, Convert.ToInt32(requestlock));
 				HttpResponseMessage response = await httpClient.GetAsync(url);
@@ -50,9 +77,13 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<WorkOrderResponse> SaveWorkOrder(WorkOrder order, bool releaselockonly = false)
+		#endregion
+
+		#region Save Work Order
+
+		public static async Task<WorkOrderResponse> SaveWorkOrder(IEnumerable<Claim> userClaims, WorkOrder order, bool releaselockonly = false)
 		{
-			using (HttpClient httpClient = InitializeHttpClient())
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
 			{
 				// Map work order to work order dto
 				WorkOrderDTO dto = WorkOrderMapper.mapToWorkOrderDTO(order);
@@ -69,22 +100,9 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		private static WorkOrderResponse CreateWorkOrderResponse(HttpResponseMessage httpResponse, string responseContent)
-		{
-			WorkOrderResponse workOrderResponse = new WorkOrderResponse();
-			workOrderResponse.IsSuccessStatusCode = httpResponse.IsSuccessStatusCode;
-			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
-			{
-				WorkOrderDTO orderDto = JsonConvert.DeserializeObject<WorkOrderDTO>(responseContent);
-				workOrderResponse.WorkOrder = WorkOrderMapper.mapToWorkOrder(orderDto);
-			}
-			else
-			{
-				workOrderResponse.ErrorMessage = responseContent;
-				workOrderResponse.HTTPCode = httpResponse.StatusCode;
-			}
-			return workOrderResponse;
-		}
+		#endregion
+
+		#region Helpers
 
 		private static IList<WorkOrder> GetWorkOrdersInternal(string json)
 		{
@@ -99,5 +117,24 @@ namespace DigitalInspection.Services
 			return workOrders;
 		}
 
+		private static WorkOrderResponse CreateWorkOrderResponse(HttpResponseMessage httpResponse, string responseContent)
+		{
+			WorkOrderResponse workOrderResponse = new WorkOrderResponse
+			{
+				IsSuccessStatusCode = httpResponse.IsSuccessStatusCode,
+				HTTPCode = httpResponse.StatusCode,
+				ErrorMessage = httpResponse.IsSuccessStatusCode ? "" : responseContent
+			};
+
+			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
+			{
+				WorkOrderDTO orderDto = JsonConvert.DeserializeObject<WorkOrderDTO>(responseContent);
+				workOrderResponse.WorkOrder = WorkOrderMapper.mapToWorkOrder(orderDto);
+			}
+
+			return workOrderResponse;
+		}
+
+		#endregion
 	}
 }

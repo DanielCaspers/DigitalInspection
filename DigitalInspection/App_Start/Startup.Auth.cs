@@ -5,6 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using DigitalInspection.Models;
+using DigitalInspection.Services;
 
 namespace DigitalInspection
 {
@@ -31,10 +32,10 @@ namespace DigitalInspection
 					// This is a security feature which is used when you change a password or add an external login to your account.  
 					OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
 						// FIXME: Shorten timeout later
-						validateInterval: TimeSpan.FromMinutes(480),
-						regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
+						validateInterval: TimeSpan.FromDays(600),
+						regenerateIdentity: (manager, user) => AuthenticationService.RefreshIdentityAsync(manager, user))
 				}
-			});            
+			});
 			app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 		}
 	}

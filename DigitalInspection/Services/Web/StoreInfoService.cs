@@ -11,7 +11,7 @@ namespace DigitalInspection.Services
 	{
 		public static async Task<StoreInfoResponse> GetStoreInfo(string companyNumber)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(false))
+			using (HttpClient httpClient = InitializeAnonymousHttpClient())
 			{
 				string url = string.Format("conos/{0}", companyNumber);
 				HttpResponseMessage response = await httpClient.GetAsync(url);
@@ -23,18 +23,19 @@ namespace DigitalInspection.Services
 
 		private static StoreInfoResponse CreateStoreInfoResponse(HttpResponseMessage httpResponse, string responseContent)
 		{
-			StoreInfoResponse storeInfoResponse = new StoreInfoResponse();
-			storeInfoResponse.IsSuccessStatusCode = httpResponse.IsSuccessStatusCode;
+			StoreInfoResponse storeInfoResponse = new StoreInfoResponse
+			{
+				IsSuccessStatusCode = httpResponse.IsSuccessStatusCode,
+				HTTPCode = httpResponse.StatusCode,
+				ErrorMessage = httpResponse.IsSuccessStatusCode ? "" : responseContent
+			};
+
 			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
 			{
 				StoreInfoDTO dto = JsonConvert.DeserializeObject<StoreInfoDTO>(responseContent);
 				storeInfoResponse.StoreInfo = StoreInfoMapper.mapToStoreInfo(dto);
 			}
-			else
-			{
-				storeInfoResponse.ErrorMessage = responseContent;
-				storeInfoResponse.HTTPCode = httpResponse.StatusCode;
-			}
+
 			return storeInfoResponse;
 		}
 	}

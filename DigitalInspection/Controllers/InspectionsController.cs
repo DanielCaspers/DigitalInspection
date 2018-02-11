@@ -274,7 +274,7 @@ namespace DigitalInspection.Controllers
 		private PartialViewResult GetInspectionViewModel(string workOrderId, Guid checklistId, Guid? tagId)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(workOrderId, false);
+				return await WorkOrderService.GetWorkOrder(CurrentUserClaims, workOrderId, false);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();

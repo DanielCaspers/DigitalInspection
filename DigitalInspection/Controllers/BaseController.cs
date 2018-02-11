@@ -1,4 +1,7 @@
-﻿using DigitalInspection.Models;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using System.Web;
+using DigitalInspection.Models;
 using System.Web.Mvc;
 
 namespace DigitalInspection.Controllers
@@ -18,6 +21,14 @@ namespace DigitalInspection.Controllers
 		{
 			base.Dispose(disposing);
 			_context.Dispose();
+		}
+
+		protected IEnumerable<Claim> CurrentUserClaims
+		{
+			get
+			{
+				return Request.GetOwinContext().Authentication.User.Claims;
+			}
 		}
 
 	}
