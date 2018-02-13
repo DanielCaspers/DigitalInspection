@@ -25,7 +25,7 @@ namespace DigitalInspection.Controllers
 			ResourceName = "Inspection";
 		}
 
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult Index(string workOrderId, Guid checklistId, Guid? tagId)
 		{
 			return GetInspectionViewModel(workOrderId, checklistId, tagId);
@@ -44,7 +44,7 @@ namespace DigitalInspection.Controllers
 		[AllowAnonymous]
 		public JsonResult Report(Guid inspectionId, bool grouped = false)
 		{
-			string workOrderId = _context.Inspections.Where(i => i.Id == inspectionId).Select(i => i.WorkOrderId).Single();
+			string workOrderId = _context.Inspections.Single(i => i.Id == inspectionId).WorkOrderId;
 
 			var inspectionItems = _context.Inspections
 				.Single(i => i.Id == inspectionId)
@@ -54,7 +54,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult Condition(Guid inspectionItemId, RecommendedServiceSeverity inspectionItemCondition)
 		{
 			// Save Condition
@@ -100,7 +100,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult CannedResponse(Guid inspectionItemId, InspectionDetailViewModel vm)
 		{
 			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
@@ -126,7 +126,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult Note(AddInspectionNoteViewModel NoteVM)
 		{
 			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == NoteVM.InspectionItem.Id);
@@ -145,7 +145,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult Measurements(AddMeasurementViewModel MeasurementsVM)
 		{
 			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == MeasurementsVM.InspectionItem.Id);
@@ -169,7 +169,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult Photo(UploadInspectionPhotosViewModel photoVM)
 		{
 			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == photoVM.InspectionItem.Id);
@@ -207,7 +207,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetAddMeasurementDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
@@ -222,7 +222,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetAddInspectionNoteDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
@@ -237,7 +237,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, Guid checklistId, Guid? tagId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
@@ -254,7 +254,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetViewInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);

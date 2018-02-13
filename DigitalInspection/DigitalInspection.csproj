@@ -302,7 +302,7 @@
     <Compile Include="Migrations\201801131618522_RemoveLocalIdentityTables.Designer.cs">
       <DependentUpon>201801131618522_RemoveLocalIdentityTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\AuthorizationRoles.cs" />
+    <Compile Include="Models\Roles.cs" />
     <Compile Include="Models\DTOs\RecommendedServiceDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderDTO.cs" />
     <Compile Include="Models\DTOs\WorkOrderStatusDTO.cs" />

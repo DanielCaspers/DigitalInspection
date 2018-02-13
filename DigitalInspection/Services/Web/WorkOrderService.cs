@@ -32,20 +32,12 @@ namespace DigitalInspection.Services
 
 		public static async Task<IList<WorkOrder>> GetWorkOrdersForTech(IEnumerable<Claim> userClaims)
 		{
-		   // Takes 4 digit employee number. 7 digit will fail
-			var employeeNumber = userClaims
-				.Where(c => c.Type == ClaimTypes.NameIdentifier)
-				.Select(c => c.Value.Substring(3))
-				.Single();
+			return await GetWorkOrdersForRole(userClaims, "tech");
+		}
 
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
-			{
-				string url = string.Format("orders/tech/{0}", employeeNumber);
-				var response = await httpClient.GetAsync(url);
-				string json = await response.Content.ReadAsStringAsync();
-
-				return GetWorkOrdersInternal(json);
-			}
+		public static async Task<IList<WorkOrder>> GetWorkOrdersForServiceAdvisor(IEnumerable<Claim> userClaims)
+		{
+			return await GetWorkOrdersForRole(userClaims, "writer");
 		}
 		#endregion
 
@@ -104,6 +96,18 @@ namespace DigitalInspection.Services
 
 		#region Helpers
 
+		private static async Task<IList<WorkOrder>> GetWorkOrdersForRole(IEnumerable<Claim> userClaims, string endpointRole)
+		{
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			{
+				string url = string.Format("orders/{0}/{1}", endpointRole, GetEmployeeNumber(userClaims));
+				var response = await httpClient.GetAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				return GetWorkOrdersInternal(json);
+			}
+		}
+
 		private static IList<WorkOrder> GetWorkOrdersInternal(string json)
 		{
 			IList<WorkOrderDTO> orderDtos = new List<WorkOrderDTO>();
@@ -133,6 +137,15 @@ namespace DigitalInspection.Services
 			}
 
 			return workOrderResponse;
+		}
+
+		private static string GetEmployeeNumber(IEnumerable<Claim> userClaims)
+		{
+			// Takes 4 digit employee number. 7 digit will fail
+			return userClaims
+				.Where(c => c.Type == ClaimTypes.NameIdentifier)
+				.Select(c => c.Value.Substring(3))
+				.Single();
 		}
 
 		#endregion

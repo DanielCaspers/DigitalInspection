@@ -68,9 +68,7 @@ namespace DigitalInspection.Services
 		private static ClaimsIdentity GetUserClaims(JwtSecurityToken token, LoginResponse loginResponse)
 		{
 			var employeeId = token.Claims.Single(claim => claim.Type == "empID").Value;
-			var authRole = token.Claims.Any(claim => claim.Type == "roles" && claim.Value.EndsWith("Admin"))
-				? AuthorizationRoles.ADMIN
-				: AuthorizationRoles.USER;
+			var authRole = GetAuthRole(token.Claims);
 			var name = token.Claims.Single(claim => claim.Type == "firstName").Value.ToTitleCase();
 			return new ClaimsIdentity(
 				token.Claims.Concat(
@@ -133,6 +131,32 @@ namespace DigitalInspection.Services
 			}
 
 			return authenticationResponse;
+		}
+
+		private static string GetAuthRole(IEnumerable<Claim> claims)
+		{
+			var roleValues = claims.Where(claim => claim.Type == "roles").Select(r => r.Value);
+
+			if (roleValues.Any(r => r.EndsWith(Roles.Admin)))
+			{
+				return Roles.Admin;
+			}
+			else if (roleValues.Any(r => r.EndsWith(Roles.LocationManager)))
+			{
+				return Roles.LocationManager;
+			}
+			else if (roleValues.Any(r => r.EndsWith(Roles.ServiceAdvisor)))
+			{
+				return Roles.ServiceAdvisor;
+			}
+			else if (roleValues.Any(r => r.EndsWith(Roles.Technician)))
+			{
+				return Roles.Technician;
+			}
+			else
+			{
+				return Roles.User;
+			}
 		}
 
 	}

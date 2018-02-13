@@ -7,6 +7,7 @@ using DigitalInspection.Services;
 
 namespace DigitalInspection.Controllers
 {
+	[AuthorizeRoles(Roles.Admin)]
 	public class TagsController : BaseController
 	{
 		public TagsController()
@@ -25,21 +26,18 @@ namespace DigitalInspection.Controllers
 		}
 
 		// GET: Tags page and return response to index.cshtml
-		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult Index()
 		{
 			return PartialView(GetTagViewModel());
 		}
 
 		// GET: _TagList partial and return it to _TagList.cshtml 
-		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult _TagList()
 		{
 			return PartialView(GetTagViewModel());
 		}
 
 		//GET: Tags/Edit/:id
-		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public PartialViewResult Edit(Guid id)
 		{
 			var tag = _context.Tags.SingleOrDefault(t => t.Id == id);
@@ -59,7 +57,6 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Update(Guid id, AddTagViewModel tag)
 		{
 			var tagInDb = _context.Tags.SingleOrDefault(t => t.Id == id);
@@ -79,7 +76,6 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Create(AddTagViewModel tag)
 		{
 			Tag newTag = new Tag
@@ -97,7 +93,6 @@ namespace DigitalInspection.Controllers
 
 		// POST: Tags/Delete/5
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN)]
 		public ActionResult Delete(Guid id)
 		{
 			try

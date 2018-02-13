@@ -1,6 +1,7 @@
 ﻿@model DigitalInspection.ViewModels.BaseViewModel
 @using DigitalInspection.Views.Helpers;
 @using DigitalInspection.Models;
+@using Roles = DigitalInspection.Models.Roles
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +35,7 @@
 								<span>Work Orders</span>
 							</a>
 						</li>
-						@if (HttpContext.Current.User.IsInRole(AuthorizationRoles.ADMIN))
+						@if (HttpContext.Current.User.IsInRole(Roles.Admin))
 						{
 							<li>
 								<a href="@Url.Action("Index", "Checklists")"

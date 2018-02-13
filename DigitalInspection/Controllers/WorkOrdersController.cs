@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using DigitalInspection.Models;
@@ -22,7 +23,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		// GET: Work Orders page and return response to index.cshtml
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public async Task<PartialViewResult> Index()
 		{
 			var task = await GetWorkOrdersViewModel();
@@ -30,14 +31,14 @@ namespace DigitalInspection.Controllers
 		}
 
 		// GET: _WorkOrderTable partial and return it to _WorkOrderTable.cshtml 
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public async Task<PartialViewResult> _WorkOrderTable()
 		{
 			var task = await GetWorkOrdersViewModel();
 			return PartialView(task);
 		}
 
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult _Customer(string id, bool canEdit = false)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
@@ -48,7 +49,7 @@ namespace DigitalInspection.Controllers
 			return GetWorkOrderViewModel(id, tabVM, canEdit);
 		}
 
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult _Vehicle(string id, bool canEdit = false)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
@@ -59,7 +60,7 @@ namespace DigitalInspection.Controllers
 			return GetWorkOrderViewModel(id, tabVM, canEdit);
 		}
 
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult _Inspection(string id)
 		{
 			TabContainerViewModel tabVM = new TabContainerViewModel
@@ -84,7 +85,7 @@ namespace DigitalInspection.Controllers
 		[AllowAnonymous]
 		public ActionResult Json(Guid inspectionId)
 		{
-			var workOrderId = _context.Inspections.Where(i => i.Id == inspectionId).Select(i => i.WorkOrderId).Single();
+			var workOrderId = _context.Inspections.Single(i => i.Id == inspectionId).WorkOrderId;
 			return BuildJsonInternal(workOrderId);
 		}
 
@@ -95,7 +96,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult SaveCustomer(string id, WorkOrderDetailViewModel vm, bool releaselockonly = false)
 		{
 			var task = Task.Run(async () => {
@@ -117,7 +118,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = AuthorizationRoles.ADMIN + "," + AuthorizationRoles.USER)]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult SaveVehicle(string id, WorkOrderDetailViewModel vm)
 		{
 			var task = Task.Run(async () => {
@@ -142,25 +143,30 @@ namespace DigitalInspection.Controllers
 		{
 			IList<WorkOrder> workOrders;
 
-			if (HttpContext.User.IsInRole(AuthorizationRoles.ADMIN))
+			Task<IList<WorkOrder>> task;
+
+			if (HttpContext.User.IsInRole(Roles.ServiceAdvisor))
 			{
-				var task = Task.Run(async () => {
-					return await WorkOrderService.GetWorkOrders(CurrentUserClaims);
+				task = Task.Run(async () => {
+					return await WorkOrderService.GetWorkOrdersForServiceAdvisor(CurrentUserClaims);
 				});
-				// Force Synchronous run for Mono to work. See Issue #37
-				task.Wait();
-				workOrders = task.Result;
 			}
-			else
+			else if (HttpContext.User.IsInRole(Roles.Technician) || HttpContext.User.IsInRole(Roles.User))
 			{
-				var task = Task.Run(async () => {
+				task = Task.Run(async () => {
 					return await WorkOrderService.GetWorkOrdersForTech(CurrentUserClaims);
 				});
-				// Force Synchronous run for Mono to work. See Issue #37
-				task.Wait();
-				workOrders = task.Result;
+			}
+			else // Admin, LocationManager
+			{
+				task = Task.Run(async () => {
+					return await WorkOrderService.GetWorkOrders(CurrentUserClaims);
+				});
 			}
 
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+			workOrders = task.Result;
 			return new WorkOrderMasterViewModel
 			{
 				WorkOrders = workOrders
