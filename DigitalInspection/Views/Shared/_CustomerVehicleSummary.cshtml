@@ -5,17 +5,22 @@
 <span>
 	@HtmlHelpers.Pluralizer(Model.Customer.Name)
 </span>
-<span>
+<span class="car-color-badge" style="background-color: @Model.Vehicle.Color;">
 	@Model.Vehicle.Year
 	@Model.Vehicle.Make
 	@Model.Vehicle.Model
 </span>
 
-@if (String.IsNullOrWhiteSpace(Model.Vehicle.Color))
+
+@*@if (String.IsNullOrWhiteSpace(Model.Vehicle.Color))
 {
 	<span class="car-color-indicator">?</span>
 }
 else
 {
 	<span class="car-color-indicator" style="background-color: @Model.Vehicle.Color;"></span>
-}
+}*@
+
+<script>
+	CustomerVehicleSummaryComponent.setContrast();
+</script>

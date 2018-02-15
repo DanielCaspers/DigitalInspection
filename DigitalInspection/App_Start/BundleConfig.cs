@@ -33,6 +33,7 @@ namespace DigitalInspection
 			);
 
 			bundles.Add(new ScriptBundle("~/bundles/App")
+				.IncludeDirectory(TYPESCRIPT_DIR_PREFIX + "/Shared/Components", "*.js")
 				.IncludeDirectory(TYPESCRIPT_DIR_PREFIX + "/Shared/Services", "*.js")
 				.IncludeDirectory(TYPESCRIPT_DIR_PREFIX + "/Views", "*.js")
 

@@ -2,13 +2,18 @@
   padding-top: 50px;
   padding-bottom: 20px; }
 
-.car-color-indicator {
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
+/*.car-color-indicator {
+	@include circle(10px);
+	display: inline-block;
+	margin-bottom:-5px;
+	margin-left:5px;
+}*/
+.car-color-badge {
   display: inline-block;
-  margin-bottom: -5px;
-  margin-left: 5px; }
+  border-radius: 20px;
+  padding-right: 5px;
+  padding-left: 5px;
+  line-height: 35px; }
 
 .ma-card .img-darkener {
   background: #444444; }

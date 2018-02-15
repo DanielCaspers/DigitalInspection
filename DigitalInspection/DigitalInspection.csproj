@@ -470,6 +470,7 @@
     <Content Include="Scripts\compiledTS\Shared\Services\scrollableTab.service.js" />
     <Content Include="Scripts\Library\JQuery-Bootstrap-Scrolling-Tabs\jquery.scrolling-tabs.min.js" />
     <Content Include="Views\Inspections\_ViewInspectionPhotosDialog.cshtml" />
+    <TypeScriptCompile Include="Scripts\App\Shared\Components\customer-vehicle-summary.component.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\location.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\tab.service.ts" />
