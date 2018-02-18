@@ -39,8 +39,12 @@
 	@Html.Partial("_AddMeasurementDialog", Model.AddMeasurementVM)
 </div>
 
-<div id="AddInspectionNoteDynamicDialogContainer">
-	@Html.Partial("_AddInspectionNoteDialog", Model.AddInspectionNoteVM)
+<div id="AddInspectionItemNoteDynamicDialogContainer">
+	@Html.Partial("_AddInspectionItemNoteDialog", Model.AddInspectionItemNoteVm)
+</div>
+
+<div id="AddInspectionWorkOrderNoteDynamicDialogContainer">
+	@Html.Partial("_AddInspectionWorkOrderNoteDialog", Model.AddInspectionWorkOrderNoteVm)
 </div>
 
 <div id="UploadInspectionPhotosDynamicDialogContainer">
@@ -215,7 +219,7 @@
 					</td>
 					<td>
 						@Ajax.RawActionLink("<i class='material-icons'>note_add</i>",
-														 "GetAddInspectionNoteDialog",
+														 "GetAddInspectionItemNoteDialog",
 														 "Inspections",
 														 new
 														 {
@@ -226,8 +230,8 @@
 														 {
 															 HttpMethod = "POST",
 															 InsertionMode = InsertionMode.Replace,
-															 UpdateTargetId = "AddInspectionNoteDynamicDialogContainer",
-															 OnComplete = "DialogService.show('addInspectionNoteDialog', 'addInspectionNoteForm')"
+															 UpdateTargetId = "AddInspectionItemNoteDynamicDialogContainer",
+															 OnComplete = "DialogService.show('addInspectionItemNoteDialog', 'addInspectionItemNoteForm')"
 														 },
 														 new
 														 {

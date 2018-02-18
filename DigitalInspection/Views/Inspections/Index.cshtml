@@ -1,4 +1,5 @@
-﻿@model DigitalInspection.ViewModels.InspectionDetailViewModel
+﻿@using DigitalInspection.Views.Helpers
+@model DigitalInspection.ViewModels.InspectionDetailViewModel
 
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -18,6 +19,27 @@
 
 		<div>
 			@Html.Partial("_CustomerVehicleSummary", Model.WorkOrder)
+		</div>
+		
+		<div>
+			@Ajax.RawActionLink("<i class='material-icons'>note_add</i>",
+				"GetAddInspectionWorkOrderNoteDialog",
+				"Inspections",
+				new
+				{
+					workOrderId = Model.WorkOrder.Id,
+				},
+				new AjaxOptions
+				{
+					HttpMethod = "POST",
+					InsertionMode = InsertionMode.Replace,
+					UpdateTargetId = "AddInspectionWorkOrderNoteDynamicDialogContainer",
+					OnComplete = "DialogService.show('addInspectionWorkOrderNoteDialog', 'addInspectionWorkOrderNoteForm')"
+				},
+				new
+				{
+					@class = "btn btn-primary no-margin no-padding-horizontal"
+				})
 		</div>
 	</div>
 }

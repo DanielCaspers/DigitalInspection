@@ -3,7 +3,7 @@ using DigitalInspection.Models;
 
 namespace DigitalInspection.ViewModels
 {
-	public class AddInspectionNoteViewModel
+	public class AddInspectionItemNoteViewModel
 	{
 		public ChecklistItem ChecklistItem { get; set; }
 

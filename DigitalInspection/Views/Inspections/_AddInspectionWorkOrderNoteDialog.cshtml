@@ -1,22 +1,22 @@
-﻿@model DigitalInspection.ViewModels.AddInspectionNoteViewModel
+﻿@model DigitalInspection.ViewModels.AddInspectionWorkOrderNoteViewModel
 
 @{
-	const string TEMPLATE_NAMESPACE = "addInspectionNoteDialog";
+	const string TEMPLATE_NAMESPACE = "addInspectionWorkOrderNoteDialog";
 	const string CANCEL = TEMPLATE_NAMESPACE + "_cancel";
 	const string SUCCESS = TEMPLATE_NAMESPACE + "_success";
 }
 
-@if (Model.ChecklistItem != null)
+@if (Model.WorkOrderId != null && Model.WorkOrderId != string.Empty)
 {
 	<div id="@TEMPLATE_NAMESPACE" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title">Add a note - @Model.ChecklistItem.Name</h4>
+					<h4 class="modal-title">Add a work order note - @Model.WorkOrderId.Substring(3)</h4>
 				</div>
 				@using (Ajax.BeginForm(
-					"Note",
+					"WorkOrderNote",
 					"Inspections",
 					FormMethod.Post,
 					new AjaxOptions
@@ -24,7 +24,7 @@
 						InsertionMode = InsertionMode.Replace,
 						UpdateTargetId = "inspectionTableErrorContainer"
 					},
-					new { id = "addInspectionNoteForm", autocomplete = "off" })
+					new { id = "addInspectionWorkOrderNoteForm", autocomplete = "off" })
 				)
 				{
 					<div class="modal-body">
@@ -40,7 +40,7 @@
 						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
 					</div>
 
-					@Html.HiddenFor(m => m.InspectionItem.Id)
+					@Html.HiddenFor(m => m.WorkOrderId)
 				}
 			</div>
 		</div>

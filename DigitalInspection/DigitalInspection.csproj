@@ -372,9 +372,10 @@
     <Compile Include="ViewModels\Base\BaseInspectionsViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseWorkOrdersViewModel.cs" />
     <Compile Include="ViewModels\ChecklistItems\AddChecklistItemViewModel.cs" />
+    <Compile Include="ViewModels\Inspections\AddInspectionWorkOrderNoteViewModel.cs" />
     <Compile Include="ViewModels\Inspections\AddMeasurementViewModel.cs" />
     <Compile Include="ViewModels\Inspections\UploadInspectionPhotosViewModel.cs" />
-    <Compile Include="ViewModels\Inspections\AddInspectionNoteViewModel.cs" />
+    <Compile Include="ViewModels\Inspections\AddInspectionItemNoteViewModel.cs" />
     <Compile Include="ViewModels\Inspections\InspectionDetailViewModel.cs" />
     <Compile Include="ViewModels\Inspections\ViewInspectionPhotosViewModel.cs" />
     <Compile Include="ViewModels\TabContainers\ScrollableTabContainerViewModel.cs" />
@@ -470,6 +471,7 @@
     <Content Include="Scripts\compiledTS\Shared\Services\scrollableTab.service.js" />
     <Content Include="Scripts\Library\JQuery-Bootstrap-Scrolling-Tabs\jquery.scrolling-tabs.min.js" />
     <Content Include="Views\Inspections\_ViewInspectionPhotosDialog.cshtml" />
+    <Content Include="Views\Inspections\_AddInspectionWorkOrderNoteDialog.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Shared\Components\customer-vehicle-summary.component.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\location.service.ts" />
@@ -569,7 +571,7 @@
     <Content Include="Views\WorkOrders\_RecommendedServiceSeverity.cshtml" />
     <Content Include="Views\Inspections\Index.cshtml" />
     <Content Include="Views\Inspections\_InspectionTable.cshtml" />
-    <Content Include="Views\Inspections\_AddInspectionNoteDialog.cshtml" />
+    <Content Include="Views\Inspections\_AddInspectionItemNoteDialog.cshtml" />
     <Content Include="Views\Inspections\_UploadInspectionPhotosDialog.cshtml" />
     <Content Include="Views\Inspections\_AddMeasurementDialog.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Views\inspectionTable.ts" />
@@ -662,7 +664,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54343</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -127,20 +127,28 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
-		public ActionResult Note(AddInspectionNoteViewModel NoteVM)
+		public ActionResult ItemNote(AddInspectionItemNoteViewModel itemNoteVm)
 		{
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == NoteVM.InspectionItem.Id);
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == itemNoteVm.InspectionItem.Id);
 
 			if (inspectionItemInDb == null)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
-			inspectionItemInDb.Note = NoteVM.Note;
+			inspectionItemInDb.Note = itemNoteVm.Note;
 
 			if (TrySave() == false)
 			{
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
+			return new EmptyResult();
+		}
+
+		[HttpPost]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
+		public ActionResult WorkOrderNote(AddInspectionWorkOrderNoteViewModel workOrderNoteVm)
+		{
+			// TODO FIXME Set work order note to value captured here
 			return new EmptyResult();
 		}
 
@@ -223,12 +231,25 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
-		public PartialViewResult GetAddInspectionNoteDialog(Guid inspectionItemId, Guid checklistItemId)
+		public PartialViewResult GetAddInspectionWorkOrderNoteDialog(string workOrderId)
+		{
+			// TODO FIXME Dyanmically pull the work order note from the server
+
+			return PartialView("_AddInspectionWorkOrderNoteDialog", new AddInspectionWorkOrderNoteViewModel
+			{
+				WorkOrderId = workOrderId,
+				Note = "Notes here are not persisted to the work order just yet, but they will be soon!"
+			});
+		}
+
+		[HttpPost]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
+		public PartialViewResult GetAddInspectionItemNoteDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
 
-			return PartialView("_AddInspectionNoteDialog", new AddInspectionNoteViewModel
+			return PartialView("_AddInspectionItemNoteDialog", new AddInspectionItemNoteViewModel
 			{
 				InspectionItem = inspectionItem,
 				ChecklistItem = checklistItem,
@@ -324,7 +345,8 @@ namespace DigitalInspection.Controllers
 				Inspection = realInspection,
 				Toast = toast,
 				AddMeasurementVM = new AddMeasurementViewModel { },
-				AddInspectionNoteVM = new AddInspectionNoteViewModel { },
+				AddInspectionWorkOrderNoteVm = new AddInspectionWorkOrderNoteViewModel { },
+				AddInspectionItemNoteVm = new AddInspectionItemNoteViewModel { },
 				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel {
 					WorkOrderId = workOrderId
 				},
@@ -548,7 +570,6 @@ namespace DigitalInspection.Controllers
 				Images = ii.InspectionImages
 							.Select(image => new
 							{
-								// url = image.ImageUrl,
 								title = ii.ChecklistItem.Name,
 								altText = ii.ChecklistItem.Name,
 								url = $"{baseUrl}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}",
