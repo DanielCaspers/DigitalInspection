@@ -143,11 +143,12 @@ namespace DigitalInspection.Controllers
 
 		private ActionResult RedirectToLocal(string returnUrl)
 		{
-			if (Url.IsLocalUrl(returnUrl))
+			if (Url.IsLocalUrl(returnUrl) == false || returnUrl == "/Account/Logout")
 			{
-				return Redirect(returnUrl);
+				return RedirectToAction("Index", "WorkOrders");
 			}
-			return RedirectToAction("Index", "Home");
+
+			return Redirect(returnUrl);
 		}
 		#endregion
 	}

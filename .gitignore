@@ -1,5 +1,9 @@
 #Visual Studio and C# things
 
+# Secret files which should NEVER be shared publicly on GitHub
+DigitalInspection/AppSettingsSecrets.config
+DigitalInspection/ConnectionStrings.config
+
 .vs/
 DigitalInspection/obj/
 DigitalInspection/.vs/
