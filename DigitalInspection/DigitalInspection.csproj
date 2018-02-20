@@ -370,6 +370,7 @@
     <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="Utils\DateTimeUtils.cs" />
     <Compile Include="ViewModels\Base\BaseInspectionsViewModel.cs" />
+    <Compile Include="ViewModels\Base\BaseErrorModel.cs" />
     <Compile Include="ViewModels\Base\BaseWorkOrdersViewModel.cs" />
     <Compile Include="ViewModels\ChecklistItems\AddChecklistItemViewModel.cs" />
     <Compile Include="ViewModels\Inspections\AddInspectionWorkOrderNoteViewModel.cs" />
@@ -472,6 +473,7 @@
     <Content Include="Scripts\Library\JQuery-Bootstrap-Scrolling-Tabs\jquery.scrolling-tabs.min.js" />
     <Content Include="Views\Inspections\_ViewInspectionPhotosDialog.cshtml" />
     <Content Include="Views\Inspections\_AddInspectionWorkOrderNoteDialog.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Shared\Components\customer-vehicle-summary.component.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\location.service.ts" />

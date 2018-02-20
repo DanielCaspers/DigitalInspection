@@ -1,6 +1,7 @@
 ﻿using System;
 using DigitalInspection.ViewModels;
 using System.Net;
+using System.Web.Mvc;
 
 namespace DigitalInspection.Services
 {
@@ -41,6 +42,17 @@ namespace DigitalInspection.Services
 		public static ToastViewModel UnknownErrorOccurred(Exception e)
 		{
 			return Error("An unknown error occurred." + Environment.NewLine + Environment.NewLine + GetInnermostException(e)?.Message);
+		}
+
+		public static ToastViewModel UnknownErrorOccurred(Exception e, HandleErrorInfo info)
+		{
+			Exception inner = GetInnermostException(e);
+			return Error(
+				"An unknown error occurred at " + info.ControllerName + "/" + info.ActionName + "." + 
+				Environment.NewLine +
+				Environment.NewLine +
+				"Innermost exception: (" + inner?.GetType() +  ") " + inner?.Message
+			);
 		}
 
 		public static ToastViewModel UnknownErrorOccurred(HttpStatusCode httpCode, string errorMessage)

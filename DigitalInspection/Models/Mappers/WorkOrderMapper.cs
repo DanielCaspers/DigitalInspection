@@ -22,11 +22,18 @@ namespace DigitalInspection.Models.Mappers
 			order.ServiceAdvisorName = dto.serviceAdvisorName;
 			order.BillingSummary = dto.billingSummary;
 
-			order.Status = new WorkOrderStatus(
-				dto.orderStatus.statusCode,
-				dto.orderStatus.statusDesc,
-				dto.orderStatus.statusTimestamp,
-				dto.orderStatus.statusMisc);
+			if (dto.orderStatus == null)
+			{
+				order.Status = null;
+			}
+			else
+			{
+				order.Status = new WorkOrderStatus(
+					dto.orderStatus.statusCode,
+					dto.orderStatus.statusDesc,
+					dto.orderStatus.statusTimestamp,
+					dto.orderStatus.statusMisc);
+			}
 
 			Address clientAddress = new Address(
 				dto.clientAddr,
@@ -114,11 +121,18 @@ namespace DigitalInspection.Models.Mappers
 			dto.serviceAdvisorName = order.ServiceAdvisorName;
 			dto.billingSummary = order.BillingSummary;
 
-			dto.orderStatus = new WorkOrderStatusDTO(
-				order.Status.Code,
-				order.Status.Description,
-				order.Status.Timestamp,
-				order.Status.Misc);
+			if (order.Status == null)
+			{
+				dto.orderStatus = null;
+			}
+			else
+			{
+				dto.orderStatus = new WorkOrderStatusDTO(
+					order.Status.Code,
+					order.Status.Description,
+					order.Status.Timestamp,
+					order.Status.Misc);
+			}
 
 			dto.clientID = order.Customer.Id;
 			dto.clientName = order.Customer.Name.ToUpper();

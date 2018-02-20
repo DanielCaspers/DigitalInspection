@@ -316,7 +316,8 @@ table tbody tr {
   justify-content: space-between !important;
   margin-top: 20px;
   padding-right: 0px;
-  white-space: pre-wrap; }
+  white-space: pre-wrap;
+  font-weight: bold; }
   .ma-toast button {
     margin: 0px !important; }
 

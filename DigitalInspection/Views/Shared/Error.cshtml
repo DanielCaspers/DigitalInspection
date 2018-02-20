@@ -1,0 +1,32 @@
+﻿@model BaseErrorModel
+@using DigitalInspection.ViewModels;
+
+<style>
+	.search-found {
+		font-weight: bold;
+		color: red;
+		font-size: 16px;
+	}
+</style>
+
+<h2>Stack trace</h2>
+<pre><code>@Model.StackTrace</code></pre>
+
+<script>
+	var searchedText = 'DigitalInspection';
+	var replaceText = 'Digital-Inspection';
+	var selector = "code:contains('" + searchedText + "')";
+	var jqElement = $(selector);
+
+	while (jqElement.length > 0) {
+		jqElement.each( function( i, element ) {
+			var content = $(element).text();
+			content = content.replace(searchedText, '<span class="search-found">' + replaceText + '</span>' );
+			$(element).html( content );
+		});
+
+		jqElement = $(selector);
+	}
+
+
+</script>

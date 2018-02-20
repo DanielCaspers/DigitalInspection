@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Web;
 using DigitalInspection.Models;
 using System.Web.Mvc;
+using DigitalInspection.Services;
+using DigitalInspection.ViewModels;
 
 namespace DigitalInspection.Controllers
 {
@@ -25,11 +28,28 @@ namespace DigitalInspection.Controllers
 
 		protected IEnumerable<Claim> CurrentUserClaims
 		{
-			get
-			{
-				return Request.GetOwinContext().Authentication.User.Claims;
-			}
+			get { return Request.GetOwinContext().Authentication.User.Claims; }
 		}
 
+		protected override void OnException(ExceptionContext filterContext)
+		{
+			filterContext.ExceptionHandled = true;
+			var exception = filterContext.Exception;
+
+			var info = new HandleErrorInfo(
+				exception,
+				filterContext.RouteData.Values["controller"].ToString(),
+				filterContext.RouteData.Values["action"].ToString()
+			);
+
+			filterContext.Result = this.View(
+				"~/Views/Shared/Error.cshtml",
+				new BaseErrorModel() {
+					Toast = ToastService.UnknownErrorOccurred(exception, info),
+					Error = info,
+					StackTrace = new StackTrace(exception)
+				}
+			);
+		}
 	}
 }

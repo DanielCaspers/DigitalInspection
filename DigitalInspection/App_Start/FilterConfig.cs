@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace DigitalInspection
 {
@@ -7,7 +6,7 @@ namespace DigitalInspection
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+          //  filters.Add(new HandleErrorAttribute {View = "Error"});
         }
     }
 }
