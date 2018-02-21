@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using DigitalInspection.Models;
@@ -16,11 +15,46 @@ namespace DigitalInspection.Controllers
 {
 	public class WorkOrdersController : BaseController
 	{
+		#region Static Helpers
+
+		private const string CustomerViewName = "_Customer";
+		private const string VehicleViewName = "_Vehicle";
+
+		private static TabContainerViewModel BuildCustomerTab(string routeId)
+		{
+			return new TabContainerViewModel()
+			{
+				TabId = "customerTab",
+				RouteId = routeId
+			};
+		}
+
+		private static TabContainerViewModel BuildInspectionTab(string routeId)
+		{
+			return new TabContainerViewModel()
+			{
+				TabId = "inspectionTab",
+				RouteId = routeId
+			};
+		}
+
+		private static TabContainerViewModel BuildVehicleTab(string routeId)
+		{
+			return new TabContainerViewModel()
+			{
+				TabId = "vehicleTab",
+				RouteId = routeId
+			};
+		}
+
+		#endregion
 
 		public WorkOrdersController()
 		{
 			ResourceName = "Work order";
 		}
+
+		#region Partial View Actions
 
 		// GET: Work Orders page and return response to index.cshtml
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
@@ -41,58 +75,27 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult _Customer(string id, bool canEdit = false)
 		{
-			TabContainerViewModel tabVM = new TabContainerViewModel
-			{
-				TabId = "customerTab",
-				RouteId = id
-			};
-			return GetWorkOrderViewModel(id, tabVM, canEdit);
+			return GetWorkOrderViewModel(id, BuildCustomerTab(id), CustomerViewName, canEdit );
 		}
 
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult _Vehicle(string id, bool canEdit = false)
 		{
-			TabContainerViewModel tabVM = new TabContainerViewModel
-			{
-				TabId = "vehicleTab",
-				RouteId = id
-			};
-			return GetWorkOrderViewModel(id, tabVM, canEdit);
+			return GetWorkOrderViewModel(id, BuildVehicleTab(id), VehicleViewName, canEdit);
 		}
 
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult _Inspection(string id)
 		{
-			TabContainerViewModel tabVM = new TabContainerViewModel
-			{
-				TabId = "inspectionTab",
-				RouteId = id
-			};
-
 			var workOrder = GetWorkOrderResponse(CurrentUserClaims, id).WorkOrder;
-
-			var checklists = _context.Checklists.OrderBy(c => c.Name).ToList();
 
 			return PartialView(new WorkOrderInspectionViewModel
 			{
 				WorkOrder = workOrder,
-				TabViewModel = tabVM,
-				Checklists = checklists,
+				TabViewModel = BuildInspectionTab(id),
+				Checklists = _context.Checklists.OrderBy(c => c.Name).ToList(),
 				InspectionId = _context.Inspections.Where(i => i.WorkOrderId == id).Select(i => i.Id).SingleOrDefault()
 			});
-		}
-
-		[AllowAnonymous]
-		public ActionResult Json(Guid inspectionId)
-		{
-			var workOrderId = _context.Inspections.Single(i => i.Id == inspectionId).WorkOrderId;
-			return BuildJsonInternal(workOrderId);
-		}
-
-		[AllowAnonymous]
-		public ActionResult JsonForOrder(string workOrderId)
-		{
-			return BuildJsonInternal(workOrderId);
 		}
 
 		[HttpPost]
@@ -107,13 +110,11 @@ namespace DigitalInspection.Controllers
 
 			if (task.Result.IsSuccessStatusCode)
 			{
-				return RedirectToAction("_Customer", new { id = id });
+				return RedirectToAction(CustomerViewName, new { id = id });
 			}
 			else
 			{
-				// TODO Return read only with toast
-				// return DisplayErrorToast(task.Result);
-				return new EmptyResult();
+				return GetWorkOrderDetailViewModel(task.Result, BuildCustomerTab(id), false, CustomerViewName);
 			}
 		}
 
@@ -129,20 +130,37 @@ namespace DigitalInspection.Controllers
 
 			if (task.Result.IsSuccessStatusCode)
 			{
-				return RedirectToAction("_Vehicle", new { id = id });
+				return RedirectToAction(VehicleViewName, new { id = id });
 			}
 			else
 			{
-				// TODO Return read only with toast
-				// return DisplayErrorToast(task.Result);
-				return new EmptyResult();
+				return GetWorkOrderDetailViewModel(task.Result, BuildVehicleTab(id), false, VehicleViewName);
 			}
 		}
 
+		#endregion
+
+		#region Anonymous Access APIs
+
+		[AllowAnonymous]
+		public ActionResult Json(Guid inspectionId)
+		{
+			var workOrderId = _context.Inspections.Single(i => i.Id == inspectionId).WorkOrderId;
+			return BuildJsonInternal(workOrderId);
+		}
+
+		[AllowAnonymous]
+		public ActionResult JsonForOrder(string workOrderId)
+		{
+			return BuildJsonInternal(workOrderId);
+		}
+
+		#endregion
+
+		#region ViewModel Helpers
+
 		private async Task<WorkOrderMasterViewModel> GetWorkOrdersViewModel()
 		{
-			IList<WorkOrder> workOrders;
-
 			Task<IList<WorkOrder>> task;
 
 			if (HttpContext.User.IsInRole(Roles.ServiceAdvisor))
@@ -166,30 +184,36 @@ namespace DigitalInspection.Controllers
 
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
-			workOrders = task.Result;
 			return new WorkOrderMasterViewModel
 			{
-				WorkOrders = workOrders
+				WorkOrders = task.Result
 			};
-		}
+		}	
 
-		private PartialViewResult GetWorkOrderViewModel(string id, TabContainerViewModel tabVM, bool canEdit = false)
+		private PartialViewResult GetWorkOrderViewModel(string id, TabContainerViewModel tabVM, string viewName, bool canEdit = false)
 		{
 			var workOrderResponse = GetWorkOrderResponse(CurrentUserClaims, id, canEdit);
 
-			ToastViewModel toast = null;
-			if (workOrderResponse.IsSuccessStatusCode == false)
-			{
-				toast = DisplayErrorToast(workOrderResponse);
-			}
-			return PartialView(new WorkOrderDetailViewModel
-			{
-				WorkOrder = workOrderResponse.WorkOrder,
-				CanEdit = canEdit,
-				TabViewModel = tabVM,
-				Toast = toast
-			});
+			return GetWorkOrderDetailViewModel(workOrderResponse, tabVM, canEdit, viewName);
 		}
+
+		private PartialViewResult GetWorkOrderDetailViewModel(WorkOrderResponse response, TabContainerViewModel tabVM, bool canEdit, string viewName)
+		{
+			return PartialView(
+				viewName,
+				new WorkOrderDetailViewModel
+				{
+					WorkOrder = response.WorkOrder,
+					CanEdit = canEdit,
+					TabViewModel = tabVM,
+					Toast = response.IsSuccessStatusCode ? null : DisplayErrorToast(response)
+				}
+			);
+		}
+
+		#endregion
+
+		#region Response Helpers
 
 		private WorkOrderResponse GetWorkOrderResponse(string workOrderId, bool canEdit = false)
 		{
@@ -239,5 +263,8 @@ namespace DigitalInspection.Controllers
 					return ToastService.UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage);
 			}
 		}
+
+		#endregion
+
 	}
 }

@@ -58,7 +58,12 @@
 						<div>@workOrder.Vehicle.Year @workOrder.Vehicle.Make @workOrder.Vehicle.Model</div>
 						<div>@workOrder.Vehicle.License</div>
 					</td>
-					<td>@workOrder.Status.Description</td>
+					<td>
+						@if (workOrder.Status != null)
+						{
+							@workOrder.Status.Description
+						}
+					</td>
 					<!-- http://www.csharp-examples.net/string-format-datetime/ -->
 					<td>
 						<div>@String.Format("{0:d}", @workOrder.Date)</div>

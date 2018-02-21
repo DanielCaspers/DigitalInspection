@@ -10,7 +10,7 @@ namespace DigitalInspection.Services
 
 		public static ToastViewModel FileLockRequired()
 		{
-			return Error("Please request edit rights again.");
+			return Error("Work order lock expired - Please request edit rights again.");
 		}
 
 		public static ToastViewModel FileLockedByAnotherClient(string message, ToastActionType action = ToastActionType.NavigateBack)

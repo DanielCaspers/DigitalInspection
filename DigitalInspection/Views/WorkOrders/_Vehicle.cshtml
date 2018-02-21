@@ -198,10 +198,17 @@
 				@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
 				@Html.HiddenForEnumerable(m => m.WorkOrder.RecommendedServices, true, "WorkOrder")
 
-				@Html.HiddenFor(m => m.WorkOrder.Status.Code)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Description)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
-				@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
+				@if (Model.WorkOrder.Status != null)
+				{
+					@Html.HiddenFor(m => m.WorkOrder.Status.Code)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Description)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Timestamp)
+					@Html.HiddenFor(m => m.WorkOrder.Status.Misc)
+				}
+				else
+				{
+					@Html.HiddenFor(m => m.WorkOrder.Status)
+				}
 
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
 				@Html.HiddenFor(m => m.WorkOrder.Customer.Name)

@@ -15,10 +15,11 @@ namespace DigitalInspection.Services
 {
 	public class WorkOrderService : HttpClientService
 	{
+		private const int DEFAULT_NUM_ORDERS = 60;
 		// https://stackoverflow.com/questions/31129873/make-http-client-synchronous-wait-for-response
 
 		#region Get Multiple Orders
-		public static async Task<IList<WorkOrder>> GetWorkOrders(IEnumerable<Claim> userClaims, int numOrders = 20)
+		public static async Task<IList<WorkOrder>> GetWorkOrders(IEnumerable<Claim> userClaims, int numOrders = DEFAULT_NUM_ORDERS)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims))
 			{
@@ -96,11 +97,11 @@ namespace DigitalInspection.Services
 
 		#region Helpers
 
-		private static async Task<IList<WorkOrder>> GetWorkOrdersForRole(IEnumerable<Claim> userClaims, string endpointRole)
+		private static async Task<IList<WorkOrder>> GetWorkOrdersForRole(IEnumerable<Claim> userClaims, string endpointRole, int numOrders = DEFAULT_NUM_ORDERS)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims))
 			{
-				string url = string.Format("orders/{0}/{1}", endpointRole, GetEmployeeNumber(userClaims));
+				string url = string.Format("orders/{0}/{1}?$top={2}", endpointRole, GetEmployeeNumber(userClaims), numOrders);
 				var response = await httpClient.GetAsync(url);
 				string json = await response.Content.ReadAsStringAsync();
 
