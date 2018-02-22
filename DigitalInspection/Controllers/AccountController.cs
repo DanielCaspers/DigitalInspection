@@ -80,7 +80,7 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				model.Toast = ToastService.Error("Username or password mismatch.", ToastActionType.Close);
+				model.Toast = ToastService.Error(response.ErrorMessage, ToastActionType.Close);
 				return View(model);
 			}
 		}
