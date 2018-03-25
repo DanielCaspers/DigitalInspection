@@ -33,13 +33,28 @@ namespace DigitalInspection.Services
 
 		public static async Task<IList<WorkOrder>> GetWorkOrdersForTech(IEnumerable<Claim> userClaims)
 		{
-			return await GetWorkOrdersForRole(userClaims, "tech");
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			{
+				string url = string.Format("orders/tech/{0}/status/~blocked?$top={1}", GetEmployeeNumber(userClaims), DEFAULT_NUM_ORDERS);
+				var response = await httpClient.GetAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				return GetWorkOrdersInternal(json);
+			}
 		}
 
 		public static async Task<IList<WorkOrder>> GetWorkOrdersForServiceAdvisor(IEnumerable<Claim> userClaims)
 		{
-			return await GetWorkOrdersForRole(userClaims, "writer");
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			{
+				string url = string.Format("orders/writer/{0}?$top={1}", GetEmployeeNumber(userClaims), DEFAULT_NUM_ORDERS);
+				var response = await httpClient.GetAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				return GetWorkOrdersInternal(json);
+			}
 		}
+
 		#endregion
 
 		#region Get Single Work Order
@@ -96,18 +111,6 @@ namespace DigitalInspection.Services
 		#endregion
 
 		#region Helpers
-
-		private static async Task<IList<WorkOrder>> GetWorkOrdersForRole(IEnumerable<Claim> userClaims, string endpointRole, int numOrders = DEFAULT_NUM_ORDERS)
-		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
-			{
-				string url = string.Format("orders/{0}/{1}?$top={2}", endpointRole, GetEmployeeNumber(userClaims), numOrders);
-				var response = await httpClient.GetAsync(url);
-				string json = await response.Content.ReadAsStringAsync();
-
-				return GetWorkOrdersInternal(json);
-			}
-		}
 
 		private static IList<WorkOrder> GetWorkOrdersInternal(string json)
 		{
