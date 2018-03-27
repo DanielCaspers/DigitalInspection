@@ -89,6 +89,20 @@ namespace DigitalInspection.Services
 
 		#region Save Work Order
 
+		public static async Task<WorkOrderResponse> ReleaseLock(IEnumerable<Claim> userClaims, string orderId)
+		{
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			{
+				var httpContent = new StringContent("", Encoding.UTF8, "application/json");
+
+				string url = string.Format("orders/{0}?$releaselockonly={1}", orderId, 1);
+				HttpResponseMessage response = await httpClient.PutAsync(url, httpContent);
+				string responseJson = await response.Content.ReadAsStringAsync();
+
+				return CreateWorkOrderResponse(response, responseJson);
+			}
+		}
+
 		public static async Task<WorkOrderResponse> SaveWorkOrder(IEnumerable<Claim> userClaims, WorkOrder order, bool releaselockonly = false)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims))

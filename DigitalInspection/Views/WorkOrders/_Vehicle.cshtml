@@ -1,13 +1,16 @@
 ﻿@model DigitalInspection.ViewModels.WorkOrderDetailViewModel
 @{
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	Layout = Model.CanEdit ? "~/Views/WorkOrders/_Layout_Locked.cshtml" : "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Digital Inspection";
 }
 
 @using DigitalInspection.Views.Helpers;
 
 @section TabContainer {
-	@{ Html.RenderPartial("TabContainers/_WorkOrderDetailTabs", Model.TabViewModel);}
+	@if (Model.CanEdit == false)
+	{
+		Html.RenderPartial("TabContainers/_WorkOrderDetailTabs", Model.TabViewModel);
+	}
 }
 
 @section Toolbar{
@@ -17,12 +20,21 @@
 			<div>
 				@if (Model.CanEdit)
 				{
-					<a href="@Url.Action("_Vehicle", "WorkOrders")"
-					   onclick="FormService.showProgress()"
-					   class="btn btn-default back-button no-margin pull-left">
-						<i class="material-icons">arrow_back</i>
-						Order @Model.WorkOrder.Id.Substring(3)
-					</a>
+					using (Html.BeginForm(
+						"ReleaseVehicleFileLock",
+						"WorkOrders",
+						new { id = Model.WorkOrder.Id },
+						FormMethod.Post,
+						new { style="display: inline;"}
+						))
+					{
+						<button type="submit"
+						        onclick="FormService.showProgress()"
+						        class="btn btn-default back-button no-margin pull-left">
+							<i class="material-icons">arrow_back</i>
+							Order @Model.WorkOrder.Id.Substring(3)
+						</button>
+					}
 				}
 				else
 				{
@@ -79,7 +91,7 @@
 
 @if (Model.WorkOrder != null && Model.WorkOrder.RecommendedServices != null)
 {
-	@Html.Partial("_EditRecommendedServicesDialog", Model)
+	@Html.Partial("../Shared/Dialogs/_EditRecommendedServicesDialog", Model.WorkOrder)
 }
 
 <script type="text/javascript">
@@ -171,18 +183,18 @@
 						@Html.Label("Work Description", new { @class = "control-label" })
 
 						@for (int i = 0; i < Model.WorkOrder.WorkDescription.Count; i++)
-			{
-				@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-}
+						{
+							@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						}
 					</div>
 
 					<div class="col-sm-6 form-group ma-form-group">
 						@Html.Label("Vehicle Notes", new { @class = "control-label" })
 
 						@for (int i = 0; i < Model.WorkOrder.Vehicle.Notes.Count; i++)
-			{
-				@Html.TextBoxFor(m => Model.WorkOrder.Vehicle.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-}
+						{
+							@Html.TextBoxFor(m => Model.WorkOrder.Vehicle.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
+						}
 					</div>
 				</div>
 

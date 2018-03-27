@@ -474,6 +474,7 @@
     <Content Include="Views\Inspections\_ViewInspectionPhotosDialog.cshtml" />
     <Content Include="Views\Inspections\_AddInspectionWorkOrderNoteDialog.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\WorkOrders\_Layout_Locked.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Shared\Components\customer-vehicle-summary.component.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\location.service.ts" />
@@ -568,9 +569,9 @@
     <Content Include="Views\Shared\TabContainers\_WorkOrderDetailTabs.cshtml" />
     <Content Include="Views\WorkOrders\_Customer.cshtml" />
     <Content Include="Views\WorkOrders\_Inspection.cshtml" />
-    <Content Include="Views\WorkOrders\_EditRecommendedServicesDialog.cshtml" />
+    <Content Include="Views\Shared\Dialogs\_EditRecommendedServicesDialog.cshtml" />
     <Content Include="Views\Shared\_CustomerVehicleSummary.cshtml" />
-    <Content Include="Views\WorkOrders\_RecommendedServiceSeverity.cshtml" />
+    <Content Include="Views\Shared\_RecommendedServiceSeverity.cshtml" />
     <Content Include="Views\Inspections\Index.cshtml" />
     <Content Include="Views\Inspections\_InspectionTable.cshtml" />
     <Content Include="Views\Inspections\_AddInspectionItemNoteDialog.cshtml" />

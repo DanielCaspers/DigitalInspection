@@ -1,0 +1,82 @@
+﻿@model BaseViewModel
+@using DigitalInspection.Views.Helpers;
+@using DigitalInspection.ViewModels
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title</title>
+
+	<!-- Needs to go first because styles need to be overridden by other CSS files. Needs WWW access for fetching external images -->
+	<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet"> 
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/Library")
+	@Scripts.Render("~/bundles/App")
+</head>
+<body>
+	@if (Model != null && !(Model.ResourceName == null || Model.ResourceName == string.Empty))
+	{
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid ma-nav-container">
+				<span
+					style="line-height: 48px;"
+				   id="ma-nav-title"
+				   class="ma-nav-breadcrumb ma-nav-text">
+					@Model.ResourceName
+				</span>
+				
+				<span class="ma-nav-brand">Murphy Automotive</span>
+
+				<span style="line-height: 48px;" class="ma-nav-text">@User.Identity.Name</span>
+			</div>
+
+		</div>
+	}
+
+	<div id="ajaxContentWrapper">
+		@if (IsSectionDefined("TabContainer"))
+		{
+			@RenderSection("TabContainer")
+		}
+		<div id="ma-scrollable-tab-container"></div>
+		@if (IsSectionDefined("Toolbar"))
+		{
+			<div class="btn-toolbar ma-toolbar well well-sm" id="toolbarContainer">
+				@RenderSection("Toolbar")
+			</div>
+			@HtmlHelpers.ProgressBar()
+		}
+		
+		<div>
+			@Html.Partial("Toasts/_Toast", new ToastViewModel
+			{
+				Message = "Work order now locked. Make changes and save, or navigate back.",
+				Icon="lock",
+				Type=ToastType.Warn,
+				Action = ToastActionType.Close
+			})
+
+			@if (Model != null && Model.Toast != null)
+			{
+				@Html.Partial("Toasts/_Toast", Model.Toast)
+			}
+		</div>
+
+		@RenderBody()
+	
+	</div>
+
+	<hr />
+	<footer>
+		<span>&copy; 2017-@DateTime.Now.Year - Daniel Caspers. All rights reserved.</span>
+	</footer>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$.material.init();
+		});
+	</script>
+</body>
+</html>
