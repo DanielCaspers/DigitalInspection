@@ -148,7 +148,9 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult WorkOrderNote(AddInspectionWorkOrderNoteViewModel workOrderNoteVm)
 		{
-			IList<string> returnCarriageSeparatedNotes = workOrderNoteVm.Note.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+			// https://msdn.microsoft.com/en-us/library/tabh47cf(v=vs.110).aspx
+			// NOTE: Cannot use Environment.NewLine since the filter will be less strict on Mono. 
+			IList<string> returnCarriageSeparatedNotes = workOrderNoteVm.Note.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).ToList();
 
 			var task = Task.Run(async () => {
 				return await WorkOrderService.SaveWorkOrderNote(CurrentUserClaims, workOrderNoteVm.WorkOrderId, returnCarriageSeparatedNotes);

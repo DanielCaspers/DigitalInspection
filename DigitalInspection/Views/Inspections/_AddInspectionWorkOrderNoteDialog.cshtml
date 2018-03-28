@@ -30,7 +30,7 @@
 					<div class="modal-body">
 						<div class="form-group">
 							@Html.LabelFor(m => m.Note, new { @class = "control-label" })
-							@Html.TextAreaFor(m => m.Note, new { @class = "form-control", autofocus = "" })
+							@Html.TextAreaFor(m => m.Note, new { @class = "form-control", autofocus = "", rows = "15", spellcheck = true})
 							@Html.ValidationMessageFor(m => m.Note)
 						</div>
 					</div>
