@@ -122,6 +122,34 @@ namespace DigitalInspection.Services
 			}
 		}
 
+		public static async Task<WorkOrderResponse> SaveWorkOrderNote(IEnumerable<Claim> userClaims, string workOrderId, IList<string> notes)
+		{
+			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			{
+				string url = string.Format("orders/{0}?$requestlock={1}", workOrderId, 1);
+				HttpResponseMessage response = await httpClient.GetAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				WorkOrderResponse workOrderResponse = CreateWorkOrderResponse(response, json);
+
+				if (workOrderResponse.IsSuccessStatusCode == false)
+				{
+					return workOrderResponse;
+				}
+
+				object noteDTO = new {orderNotes = notes, orderID = workOrderId};
+				// Serialize mapped object
+				string noteJson = JsonConvert.SerializeObject(noteDTO);
+				var httpContent = new StringContent(noteJson, Encoding.UTF8, "application/json");
+
+				url = string.Format("orders/{0}?$releaselockonly={1}", workOrderId, 0);
+				response = await httpClient.PutAsync(url, httpContent);
+				json = await response.Content.ReadAsStringAsync();
+
+				return CreateWorkOrderResponse(response, json);
+			}
+		}
+
 		#endregion
 
 		#region Helpers

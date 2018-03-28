@@ -17,6 +17,15 @@ namespace DigitalInspection.Models.Mappers
 			order.CompletionDate = DateTimeUtils.FromUnixTime(dto.completionDate);
 			order.EmployeeId = dto.techNum;
 			order.WorkDescription = dto.workDesc;
+
+			if (dto.orderNotes == null)
+			{
+				order.Notes = new List<string>() {""};
+			}
+			else
+			{
+				order.Notes = dto.orderNotes;
+			}
 			order.TotalBill = dto.totalBill;
 			order.ServiceAdvisor = dto.serviceAdvisor;
 			order.ServiceAdvisorName = dto.serviceAdvisorName;
@@ -116,6 +125,7 @@ namespace DigitalInspection.Models.Mappers
 			dto.completionDate = DateTimeUtils.ToUnixTime(order.CompletionDate);
 			dto.techNum = order.EmployeeId;
 			dto.workDesc = order.WorkDescription;
+			dto.orderNotes = order.Notes;
 			dto.totalBill = order.TotalBill;
 			dto.serviceAdvisor = order.ServiceAdvisor;
 			dto.serviceAdvisorName = order.ServiceAdvisorName;

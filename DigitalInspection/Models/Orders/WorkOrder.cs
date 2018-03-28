@@ -27,6 +27,11 @@ namespace DigitalInspection.Models
 
 		public IList<string> WorkDescription { get; set; }
 
+		/*
+		 * This is a List<string> that will need to be delimited by return carriage whenever we save.
+		 */
+		public IList<string> Notes { get; set; }
+
 		public DateTime? Date { get; set; }
 
 		public DateTime? ScheduleDate { get; set; }

@@ -158,6 +158,7 @@
 					@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
 					@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
 					@Html.HiddenFor(m => m.WorkOrder.TotalBill)
+					@Html.HiddenForEnumerable(m => m.WorkOrder.Notes, "WorkOrder")
 					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
 					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisorName)
 					@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")

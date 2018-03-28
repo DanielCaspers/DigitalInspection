@@ -148,7 +148,15 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult WorkOrderNote(AddInspectionWorkOrderNoteViewModel workOrderNoteVm)
 		{
-			// TODO FIXME Set work order note to value captured here
+			IList<string> returnCarriageSeparatedNotes = workOrderNoteVm.Note.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+
+			var task = Task.Run(async () => {
+				return await WorkOrderService.SaveWorkOrderNote(CurrentUserClaims, workOrderNoteVm.WorkOrderId, returnCarriageSeparatedNotes);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			// TODO FIXME Success vs fail case handling
 			return new EmptyResult();
 		}
 
@@ -233,12 +241,15 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetAddInspectionWorkOrderNoteDialog(string workOrderId)
 		{
-			// TODO FIXME Dyanmically pull the work order note from the server
+			var workOrderResponse = GetWorkOrderResponse(workOrderId);
+			var workOrder = workOrderResponse.WorkOrder;
+
+			string combinedNote = string.Join(Environment.NewLine, workOrder.Notes);
 
 			return PartialView("_AddInspectionWorkOrderNoteDialog", new AddInspectionWorkOrderNoteViewModel
 			{
 				WorkOrderId = workOrderId,
-				Note = "Notes here are not persisted to the work order just yet, but they will be soon!"
+				Note = combinedNote
 			});
 		}
 
@@ -294,20 +305,15 @@ namespace DigitalInspection.Controllers
 
 		private PartialViewResult GetInspectionViewModel(string workOrderId, Guid checklistId, Guid? tagId)
 		{
-			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(CurrentUserClaims, workOrderId, false);
-			});
-			// Force Synchronous run for Mono to work. See Issue #37
-			task.Wait();
-
-			var workOrder = task.Result.WorkOrder;
+			var workOrderResponse = GetWorkOrderResponse(workOrderId);
+			var workOrder = workOrderResponse.WorkOrder;
 			ToastViewModel toast = null;
 
 			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == checklistId);
 
-			if (task.Result.IsSuccessStatusCode == false)
+			if (workOrderResponse.IsSuccessStatusCode == false)
 			{
-				toast = DisplayErrorToast(task.Result);
+				toast = DisplayErrorToast(workOrderResponse);
 			}
 			else if (checklist == null)
 			{
@@ -576,6 +582,17 @@ namespace DigitalInspection.Controllers
 								extUrl = $"{baseUrl}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
 							})
 			};
+		}
+
+		private WorkOrderResponse GetWorkOrderResponse(string workOrderId)
+		{
+			var task = Task.Run(async () => {
+				return await WorkOrderService.GetWorkOrder(CurrentUserClaims, workOrderId, false);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			return task.Result;
 		}
 	}
 }

@@ -17,6 +17,7 @@ namespace DigitalInspection.Models.DTOs
 		public IList<string> billingSummary { get; set; }
 		public string totalBill { get; set; }
 		public IList<string> workDesc { get; set; }
+		public IList<string> orderNotes { get; set; }
 
 		public string clientID { get; set; }
 		public string clientName { get; set; }
