@@ -158,8 +158,14 @@ namespace DigitalInspection.Controllers
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
 
-			// TODO FIXME Success vs fail case handling
-			return new EmptyResult();
+			if (task.Result.IsSuccessStatusCode)
+			{
+				return new EmptyResult();
+			}
+			else
+			{
+				return PartialView("Toasts/_Toast", DisplayErrorToast(task.Result));
+			}
 		}
 
 		[HttpPost]
