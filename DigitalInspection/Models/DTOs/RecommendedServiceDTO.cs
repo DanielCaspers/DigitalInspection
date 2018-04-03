@@ -1,5 +1,4 @@
 ﻿using DigitalInspection.Models.Orders;
-using System;
 
 namespace DigitalInspection.Models.DTOs
 {
@@ -14,6 +13,7 @@ namespace DigitalInspection.Models.DTOs
 		public string estID { get; set; }
 		public int? notificationCnt { get; set; }
 		public string level { get; set; }
+		public string coNumber { get; set; }
 
 		public RecommendedServiceDTO() { }
 
@@ -27,7 +27,8 @@ namespace DigitalInspection.Models.DTOs
 			string _estimateId,
 			int? _notificationCount,
 			RecommendedServiceSeverity _level,
-			bool _isCustomerConcern)
+			bool _isCustomerConcern,
+			string _coNumber)
 		{
 			id = _id;
 			desc = _desc;
@@ -37,6 +38,7 @@ namespace DigitalInspection.Models.DTOs
 			DIlink = _appLink;
 			estID = _estimateId;
 			notificationCnt = _notificationCount;
+			coNumber = _coNumber;
 
 			if (_level == RecommendedServiceSeverity.UNKNOWN)
 			{

@@ -103,7 +103,8 @@ namespace DigitalInspection.Models.Mappers
 						rsDto.DIlink,
 						rsDto.estID,
 						rsDto.notificationCnt,
-						rsDto.level)
+						rsDto.level,
+						rsDto.coNumber)
 					);
 				}
 			}
@@ -202,7 +203,8 @@ namespace DigitalInspection.Models.Mappers
 						rs.EstimateId,
 						rs.NotificationCount,
 						rs.Severity,
-						rs.IsCustomerConcern)
+						rs.IsCustomerConcern,
+						rs.CompanyNumber)
 					);
 				}
 			}

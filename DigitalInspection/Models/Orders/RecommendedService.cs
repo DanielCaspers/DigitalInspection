@@ -39,6 +39,7 @@ namespace DigitalInspection.Models.Orders
 		public string Description { get; set; }
 		public string OrderId { get; set; }
 		public DateTime? LastModifiedDate { get; set; }
+		public string CompanyNumber { get; set; }
 		public string TechnicianId { get; set; }
 		public string AppLink { get; set; }
 		public string EstimateId { get; set; }
@@ -57,7 +58,8 @@ namespace DigitalInspection.Models.Orders
 			string appLink,
 			string estimateId,
 			int? notificationCount,
-			string severity)
+			string severity,
+			string companyNumber)
 		{
 			Id = id;
 			Description = desc;
@@ -67,6 +69,7 @@ namespace DigitalInspection.Models.Orders
 			AppLink = appLink;
 			EstimateId = estimateId;
 			NotificationCount = notificationCount;
+			CompanyNumber = companyNumber;
 
 			if (severity == string.Empty)
 			{
