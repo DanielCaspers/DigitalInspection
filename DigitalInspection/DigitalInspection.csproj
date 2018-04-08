@@ -234,6 +234,7 @@
     <Compile Include="Controllers\ChecklistItemsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\InspectionsController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\StoreInfoController.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
@@ -340,6 +341,7 @@
     <Compile Include="Models\Web\BaseResponse.cs" />
     <Compile Include="Models\Store\StoreInfo.cs" />
     <Compile Include="Models\Web\StoreInfoResponse.cs" />
+    <Compile Include="Services\Web\CookieFactory.cs" />
     <Compile Include="Services\Web\StoreInfoService.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Orders\Address.cs" />

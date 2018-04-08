@@ -15,7 +15,7 @@ namespace DigitalInspection.Services
 			var httpClient = new HttpClient();
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-			httpClient.BaseAddress = ConstructBaseUri(false);
+			httpClient.BaseAddress = ConstructBaseUri();
 			httpClient.DefaultRequestHeaders.Accept.Clear();
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			httpClient.DefaultRequestHeaders.Add("x-appkey", ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppKeyAnonymousAccess"));
@@ -23,12 +23,12 @@ namespace DigitalInspection.Services
 			return httpClient;
 		}
 
-		protected static HttpClient InitializeHttpClient(bool includeCompanyNumber = true)
+		protected static HttpClient InitializeHttpClient()
 		{
 			var httpClient = new HttpClient();
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-			httpClient.BaseAddress = ConstructBaseUri(includeCompanyNumber);
+			httpClient.BaseAddress = ConstructBaseUri();
 			httpClient.DefaultRequestHeaders.Accept.Clear();
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			httpClient.DefaultRequestHeaders.Add("x-appkey", ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppKey"));
@@ -47,7 +47,7 @@ namespace DigitalInspection.Services
 			var httpClient = new HttpClient();
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-			httpClient.BaseAddress = ConstructBaseUri(userClaims, includeCompanyNumber);
+			httpClient.BaseAddress = ConstructBaseUri();
 			httpClient.DefaultRequestHeaders.Accept.Clear();
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			httpClient.DefaultRequestHeaders.Add("x-appkey", ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppKey"));
@@ -61,41 +61,11 @@ namespace DigitalInspection.Services
 			return httpClient;
 		}
 
-		private static Uri ConstructBaseUri(bool includeCompanyNumber)
+		protected static Uri ConstructBaseUri()
 		{
-			string uri;
 			string apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
 
-			if (includeCompanyNumber)
-			{
-				string companyNumber = GetClaim(ClaimTypes.NameIdentifier)?.Value.Substring(0, 3);
-
-				uri = string.Format("{0}/{1}/", apiBaseUrl, companyNumber);
-			}
-			else
-			{
-				uri = string.Format("{0}/", apiBaseUrl);
-			}
-
-			return new Uri(uri);
-		}
-
-
-		private static Uri ConstructBaseUri(IEnumerable<Claim> userClaims, bool includeCompanyNumber)
-		{
-			string uri;
-			string apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
-
-			if (includeCompanyNumber)
-			{
-				string companyNumber = GetClaim(userClaims, ClaimTypes.NameIdentifier)?.Value.Substring(0, 3);
-
-				uri = string.Format("{0}/{1}/", apiBaseUrl, companyNumber);
-			}
-			else
-			{
-				uri = string.Format("{0}/", apiBaseUrl);
-			}
+			string uri = string.Format("{0}/", apiBaseUrl);
 
 			return new Uri(uri);
 		}

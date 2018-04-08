@@ -5,6 +5,7 @@ using System.Web;
 using DigitalInspection.Models;
 using System.Web.Mvc;
 using DigitalInspection.Services;
+using DigitalInspection.Services.Web;
 using DigitalInspection.ViewModels;
 
 namespace DigitalInspection.Controllers
@@ -50,6 +51,12 @@ namespace DigitalInspection.Controllers
 					StackTrace = new StackTrace(exception)
 				}
 			);
+		}
+
+		// Retreives company number from cookie
+		protected string GetCompanyNumber()
+		{
+			return Request.Cookies.Get(CookieFactory.CompanyCookieName)?.Value;
 		}
 	}
 }

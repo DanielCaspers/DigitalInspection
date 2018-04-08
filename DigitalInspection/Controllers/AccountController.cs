@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -6,6 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
+using DigitalInspection.Services.Web;
 
 namespace DigitalInspection.Controllers
 {
@@ -74,6 +76,19 @@ namespace DigitalInspection.Controllers
 
 			if (response.IsSuccessStatusCode)
 			{
+				var userIdCookie = Request.Cookies.Get(CookieFactory.UserIdCookieName);
+				// If this user is not the same as last user, mutate the cookie.
+				var userClaims = response.ClaimsIdentity.Claims;
+				var userId = userClaims.Single(c => c.Type == "empID").Value;
+				if (userIdCookie?.Value != userId)
+				{
+					var userCompany = userClaims.First(c => c.Type == "roles").Value?.Substring(0,3);
+					Response.Cookies.Add(CookieFactory.CreateCompanyCookie(userCompany));
+					Response.Cookies.Add(CookieFactory.CreateUserIdCookie(userId));
+				}
+				// Else, leave user's preferred sign in
+
+				// Set ASP.NET Application Cookie
 				HttpContext.GetOwinContext().Authentication.SignIn(
 				   new AuthenticationProperties { IsPersistent = true }, response.ClaimsIdentity);
 				return RedirectToLocal(returnUrl);

@@ -5,6 +5,7 @@ using DigitalInspection.Models.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
@@ -15,13 +16,26 @@ namespace DigitalInspection.Services
 {
 	public class WorkOrderService : HttpClientService
 	{
+		// TODO: Find way to override static superclass, and instead only change ConstructBaseUri() method.
+		//  Might require factory pattern for httpClient like DbContextFactories?
+		protected static HttpClient InitializeHttpClient(IEnumerable<Claim> userClaims, string companyNumber)
+		{
+			var httpClient = HttpClientService.InitializeHttpClient(userClaims, false);
+
+			string apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
+
+			httpClient.BaseAddress = new Uri($"{apiBaseUrl}/{companyNumber}/");
+
+			return httpClient;
+		}
+
 		private const int DEFAULT_NUM_ORDERS = 60;
 		// https://stackoverflow.com/questions/31129873/make-http-client-synchronous-wait-for-response
 
 		#region Get Multiple Orders
-		public static async Task<IList<WorkOrder>> GetWorkOrders(IEnumerable<Claim> userClaims, int numOrders = DEFAULT_NUM_ORDERS)
+		public static async Task<IList<WorkOrder>> GetWorkOrders(IEnumerable<Claim> userClaims, string companyNumber, int numOrders = DEFAULT_NUM_ORDERS)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
 				string url = string.Format("orders/?$top={0}", numOrders);
 				var response = await httpClient.GetAsync(url);
@@ -31,9 +45,9 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<IList<WorkOrder>> GetWorkOrdersForTech(IEnumerable<Claim> userClaims)
+		public static async Task<IList<WorkOrder>> GetWorkOrdersForTech(IEnumerable<Claim> userClaims, string companyNumber)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
 				string url = string.Format("orders/tech/{0}/status/~blocked?$top={1}", GetEmployeeNumber(userClaims), DEFAULT_NUM_ORDERS);
 				var response = await httpClient.GetAsync(url);
@@ -43,9 +57,9 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<IList<WorkOrder>> GetWorkOrdersForServiceAdvisor(IEnumerable<Claim> userClaims)
+		public static async Task<IList<WorkOrder>> GetWorkOrdersForServiceAdvisor(IEnumerable<Claim> userClaims, string companyNumber)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
 				string url = string.Format("orders/writer/{0}?$top={1}", GetEmployeeNumber(userClaims), DEFAULT_NUM_ORDERS);
 				var response = await httpClient.GetAsync(url);
@@ -72,10 +86,10 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		// For the overload with user claims, we grab the user's company number from their employee ID
-		public static async Task<WorkOrderResponse> GetWorkOrder(IEnumerable<Claim> userClaims, string id, bool requestlock = false)
+		// For the overload with user claims, we grab the user's company number from their selected company via a cookie set for DI
+		public static async Task<WorkOrderResponse> GetWorkOrder(IEnumerable<Claim> userClaims, string id, string companyNumber, bool requestlock = false)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
 				string url = string.Format("orders/{0}?$requestlock={1}", id, Convert.ToInt32(requestlock));
 				HttpResponseMessage response = await httpClient.GetAsync(url);
@@ -89,9 +103,9 @@ namespace DigitalInspection.Services
 
 		#region Save Work Order
 
-		public static async Task<WorkOrderResponse> ReleaseLock(IEnumerable<Claim> userClaims, string orderId)
+		public static async Task<WorkOrderResponse> ReleaseLock(IEnumerable<Claim> userClaims, string orderId, string companyNumber)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
 				var httpContent = new StringContent("", Encoding.UTF8, "application/json");
 
@@ -103,9 +117,9 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<WorkOrderResponse> SaveWorkOrder(IEnumerable<Claim> userClaims, WorkOrder order, bool releaselockonly = false)
+		public static async Task<WorkOrderResponse> SaveWorkOrder(IEnumerable<Claim> userClaims, WorkOrder order, string companyNumber, bool releaselockonly = false)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
 				// Map work order to work order dto
 				WorkOrderDTO dto = WorkOrderMapper.mapToWorkOrderDTO(order);
@@ -122,9 +136,9 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<WorkOrderResponse> SaveWorkOrderNote(IEnumerable<Claim> userClaims, string workOrderId, IList<string> notes)
+		public static async Task<WorkOrderResponse> SaveWorkOrderNote(IEnumerable<Claim> userClaims, string workOrderId, string companyNumber, IList<string> notes)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims))
+			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
 				string url = string.Format("orders/{0}?$requestlock={1}", workOrderId, 1);
 				HttpResponseMessage response = await httpClient.GetAsync(url);

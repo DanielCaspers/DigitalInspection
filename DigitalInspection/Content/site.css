@@ -359,11 +359,18 @@ table tbody tr {
           margin-left: 10px; }
   .ma-nav-container .ma-nav-breadcrumb {
     padding-left: 10px;
-    flex: 1 1 auto; }
+    flex: 1 0 auto; }
+  .ma-nav-container .bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
+    position: absolute;
+    display: inline-block;
+    top: 10px;
+    right: 15px;
+    color: green; }
   .ma-nav-container .ma-nav-brand {
-    flex: 1 1 auto; }
+    flex: 1 1 auto;
+    text-transform: initial; }
   .ma-nav-container .ma-nav-account {
-    flex: 0 1 auto; }
+    flex: 1 1 auto; }
     .ma-nav-container .ma-nav-account button {
       margin: 5px;
       padding: 0px 5px; }
@@ -422,7 +429,7 @@ img.center-image {
   margin: auto;
   display: block; }
 
-.text-inverse, .ma-nav-container .ma-nav-text, .text-inverse:hover, .ma-nav-container .ma-nav-text:hover, a.text-inverse:hover, .ma-nav-container a.ma-nav-text:hover {
+.text-inverse, .ma-nav-container .ma-nav-text, .ma-nav-container .ma-nav-brand, .text-inverse:hover, .ma-nav-container .ma-nav-text:hover, .ma-nav-container .ma-nav-brand:hover, a.text-inverse:hover, .ma-nav-container a.ma-nav-text:hover, .ma-nav-container a.ma-nav-brand:hover {
   color: #ffffff; }
 
 .form-group.ma-form-group {

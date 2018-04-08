@@ -22,7 +22,7 @@ namespace DigitalInspection.Services
 		// https://stackoverflow.com/questions/31129873/make-http-client-synchronous-wait-for-response
 		public static async Task<AuthenticationResponse> Login(string username, string password)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(false))
+			using (HttpClient httpClient = InitializeHttpClient())
 			{
 				var postBody = new List<KeyValuePair<string, string>>();
 				postBody.Add(new KeyValuePair<string, string>("username", username));

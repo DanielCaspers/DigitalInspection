@@ -13,7 +13,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title">Add a work order note - @Model.WorkOrderId.Substring(3)</h4>
+					<h4 class="modal-title">Edit work order note - @Model.WorkOrderId.Substring(3)</h4>
 				</div>
 				@using (Ajax.BeginForm(
 					"WorkOrderNote",
@@ -37,7 +37,7 @@
 
 					<div class="modal-footer">
 						<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Add</button>
+						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
 					</div>
 
 					@Html.HiddenFor(m => m.WorkOrderId)

@@ -1,6 +1,8 @@
 ﻿@model DigitalInspection.ViewModels.BaseViewModel
+@using System.Security.Claims
 @using DigitalInspection.Views.Helpers;
 @using DigitalInspection.Models;
+@using DigitalInspection.Services.Web
 @using Roles = DigitalInspection.Models.Roles
 
 <!DOCTYPE html>
@@ -15,6 +17,19 @@
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/Library")
 	@Scripts.Render("~/bundles/App")
+	<script>
+		$(function() {
+			$('#ma-company-picker').selectpicker({
+				width: '150px !important'
+			});
+
+			$('#ma-company-picker').on('changed.bs.select',
+				function() {
+					var imposterSelect = $(this);
+					imposterSelect.closest('form').submit();
+				});
+		});
+	</script>
 </head>
 <body>
 	@if (Model != null && !(Model.ResourceName == null || Model.ResourceName == string.Empty))
@@ -61,10 +76,41 @@
 					@Model.ResourceName
 				</a>
 
-				<!-- Note: Using navbar-brand on the actionlink causes the height of the bar to increase, covering important tab containers or toolbars slightly.-->
-				<div class="ma-nav-brand">
-					@Html.ActionLink("Murphy Automotive", "Index", "Home", new { area = "" }, new { @class = "text-inverse" })
-				</div>
+				@using (Html.BeginForm(
+					"ChangeCompany",
+					"Company",
+					FormMethod.Post,
+					new {
+						// Used for preventing 'Confirm unsaved changes' dialog
+						ma_dirtyforms_ignore = ""
+					}
+					))
+				{
+					<select id="ma-company-picker"
+							class="show-tick"
+					        data-style="ma-nav-brand"
+					        name="companyNumber">
+						@{
+							var roles = (User.Identity as ClaimsIdentity).Claims
+								.Where(claim => claim.Type == "roles")
+								.Select(r => r.Value.Substring(0, 3))
+								.Distinct();
+
+							HttpCookie companyCookie = Request.Cookies.Get(CookieFactory.CompanyCookieName);
+							string selectedCompany = companyCookie.Value ?? "";
+
+							foreach (var role in roles)
+							{
+								<option
+									title="Murphy Automotive (@role)"
+									value="@role"
+									@(role == selectedCompany ? "selected" : "")>
+									@role
+								</option>
+							}
+						}
+					</select>
+				}
 
 				<div class="ma-nav-account">
 					@Html.Partial("_LoginPartial")

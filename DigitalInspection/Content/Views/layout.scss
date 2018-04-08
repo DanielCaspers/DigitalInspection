@@ -1,20 +1,20 @@
 ﻿//_layout.cshtml
-.ma-nav-container{
-	display:flex;
+.ma-nav-container {
+	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
-	.ma-nav-text{
+	.ma-nav-text {
 		@extend .text-inverse;
 		text-transform: none !important;
 		font-weight: bold;
 		font-size: 16px;
 	}
 
-	.ma-nav-dropdown{
+	.ma-nav-dropdown {
 		flex: 0 1 auto;
 
-		button{
+		button {
 			margin: 0;
 			padding: 15px;
 		}
@@ -24,25 +24,35 @@
 		}
 	}
 
-	.ma-nav-breadcrumb{
-		padding-left:10px;
-		flex:1 1 auto;
+	.ma-nav-breadcrumb {
+		padding-left: 10px;
+		flex: 1 0 auto;
 	}
 
-	.ma-nav-brand{
+	.bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
+		position: absolute;
+		display: inline-block;
+		top: 10px;
+		right: 15px;
+		color: green;
+	}
+
+	.ma-nav-brand {
 		flex: 1 1 auto;
+		@extend .text-inverse;
+		text-transform: initial;
 	}
 
-	.ma-nav-account{
-		flex: 0 1 auto;
+	.ma-nav-account {
+		flex: 1 1 auto;
 
-		button{
+		button {
 			margin: 5px;
 			padding: 0px 5px;
 		}
 
-		.ma-account-name{
-			padding-right:15px;
+		.ma-account-name {
+			padding-right: 15px;
 		}
 	}
 }
