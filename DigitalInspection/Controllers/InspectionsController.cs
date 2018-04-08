@@ -53,6 +53,33 @@ namespace DigitalInspection.Controllers
 			return BuildInspectionReportInternal(inspectionItems, grouped, workOrderId);
 		}
 
+		// POST: Tags/Delete/5
+		[HttpPost]
+		[AllowAnonymous]
+		public EmptyResult Delete(string workOrderId)
+		{
+			var inspection = _context.Inspections.SingleOrDefault(i => i.WorkOrderId == workOrderId);
+			if (inspection == null)
+			{
+				return new EmptyResult();
+			}
+
+			var inspectionItems = _context.InspectionItems.Where(ii => ii.Inspection.Id == inspection.Id).ToList();
+			foreach (var inspectionItem in inspectionItems)
+			{
+				_context.InspectionMeasurements.RemoveRange(inspectionItem.InspectionMeasurements);
+				_context.InspectionImages.RemoveRange(inspectionItem.InspectionImages);
+			}
+
+			_context.InspectionItems.RemoveRange(inspectionItems);
+
+			_context.Inspections.Remove(inspection);
+
+			TrySave();
+
+			return new EmptyResult();
+		}
+
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult Condition(Guid inspectionItemId, RecommendedServiceSeverity inspectionItemCondition)
