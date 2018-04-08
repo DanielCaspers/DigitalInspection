@@ -235,7 +235,11 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\InspectionsController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\VehicleHistoryController.cs" />
     <Compile Include="Controllers\StoreInfoController.cs" />
+    <Compile Include="Models\DTOs\VehicleHistoryItemDTO.cs" />
+    <Compile Include="Models\Mappers\VehicleHistoryItemMapper.cs" />
+    <Compile Include="ViewModels\VehicleHistory\VehicleHistoryViewModel.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\ChecklistsController.cs" />
@@ -340,9 +344,12 @@
     <Compile Include="Models\Web\AuthenticationResponse.cs" />
     <Compile Include="Models\Web\BaseResponse.cs" />
     <Compile Include="Models\Store\StoreInfo.cs" />
+    <Compile Include="Models\VehicleHistory\VehicleHistoryItem.cs" />
+    <Compile Include="Models\Web\VehicleHistoryResponse.cs" />
     <Compile Include="Models\Web\StoreInfoResponse.cs" />
     <Compile Include="Services\Web\CookieFactory.cs" />
     <Compile Include="Services\Web\StoreInfoService.cs" />
+    <Compile Include="Services\Web\VehicleHistoryService.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Orders\Address.cs" />
     <Compile Include="Models\Orders\RecommendedService.cs" />
@@ -477,6 +484,7 @@
     <Content Include="Views\Inspections\_AddInspectionWorkOrderNoteDialog.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\WorkOrders\_Layout_Locked.cshtml" />
+    <Content Include="Views\Shared\Dialogs\_VehicleHistoryDialog.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Shared\Components\customer-vehicle-summary.component.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\location.service.ts" />

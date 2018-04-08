@@ -1,0 +1,71 @@
+﻿@using System.Configuration
+@model DigitalInspection.ViewModels.VehicleHistoryViewModel
+
+@{
+	const string TEMPLATE_NAMESPACE = "vehicleHistoryDialog";
+	const string CANCEL = TEMPLATE_NAMESPACE + "_cancel";
+	//const string SUCCESS = TEMPLATE_NAMESPACE + "_success";
+}
+
+<div id="@TEMPLATE_NAMESPACE" class="modal fade">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Vehicle History</h4>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<b class="col-xs-6">
+						Labor Desc.
+					</b>
+					<b class="col-xs-2">
+						Odometer
+					</b>
+					<b class="col-xs-2">
+						Date
+					</b>
+					<b class="col-xs-2">
+						Order #
+					</b>
+				</div>
+				@for (int i = 0; i < Model.VehicleHistory.Count; i++)
+				{
+					<div class="row" style="margin-top:10px;">
+						<div class="col-xs-6">
+							@if (Model.VehicleHistory[i].LaborDescription != null)
+							{
+								<ul style="padding-left: 10px !important;">
+									@foreach (var line in Model.VehicleHistory[i].LaborDescription)
+									{
+										 <li>@line</li>
+									}
+								</ul>
+
+							}
+						</div>
+						<div class="col-xs-2">
+							@Model.VehicleHistory[i].VehicleOdometer
+						</div>
+						<div class="col-xs-2">
+							@String.Format("{0:d}", @Model.VehicleHistory[i].CompletionDate)
+						</div>
+						<div class="col-xs-2">
+							<a href="@ConfigurationManager.AppSettings.Get("MurphyAutomotiveVehicleHistoryInvoiceUrl")@Model.VehicleHistory[i].InvoiceLink"
+							   target="_blank">
+								@Model.VehicleHistory[i].OrderId.Substring(3)
+							</a>
+						</div>
+					</div>
+				}
+
+			</div>
+
+			<div class="modal-footer">
+				<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				@*<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Edit</button>*@
+			</div>
+		</div>
+	</div>
+</div>

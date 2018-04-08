@@ -246,7 +246,8 @@ namespace DigitalInspection.Controllers
 					WorkOrder = response.WorkOrder,
 					CanEdit = canEdit,
 					TabViewModel = tabVM,
-					Toast = response.IsSuccessStatusCode ? null : DisplayErrorToast(response)
+					Toast = response.IsSuccessStatusCode ? null : DisplayErrorToast(response),
+					VehicleHistoryVM = new VehicleHistoryViewModel()
 				}
 			);
 		}

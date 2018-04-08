@@ -46,24 +46,46 @@
 					</a>
 				}
 
+			</div>
+			
+			<div class="customer-vehicle-summary-container">
 				@Html.Partial("_CustomerVehicleSummary", Model.WorkOrder)
 			</div>
 
 			<div>
+				@Ajax.RawActionLink("<i class='material-icons'>history</i>",
+					"GetVehicleHistoryDialog",
+					"VehicleHistory",
+					new
+					{
+						VIN = Model.WorkOrder.Vehicle.VIN,
+					},
+					new AjaxOptions
+					{
+						HttpMethod = "POST",
+						InsertionMode = InsertionMode.Replace,
+						UpdateTargetId = "VehicleHistoryDynamicDialogContainer",
+						OnComplete = "DialogService.show('vehicleHistoryDialog', 'vehicleHistoryDialogForm')"
+					},
+					new
+					{
+						@class = "btn btn-default no-margin no-padding-horizontal"
+					})
+
 				@if (Model.WorkOrder.RecommendedServices != null)
 				{
 					<button type="button"
-							class="btn btn-default bold no-margin"
-							onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
+					        class="btn btn-default bold no-margin"
+					        onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
 						<span>RS</span>
 					</button>
 				}
 				else
 				{
 					<button type="button"
-							disabled="disabled"
-							class="btn btn-default bold no-margin"
-							onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
+					        disabled="disabled"
+					        class="btn btn-default bold no-margin"
+					        onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
 						<span>RS</span>
 					</button>
 				}
@@ -71,14 +93,14 @@
 				@if (Model.CanEdit)
 				{
 					<button type="button"
-							class="btn btn-default no-margin"
-							onclick="FormService.submit('editVehicleForm', true)">
+					        class="btn btn-default no-margin"
+					        onclick="FormService.submit('editVehicleForm', true)">
 						<i class="material-icons">save</i>
 					</button>
 				}
 				else
 				{
-					<a href="@Url.Action("_Vehicle", "WorkOrders", new { id = Model.WorkOrder.Id, canEdit = true })"
+					<a href="@Url.Action("_Vehicle", "WorkOrders", new {id = Model.WorkOrder.Id, canEdit = true})"
 					   class="btn btn-default no-margin"
 					   onclick="FormService.showProgress()">
 						<i class="material-icons">edit</i>
@@ -94,6 +116,9 @@
 	@Html.Partial("../Shared/Dialogs/_EditRecommendedServicesDialog", Model.WorkOrder)
 }
 
+<div id="VehicleHistoryDynamicDialogContainer">
+	@Html.Partial("../Shared/Dialogs/_VehicleHistoryDialog", Model.VehicleHistoryVM)
+</div>
 <script type="text/javascript">
 	DialogService.confirmLeavingUnsavedChanges_onProceed = function () {
 		FormService.triggerExternalSubmit('editVehicleForm', false, true, { name: 'releaselockonly', value: 'true' });

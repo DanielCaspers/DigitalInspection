@@ -397,6 +397,7 @@ namespace DigitalInspection.Controllers
 					WorkOrderId = workOrderId
 				},
 				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel { },
+				VehicleHistoryVM = new VehicleHistoryViewModel() { },
 				ScrollableTabContainerVM = GetScrollableTabContainerViewModel(tagId),
 				FilteringTagId = tagId
 			});

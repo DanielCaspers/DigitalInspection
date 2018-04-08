@@ -419,6 +419,11 @@ td.dropdown-cell button.multiselect.dropdown-toggle {
   #inspectionToolbar.row-selected {
     visibility: visible; }
 
+.customer-vehicle-summary-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column; }
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */

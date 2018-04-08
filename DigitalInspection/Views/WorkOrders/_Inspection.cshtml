@@ -20,9 +20,12 @@
 			<i class="material-icons">arrow_back</i>
 			Order @Model.WorkOrder.Id.Substring(3)
 		</a>
-
+	</div>
+	
+	<div class="customer-vehicle-summary-container">
 		@Html.Partial("_CustomerVehicleSummary", Model.WorkOrder)
 	</div>
+
 
 	@if (Model.InspectionId != Guid.Empty)
 	{
@@ -43,6 +46,11 @@
 				<i class="material-icons">open_in_new</i>
 			</a>
 		</div>
+	}
+	else
+	{
+		<!-- Placeholder for flex center -->
+		<div style="width: 100px"></div>
 	}
 </div>
 }

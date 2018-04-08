@@ -25,6 +25,8 @@ namespace DigitalInspection.ViewModels
 
 		public ViewInspectionPhotosViewModel ViewInspectionPhotosVM { get; set; }
 
+		public VehicleHistoryViewModel VehicleHistoryVM { get; set; }
+
 		public ScrollableTabContainerViewModel ScrollableTabContainerVM { get; set; }
 	}
 }

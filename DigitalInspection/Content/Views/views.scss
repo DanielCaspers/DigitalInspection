@@ -1,3 +1,8 @@
 ﻿@import "layout.scss";
 @import "inspection-table.scss";
 
+.customer-vehicle-summary-container {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}

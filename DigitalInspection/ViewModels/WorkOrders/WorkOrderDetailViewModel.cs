@@ -7,6 +7,8 @@ namespace DigitalInspection.ViewModels
 	{
 		public WorkOrder WorkOrder { get; set; }
 
+		public VehicleHistoryViewModel VehicleHistoryVM { get; set; }
+
 		public bool CanEdit { get; set; } = false;
 
 		public TabContainerViewModel TabViewModel { get; set; }

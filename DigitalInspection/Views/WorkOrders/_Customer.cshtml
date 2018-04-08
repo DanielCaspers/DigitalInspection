@@ -45,7 +45,9 @@
 						Order @Model.WorkOrder.Id.Substring(3)
 					</a>
 				}
-				
+			</div>
+			
+			<div class="customer-vehicle-summary-container">
 				@Html.Partial("_CustomerVehicleSummary", Model.WorkOrder)
 			</div>
 

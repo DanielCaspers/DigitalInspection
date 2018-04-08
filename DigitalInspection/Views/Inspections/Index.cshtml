@@ -22,42 +22,61 @@
 		</div>
 
 		<div>
+			@Ajax.RawActionLink("<i class='material-icons'>history</i>",
+				"GetVehicleHistoryDialog",
+				"VehicleHistory",
+				new
+				{
+					VIN = Model.WorkOrder.Vehicle.VIN,
+				},
+				new AjaxOptions
+				{
+					HttpMethod = "POST",
+					InsertionMode = InsertionMode.Replace,
+					UpdateTargetId = "VehicleHistoryDynamicDialogContainer",
+					OnComplete = "DialogService.show('vehicleHistoryDialog', 'vehicleHistoryDialogForm')"
+				},
+				new
+				{
+					@class = "btn btn-primary no-margin no-padding-horizontal"
+				})
+
 			@if (Model.WorkOrder.RecommendedServices != null)
 			{
 				<button type="button"
-						class="btn btn-default bold no-margin"
-						onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
+				        class="btn btn-primary bold no-margin"
+				        onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
 					<span>RS</span>
 				</button>
 			}
 			else
 			{
 				<button type="button"
-						disabled="disabled"
-						class="btn btn-default bold no-margin"
-						onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
+				        disabled="disabled"
+				        class="btn btn-primary bold no-margin"
+				        onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
 					<span>RS</span>
 				</button>
 			}
 
 			@Ajax.RawActionLink("<i class='material-icons'>note_add</i>",
-					 "GetAddInspectionWorkOrderNoteDialog",
-					 "Inspections",
-					 new
-					 {
-						 workOrderId = Model.WorkOrder.Id,
-					 },
-					 new AjaxOptions
-					 {
-						 HttpMethod = "POST",
-						 InsertionMode = InsertionMode.Replace,
-						 UpdateTargetId = "AddInspectionWorkOrderNoteDynamicDialogContainer",
-						 OnComplete = "DialogService.show('addInspectionWorkOrderNoteDialog', 'addInspectionWorkOrderNoteForm')"
-					 },
-					 new
-					 {
-						 @class = "btn btn-primary no-margin no-padding-horizontal"
-					 })
+				"GetAddInspectionWorkOrderNoteDialog",
+				"Inspections",
+				new
+				{
+					workOrderId = Model.WorkOrder.Id,
+				},
+				new AjaxOptions
+				{
+					HttpMethod = "POST",
+					InsertionMode = InsertionMode.Replace,
+					UpdateTargetId = "AddInspectionWorkOrderNoteDynamicDialogContainer",
+					OnComplete = "DialogService.show('addInspectionWorkOrderNoteDialog', 'addInspectionWorkOrderNoteForm')"
+				},
+				new
+				{
+					@class = "btn btn-primary no-margin no-padding-horizontal"
+				})
 		</div>
 	</div>
 }
@@ -66,6 +85,10 @@
 {
 	@Html.Partial("../Shared/Dialogs/_EditRecommendedServicesDialog", Model.WorkOrder)
 }
+
+<div id="VehicleHistoryDynamicDialogContainer">
+	@Html.Partial("../Shared/Dialogs/_VehicleHistoryDialog", Model.VehicleHistoryVM)
+</div>
 
 <div class="container-fluid">
 	@Html.Partial("_InspectionTable", Model)
