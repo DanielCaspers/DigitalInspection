@@ -8,9 +8,11 @@ using System.Net;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using DigitalInspection.Models.Orders;
 using System.Data.Entity.Validation;
 using System.IO;
+using System.Web.Services.Description;
 using DigitalInspection.ViewModels.TabContainers;
 
 namespace DigitalInspection.Controllers
@@ -53,11 +55,16 @@ namespace DigitalInspection.Controllers
 			return BuildInspectionReportInternal(inspectionItems, grouped, workOrderId);
 		}
 
-		// POST: Tags/Delete/5
 		[HttpPost]
 		[AllowAnonymous]
-		public EmptyResult Delete(string workOrderId)
+		public ActionResult Delete(string workOrderId)
 		{
+			if (Request.Headers["DigitalInspection-AppKey"] !=
+			    ConfigurationManager.AppSettings.Get("DigitalInspection-AppKey"))
+			{
+				return Json($"Not authorized to delete inspection for {workOrderId}");
+			}
+
 			var inspection = _context.Inspections.SingleOrDefault(i => i.WorkOrderId == workOrderId);
 			if (inspection == null)
 			{
