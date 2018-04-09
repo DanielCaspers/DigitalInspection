@@ -286,7 +286,7 @@ namespace DigitalInspection.Controllers
 
 			string combinedNote = string.Join(Environment.NewLine, workOrder.Notes);
 
-			return PartialView("_AddInspectionWorkOrderNoteDialog", new AddInspectionWorkOrderNoteViewModel
+			return PartialView("../Shared/Dialogs/_AddInspectionWorkOrderNoteDialog", new AddInspectionWorkOrderNoteViewModel
 			{
 				WorkOrderId = workOrderId,
 				Note = combinedNote

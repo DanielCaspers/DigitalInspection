@@ -72,7 +72,7 @@ namespace DigitalInspection.Models.Mappers
 
 			order.Customer = new Customer(
 				dto.clientID,
-				dto.clientName,
+				dto.clientName?.Trim(),
 				clientAddress,
 				clientPhoneNumbers,
 				dto.clientNotes);

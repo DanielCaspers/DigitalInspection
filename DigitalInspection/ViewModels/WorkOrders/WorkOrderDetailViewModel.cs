@@ -9,6 +9,8 @@ namespace DigitalInspection.ViewModels
 
 		public VehicleHistoryViewModel VehicleHistoryVM { get; set; }
 
+		public AddInspectionWorkOrderNoteViewModel AddInspectionWorkOrderNoteVm { get; set; }
+
 		public bool CanEdit { get; set; } = false;
 
 		public TabContainerViewModel TabViewModel { get; set; }

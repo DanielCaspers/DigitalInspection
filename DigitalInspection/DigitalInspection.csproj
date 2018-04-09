@@ -481,7 +481,7 @@
     <Content Include="Scripts\compiledTS\Shared\Services\scrollableTab.service.js" />
     <Content Include="Scripts\Library\JQuery-Bootstrap-Scrolling-Tabs\jquery.scrolling-tabs.min.js" />
     <Content Include="Views\Inspections\_ViewInspectionPhotosDialog.cshtml" />
-    <Content Include="Views\Inspections\_AddInspectionWorkOrderNoteDialog.cshtml" />
+    <Content Include="Views\Shared\Dialogs\_AddInspectionWorkOrderNoteDialog.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\WorkOrders\_Layout_Locked.cshtml" />
     <Content Include="Views\Shared\Dialogs\_VehicleHistoryDialog.cshtml" />
