@@ -22,24 +22,35 @@
 		</div>
 
 		<div>
-			@Ajax.RawActionLink("<i class='material-icons'>history</i>",
-				"GetVehicleHistoryDialog",
-				"VehicleHistory",
-				new
-				{
-					VIN = Model.WorkOrder.Vehicle.VIN,
-				},
-				new AjaxOptions
-				{
-					HttpMethod = "POST",
-					InsertionMode = InsertionMode.Replace,
-					UpdateTargetId = "VehicleHistoryDynamicDialogContainer",
-					OnComplete = "DialogService.show('vehicleHistoryDialog', 'vehicleHistoryDialogForm')"
-				},
-				new
-				{
-					@class = "btn btn-primary no-margin no-padding-horizontal"
-				})
+			@if (Model.WorkOrder.Vehicle.VIN != null)
+			{
+				@Ajax.RawActionLink("<i class='material-icons'>history</i>",
+					"GetVehicleHistoryDialog",
+					"VehicleHistory",
+					new
+					{
+						VIN = Model.WorkOrder.Vehicle.VIN,
+					},
+					new AjaxOptions
+					{
+						HttpMethod = "POST",
+						InsertionMode = InsertionMode.Replace,
+						UpdateTargetId = "VehicleHistoryDynamicDialogContainer",
+						OnComplete = "DialogService.show('vehicleHistoryDialog', 'vehicleHistoryDialogForm')"
+					},
+					new
+					{
+						@class = "btn btn-primary no-margin no-padding-horizontal"
+					})
+			}
+			else
+			{
+				<button type="button"
+				        class="btn btn-primary no-margin no-padding-horizontal"
+				        disabled="disabled">
+					<i class='material-icons'>history</i>
+				</button>
+			}
 
 			@if (Model.WorkOrder.RecommendedServices != null)
 			{
