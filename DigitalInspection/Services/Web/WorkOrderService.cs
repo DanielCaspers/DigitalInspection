@@ -74,7 +74,7 @@ namespace DigitalInspection.Services
 		#region Get Single Work Order
 
 		// For the overload without user claims, we must manually infer the company number from the order number
-		public static async Task<WorkOrderResponse> GetWorkOrder(string id, bool requestlock = false)
+		public static async Task<HttpResponse<WorkOrder>> GetWorkOrder(string id, bool requestlock = false)
 		{
 			using (HttpClient httpClient = InitializeAnonymousHttpClient())
 			{
@@ -87,7 +87,7 @@ namespace DigitalInspection.Services
 		}
 
 		// For the overload with user claims, we grab the user's company number from their selected company via a cookie set for DI
-		public static async Task<WorkOrderResponse> GetWorkOrder(IEnumerable<Claim> userClaims, string id, string companyNumber, bool requestlock = false)
+		public static async Task<HttpResponse<WorkOrder>> GetWorkOrder(IEnumerable<Claim> userClaims, string id, string companyNumber, bool requestlock = false)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
@@ -103,7 +103,7 @@ namespace DigitalInspection.Services
 
 		#region Save Work Order
 
-		public static async Task<WorkOrderResponse> ReleaseLock(IEnumerable<Claim> userClaims, string orderId, string companyNumber)
+		public static async Task<HttpResponse<WorkOrder>> ReleaseLock(IEnumerable<Claim> userClaims, string orderId, string companyNumber)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
@@ -117,7 +117,7 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<WorkOrderResponse> SaveWorkOrder(IEnumerable<Claim> userClaims, WorkOrder order, string companyNumber, bool releaselockonly = false)
+		public static async Task<HttpResponse<WorkOrder>> SaveWorkOrder(IEnumerable<Claim> userClaims, WorkOrder order, string companyNumber, bool releaselockonly = false)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
@@ -136,7 +136,7 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<WorkOrderResponse> SaveWorkOrderNote(IEnumerable<Claim> userClaims, string workOrderId, string companyNumber, IList<string> notes)
+		public static async Task<HttpResponse<WorkOrder>> SaveWorkOrderNote(IEnumerable<Claim> userClaims, string workOrderId, string companyNumber, IList<string> notes)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
@@ -144,7 +144,7 @@ namespace DigitalInspection.Services
 				HttpResponseMessage response = await httpClient.GetAsync(url);
 				string json = await response.Content.ReadAsStringAsync();
 
-				WorkOrderResponse workOrderResponse = CreateWorkOrderResponse(response, json);
+				HttpResponse<WorkOrder> workOrderResponse = CreateWorkOrderResponse(response, json);
 
 				if (workOrderResponse.IsSuccessStatusCode == false)
 				{
@@ -181,19 +181,14 @@ namespace DigitalInspection.Services
 			return workOrders;
 		}
 
-		private static WorkOrderResponse CreateWorkOrderResponse(HttpResponseMessage httpResponse, string responseContent)
+		private static HttpResponse<WorkOrder> CreateWorkOrderResponse(HttpResponseMessage httpResponse, string responseContent)
 		{
-			WorkOrderResponse workOrderResponse = new WorkOrderResponse
-			{
-				IsSuccessStatusCode = httpResponse.IsSuccessStatusCode,
-				HTTPCode = httpResponse.StatusCode,
-				ErrorMessage = httpResponse.IsSuccessStatusCode ? "" : responseContent
-			};
+			HttpResponse<WorkOrder> workOrderResponse = new HttpResponse<WorkOrder>(httpResponse, responseContent);
 
 			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
 			{
 				WorkOrderDTO orderDto = JsonConvert.DeserializeObject<WorkOrderDTO>(responseContent);
-				workOrderResponse.WorkOrder = WorkOrderMapper.mapToWorkOrder(orderDto);
+				workOrderResponse.Entity = WorkOrderMapper.mapToWorkOrder(orderDto);
 			}
 
 			return workOrderResponse;

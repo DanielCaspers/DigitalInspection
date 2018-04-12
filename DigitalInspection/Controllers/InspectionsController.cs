@@ -202,7 +202,7 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				return PartialView("Toasts/_Toast", DisplayErrorToast(task.Result));
+				return PartialView("Toasts/_Toast", ToastService.WorkOrderError(task.Result));
 			}
 		}
 
@@ -289,7 +289,7 @@ namespace DigitalInspection.Controllers
 		public PartialViewResult GetAddInspectionWorkOrderNoteDialog(string workOrderId)
 		{
 			var workOrderResponse = GetWorkOrderResponse(workOrderId);
-			var workOrder = workOrderResponse.WorkOrder;
+			var workOrder = workOrderResponse.Entity;
 
 			string combinedNote = string.Join(Environment.NewLine, workOrder.Notes);
 
@@ -353,14 +353,14 @@ namespace DigitalInspection.Controllers
 		private PartialViewResult GetInspectionViewModel(string workOrderId, Guid checklistId, Guid? tagId)
 		{
 			var workOrderResponse = GetWorkOrderResponse(workOrderId);
-			var workOrder = workOrderResponse.WorkOrder;
+			var workOrder = workOrderResponse.Entity;
 			ToastViewModel toast = null;
 
 			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == checklistId);
 
 			if (workOrderResponse.IsSuccessStatusCode == false)
 			{
-				toast = DisplayErrorToast(workOrderResponse);
+				toast = ToastService.WorkOrderError(workOrderResponse);
 			}
 			else if (checklist == null)
 			{
@@ -545,21 +545,6 @@ namespace DigitalInspection.Controllers
 			return wasSuccessful;
 		}
 
-		private ToastViewModel DisplayErrorToast(WorkOrderResponse response)
-		{
-			switch (response.HTTPCode)
-			{
-				case HttpStatusCode.NotFound:
-					return ToastService.ResourceNotFound(ResourceName, ToastActionType.NavigateBack);
-				case (HttpStatusCode)423:
-					return ToastService.FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh);
-				case (HttpStatusCode)428:
-					return ToastService.FileLockRequired();
-				default:
-					return ToastService.UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage);
-			}
-		}
-
 		private JsonResult BuildInspectionReportInternal(IEnumerable<InspectionItem> unfilteredInspectionItems, bool grouped, string workOrderId)
 		{
 			var applicableTags = _context.Tags
@@ -632,7 +617,7 @@ namespace DigitalInspection.Controllers
 			};
 		}
 
-		private WorkOrderResponse GetWorkOrderResponse(string workOrderId)
+		private HttpResponse<WorkOrder> GetWorkOrderResponse(string workOrderId)
 		{
 			var task = Task.Run(async () => {
 				return await WorkOrderService.GetWorkOrder(CurrentUserClaims, workOrderId, GetCompanyNumber(), false);

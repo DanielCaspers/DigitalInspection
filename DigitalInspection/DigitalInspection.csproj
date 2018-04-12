@@ -341,12 +341,9 @@
     <Compile Include="Models\Store\StoreAddress.cs" />
     <Compile Include="Models\Store\WebPhoneNumber.cs" />
     <Compile Include="Models\Web\LoginResponse.cs" />
-    <Compile Include="Models\Web\AuthenticationResponse.cs" />
-    <Compile Include="Models\Web\BaseResponse.cs" />
+    <Compile Include="Models\Web\HttpResponse.cs" />
     <Compile Include="Models\Store\StoreInfo.cs" />
     <Compile Include="Models\VehicleHistory\VehicleHistoryItem.cs" />
-    <Compile Include="Models\Web\VehicleHistoryResponse.cs" />
-    <Compile Include="Models\Web\StoreInfoResponse.cs" />
     <Compile Include="Services\Web\CookieFactory.cs" />
     <Compile Include="Services\Web\StoreInfoService.cs" />
     <Compile Include="Services\Web\VehicleHistoryService.cs" />
@@ -367,7 +364,6 @@
     <Compile Include="Models\Inspections\Checklist.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Inspections\Image.cs" />
-    <Compile Include="Models\Web\WorkOrderResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Web\AuthenticationService.cs" />
     <Compile Include="Services\Web\WorkOrderService.cs" />

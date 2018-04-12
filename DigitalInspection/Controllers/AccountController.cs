@@ -78,7 +78,7 @@ namespace DigitalInspection.Controllers
 			{
 				var userIdCookie = Request.Cookies.Get(CookieFactory.UserIdCookieName);
 				// If this user is not the same as last user, mutate the cookie.
-				var userClaims = response.ClaimsIdentity.Claims;
+				var userClaims = response.Entity.Claims;
 				var userId = userClaims.Single(c => c.Type == "empID").Value;
 				if (userIdCookie?.Value != userId)
 				{
@@ -90,7 +90,7 @@ namespace DigitalInspection.Controllers
 
 				// Set ASP.NET Application Cookie
 				HttpContext.GetOwinContext().Authentication.SignIn(
-				   new AuthenticationProperties { IsPersistent = true }, response.ClaimsIdentity);
+				   new AuthenticationProperties { IsPersistent = true }, response.Entity);
 				return RedirectToLocal(returnUrl);
 			}
 			else

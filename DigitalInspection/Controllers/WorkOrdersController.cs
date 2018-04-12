@@ -87,11 +87,9 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult _Inspection(string id)
 		{
-			var workOrder = GetWorkOrderResponse(CurrentUserClaims, id).WorkOrder;
-
 			return PartialView(new WorkOrderInspectionViewModel
 			{
-				WorkOrder = workOrder,
+				WorkOrder = GetWorkOrderResponse(CurrentUserClaims, id).Entity,
 				TabViewModel = BuildInspectionTab(id),
 				Checklists = _context.Checklists.OrderBy(c => c.Name).ToList(),
 				InspectionId = _context.Inspections.Where(i => i.WorkOrderId == id).Select(i => i.Id).SingleOrDefault()
@@ -237,16 +235,16 @@ namespace DigitalInspection.Controllers
 			return GetWorkOrderDetailViewModel(workOrderResponse, tabVM, canEdit, viewName);
 		}
 
-		private PartialViewResult GetWorkOrderDetailViewModel(WorkOrderResponse response, TabContainerViewModel tabVM, bool canEdit, string viewName)
+		private PartialViewResult GetWorkOrderDetailViewModel(HttpResponse<WorkOrder> response, TabContainerViewModel tabVM, bool canEdit, string viewName)
 		{
 			return PartialView(
 				viewName,
 				new WorkOrderDetailViewModel
 				{
-					WorkOrder = response.WorkOrder,
+					WorkOrder = response.Entity,
 					CanEdit = canEdit,
 					TabViewModel = tabVM,
-					Toast = response.IsSuccessStatusCode ? null : DisplayErrorToast(response),
+					Toast = response.IsSuccessStatusCode ? null : ToastService.WorkOrderError(response),
 					VehicleHistoryVM = new VehicleHistoryViewModel(),
 					AddInspectionWorkOrderNoteVm = new AddInspectionWorkOrderNoteViewModel()
 				}
@@ -257,7 +255,7 @@ namespace DigitalInspection.Controllers
 
 		#region Response Helpers
 
-		private WorkOrderResponse GetWorkOrderResponse(string workOrderId, bool canEdit = false)
+		private HttpResponse<WorkOrder> GetWorkOrderResponse(string workOrderId, bool canEdit = false)
 		{
 			var task = Task.Run(async () => {
 				return await WorkOrderService.GetWorkOrder(workOrderId, canEdit);
@@ -268,7 +266,7 @@ namespace DigitalInspection.Controllers
 			return task.Result;
 		}
 
-		private WorkOrderResponse GetWorkOrderResponse(IEnumerable<Claim> userClaims, string workOrderId, bool canEdit = false)
+		private HttpResponse<WorkOrder> GetWorkOrderResponse(IEnumerable<Claim> userClaims, string workOrderId, bool canEdit = false)
 		{
 			var task = Task.Run(async () => {
 				return await WorkOrderService.GetWorkOrder(userClaims, workOrderId, GetCompanyNumber(), canEdit);
@@ -286,24 +284,9 @@ namespace DigitalInspection.Controllers
 				return HttpNotFound();
 			}
 
-			var workOrder = GetWorkOrderResponse(workOrderId).WorkOrder;
+			var workOrder = GetWorkOrderResponse(workOrderId).Entity;
 
 			return Json(workOrder, JsonRequestBehavior.AllowGet);
-		}
-
-		private ToastViewModel DisplayErrorToast(WorkOrderResponse response)
-		{
-			switch (response.HTTPCode)
-			{
-				case HttpStatusCode.NotFound:
-					return ToastService.ResourceNotFound(ResourceName, ToastActionType.NavigateBack);
-				case (HttpStatusCode)423:
-					return ToastService.FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh);
-				case (HttpStatusCode)428:
-					return ToastService.FileLockRequired();
-				default:
-					return ToastService.UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage);
-			}
 		}
 
 		#endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using DigitalInspection.Models.Web;
@@ -26,7 +27,7 @@ namespace DigitalInspection.Services
 			return httpClient;
 		}
 
-		public static async Task<VehicleHistoryResponse> GetVehicleHistory(IEnumerable<Claim> userClaims, string VIN, string companyNumber)
+		public static async Task<HttpResponse<IList<VehicleHistoryItem>>> GetVehicleHistory(IEnumerable<Claim> userClaims, string VIN, string companyNumber)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
@@ -38,21 +39,16 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		private static VehicleHistoryResponse CreateVehicleHistoryResponse(HttpResponseMessage httpResponse, string responseContent)
+		private static HttpResponse<IList<VehicleHistoryItem>> CreateVehicleHistoryResponse(HttpResponseMessage httpResponse, string responseContent)
 		{
-			VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse
-			{
-				IsSuccessStatusCode = httpResponse.IsSuccessStatusCode,
-				HTTPCode = httpResponse.StatusCode,
-				ErrorMessage = httpResponse.IsSuccessStatusCode ? "" : responseContent
-			};
+			HttpResponse<IList<VehicleHistoryItem>> vehicleHistoryResponse = new HttpResponse<IList<VehicleHistoryItem>>(httpResponse, responseContent);
 
 			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
 			{
 				try
 				{
 					var vehicleHistoryItems = JsonConvert.DeserializeObject<VehicleHistoryItemDTO[]>(responseContent);
-					vehicleHistoryResponse.VehicleHistory = VehicleHistoryItemMapper.mapToVehicleHistoryItems(vehicleHistoryItems);
+					vehicleHistoryResponse.Entity = VehicleHistoryItemMapper.mapToVehicleHistoryItems(vehicleHistoryItems);
 				}
 				catch (Exception e)
 				{

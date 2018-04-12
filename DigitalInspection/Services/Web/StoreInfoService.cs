@@ -4,12 +4,13 @@ using DigitalInspection.Models.Web;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DigitalInspection.Models.Store;
 
 namespace DigitalInspection.Services
 {
 	public class StoreInfoService: HttpClientService
 	{
-		public static async Task<StoreInfoResponse> GetStoreInfo(string companyNumber)
+		public static async Task<HttpResponse<StoreInfo>> GetStoreInfo(string companyNumber)
 		{
 			using (HttpClient httpClient = InitializeAnonymousHttpClient())
 			{
@@ -21,19 +22,14 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		private static StoreInfoResponse CreateStoreInfoResponse(HttpResponseMessage httpResponse, string responseContent)
+		private static HttpResponse<StoreInfo> CreateStoreInfoResponse(HttpResponseMessage httpResponse, string responseContent)
 		{
-			StoreInfoResponse storeInfoResponse = new StoreInfoResponse
-			{
-				IsSuccessStatusCode = httpResponse.IsSuccessStatusCode,
-				HTTPCode = httpResponse.StatusCode,
-				ErrorMessage = httpResponse.IsSuccessStatusCode ? "" : responseContent
-			};
+			HttpResponse<StoreInfo> storeInfoResponse = new HttpResponse<StoreInfo>(httpResponse, responseContent);
 
 			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
 			{
 				StoreInfoDTO dto = JsonConvert.DeserializeObject<StoreInfoDTO>(responseContent);
-				storeInfoResponse.StoreInfo = StoreInfoMapper.mapToStoreInfo(dto);
+				storeInfoResponse.Entity = StoreInfoMapper.mapToStoreInfo(dto);
 			}
 
 			return storeInfoResponse;

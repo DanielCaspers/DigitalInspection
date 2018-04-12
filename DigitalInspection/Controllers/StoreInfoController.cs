@@ -15,7 +15,7 @@ namespace DigitalInspection.Controllers
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
 
-			return Json(task.Result.StoreInfo, JsonRequestBehavior.AllowGet);
+			return Json(task.Result.Entity, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

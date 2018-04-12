@@ -20,7 +20,7 @@ namespace DigitalInspection.Controllers
 
 			return PartialView("../Shared/Dialogs/_VehicleHistoryDialog", new VehicleHistoryViewModel
 			{
-				VehicleHistory = task.Result.VehicleHistory
+				VehicleHistory = task.Result.Entity
 			});
 		}
 	}

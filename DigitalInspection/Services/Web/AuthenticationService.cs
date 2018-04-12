@@ -20,7 +20,7 @@ namespace DigitalInspection.Services
 	public class AuthenticationService : HttpClientService
 	{
 		// https://stackoverflow.com/questions/31129873/make-http-client-synchronous-wait-for-response
-		public static async Task<AuthenticationResponse> Login(string username, string password)
+		public static async Task<HttpResponse<ClaimsIdentity>> Login(string username, string password)
 		{
 			using (HttpClient httpClient = InitializeHttpClient())
 			{
@@ -41,21 +41,14 @@ namespace DigitalInspection.Services
 			}
 		}
 
-		public static async Task<AuthenticationResponse> Logout(IEnumerable<Claim> userClaims)
+		public static async Task<HttpResponse<ClaimsIdentity>> Logout(IEnumerable<Claim> userClaims)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, false))
 			{
 				HttpResponseMessage response = await httpClient.GetAsync("auth/logoff");
 				string responseJson = await response.Content.ReadAsStringAsync();
 
-				AuthenticationResponse authenticationResponse = new AuthenticationResponse()
-				{
-					IsSuccessStatusCode = response.IsSuccessStatusCode,
-					HTTPCode = response.StatusCode,
-					ErrorMessage = response.IsSuccessStatusCode ? "" : responseJson
-				};
-
-				return authenticationResponse;
+				return new HttpResponse<ClaimsIdentity>(response, responseJson);
 			}
 		}
 
@@ -87,14 +80,9 @@ namespace DigitalInspection.Services
 		}
 
 
-		private static AuthenticationResponse CreateLoginAuthenticationResponse(HttpResponseMessage httpResponse, string responseContent)
+		private static HttpResponse<ClaimsIdentity> CreateLoginAuthenticationResponse(HttpResponseMessage httpResponse, string responseContent)
 		{
-			AuthenticationResponse authenticationResponse = new AuthenticationResponse()
-			{
-				IsSuccessStatusCode = httpResponse.IsSuccessStatusCode,
-				HTTPCode = httpResponse.StatusCode,
-				ErrorMessage = httpResponse.IsSuccessStatusCode ? "" : responseContent
-			};
+			HttpResponse<ClaimsIdentity> authenticationResponse = new HttpResponse<ClaimsIdentity>(httpResponse, responseContent);
 
 			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
 			{
@@ -127,7 +115,7 @@ namespace DigitalInspection.Services
 					return authenticationResponse;
 				}
 
-				authenticationResponse.ClaimsIdentity = GetUserClaims(validatedToken as JwtSecurityToken, loginResponse);
+				authenticationResponse.Entity = GetUserClaims(validatedToken as JwtSecurityToken, loginResponse);
 			}
 
 			return authenticationResponse;

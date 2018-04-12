@@ -2,6 +2,8 @@
 using DigitalInspection.ViewModels;
 using System.Net;
 using System.Web.Mvc;
+using DigitalInspection.Models;
+using DigitalInspection.Models.Web;
 
 namespace DigitalInspection.Services
 {
@@ -74,6 +76,21 @@ namespace DigitalInspection.Services
 				Type = ToastType.Error,
 				Action = action
 			};
+		}
+
+		public static ToastViewModel WorkOrderError(HttpResponse<WorkOrder> response)
+		{
+			switch (response.HTTPCode)
+			{
+				case HttpStatusCode.NotFound:
+					return ResourceNotFound("Work order", ToastActionType.NavigateBack);
+				case (HttpStatusCode)423:
+					return FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh);
+				case (HttpStatusCode)428:
+					return FileLockRequired();
+				default:
+					return UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage);
+			}
 		}
 
 		private static Exception GetInnermostException(Exception e)
