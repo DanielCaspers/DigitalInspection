@@ -12,7 +12,6 @@ using System.Configuration;
 using DigitalInspection.Models.Orders;
 using System.Data.Entity.Validation;
 using System.IO;
-using System.Web.Services.Description;
 using DigitalInspection.ViewModels.TabContainers;
 
 namespace DigitalInspection.Controllers
@@ -275,12 +274,13 @@ namespace DigitalInspection.Controllers
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			inspectionItem.InspectionMeasurements = inspectionItem.InspectionMeasurements.OrderBy(im => im.Measurement.Label).ToList();
 
 			return PartialView("_AddMeasurementDialog", new AddMeasurementViewModel
 			{
 				ChecklistItem = checklistItem,
 				InspectionItem = inspectionItem,
-				Measurements = checklistItem.Measurements
+				Measurements = checklistItem.Measurements.OrderBy(m => m.Label).ToList()
 			});
 		}
 
