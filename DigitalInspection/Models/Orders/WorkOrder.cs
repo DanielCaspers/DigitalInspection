@@ -28,6 +28,7 @@ namespace DigitalInspection.Models
 		public IList<string> WorkDescription { get; set; }
 
 		/*
+		 * TODO make a private set with a get/set string also?
 		 * This is a List<string> that will need to be delimited by return carriage whenever we save.
 		 */
 		public IList<string> Notes { get; set; }

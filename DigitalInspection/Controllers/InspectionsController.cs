@@ -12,6 +12,7 @@ using System.Configuration;
 using DigitalInspection.Models.Orders;
 using System.Data.Entity.Validation;
 using System.IO;
+using DigitalInspection.Utils;
 using DigitalInspection.ViewModels.TabContainers;
 
 namespace DigitalInspection.Controllers
@@ -186,9 +187,7 @@ namespace DigitalInspection.Controllers
 				workOrderNoteVm.Note = "";
 			}
 
-			// https://msdn.microsoft.com/en-us/library/tabh47cf(v=vs.110).aspx
-			// NOTE: Cannot use Environment.NewLine since the filter will be less strict on Mono. 
-			IList<string> returnCarriageSeparatedNotes = workOrderNoteVm.Note.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).ToList();
+			IList<string> returnCarriageSeparatedNotes = workOrderNoteVm.Note.GroupByLineEnding();
 
 			var task = Task.Run(async () => {
 				return await WorkOrderService.SaveWorkOrderNote(CurrentUserClaims, workOrderNoteVm.WorkOrderId, GetCompanyNumber(), returnCarriageSeparatedNotes);
