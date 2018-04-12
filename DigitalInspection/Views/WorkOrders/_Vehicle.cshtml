@@ -104,7 +104,10 @@
 				
 				@if (Model.CanEdit == false)
 				{
-					@Ajax.RawActionLink("<i class='material-icons'>note_add</i>",
+					var materialIcon = Model.WorkOrder.Notes.All(note => note.Trim() == string.Empty) ? "chat_bubble_outline" : "chat";
+					var iconHtml = string.Format("<i class='material-icons'>{0}</i>", materialIcon);
+
+					@Ajax.RawActionLink(iconHtml,
 						"GetAddInspectionWorkOrderNoteDialog",
 						"Inspections",
 						new
