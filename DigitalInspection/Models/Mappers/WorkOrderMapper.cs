@@ -146,12 +146,12 @@ namespace DigitalInspection.Models.Mappers
 			}
 
 			dto.clientID = order.Customer.Id;
-			dto.clientName = order.Customer.Name.ToUpper();
+			dto.clientName = order.Customer.Name?.ToUpper();
 			dto.clientNotes = order.Customer.Notes;
 
 			dto.clientAddr = order.Customer.Address.Line1?.ToUpper();
 			dto.clientAddr2 = order.Customer.Address.Line2?.ToUpper();
-			dto.clientCity = order.Customer.Address.City.ToUpper();
+			dto.clientCity = order.Customer.Address.City?.ToUpper();
 			dto.clientState = order.Customer.Address.State;
 			dto.clientZip = order.Customer.Address.ZIP;
 
