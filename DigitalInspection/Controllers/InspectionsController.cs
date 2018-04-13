@@ -479,7 +479,7 @@ namespace DigitalInspection.Controllers
 						{
 							InspectionItem = item,
 							Measurement = measurement,
-							Value = measurement.MinValue
+							Value = null
 						};
 						_context.InspectionMeasurements.Add(inspectionMeasurement);
 					}

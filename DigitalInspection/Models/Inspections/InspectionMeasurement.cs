@@ -10,6 +10,6 @@ namespace DigitalInspection.Models
 
 		public virtual Measurement Measurement { get; set; }
 
-		public int Value { get; set; }
+		public int? Value { get; set; }
 	}
 }

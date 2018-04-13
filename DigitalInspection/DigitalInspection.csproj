@@ -237,6 +237,10 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\VehicleHistoryController.cs" />
     <Compile Include="Controllers\StoreInfoController.cs" />
+    <Compile Include="Migrations\201804130247327_InspectionMeasurementValueDefaultToNull.cs" />
+    <Compile Include="Migrations\201804130247327_InspectionMeasurementValueDefaultToNull.Designer.cs">
+      <DependentUpon>201804130247327_InspectionMeasurementValueDefaultToNull.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\DTOs\VehicleHistoryItemDTO.cs" />
     <Compile Include="Models\Mappers\VehicleHistoryItemMapper.cs" />
     <Compile Include="ViewModels\VehicleHistory\VehicleHistoryViewModel.cs" />
@@ -656,6 +660,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801131618522_RemoveLocalIdentityTables.resx">
       <DependentUpon>201801131618522_RemoveLocalIdentityTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804130247327_InspectionMeasurementValueDefaultToNull.resx">
+      <DependentUpon>201804130247327_InspectionMeasurementValueDefaultToNull.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
