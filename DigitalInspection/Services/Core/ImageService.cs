@@ -1,13 +1,12 @@
-﻿using DigitalInspection.Models;
-using System;
-using System.Web;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Web;
 
-namespace DigitalInspection.Services
+namespace DigitalInspection.Services.Core
 {
 	public static class ImageService
 	{

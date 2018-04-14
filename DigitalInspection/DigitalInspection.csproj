@@ -242,7 +242,13 @@
       <DependentUpon>201804130247327_InspectionMeasurementValueDefaultToNull.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DTOs\VehicleHistoryItemDTO.cs" />
+    <Compile Include="Models\Inspections\Reports\InspectionReportGroup.cs" />
+    <Compile Include="Models\Inspections\Reports\ImageReportItem.cs" />
+    <Compile Include="Models\Inspections\Reports\MeasurementReportItem.cs" />
+    <Compile Include="Models\Inspections\Reports\CannedResponseReportItem.cs" />
+    <Compile Include="Models\Inspections\Reports\InspectionReportItem.cs" />
     <Compile Include="Models\Mappers\VehicleHistoryItemMapper.cs" />
+    <Compile Include="Services\Core\InspectionService.cs" />
     <Compile Include="ViewModels\VehicleHistory\VehicleHistoryViewModel.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
@@ -374,7 +380,7 @@
     <Compile Include="Services\Web\HttpClientService.cs" />
     <Compile Include="Services\ExceptionHandlerService.cs" />
     <Compile Include="Services\ToastService.cs" />
-    <Compile Include="Services\ImageService.cs" />
+    <Compile Include="Services\Core\ImageService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="Utils\DateTimeUtils.cs" />

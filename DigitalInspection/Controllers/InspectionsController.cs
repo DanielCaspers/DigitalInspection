@@ -4,14 +4,14 @@ using DigitalInspection.Models.Web;
 using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Threading.Tasks;
-using System.Net;
 using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using DigitalInspection.Models.Orders;
-using System.Data.Entity.Validation;
 using System.IO;
+using DigitalInspection.Models.Inspections.Reports;
+using DigitalInspection.Services.Core;
 using DigitalInspection.ViewModels.TabContainers;
 
 namespace DigitalInspection.Controllers
@@ -39,19 +39,17 @@ namespace DigitalInspection.Controllers
 				.Single(i => i.WorkOrderId == workOrderId)
 				.InspectionItems;
 
-			return BuildInspectionReportInternal(inspectionItems, grouped, workOrderId);
+			return BuildInspectionReportInternal(inspectionItems, grouped);
 		}
 
 		[AllowAnonymous]
 		public JsonResult Report(Guid inspectionId, bool grouped = false)
 		{
-			string workOrderId = _context.Inspections.Single(i => i.Id == inspectionId).WorkOrderId;
-
 			var inspectionItems = _context.Inspections
 				.Single(i => i.Id == inspectionId)
 				.InspectionItems;
 
-			return BuildInspectionReportInternal(inspectionItems, grouped, workOrderId);
+			return BuildInspectionReportInternal(inspectionItems, grouped);
 		}
 
 		[HttpPost]
@@ -70,18 +68,7 @@ namespace DigitalInspection.Controllers
 				return new EmptyResult();
 			}
 
-			var inspectionItems = _context.InspectionItems.Where(ii => ii.Inspection.Id == inspection.Id).ToList();
-			foreach (var inspectionItem in inspectionItems)
-			{
-				_context.InspectionMeasurements.RemoveRange(inspectionItem.InspectionMeasurements);
-				_context.InspectionImages.RemoveRange(inspectionItem.InspectionImages);
-			}
-
-			_context.InspectionItems.RemoveRange(inspectionItems);
-
-			_context.Inspections.Remove(inspection);
-
-			TrySave();
+			InspectionService.DeleteInspection(_context, inspection);
 
 			return new EmptyResult();
 		}
@@ -98,32 +85,24 @@ namespace DigitalInspection.Controllers
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
 
-			// Only change condition and canned response if different from previous condition
-			if (inspectionItemInDb.Condition != inspectionItemCondition)
+			if (InspectionService.UpdateInspectionItemCondition(_context, inspectionItemInDb, inspectionItemCondition) == false)
 			{
-				inspectionItemInDb.Condition = inspectionItemCondition;
-
-				// Clear canned response IDs when switching conditions.
-				// This is because otherwise, the inspection table's select box and the DB (and thus the report) can get out of sync
-				foreach (var cannedResponse in inspectionItemInDb.CannedResponses)
-				{
-					_context.CannedResponses.Attach(cannedResponse);
-				}
-				inspectionItemInDb.CannedResponses = new List<CannedResponse>();
-
-				if (TrySave() == false)
-				{
-					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
-				}
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
 
-
 			// Prepare updated multiselect list for client
-			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == inspectionItemInDb.ChecklistItem.Id);
-			var filteredCRs = checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(inspectionItemCondition)).ToList();
+			var checklistItem = _context.ChecklistItems.Single(ci => ci.Id == inspectionItemInDb.ChecklistItem.Id);
+			var filteredCRs = checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(inspectionItemCondition));
 
 			// Options may be selected in the case where we haven't changed to a new condition
-			var options = filteredCRs.Select(cr => new { label = cr.Response, title = cr.Response, value = cr.Id, selected = inspectionItemInDb.CannedResponses.Any(c => c.Id == cr.Id) }).ToList();
+			var options = filteredCRs.Select(cr => new
+			{
+				label = cr.Response,
+				title = cr.Response,
+				value = cr.Id,
+				selected = inspectionItemInDb.CannedResponses.Any(c => c.Id == cr.Id)
+			});
+
 			var response = new
 			{
 				filteredCannedResponses = options,
@@ -136,25 +115,11 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult CannedResponse(Guid inspectionItemId, InspectionDetailViewModel vm)
 		{
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
-			IList<Guid> selectedCannedResponseIds = vm.Inspection.InspectionItems
-											.SingleOrDefault(inspItem => inspItem.Id == inspectionItemId)
-											?.SelectedCannedResponseIds;
+			var inspectionItemInDb = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
 
-			foreach (var cannedResponse in inspectionItemInDb.CannedResponses)
-			{
-				_context.CannedResponses.Attach(cannedResponse);
-			}
+			IList<Guid> selectedCannedResponseIds = vm.Inspection.InspectionItems.Single(ii => ii.Id == inspectionItemId).SelectedCannedResponseIds;
 
-			IList<CannedResponse> cannedResponsesInDb = new List<CannedResponse>();
-			foreach (Guid crId in selectedCannedResponseIds)
-			{
-				cannedResponsesInDb.Add(_context.CannedResponses.Single(cr => cr.Id == crId));
-			}
-
-			inspectionItemInDb.CannedResponses = cannedResponsesInDb;
-
-			TrySave();
+			InspectionService.UpdateInspectionItemCannedResponses(_context, inspectionItemInDb, selectedCannedResponseIds);
 			return new EmptyResult();
 		}
 
@@ -168,9 +133,8 @@ namespace DigitalInspection.Controllers
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
-			inspectionItemInDb.Note = itemNoteVm.Note;
 
-			if (TrySave() == false)
+			if (InspectionService.UpdateInspectionItemNote(_context, inspectionItemInDb, itemNoteVm.Note) == false)
 			{
 				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
@@ -200,10 +164,8 @@ namespace DigitalInspection.Controllers
 			{
 				return new EmptyResult();
 			}
-			else
-			{
-				return PartialView("Toasts/_Toast", ToastService.WorkOrderError(task.Result));
-			}
+
+			return PartialView("Toasts/_Toast", ToastService.WorkOrderError(task.Result));
 		}
 
 		[HttpPost]
@@ -217,17 +179,12 @@ namespace DigitalInspection.Controllers
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
 
-			InspectionMeasurement inspectionMeasurementInDb;
-			foreach (InspectionMeasurement inspectionMeasurement in MeasurementsVM.InspectionItem.InspectionMeasurements)
+			if (InspectionService.UpdateInspectionItemMeasurements(_context, inspectionItemInDb, MeasurementsVM.InspectionItem.InspectionMeasurements))
 			{
-				inspectionMeasurementInDb = _context.InspectionMeasurements.SingleOrDefault(im => im.Id == inspectionMeasurement.Id);
-				inspectionMeasurementInDb.Value = inspectionMeasurement.Value;
+				return new EmptyResult();
 			}
 
-			if (TrySave() == false) {
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
-			}
-			return new EmptyResult();
+			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]
@@ -243,37 +200,20 @@ namespace DigitalInspection.Controllers
 			// New guid is used as a random prefix to the filename to ensure uniqueness
 			Image imageDto = ImageService.SaveImage(photoVM.Picture, new string[] { IMAGE_DIRECTORY, photoVM.WorkOrderId, photoVM.InspectionItem.Id.ToString() }, Guid.NewGuid().ToString(), false);
 
-			InspectionImage image = new InspectionImage
+			if (InspectionService.AddInspectionItemImage(_context, inspectionItemInDb, imageDto))
 			{
-				Id = imageDto.Id,
-				Title = imageDto.Title,
-				CreatedDate = imageDto.CreatedDate,
-				ImageUrl = imageDto.ImageUrl,
-				InspectionItem = inspectionItemInDb
-			};
-
-			inspectionItemInDb.InspectionImages.Add(image);
-			_context.InspectionImages.Add(image);
-
-			try
-			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+				return RedirectToAction("Index", new { workOrderId = photoVM.WorkOrderId, checklistId = photoVM.ChecklistId, tagId = photoVM.TagId });
 			}
 
-			return RedirectToAction("Index", new { workOrderId = photoVM.WorkOrderId, checklistId = photoVM.ChecklistId, tagId = photoVM.TagId });
+			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetAddMeasurementDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
-			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
-			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			var checklistItem = _context.ChecklistItems.Single(ci => ci.Id == checklistItemId);
+			var inspectionItem = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
 			inspectionItem.InspectionMeasurements = inspectionItem.InspectionMeasurements.OrderBy(im => im.Measurement.Label).ToList();
 
 			return PartialView("_AddMeasurementDialog", new AddMeasurementViewModel
@@ -291,7 +231,7 @@ namespace DigitalInspection.Controllers
 			var workOrderResponse = GetWorkOrderResponse(workOrderId);
 			var workOrder = workOrderResponse.Entity;
 
-			string combinedNote = string.Join(Environment.NewLine, workOrder.Notes);
+			var combinedNote = string.Join(Environment.NewLine, workOrder.Notes);
 
 			return PartialView("../Shared/Dialogs/_AddInspectionWorkOrderNoteDialog", new AddInspectionWorkOrderNoteViewModel
 			{
@@ -305,7 +245,7 @@ namespace DigitalInspection.Controllers
 		public PartialViewResult GetAddInspectionItemNoteDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
-			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			var inspectionItem = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
 
 			return PartialView("_AddInspectionItemNoteDialog", new AddInspectionItemNoteViewModel
 			{
@@ -324,7 +264,6 @@ namespace DigitalInspection.Controllers
 
 			return PartialView("_UploadInspectionPhotosDialog", new UploadInspectionPhotosViewModel
 			{
-
 				InspectionItem = inspectionItem,
 				ChecklistItem = checklistItem,
 				TagId = tagId,
@@ -337,7 +276,7 @@ namespace DigitalInspection.Controllers
 		public PartialViewResult GetViewInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
-			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			var inspectionItem = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
 
 			IList<string> imageSources = inspectionItem.InspectionImages
 				.Select((image) => Path.Combine($"/Uploads/{IMAGE_DIRECTORY}/{workOrderId}/{inspectionItemId.ToString()}/", image.Title))
@@ -356,7 +295,7 @@ namespace DigitalInspection.Controllers
 			var workOrder = workOrderResponse.Entity;
 			ToastViewModel toast = null;
 
-			var checklist = _context.Checklists.SingleOrDefault(c => c.Id == checklistId);
+			var checklist = _context.Checklists.Single(c => c.Id == checklistId);
 
 			if (workOrderResponse.IsSuccessStatusCode == false)
 			{
@@ -373,20 +312,18 @@ namespace DigitalInspection.Controllers
 				ci.CannedResponses = ci.CannedResponses.OrderBy(cr => cr.Response).ToList();
 			});
 
-			var realInspection = GetOrCreateInspection(workOrder.Id, checklist);
-			realInspection = GetOrCreateInspectionItems(checklist, realInspection);
-			realInspection = GetOrCreateInspectionMeasurements(checklist, realInspection);
+			var inspection = InspectionService.GetOrCreateInspection(_context, workOrderId, checklist);
 
 			// Filter inspection items
 			Func<InspectionItem, bool> filterByChecklistsAndTags = ii => ii.ChecklistItem.Checklists.Any(c => c.Id == checklistId) && ii.ChecklistItem.Tags.Any(t => t.Id == tagId);
 			Func<InspectionItem, bool> filterByChecklists = ii => ii.ChecklistItem.Checklists.Any(c => c.Id == checklistId);
 
-			realInspection.InspectionItems = realInspection.InspectionItems
+			inspection.InspectionItems = inspection.InspectionItems
 				.Where(tagId.HasValue ? filterByChecklistsAndTags : filterByChecklists)
 				.OrderBy(ii => ii.ChecklistItem.Name)
 				.ToList();
 
-			foreach(var inspectionItem in realInspection.InspectionItems)
+			foreach(var inspectionItem in inspection.InspectionItems)
 			{
 				inspectionItem.SelectedCannedResponseIds = inspectionItem.CannedResponses.Select(cr => cr.Id).ToList();
 			}
@@ -395,7 +332,7 @@ namespace DigitalInspection.Controllers
 			{
 				WorkOrder = workOrder,
 				Checklist = checklist,
-				Inspection = realInspection,
+				Inspection = inspection,
 				Toast = toast,
 				AddMeasurementVM = new AddMeasurementViewModel { },
 				AddInspectionWorkOrderNoteVm = new AddInspectionWorkOrderNoteViewModel { },
@@ -408,87 +345,6 @@ namespace DigitalInspection.Controllers
 				ScrollableTabContainerVM = GetScrollableTabContainerViewModel(tagId),
 				FilteringTagId = tagId
 			});
-		}
-
-		/**
-		 * Gets inspection from DB if already exists, or create one in the DB and then return it. 
-		 */
-		private Inspection GetOrCreateInspection(string workOrderId, Checklist checklist)
-		{
-			var inspection = _context.Inspections.SingleOrDefault(i => i.WorkOrderId == workOrderId);
-			if (inspection == null)
-			{
-				inspection = new Inspection
-				{
-					WorkOrderId = workOrderId,
-					Checklists = new List<Checklist> { checklist }
-				};
-
-				_context.Inspections.Add(inspection);
-			}
-			else if (inspection.Checklists.Any(c => c.Id == checklist.Id) == false)
-			{
-				inspection.Checklists.Add(checklist);
-			}
-
-			TrySave();
-
-			return inspection;
-		}
-
-		/**
-		 * Gets all inspectionitems from DB if they already exists, and creates them if they don't already 
-		 */
-		private Inspection GetOrCreateInspectionItems(Checklist checklist, Inspection inspection)
-		{
-			foreach (var ci in checklist.ChecklistItems)
-			{
-				var inspectionItem = inspection.InspectionItems.SingleOrDefault(item => item.ChecklistItem.Id == ci.Id);
-				if (inspectionItem == null)
-				{
-					inspectionItem = new InspectionItem
-					{
-						ChecklistItem = ci,
-						Inspection = inspection
-					};
-
-					inspection.InspectionItems.Add(inspectionItem);
-					_context.InspectionItems.Add(inspectionItem);
-				}
-			}
-
-			TrySave();
-
-			return inspection;
-		}
-
-		/**
-		 * Gets all inspectionmeasurements from DB if they already exist, and creates them if they don't already 
-		 */
-		private Inspection GetOrCreateInspectionMeasurements(Checklist checklist, Inspection inspection)
-		{
-			foreach (var item in inspection.InspectionItems)
-			{
-				var measurements = _context.Measurements.Where(m => m.ChecklistItem.Id == item.ChecklistItem.Id).ToList();
-
-				foreach(var measurement in measurements)
-				{
-					if (item.InspectionMeasurements.Any(im => im.Measurement.Id == measurement.Id) == false)
-					{
-						var inspectionMeasurement = new InspectionMeasurement
-						{
-							InspectionItem = item,
-							Measurement = measurement,
-							Value = null
-						};
-						_context.InspectionMeasurements.Add(inspectionMeasurement);
-					}
-				}
-			}
-
-			TrySave();
-
-			return _context.Inspections.Single(i => i.Id == inspection.Id);
 		}
 
 		private ScrollableTabContainerViewModel GetScrollableTabContainerViewModel(Guid? tagId)
@@ -529,23 +385,7 @@ namespace DigitalInspection.Controllers
 			};
 		}
 
-		private bool TrySave()
-		{
-			bool wasSuccessful = false;
-			try
-			{
-				_context.SaveChanges();
-				wasSuccessful = true;
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-			}
-
-			return wasSuccessful;
-		}
-
-		private JsonResult BuildInspectionReportInternal(IEnumerable<InspectionItem> unfilteredInspectionItems, bool grouped, string workOrderId)
+		private JsonResult BuildInspectionReportInternal(IEnumerable<InspectionItem> unfilteredInspectionItems, bool grouped)
 		{
 			var applicableTags = _context.Tags
 				.Where(t => t.IsVisibleToCustomer)
@@ -573,16 +413,8 @@ namespace DigitalInspection.Controllers
 							.Select(t => t.Name)
 							.First()
 					)
-					.OrderBy(ig => ig.OrderBy(ii => ii.Condition).ToList().FirstOrDefault().Condition)
-					.Select(ig => {
-						var items = ig.OrderBy(ii => ii.Condition).ToList();
-						return new
-						{
-							Name = ig.Key,
-							items.FirstOrDefault().Condition,
-							Items = items.Select(ii => BuildInspectionReportItem(ii, workOrderId, baseUrl))
-						};
-					});
+					.OrderBy(ig => ig.OrderBy(ii => ii.Condition).First().Condition)
+					.Select(ig => new InspectionReportGroup(ig, baseUrl));
 
 				return Json(inspectionReportGroups, JsonRequestBehavior.AllowGet);
 			}
@@ -590,31 +422,10 @@ namespace DigitalInspection.Controllers
 			{
 				var inspectionReportItems = inspectionItems
 					.OrderBy(ii => ii.Condition)
-					.Select(ii => BuildInspectionReportItem(ii, workOrderId, baseUrl));
+					.Select(ii => new InspectionReportItem(ii, baseUrl));
 
 				return Json(inspectionReportItems, JsonRequestBehavior.AllowGet);
 			}
-		}
-
-		private object BuildInspectionReportItem(InspectionItem ii, string workOrderId, string baseUrl)
-		{
-			return new
-			{
-				InspectionItemId = ii.Id,
-				ii.Condition,
-				ii.Note,
-				ii.ChecklistItem.Name,
-				CannedResponses = ii.CannedResponses.Select(cr => new { cr.Response, cr.Description, cr.Url }),
-				Measurements = ii.InspectionMeasurements.Select(im => new { im.Value, im.Measurement.Label, im.Measurement.Unit }),
-				Images = ii.InspectionImages
-							.Select(image => new
-							{
-								title = ii.ChecklistItem.Name,
-								altText = ii.ChecklistItem.Name,
-								url = $"{baseUrl}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}",
-								extUrl = $"{baseUrl}/Uploads/Inspections/{workOrderId}/{ii.Id}/{image.Title}"
-							})
-			};
 		}
 
 		private HttpResponse<WorkOrder> GetWorkOrderResponse(string workOrderId)

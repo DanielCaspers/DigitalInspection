@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace DigitalInspection.Models
+﻿namespace DigitalInspection.Models
 {
 	public class InspectionImage: Image
 	{
