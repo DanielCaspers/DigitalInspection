@@ -1,10 +1,11 @@
-﻿using DigitalInspection.Models;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
-using System;
+using DigitalInspection.Models.Inspections;
+using DigitalInspection.Models.Validators;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Inspections
 {
 	public class UploadInspectionPhotosViewModel
 	{

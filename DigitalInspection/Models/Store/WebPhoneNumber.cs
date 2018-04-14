@@ -1,4 +1,6 @@
-﻿namespace DigitalInspection.Models.Store
+﻿using DigitalInspection.Models.Orders;
+
+namespace DigitalInspection.Models.Store
 {
 	public class WebPhoneNumber : PhoneNumber
 	{

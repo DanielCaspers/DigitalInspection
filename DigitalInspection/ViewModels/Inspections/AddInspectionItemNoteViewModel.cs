@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using DigitalInspection.Models;
+using DigitalInspection.Models.Inspections;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Inspections
 {
 	public class AddInspectionItemNoteViewModel
 	{

@@ -1,9 +1,9 @@
-﻿using DigitalInspection.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using DigitalInspection.Utils;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Orders
 {
 
 	public class Vehicle

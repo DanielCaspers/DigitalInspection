@@ -2,7 +2,7 @@
 using DigitalInspection.ViewModels;
 using System.Net;
 using System.Web.Mvc;
-using DigitalInspection.Models;
+using DigitalInspection.Models.Orders;
 using DigitalInspection.Models.Web;
 
 namespace DigitalInspection.Services

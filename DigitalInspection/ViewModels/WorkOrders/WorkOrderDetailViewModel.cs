@@ -1,7 +1,10 @@
-﻿using DigitalInspection.Models;
+﻿using DigitalInspection.Models.Orders;
+using DigitalInspection.ViewModels.Base;
+using DigitalInspection.ViewModels.Inspections;
 using DigitalInspection.ViewModels.TabContainers;
+using DigitalInspection.ViewModels.VehicleHistory;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.WorkOrders
 {
 	public class WorkOrderDetailViewModel: BaseWorkOrdersViewModel
 	{

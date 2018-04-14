@@ -1,6 +1,7 @@
-﻿using DigitalInspection.Models;
+﻿using DigitalInspection.Models.Inspections;
+using DigitalInspection.ViewModels.Base;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Tags
 {
 	public class EditTagViewModel: BaseChecklistsViewModel
 	{

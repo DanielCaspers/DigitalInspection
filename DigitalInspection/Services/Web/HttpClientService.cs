@@ -6,7 +6,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-namespace DigitalInspection.Services
+
+namespace DigitalInspection.Services.Web
 {
 	public class HttpClientService
 	{
@@ -63,9 +64,9 @@ namespace DigitalInspection.Services
 
 		protected static Uri ConstructBaseUri()
 		{
-			string apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
+			var apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
 
-			string uri = string.Format("{0}/", apiBaseUrl);
+			var uri = $"{apiBaseUrl}/";
 
 			return new Uri(uri);
 		}

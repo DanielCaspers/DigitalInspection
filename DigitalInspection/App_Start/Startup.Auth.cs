@@ -5,8 +5,8 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using DigitalInspection.Models;
-using DigitalInspection.Services;
 using System.Configuration;
+using DigitalInspection.Services.Web;
 
 namespace DigitalInspection
 {

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Web.Mvc;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Base
 {
 	public class BaseErrorModel : BaseViewModel
 	{

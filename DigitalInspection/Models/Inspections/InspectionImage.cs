@@ -1,4 +1,4 @@
-﻿namespace DigitalInspection.Models
+﻿namespace DigitalInspection.Models.Inspections
 {
 	public class InspectionImage: Image
 	{

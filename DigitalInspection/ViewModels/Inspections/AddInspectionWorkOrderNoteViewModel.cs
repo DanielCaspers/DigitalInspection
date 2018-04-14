@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Inspections
 {
 	public class AddInspectionWorkOrderNoteViewModel
 	{

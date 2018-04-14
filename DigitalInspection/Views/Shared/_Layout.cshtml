@@ -1,7 +1,6 @@
-﻿@model DigitalInspection.ViewModels.BaseViewModel
+﻿@model DigitalInspection.ViewModels.Base.BaseViewModel
 @using System.Security.Claims
 @using DigitalInspection.Views.Helpers;
-@using DigitalInspection.Models;
 @using DigitalInspection.Services.Web
 @using Roles = DigitalInspection.Models.Roles
 
@@ -32,7 +31,7 @@
 	</script>
 </head>
 <body>
-	@if (Model != null && !(Model.ResourceName == null || Model.ResourceName == string.Empty))
+	@if (Model != null && !string.IsNullOrEmpty(Model.ResourceName))
 	{
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container-fluid ma-nav-container">
@@ -70,7 +69,7 @@
 					</ul>
 				</div>
 				
-				<a href="@Url.Action(@Model.ResourceMethodName, @Model.ResourceControllerName)"
+				<a href="@Url.Action(Model.ResourceMethodName, Model.ResourceControllerName)"
 				   id="ma-nav-title"
 				   class="ma-nav-breadcrumb ma-nav-text">
 					@Model.ResourceName

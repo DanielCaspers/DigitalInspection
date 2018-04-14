@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Web.Mvc;
 using DigitalInspection.Models;
-using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using DigitalInspection.Models.Inspections;
+using DigitalInspection.ViewModels.ChecklistItems;
 
 namespace DigitalInspection.Controllers
 {
@@ -85,7 +86,7 @@ namespace DigitalInspection.Controllers
 				var tag = _context.Tags.Find(tagId);
 				newItem.Tags.Add(tag);
 			}
-			newItem.Tags.OrderBy(t => t.Name);
+
 			_context.ChecklistItems.Add(newItem);
 
 			try

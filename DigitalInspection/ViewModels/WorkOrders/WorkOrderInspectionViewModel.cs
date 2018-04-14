@@ -1,8 +1,8 @@
 ﻿using System;
-using DigitalInspection.Models;
 using System.Collections.Generic;
+using DigitalInspection.Models.Inspections;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.WorkOrders
 {
 	public class WorkOrderInspectionViewModel: WorkOrderDetailViewModel
 	{

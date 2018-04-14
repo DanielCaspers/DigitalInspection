@@ -1,9 +1,9 @@
-﻿using DigitalInspection.Models.Orders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using DigitalInspection.Models.Orders;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Inspections
 {
 	public class InspectionItem
 	{

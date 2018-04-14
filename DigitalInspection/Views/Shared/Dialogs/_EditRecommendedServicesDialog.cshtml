@@ -1,4 +1,4 @@
-﻿@model DigitalInspection.Models.WorkOrder
+﻿@model DigitalInspection.Models.Orders.WorkOrder
 
 @{
 	const string TEMPLATE_NAMESPACE = "editRecommendedServicesDialog";
@@ -54,7 +54,7 @@
 							@Model.RecommendedServices[i].OrderId
 						</div>
 						<div class="col-xs-2">
-							@String.Format("{0:d}", @Model.RecommendedServices[i].LastModifiedDate)
+							@string.Format("{0:d}", Model.RecommendedServices[i].LastModifiedDate)
 						</div>
 					</div>
 				}

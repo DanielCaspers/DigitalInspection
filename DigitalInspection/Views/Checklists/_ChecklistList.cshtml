@@ -1,4 +1,4 @@
-﻿@model DigitalInspection.ViewModels.ManageChecklistMasterViewModel
+﻿@model DigitalInspection.ViewModels.Checklists.ManageChecklistMasterViewModel
 @using System.Web.Hosting
 
 <div class="list-group" id="checklistList">
@@ -22,7 +22,7 @@
 				<div class="row-picture">
 					@if (checklist.Image != null)
 					{
-						<img class="img-rounded" src="@Path.Combine(HostingEnvironment.ApplicationVirtualPath, "/Uploads/Checklists/", @checklist.Image.Title)" style="height:64px; width:64px;" alt="checklist-image">
+						<img class="img-rounded" src="@Path.Combine(HostingEnvironment.ApplicationVirtualPath, "/Uploads/Checklists/", checklist.Image.Title)" style="height:64px; width:64px;" alt="checklist-image">
 					}
 				</div>
 				<div class="row-content">
@@ -30,7 +30,7 @@
 						<a href="@Url.Action("Edit", "Checklists", new { id = checklist.Id} )"
 						   onclick="FormService.showProgress()">
 							<h4 class="list-group-item-heading">@checklist.Name</h4>
-							<span class="list-group-item-text">Items: @checklist.ChecklistItems.Count()</span>
+							<span class="list-group-item-text">Items: @checklist.ChecklistItems.Count</span>
 						</a>
 					</div>
 

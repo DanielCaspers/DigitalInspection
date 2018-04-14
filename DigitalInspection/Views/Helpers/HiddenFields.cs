@@ -53,7 +53,7 @@ namespace DigitalInspection.Views.Helpers
 				{
 					sb.Append(
 						helper.Hidden(
-							string.Format("{0}.{1}[{2}].{3}", modelBinderPath, membername, i, property.MemberPropName),
+							$"{modelBinderPath}.{membername}[{i}].{property.MemberPropName}",
 							property.ListItemPropGetter(listItem)
 						)
 					);
@@ -79,7 +79,7 @@ namespace DigitalInspection.Views.Helpers
 			{
 				sb.Append(
 					helper.Hidden(
-						string.Format("{0}.{1}[{2}]", modelBinderPath, membername, i),
+						$"{modelBinderPath}.{membername}[{i}]",
 						list.ElementAt(i)
 					)
 				);

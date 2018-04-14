@@ -1,9 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using DigitalInspection.Models;
-using System.Collections.Generic;
+using DigitalInspection.Models.Inspections;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.ChecklistItems
 {
 	public class AddChecklistItemViewModel
 	{

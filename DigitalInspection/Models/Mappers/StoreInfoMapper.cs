@@ -1,6 +1,6 @@
 ﻿using DigitalInspection.Models.Store;
-using DigitalInspection.Models.Store.DTOs;
 using System.Collections.Generic;
+using DigitalInspection.Models.DTOs;
 
 namespace DigitalInspection.Models.Mappers
 {

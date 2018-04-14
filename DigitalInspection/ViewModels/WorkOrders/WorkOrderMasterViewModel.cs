@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using DigitalInspection.Models;
+using DigitalInspection.Models.Orders;
+using DigitalInspection.ViewModels.Base;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.WorkOrders
 {
 	public class WorkOrderMasterViewModel: BaseWorkOrdersViewModel
 	{

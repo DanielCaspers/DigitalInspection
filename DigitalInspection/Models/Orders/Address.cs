@@ -1,7 +1,7 @@
-﻿using DigitalInspection.Utils;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using DigitalInspection.Utils;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Orders
 {
 	public class Address
 	{

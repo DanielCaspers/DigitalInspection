@@ -1,12 +1,12 @@
-﻿using DigitalInspection.Models.Store.DTOs;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using DigitalInspection.Models.DTOs;
 using DigitalInspection.Models.Mappers;
+using DigitalInspection.Models.Store;
 using DigitalInspection.Models.Web;
 using Newtonsoft.Json;
-using System.Net.Http;
-using System.Threading.Tasks;
-using DigitalInspection.Models.Store;
 
-namespace DigitalInspection.Services
+namespace DigitalInspection.Services.Web
 {
 	public class StoreInfoService: HttpClientService
 	{
@@ -14,7 +14,7 @@ namespace DigitalInspection.Services
 		{
 			using (HttpClient httpClient = InitializeAnonymousHttpClient())
 			{
-				string url = string.Format("conos/{0}", companyNumber);
+				var url = $"conos/{companyNumber}";
 				HttpResponseMessage response = await httpClient.GetAsync(url);
 				string json = await response.Content.ReadAsStringAsync();
 

@@ -1,4 +1,4 @@
-﻿@model DigitalInspection.ViewModels.WorkOrderInspectionViewModel
+﻿@model DigitalInspection.ViewModels.WorkOrders.WorkOrderInspectionViewModel
 @using System.Configuration
 @using System.Web.Hosting
 
@@ -73,12 +73,12 @@
 						{
 							if (HostingEnvironment.ApplicationVirtualPath == "/" || HostingEnvironment.ApplicationVirtualPath == "\\")
 							{
-								<img src="@Path.Combine("/Uploads/Checklists/", @checklist.Image.Title)"
+								<img src="@Path.Combine("/Uploads/Checklists/", checklist.Image.Title)"
 										alt="Image could not be found" />
 							}
 							else
 							{
-								<img src="@(HostingEnvironment.ApplicationVirtualPath + "/Uploads/Checklists/" + @checklist.Image.Title)"
+								<img src="@(HostingEnvironment.ApplicationVirtualPath + "/Uploads/Checklists/" + checklist.Image.Title)"
 										alt="Image could not be found" />
 							}
 

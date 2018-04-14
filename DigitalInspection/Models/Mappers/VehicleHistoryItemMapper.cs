@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DigitalInspection.Models.DTOs;
+using DigitalInspection.Models.Orders;
 using DigitalInspection.Utils;
-using DigitalInspection.Models.Web;
 
 namespace DigitalInspection.Models.Mappers
 {

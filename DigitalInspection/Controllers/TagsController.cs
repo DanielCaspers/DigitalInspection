@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Web.Mvc;
 using DigitalInspection.Models;
-using DigitalInspection.ViewModels;
+using DigitalInspection.Models.Inspections;
 using DigitalInspection.Services;
+using DigitalInspection.ViewModels.Tags;
 
 namespace DigitalInspection.Controllers
 {

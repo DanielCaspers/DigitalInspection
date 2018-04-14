@@ -1,4 +1,4 @@
-﻿namespace DigitalInspection.ViewModels
+﻿namespace DigitalInspection.ViewModels.Base
 {
 	public class BaseViewModel
 	{

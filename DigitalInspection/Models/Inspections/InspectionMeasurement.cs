@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Inspections
 {
 	public class InspectionMeasurement
 	{

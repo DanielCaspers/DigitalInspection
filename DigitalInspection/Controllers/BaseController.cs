@@ -6,7 +6,7 @@ using DigitalInspection.Models;
 using System.Web.Mvc;
 using DigitalInspection.Services;
 using DigitalInspection.Services.Web;
-using DigitalInspection.ViewModels;
+using DigitalInspection.ViewModels.Base;
 
 namespace DigitalInspection.Controllers
 {
@@ -27,10 +27,7 @@ namespace DigitalInspection.Controllers
 			_context.Dispose();
 		}
 
-		protected IEnumerable<Claim> CurrentUserClaims
-		{
-			get { return Request.GetOwinContext().Authentication.User.Claims; }
-		}
+		protected IEnumerable<Claim> CurrentUserClaims => Request.GetOwinContext().Authentication.User.Claims;
 
 		protected override void OnException(ExceptionContext filterContext)
 		{
@@ -43,7 +40,7 @@ namespace DigitalInspection.Controllers
 				filterContext.RouteData.Values["action"].ToString()
 			);
 
-			filterContext.Result = this.View(
+			filterContext.Result = View(
 				"~/Views/Shared/Error.cshtml",
 				new BaseErrorModel() {
 					Toast = ToastService.UnknownErrorOccurred(exception, info),

@@ -1,26 +1,28 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Web;
 
-public class MaxFileSizeAttribute : ValidationAttribute
+namespace DigitalInspection.Models.Validators
 {
-	private readonly int _maxFileSize;
-	public MaxFileSizeAttribute(int maxFileSize)
+	public class MaxFileSizeAttribute : ValidationAttribute
 	{
-		_maxFileSize = maxFileSize;
-	}
-
-	public override bool IsValid(object value)
-	{
-		var file = value as HttpPostedFileBase;
-		if (file == null)
+		private readonly int _maxFileSize;
+		public MaxFileSizeAttribute(int maxFileSize)
 		{
+			_maxFileSize = maxFileSize;
+		}
+
+		public override bool IsValid(object value)
+		{
+			if (value is HttpPostedFileBase file)
+			{
+				return file.ContentLength <= _maxFileSize;
+			}
 			return false;
 		}
-		return file.ContentLength <= _maxFileSize;
-	}
 
-	public override string FormatErrorMessage(string name)
-	{
-		return base.FormatErrorMessage(_maxFileSize.ToString());
+		public override string FormatErrorMessage(string name)
+		{
+			return base.FormatErrorMessage(_maxFileSize.ToString());
+		}
 	}
 }

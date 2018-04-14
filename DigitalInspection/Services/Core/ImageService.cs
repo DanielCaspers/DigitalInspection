@@ -5,6 +5,7 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Web;
+using Image = DigitalInspection.Models.Inspections.Image;
 
 namespace DigitalInspection.Services.Core
 {
@@ -12,12 +13,12 @@ namespace DigitalInspection.Services.Core
 	{
 		private static readonly string UPLOAD_DIR = "~/Uploads/";
 
-		public static Models.Image SaveImage(HttpPostedFileBase picture, string uploadSubdirectory, string fileNamePrefix, bool compress = true)
+		public static Image SaveImage(HttpPostedFileBase picture, string uploadSubdirectory, string fileNamePrefix, bool compress = true)
 		{
 			// TODO Improve error handling and prevent NPEs
 			if (picture != null && picture.ContentLength > 0)
 			{
-				var imageDirectoryPath = CreateFolderTree(UPLOAD_DIR, new string[] { uploadSubdirectory });
+				var imageDirectoryPath = CreateFolderTree(UPLOAD_DIR, new[] { uploadSubdirectory });
 				return SaveImageInternal(picture, imageDirectoryPath, fileNamePrefix, compress);
 			}
 
@@ -25,7 +26,7 @@ namespace DigitalInspection.Services.Core
 		}
 
 		// uploadDirectoryTree represents a route tree, like the Angular router. 
-		public static Models.Image SaveImage(HttpPostedFileBase picture, string[] uploadDirectoryTree, string fileNamePrefix, bool compress = true)
+		public static Image SaveImage(HttpPostedFileBase picture, string[] uploadDirectoryTree, string fileNamePrefix, bool compress = true)
 		{
 			// TODO Improve error handling and prevent NPEs
 			if (picture != null && picture.ContentLength > 0)
@@ -37,7 +38,7 @@ namespace DigitalInspection.Services.Core
 			return null;
 		}
 
-		public static void DeleteImage(Models.Image picture, string subdirectory)
+		public static void DeleteImage(Image picture, string subdirectory)
 		{
 			if (picture != null && File.Exists(picture.ImageUrl))
 			{
@@ -66,7 +67,7 @@ namespace DigitalInspection.Services.Core
 			return folderPath;
 		}
 
-		private static Models.Image SaveImageInternal(HttpPostedFileBase picture, string imageDirectoryPath, string fileNamePrefix, bool compress)
+		private static Image SaveImageInternal(HttpPostedFileBase picture, string imageDirectoryPath, string fileNamePrefix, bool compress)
 		{
 			var imageFileName = fileNamePrefix + "_" + picture.FileName;
 			var imagePath = Path.Combine(imageDirectoryPath, imageFileName);
@@ -80,7 +81,7 @@ namespace DigitalInspection.Services.Core
 
 			image.Save(imagePath);
 
-			return new Models.Image
+			return new Image
 			{
 				Title = imageFileName,
 				ImageUrl = imagePath

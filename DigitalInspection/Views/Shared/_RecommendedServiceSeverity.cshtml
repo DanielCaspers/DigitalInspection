@@ -5,18 +5,18 @@
 @switch (Model.Severity)
 {
 	case RecommendedServiceSeverity.IMMEDIATE:
-		@RecommendedServiceHelpers.Immediate(true, false);
+		RecommendedServiceHelpers.Immediate(true, false);
 		break;
 	case RecommendedServiceSeverity.MODERATE:
-		@RecommendedServiceHelpers.Moderate(true, false);
+		RecommendedServiceHelpers.Moderate(true, false);
 		break;
 	case RecommendedServiceSeverity.SHOULD_WATCH:
-		@RecommendedServiceHelpers.Watch(true, false);
+		RecommendedServiceHelpers.Watch(true, false);
 		break;
 	case RecommendedServiceSeverity.MAINTENANCE:
-		@RecommendedServiceHelpers.Maintenance(true, false);
+		RecommendedServiceHelpers.Maintenance(true, false);
 		break;
 	case RecommendedServiceSeverity.NOTES:
-		@RecommendedServiceHelpers.Notes(true, false);
+		RecommendedServiceHelpers.Notes(true, false);
 		break;
 }

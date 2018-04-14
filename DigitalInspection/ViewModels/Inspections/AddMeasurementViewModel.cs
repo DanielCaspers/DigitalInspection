@@ -1,8 +1,7 @@
-﻿using System.ComponentModel;
-using DigitalInspection.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DigitalInspection.Models.Inspections;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Inspections
 {
 	public class AddMeasurementViewModel
 	{

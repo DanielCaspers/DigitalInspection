@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Inspections
 {
 	public class Inspection
 	{

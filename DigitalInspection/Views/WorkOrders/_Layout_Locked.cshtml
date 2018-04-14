@@ -1,4 +1,4 @@
-﻿@model BaseViewModel
+﻿@model DigitalInspection.ViewModels.Base.BaseViewModel
 @using DigitalInspection.Views.Helpers;
 @using DigitalInspection.ViewModels
 
@@ -16,7 +16,7 @@
 	@Scripts.Render("~/bundles/App")
 </head>
 <body>
-	@if (Model != null && !(Model.ResourceName == null || Model.ResourceName == string.Empty))
+	@if (Model != null && !string.IsNullOrEmpty(Model.ResourceName))
 	{
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container-fluid ma-nav-container">

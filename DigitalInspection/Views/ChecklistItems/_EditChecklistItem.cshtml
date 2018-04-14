@@ -1,4 +1,4 @@
-﻿@model DigitalInspection.ViewModels.EditChecklistItemViewModel
+﻿@model DigitalInspection.ViewModels.ChecklistItems.EditChecklistItemViewModel
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Digital Inspection";
@@ -110,7 +110,7 @@
 					@Html.ValidationMessageFor(m => m.SelectedTagIds)
 				</div>
 
-				@if (Model.ChecklistItem.Measurements.Count() > 0)
+				@if (Model.ChecklistItem.Measurements.Any())
 				{
 					<h3>Measurements</h3>
 
@@ -164,7 +164,7 @@
 					}
 				}
 
-				@if (Model.ChecklistItem.CannedResponses.Count() > 0)
+				@if (Model.ChecklistItem.CannedResponses.Any())
 				{
 					<h3>Canned Responses</h3>
 					<!-- NOTE: Model binder requires a FOR loop instead of FOREACH to SEE Canned Responses & Measurements when saving-->

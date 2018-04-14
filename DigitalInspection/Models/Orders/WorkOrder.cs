@@ -1,12 +1,10 @@
-﻿using DigitalInspection.Models.Orders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Orders
 {
-
 	public class WorkOrder
 	{
 		[Required(ErrorMessage = "Work Order # is required")]

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Tags
 {
 	public class AddTagViewModel
 	{

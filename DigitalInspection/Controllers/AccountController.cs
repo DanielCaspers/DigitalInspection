@@ -30,26 +30,14 @@ namespace DigitalInspection.Controllers
 
 		public ApplicationSignInManager SignInManager
 		{
-			get
-			{
-				return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-			}
-			private set 
-			{ 
-				_signInManager = value; 
-			}
+			get => _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+			private set => _signInManager = value;
 		}
 
 		public ApplicationUserManager UserManager
 		{
-			get
-			{
-				return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-			}
-			private set
-			{
-				_userManager = value;
-			}
+			get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+			private set => _userManager = value;
 		}
 
 		//
@@ -78,7 +66,7 @@ namespace DigitalInspection.Controllers
 			{
 				var userIdCookie = Request.Cookies.Get(CookieFactory.UserIdCookieName);
 				// If this user is not the same as last user, mutate the cookie.
-				var userClaims = response.Entity.Claims;
+				var userClaims = response.Entity.Claims.ToList();
 				var userId = userClaims.Single(c => c.Type == "empID").Value;
 				if (userIdCookie?.Value != userId)
 				{
@@ -148,13 +136,7 @@ namespace DigitalInspection.Controllers
 		}
 
 		#region Helpers
-		private IAuthenticationManager AuthenticationManager
-		{
-			get
-			{
-				return HttpContext.GetOwinContext().Authentication;
-			}
-		}
+		private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
 		private ActionResult RedirectToLocal(string returnUrl)
 		{

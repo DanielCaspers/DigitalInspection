@@ -4,8 +4,6 @@ namespace DigitalInspection.Models.DTOs
 {
 	public class WorkOrderDTO
 	{
-		public WorkOrderDTO() { }
-
 		public string orderID { get; set; }
 		public WorkOrderStatusDTO orderStatus { get; set; }
 		public long? orderDate { get; set; }

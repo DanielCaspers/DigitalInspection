@@ -14,7 +14,7 @@ namespace DigitalInspection.Models.Inspections.Reports
 
 		public InspectionReportGroup(IGrouping<string, InspectionItem> ig, string baseUrl)
 		{
-			var items = ig.OrderBy(ii => ii.Condition);
+			var items = ig.OrderBy(ii => ii.Condition).ToList();
 
 			Name = ig.Key;
 			Condition = items.First().Condition;

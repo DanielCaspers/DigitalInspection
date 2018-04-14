@@ -1,9 +1,4 @@
-﻿using DigitalInspection.Models;
-using DigitalInspection.Models.DTOs;
-using DigitalInspection.Models.Mappers;
-using DigitalInspection.Models.Web;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -11,8 +6,13 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using DigitalInspection.Models.DTOs;
+using DigitalInspection.Models.Mappers;
+using DigitalInspection.Models.Orders;
+using DigitalInspection.Models.Web;
+using Newtonsoft.Json;
 
-namespace DigitalInspection.Services
+namespace DigitalInspection.Services.Web
 {
 	public class WorkOrderService : HttpClientService
 	{
@@ -22,7 +22,7 @@ namespace DigitalInspection.Services
 		{
 			var httpClient = HttpClientService.InitializeHttpClient(userClaims, false);
 
-			string apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
+			var apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
 
 			httpClient.BaseAddress = new Uri($"{apiBaseUrl}/{companyNumber}/");
 
@@ -37,9 +37,9 @@ namespace DigitalInspection.Services
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
-				string url = string.Format("orders/?$top={0}", numOrders);
+				var url = $"orders/?$top={numOrders}";
 				var response = await httpClient.GetAsync(url);
-				string json = await response.Content.ReadAsStringAsync();
+				var json = await response.Content.ReadAsStringAsync();
 
 				return GetWorkOrdersInternal(json);
 			}
@@ -47,11 +47,12 @@ namespace DigitalInspection.Services
 
 		public static async Task<IList<WorkOrder>> GetWorkOrdersForTech(IEnumerable<Claim> userClaims, string companyNumber)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
+			var userClaimsList = userClaims.ToList();
+			using (HttpClient httpClient = InitializeHttpClient(userClaimsList, companyNumber))
 			{
-				string url = string.Format("orders/tech/{0}/status/~blocked?$top={1}", GetEmployeeNumber(userClaims), DEFAULT_NUM_ORDERS);
+				var url = $"orders/tech/{GetEmployeeNumber(userClaimsList)}/status/~blocked?$top={DEFAULT_NUM_ORDERS}";
 				var response = await httpClient.GetAsync(url);
-				string json = await response.Content.ReadAsStringAsync();
+				var json = await response.Content.ReadAsStringAsync();
 
 				return GetWorkOrdersInternal(json);
 			}
@@ -59,11 +60,13 @@ namespace DigitalInspection.Services
 
 		public static async Task<IList<WorkOrder>> GetWorkOrdersForServiceAdvisor(IEnumerable<Claim> userClaims, string companyNumber)
 		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
+			var userClaimsList = userClaims.ToList();
+
+			using (HttpClient httpClient = InitializeHttpClient(userClaimsList, companyNumber))
 			{
-				string url = string.Format("orders/writer/{0}?$top={1}", GetEmployeeNumber(userClaims), DEFAULT_NUM_ORDERS);
+				var url = $"orders/writer/{GetEmployeeNumber(userClaimsList)}?$top={DEFAULT_NUM_ORDERS}";
 				var response = await httpClient.GetAsync(url);
-				string json = await response.Content.ReadAsStringAsync();
+				var json = await response.Content.ReadAsStringAsync();
 
 				return GetWorkOrdersInternal(json);
 			}
@@ -78,9 +81,9 @@ namespace DigitalInspection.Services
 		{
 			using (HttpClient httpClient = InitializeAnonymousHttpClient())
 			{
-				string url = string.Format("{0}/orders/{1}?$requestlock={2}", id.Substring(0,3), id, Convert.ToInt32(requestlock));
-				HttpResponseMessage response = await httpClient.GetAsync(url);
-				string json = await response.Content.ReadAsStringAsync();
+				var url = $"{id.Substring(0,3)}/orders/{id}?$requestlock={Convert.ToInt32(requestlock)}";
+				var response = await httpClient.GetAsync(url);
+				var json = await response.Content.ReadAsStringAsync();
 
 				return CreateWorkOrderResponse(response, json);
 			}
@@ -91,9 +94,9 @@ namespace DigitalInspection.Services
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
-				string url = string.Format("orders/{0}?$requestlock={1}", id, Convert.ToInt32(requestlock));
-				HttpResponseMessage response = await httpClient.GetAsync(url);
-				string json = await response.Content.ReadAsStringAsync();
+				var url = $"orders/{id}?$requestlock={Convert.ToInt32(requestlock)}";
+				var response = await httpClient.GetAsync(url);
+				var json = await response.Content.ReadAsStringAsync();
 
 				return CreateWorkOrderResponse(response, json);
 			}
@@ -109,9 +112,9 @@ namespace DigitalInspection.Services
 			{
 				var httpContent = new StringContent("", Encoding.UTF8, "application/json");
 
-				string url = string.Format("orders/{0}?$releaselockonly={1}", orderId, 1);
-				HttpResponseMessage response = await httpClient.PutAsync(url, httpContent);
-				string responseJson = await response.Content.ReadAsStringAsync();
+				var url = $"orders/{orderId}?$releaselockonly=1";
+				var response = await httpClient.PutAsync(url, httpContent);
+				var responseJson = await response.Content.ReadAsStringAsync();
 
 				return CreateWorkOrderResponse(response, responseJson);
 			}
@@ -128,9 +131,9 @@ namespace DigitalInspection.Services
 				string requestJson = JsonConvert.SerializeObject(dto);
 				var httpContent = new StringContent(requestJson, Encoding.UTF8, "application/json");
 
-				string url = string.Format("orders/{0}?$releaselockonly={1}", order.Id, Convert.ToInt32(releaselockonly));
-				HttpResponseMessage response = await httpClient.PutAsync(url, httpContent);
-				string responseJson = await response.Content.ReadAsStringAsync();
+				var url = $"orders/{order.Id}?$releaselockonly={Convert.ToInt32(releaselockonly)}";
+				var response = await httpClient.PutAsync(url, httpContent);
+				var responseJson = await response.Content.ReadAsStringAsync();
 
 				return CreateWorkOrderResponse(response, responseJson);
 			}
@@ -140,9 +143,9 @@ namespace DigitalInspection.Services
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
-				string url = string.Format("orders/{0}?$requestlock={1}", workOrderId, 1);
-				HttpResponseMessage response = await httpClient.GetAsync(url);
-				string json = await response.Content.ReadAsStringAsync();
+				var url = $"orders/{workOrderId}?$requestlock=1";
+				var response = await httpClient.GetAsync(url);
+				var json = await response.Content.ReadAsStringAsync();
 
 				HttpResponse<WorkOrder> workOrderResponse = CreateWorkOrderResponse(response, json);
 
@@ -156,7 +159,7 @@ namespace DigitalInspection.Services
 				string noteJson = JsonConvert.SerializeObject(noteDTO);
 				var httpContent = new StringContent(noteJson, Encoding.UTF8, "application/json");
 
-				url = string.Format("orders/{0}?$releaselockonly={1}", workOrderId, 0);
+				url = $"orders/{workOrderId}?$releaselockonly=0";
 				response = await httpClient.PutAsync(url, httpContent);
 				json = await response.Content.ReadAsStringAsync();
 
@@ -170,8 +173,7 @@ namespace DigitalInspection.Services
 
 		private static IList<WorkOrder> GetWorkOrdersInternal(string json)
 		{
-			IList<WorkOrderDTO> orderDtos = new List<WorkOrderDTO>();
-			orderDtos = JsonConvert.DeserializeObject<List<WorkOrderDTO>>(json);
+			IList<WorkOrderDTO> orderDtos = JsonConvert.DeserializeObject<List<WorkOrderDTO>>(json);
 
 			IList<WorkOrder> workOrders = new List<WorkOrder>();
 			foreach (WorkOrderDTO orderDto in orderDtos)

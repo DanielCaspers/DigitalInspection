@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
-using DigitalInspection.Services;
 using System.Threading.Tasks;
 using DigitalInspection.Models;
-using DigitalInspection.ViewModels;
+using DigitalInspection.Services.Web;
+using DigitalInspection.ViewModels.VehicleHistory;
 
 namespace DigitalInspection.Controllers
 {

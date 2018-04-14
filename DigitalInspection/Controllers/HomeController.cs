@@ -1,6 +1,6 @@
 ﻿using DigitalInspection.Models;
-using DigitalInspection.ViewModels;
 using System.Web.Mvc;
+using DigitalInspection.ViewModels.Base;
 
 namespace DigitalInspection.Controllers
 {

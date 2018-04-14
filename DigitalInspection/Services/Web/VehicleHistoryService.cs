@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using DigitalInspection.Models.Web;
-using Newtonsoft.Json;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DigitalInspection.Models.DTOs;
 using DigitalInspection.Models.Mappers;
+using DigitalInspection.Models.Orders;
+using DigitalInspection.Models.Web;
+using Newtonsoft.Json;
 
-namespace DigitalInspection.Services
+namespace DigitalInspection.Services.Web
 {
 	public class VehicleHistoryService: HttpClientService
 	{

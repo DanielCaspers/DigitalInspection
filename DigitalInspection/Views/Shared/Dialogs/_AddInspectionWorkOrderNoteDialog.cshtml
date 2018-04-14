@@ -1,4 +1,4 @@
-﻿@model DigitalInspection.ViewModels.AddInspectionWorkOrderNoteViewModel
+﻿@model DigitalInspection.ViewModels.Inspections.AddInspectionWorkOrderNoteViewModel
 
 @{
 	const string TEMPLATE_NAMESPACE = "addInspectionWorkOrderNoteDialog";
@@ -6,7 +6,7 @@
 	const string SUCCESS = TEMPLATE_NAMESPACE + "_success";
 }
 
-@if (Model.WorkOrderId != null && Model.WorkOrderId != string.Empty)
+@if (!string.IsNullOrEmpty(Model.WorkOrderId))
 {
 	<div id="@TEMPLATE_NAMESPACE" class="modal fade">
 		<div class="modal-dialog">

@@ -1,11 +1,12 @@
-﻿using DigitalInspection.Models;
-using DigitalInspection.Models.Orders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using DigitalInspection.Models.Inspections;
+using DigitalInspection.Models.Orders;
+using DigitalInspection.ViewModels.Base;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.ChecklistItems
 {
 	public class EditChecklistItemViewModel: BaseChecklistsViewModel
 	{

@@ -1,12 +1,13 @@
 ﻿using DigitalInspection.Models;
 using DigitalInspection.Services;
-using DigitalInspection.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DigitalInspection.Models.Inspections;
 using DigitalInspection.Services.Core;
+using DigitalInspection.ViewModels.Checklists;
 
 namespace DigitalInspection.Controllers
 {
@@ -89,7 +90,7 @@ namespace DigitalInspection.Controllers
 
 				IList<ChecklistItem> selectedItems = new List<ChecklistItem>();
 				// Using plain for loop for parallel array data reference
-				for(int i=0; i < vm.IsChecklistItemSelected.Count(); i++)
+				for(var i = 0; i < vm.IsChecklistItemSelected.Count; i++)
 				{
 					if (vm.IsChecklistItemSelected[i])
 					{

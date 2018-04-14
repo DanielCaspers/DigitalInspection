@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using DigitalInspection.Models.Web;
+using DigitalInspection.Models.Orders;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.VehicleHistory
 {
 	public class VehicleHistoryViewModel
 	{

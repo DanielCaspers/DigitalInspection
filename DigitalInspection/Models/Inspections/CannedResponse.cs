@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using DigitalInspection.Models.Orders;
-using System.Collections.Generic;
 using System.Linq;
+using DigitalInspection.Models.Orders;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Inspections
 {
 	public class CannedResponse
 	{
@@ -37,11 +37,10 @@ namespace DigitalInspection.Models
 		// Trick to force DB to hold onto enum values
 		public string LevelsOfConcernInDb
 		{
-			get { return string.Join(",", LevelsOfConcern); }
+			get => string.Join(",", LevelsOfConcern);
 			set {
-				if (String.IsNullOrEmpty(value))
+				if (string.IsNullOrEmpty(value))
 				{
-					value = "";
 					LevelsOfConcern = new List<RecommendedServiceSeverity>();
 				}
 				else

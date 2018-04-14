@@ -1,8 +1,11 @@
-﻿using DigitalInspection.Models;
+﻿using System;
+using DigitalInspection.Models.Inspections;
+using DigitalInspection.Models.Orders;
+using DigitalInspection.ViewModels.Base;
 using DigitalInspection.ViewModels.TabContainers;
-using System;
+using DigitalInspection.ViewModels.VehicleHistory;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Inspections
 {
 	public class InspectionDetailViewModel: BaseInspectionsViewModel
 	{

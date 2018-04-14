@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
+using DigitalInspection.Models.Validators;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Checklists
 {
 	public class AddChecklistViewModel
 	{

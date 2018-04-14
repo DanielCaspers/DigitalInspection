@@ -1,9 +1,7 @@
-﻿namespace DigitalInspection.Models.Store.DTOs
+﻿namespace DigitalInspection.Models.DTOs
 {
 	public class StoreInfoDTO
 	{
-		public StoreInfoDTO() { }
-
 		public string coname { get; set; }
 		public string conameShort { get; set; }
 		public string loc_near { get; set; }

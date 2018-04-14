@@ -10,9 +10,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using DigitalInspection.Models.Orders;
 using System.IO;
+using DigitalInspection.Models.Inspections;
 using DigitalInspection.Models.Inspections.Reports;
 using DigitalInspection.Services.Core;
+using DigitalInspection.Services.Web;
+using DigitalInspection.ViewModels.Inspections;
 using DigitalInspection.ViewModels.TabContainers;
+using DigitalInspection.ViewModels.VehicleHistory;
 
 namespace DigitalInspection.Controllers
 {
@@ -152,7 +156,7 @@ namespace DigitalInspection.Controllers
 
 			// https://msdn.microsoft.com/en-us/library/tabh47cf(v=vs.110).aspx
 			// NOTE: Cannot use Environment.NewLine since the filter will be less strict on Mono. 
-			IList<string> returnCarriageSeparatedNotes = workOrderNoteVm.Note.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).ToList();
+			IList<string> returnCarriageSeparatedNotes = workOrderNoteVm.Note.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None).ToList();
 
 			var task = Task.Run(async () => {
 				return await WorkOrderService.SaveWorkOrderNote(CurrentUserClaims, workOrderNoteVm.WorkOrderId, GetCompanyNumber(), returnCarriageSeparatedNotes);
@@ -198,7 +202,7 @@ namespace DigitalInspection.Controllers
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
 			// New guid is used as a random prefix to the filename to ensure uniqueness
-			Image imageDto = ImageService.SaveImage(photoVM.Picture, new string[] { IMAGE_DIRECTORY, photoVM.WorkOrderId, photoVM.InspectionItem.Id.ToString() }, Guid.NewGuid().ToString(), false);
+			Image imageDto = ImageService.SaveImage(photoVM.Picture, new[] { IMAGE_DIRECTORY, photoVM.WorkOrderId, photoVM.InspectionItem.Id.ToString() }, Guid.NewGuid().ToString(), false);
 
 			if (InspectionService.AddInspectionItemImage(_context, inspectionItemInDb, imageDto))
 			{
@@ -334,14 +338,14 @@ namespace DigitalInspection.Controllers
 				Checklist = checklist,
 				Inspection = inspection,
 				Toast = toast,
-				AddMeasurementVM = new AddMeasurementViewModel { },
-				AddInspectionWorkOrderNoteVm = new AddInspectionWorkOrderNoteViewModel { },
-				AddInspectionItemNoteVm = new AddInspectionItemNoteViewModel { },
+				AddMeasurementVM = new AddMeasurementViewModel(),
+				AddInspectionWorkOrderNoteVm = new AddInspectionWorkOrderNoteViewModel(),
+				AddInspectionItemNoteVm = new AddInspectionItemNoteViewModel(),
 				UploadInspectionPhotosVM = new UploadInspectionPhotosViewModel {
 					WorkOrderId = workOrderId
 				},
-				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel { },
-				VehicleHistoryVM = new VehicleHistoryViewModel() { },
+				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel(),
+				VehicleHistoryVM = new VehicleHistoryViewModel(),
 				ScrollableTabContainerVM = GetScrollableTabContainerViewModel(tagId),
 				FilteringTagId = tagId
 			});

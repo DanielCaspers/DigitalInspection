@@ -1,4 +1,4 @@
-﻿@model DigitalInspection.ViewModels.WorkOrderMasterViewModel
+﻿@model DigitalInspection.ViewModels.WorkOrders.WorkOrderMasterViewModel
 
 <script type="text/javascript">
 	var onSelect = function (e, dataTableInstance, type, indexes) {
@@ -66,8 +66,8 @@
 					</td>
 					<!-- http://www.csharp-examples.net/string-format-datetime/ -->
 					<td>
-						<div>@String.Format("{0:d}", @workOrder.Date)</div>
-						@*<div>@String.Format("{0:t}", @workOrder.Date)</div>*@
+						<div>@string.Format("{0:d}", workOrder.Date)</div>
+						@*<div>@string.Format("{0:t}", workOrder.Date)</div>*@
 					</td>
 				</tr>
 			}

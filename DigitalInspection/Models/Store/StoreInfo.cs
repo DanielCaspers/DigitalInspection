@@ -4,8 +4,6 @@ namespace DigitalInspection.Models.Store
 {
 	public class StoreInfo
 	{
-		public StoreInfo() { }
-
 		public string Name { get; set; }
 
 		public string NameShort { get; set; }

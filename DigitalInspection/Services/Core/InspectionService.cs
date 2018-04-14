@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using DigitalInspection.Models;
+using DigitalInspection.Models.Inspections;
 using DigitalInspection.Models.Orders;
 
 namespace DigitalInspection.Services.Core

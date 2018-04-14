@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DigitalInspection.Models;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
+using DigitalInspection.Models.Inspections;
+using DigitalInspection.ViewModels.Base;
 
-namespace DigitalInspection.ViewModels
+namespace DigitalInspection.ViewModels.Checklists
 {
 	public class EditChecklistViewModel: BaseChecklistsViewModel
 	{

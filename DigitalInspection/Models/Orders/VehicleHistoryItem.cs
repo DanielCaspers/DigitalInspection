@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DigitalInspection.Models.Web
+namespace DigitalInspection.Models.Orders
 {
 	public class VehicleHistoryItem
 	{

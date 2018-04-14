@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
-using DigitalInspection.Services;
 using System.Threading.Tasks;
+using DigitalInspection.Services.Web;
 
 namespace DigitalInspection.Controllers
 {

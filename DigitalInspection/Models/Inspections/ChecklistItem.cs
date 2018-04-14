@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Inspections
 {
 	public class ChecklistItem
 	{

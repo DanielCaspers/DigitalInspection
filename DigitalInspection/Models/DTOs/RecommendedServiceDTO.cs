@@ -46,7 +46,7 @@ namespace DigitalInspection.Models.DTOs
 			}
 			else
 			{
-				if (_isCustomerConcern == true)
+				if (_isCustomerConcern)
 				{
 					level = "0";
 				}

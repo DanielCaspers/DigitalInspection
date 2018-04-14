@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using DigitalInspection.Models;
 using DigitalInspection.Models.Web;
-using DigitalInspection.ViewModels;
 using DigitalInspection.Services;
 using System.Threading.Tasks;
 using DigitalInspection.ViewModels.TabContainers;
 using System.Linq;
-using System.Net;
+using DigitalInspection.Models.Orders;
+using DigitalInspection.Services.Web;
+using DigitalInspection.ViewModels.Inspections;
+using DigitalInspection.ViewModels.VehicleHistory;
+using DigitalInspection.ViewModels.WorkOrders;
 using Claim = System.Security.Claims.Claim;
 
 namespace DigitalInspection.Controllers
@@ -108,7 +111,7 @@ namespace DigitalInspection.Controllers
 
 			if (task.Result.IsSuccessStatusCode)
 			{
-				return RedirectToAction(CustomerViewName, new { id = id });
+				return RedirectToAction(CustomerViewName, new {id });
 			}
 			else
 			{
@@ -128,7 +131,7 @@ namespace DigitalInspection.Controllers
 
 			if (task.Result.IsSuccessStatusCode)
 			{
-				return RedirectToAction(VehicleViewName, new { id = id });
+				return RedirectToAction(VehicleViewName, new { id });
 			}
 			else
 			{
@@ -148,7 +151,7 @@ namespace DigitalInspection.Controllers
 
 			if (task.Result.IsSuccessStatusCode)
 			{
-				return RedirectToAction(CustomerViewName, new { id = id });
+				return RedirectToAction(CustomerViewName, new { id });
 			}
 			else
 			{
@@ -168,7 +171,7 @@ namespace DigitalInspection.Controllers
 
 			if (task.Result.IsSuccessStatusCode)
 			{
-				return RedirectToAction(VehicleViewName, new { id = id });
+				return RedirectToAction(VehicleViewName, new { id });
 			}
 			else
 			{

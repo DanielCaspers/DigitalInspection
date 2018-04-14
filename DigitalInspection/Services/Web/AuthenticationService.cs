@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using DigitalInspection.Models.Web;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using DigitalInspection.Models;
+using DigitalInspection.Models.Web;
 using DigitalInspection.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SecurityToken = Microsoft.IdentityModel.Tokens.SecurityToken;
 
-namespace DigitalInspection.Services
+namespace DigitalInspection.Services.Web
 {
 	public class AuthenticationService : HttpClientService
 	{
@@ -24,9 +24,11 @@ namespace DigitalInspection.Services
 		{
 			using (HttpClient httpClient = InitializeHttpClient())
 			{
-				var postBody = new List<KeyValuePair<string, string>>();
-				postBody.Add(new KeyValuePair<string, string>("username", username));
-				postBody.Add(new KeyValuePair<string, string>("password", password));
+				var postBody = new List<KeyValuePair<string, string>>
+				{
+					new KeyValuePair<string, string>("username", username),
+					new KeyValuePair<string, string>("password", password)
+				};
 
 				var req = new HttpRequestMessage(
 						HttpMethod.Post,
@@ -97,7 +99,7 @@ namespace DigitalInspection.Services
 					ValidateIssuer = true,
 					ValidAudience = ConfigurationManager.AppSettings.Get("MurphyAutomotiveValidTokenAudience"),
 					ValidIssuer = ConfigurationManager.AppSettings.Get("MurphyAutomotiveValidTokenIssuer"),
-					IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+					IssuerSigningKey = new SymmetricSecurityKey(
 						Encoding.ASCII.GetBytes(
 							ConfigurationManager.AppSettings.Get("MurphyAutomotiveAppSecret")
 						)
@@ -109,7 +111,7 @@ namespace DigitalInspection.Services
 				{
 					tokenHandler.ValidateToken(loginResponse.authToken, validationParameters, out validatedToken);
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					// If this happens, fail the request and prevent login
 					return authenticationResponse;
@@ -123,7 +125,7 @@ namespace DigitalInspection.Services
 
 		private static string GetAuthRole(IEnumerable<Claim> claims)
 		{
-			var roleValues = claims.Where(claim => claim.Type == "roles").Select(r => r.Value);
+			var roleValues = claims.Where(claim => claim.Type == "roles").Select(r => r.Value).ToList();
 
 			if (roleValues.Any(r => r.EndsWith(Roles.Admin)))
 			{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DigitalInspection.Models
+namespace DigitalInspection.Models.Inspections
 {
 	//http://cpratt.co/file-uploads-in-asp-net-mvc-with-view-models/
 	public class Image
@@ -16,8 +16,8 @@ namespace DigitalInspection.Models
 		[DataType(DataType.DateTime)]
 		public DateTime CreatedDate
 		{
-			get { return createdDate ?? DateTime.UtcNow; }
-			set { createdDate = value; }
+			get => createdDate ?? DateTime.UtcNow;
+			set => createdDate = value;
 		}
 
 		private DateTime? createdDate;
