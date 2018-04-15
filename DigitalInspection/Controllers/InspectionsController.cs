@@ -138,11 +138,12 @@ namespace DigitalInspection.Controllers
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
 
-			if (InspectionService.UpdateInspectionItemNote(_context, inspectionItemInDb, itemNoteVm.Note) == false)
+			if (InspectionService.UpdateInspectionItemNote(_context, inspectionItemInDb, itemNoteVm.Note))
 			{
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+				return new EmptyResult();
 			}
-			return new EmptyResult();
+
+			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]

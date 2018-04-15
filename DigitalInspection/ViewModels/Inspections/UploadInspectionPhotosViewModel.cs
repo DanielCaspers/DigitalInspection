@@ -13,7 +13,7 @@ namespace DigitalInspection.ViewModels.Inspections
 
 		public InspectionItem InspectionItem { get; set; }
 
-		// Used for refreshing the view properly in the RedirectToAction() call in the controller after upload
+		// Used for Post-Return-Get
 		public Guid ChecklistId { get; set; }
 		public Guid? TagId { get; set; }
 

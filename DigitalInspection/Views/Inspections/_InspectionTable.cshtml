@@ -221,27 +221,32 @@
 														 new { @class = "btn btn-primary no-margin no-padding-horizontal" })
 						}
 					</td>
-					<td>
-						@Ajax.RawActionLink("<i class='material-icons'>note_add</i>",
-														 "GetAddInspectionItemNoteDialog",
-														 "Inspections",
-														 new
-														 {
-															 inspectionItemId = inspectionItem.Id,
-															 checklistItemId = checklistItem.Id
-														 },
-														 new AjaxOptions
-														 {
-															 HttpMethod = "POST",
-															 InsertionMode = InsertionMode.Replace,
-															 UpdateTargetId = "AddInspectionItemNoteDynamicDialogContainer",
-															 OnComplete = "DialogService.show('addInspectionItemNoteDialog', 'addInspectionItemNoteForm')"
-														 },
-														 new
-														 {
-															 @class = "btn btn-primary no-margin no-padding-horizontal"
-														 })
-					</td>
+				<td>
+					@{
+						var materialIcon = string.IsNullOrWhiteSpace(inspectionItem.Note) ? "chat_bubble_outline" : "chat";
+
+						var iconHtml = string.Format("<i class='material-icons'>{0}</i>", materialIcon);
+						@Ajax.RawActionLink(iconHtml,
+							"GetAddInspectionItemNoteDialog",
+							"Inspections",
+							new
+							{
+								inspectionItemId = inspectionItem.Id,
+								checklistItemId = checklistItem.Id
+							},
+							new AjaxOptions
+							{
+								HttpMethod = "POST",
+								InsertionMode = InsertionMode.Replace,
+								UpdateTargetId = "AddInspectionItemNoteDynamicDialogContainer",
+								OnComplete = "DialogService.show('addInspectionItemNoteDialog', 'addInspectionItemNoteForm')"
+							},
+							new
+							{
+								@class = "btn btn-primary no-margin no-padding-horizontal"
+							})
+					}
+				</td>
 					<td>
 						@Ajax.RawActionLink("<i class='material-icons'>add_a_photo</i>",
 														 "GetUploadInspectionPhotosDialog",
