@@ -18,14 +18,7 @@ namespace DigitalInspection.Models.Mappers
 			order.EmployeeId = dto.techNum;
 			order.WorkDescription = dto.workDesc;
 
-			if (dto.orderNotes == null)
-			{
-				order.Notes = new List<string>() {""};
-			}
-			else
-			{
-				order.Notes = dto.orderNotes;
-			}
+			order.Notes = dto.orderNotes ?? new List<string>() {""};
 			order.TotalBill = dto.totalBill;
 			order.ServiceAdvisor = dto.serviceAdvisor;
 			order.ServiceAdvisorName = dto.serviceAdvisorName;
@@ -87,7 +80,8 @@ namespace DigitalInspection.Models.Mappers
 				dto.vehicleEngine,
 				dto.vehicleTransmission,
 				dto.vehicleOdometer,
-				dto.vehicleNotes);
+				dto.vehicleNotes,
+				dto.vehicle?.options);
 
 			if (dto.vehicleRS != null)
 			{
@@ -183,6 +177,8 @@ namespace DigitalInspection.Models.Mappers
 			dto.vehicleTransmission = order.Vehicle.Transmission?.ToUpper();
 			dto.vehicleOdometer = order.Vehicle.Odometer;
 			dto.vehicleNotes = order.Vehicle.Notes;
+
+			dto.vehicle = new VehicleDTO(order.Vehicle.Options);
 
 			if (order.RecommendedServices == null)
 			{

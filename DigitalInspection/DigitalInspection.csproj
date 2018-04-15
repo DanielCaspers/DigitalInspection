@@ -242,12 +242,15 @@
       <DependentUpon>201804130247327_InspectionMeasurementValueDefaultToNull.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DTOs\VehicleHistoryItemDTO.cs" />
+    <Compile Include="Models\DTOs\VehicleDTO.cs" />
+    <Compile Include="Models\DTOs\VehicleOptionsDTO.cs" />
     <Compile Include="Models\Inspections\Reports\InspectionReportGroup.cs" />
     <Compile Include="Models\Inspections\Reports\ImageReportItem.cs" />
     <Compile Include="Models\Inspections\Reports\MeasurementReportItem.cs" />
     <Compile Include="Models\Inspections\Reports\CannedResponseReportItem.cs" />
     <Compile Include="Models\Inspections\Reports\InspectionReportItem.cs" />
     <Compile Include="Models\Mappers\VehicleHistoryItemMapper.cs" />
+    <Compile Include="Models\Orders\VehicleOptions.cs" />
     <Compile Include="Services\Core\InspectionService.cs" />
     <Compile Include="ViewModels\VehicleHistory\VehicleHistoryViewModel.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
@@ -353,7 +356,7 @@
     <Compile Include="Models\Web\LoginResponse.cs" />
     <Compile Include="Models\Web\HttpResponse.cs" />
     <Compile Include="Models\Store\StoreInfo.cs" />
-    <Compile Include="Models\VehicleHistory\VehicleHistoryItem.cs" />
+    <Compile Include="Models\Orders\VehicleHistoryItem.cs" />
     <Compile Include="Services\Web\CookieFactory.cs" />
     <Compile Include="Services\Web\StoreInfoService.cs" />
     <Compile Include="Services\Web\VehicleHistoryService.cs" />
@@ -453,6 +456,7 @@
     <Content Include="Content\Components\components.scss" />
     <Content Include="Content\Components\scrollable-tabs.scss" />
     <Content Include="Content\Components\colors.scss" />
+    <Content Include="Content\Components\checkbox.scss" />
     <None Include="Content\Components\progress-bar.scss" />
     <Content Include="Content\Views\inspection-table.scss" />
     <Content Include="Content\Components\flex.scss" />

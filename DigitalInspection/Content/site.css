@@ -22,6 +22,9 @@
   .ma-card img:hover {
     opacity: 1.0; }
 
+.ma-checkbox-inline-label {
+  margin-left: 30px; }
+
 .ma-dropdown-tray {
   width: 150px; }
   .ma-dropdown-tray li {
@@ -42,6 +45,8 @@
 
 .container-flex {
   display: flex; }
+  .container-flex.start {
+    justify-content: flex-start; }
   .container-flex.align-center {
     align-items: center; }
   .container-flex.around {

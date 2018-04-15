@@ -1,5 +1,4 @@
-﻿
-namespace DigitalInspection.Models.DTOs
+﻿namespace DigitalInspection.Models.DTOs
 {
 	public class WorkOrderStatusDTO
 	{

@@ -47,7 +47,7 @@ namespace DigitalInspection.Models
 			// base.OnModelCreating(modelBuilder);
 
 			// Needed to ensure subclasses share the same table
-			var user = modelBuilder.Entity<ApplicationUser>()
+			modelBuilder.Entity<ApplicationUser>()
 				.ToTable("AspNetUsers");
 
 			// modelBuilder.Ignore<ApplicationUser>();

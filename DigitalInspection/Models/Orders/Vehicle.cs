@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using DigitalInspection.Models.DTOs;
 using DigitalInspection.Utils;
 
 namespace DigitalInspection.Models.Orders
@@ -31,6 +32,8 @@ namespace DigitalInspection.Models.Orders
 
 		public IList<string> Notes { get; set; }
 
+		public VehicleOptions Options { get; set; }
+
 		public Vehicle() { }
 
 		public Vehicle(
@@ -43,7 +46,8 @@ namespace DigitalInspection.Models.Orders
 			string engine,
 			string transmission,
 			int? odometer,
-			IList<string> notes)
+			IList<string> notes,
+			VehicleOptionsDTO options)
 		{
 			VIN = vin;
 			Year = year;
@@ -61,6 +65,10 @@ namespace DigitalInspection.Models.Orders
 			Transmission = transmission?.ToTitleCase();
 			Odometer = odometer;
 			Notes = notes;
+
+			Options = options == null ?
+				new VehicleOptions() :
+				new VehicleOptions(options.has4WD, options.hasAWD, options.hasAC, options.hasABS);
 		}
 	}
 }

@@ -37,7 +37,7 @@ namespace DigitalInspection.Models.DTOs
 		public string vehicleTransmission { get; set; }
 		public int? vehicleOdometer { get; set; }
 		public IList<string> vehicleNotes { get; set; }
-
+		public VehicleDTO vehicle { get; set; }
 		public IList<RecommendedServiceDTO> vehicleRS { get; set; }
 	}
 }

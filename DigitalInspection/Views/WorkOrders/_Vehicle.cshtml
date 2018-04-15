@@ -60,7 +60,7 @@
 						"VehicleHistory",
 						new
 						{
-							VIN = Model.WorkOrder.Vehicle.VIN,
+							Model.WorkOrder.Vehicle.VIN,
 						},
 						new AjaxOptions
 						{
@@ -241,6 +241,58 @@
 							@Html.LabelFor(m => m.WorkOrder.Vehicle.VIN, new { @class = "control-label" })
 							@Html.TextBoxFor(m => m.WorkOrder.Vehicle.VIN, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
 							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.VIN)
+						</div>
+						
+						<div class="col-xs-3 form-group ma-form-group">
+							<div class="container-flex center">
+								<div class="flex-item">
+									@Html.LabelFor(m => m.WorkOrder.Vehicle.Options.Has4WD, new { @class = "control-label" })
+								</div>
+								<div class="checkbox ma-checkbox-inline-label">
+									<label>
+										@Html.CheckBoxFor(m => m.WorkOrder.Vehicle.Options.Has4WD, HtmlHelpers.ConditionalDisable(!Model.CanEdit))
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xs-3 form-group ma-form-group">
+							<div class="container-flex center">
+								<div class="flex-item">
+									@Html.LabelFor(m => m.WorkOrder.Vehicle.Options.HasAWD, new { @class = "control-label" })
+								</div>
+								<div class="checkbox ma-checkbox-inline-label">
+									<label>
+										@Html.CheckBoxFor(m => m.WorkOrder.Vehicle.Options.HasAWD, HtmlHelpers.ConditionalDisable(!Model.CanEdit))
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xs-3 form-group ma-form-group">
+							<div class="container-flex center">
+								<div class="flex-item">
+									@Html.LabelFor(m => m.WorkOrder.Vehicle.Options.HasAC, new { @class = "control-label" })
+								</div>
+								<div class="checkbox ma-checkbox-inline-label">
+									<label>
+										@Html.CheckBoxFor(m => m.WorkOrder.Vehicle.Options.HasAC, HtmlHelpers.ConditionalDisable(!Model.CanEdit))
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-xs-3 form-group ma-form-group">
+							<div class="container-flex center">
+								<div class="flex-item">
+									@Html.LabelFor(m => m.WorkOrder.Vehicle.Options.HasABS, new { @class = "control-label" })
+								</div>
+								<div class="checkbox ma-checkbox-inline-label">
+									<label>
+										@Html.CheckBoxFor(m => m.WorkOrder.Vehicle.Options.HasABS, HtmlHelpers.ConditionalDisable(!Model.CanEdit))
+									</label>
+								</div>
+							</div>
 						</div>
 					</div>
 

@@ -191,6 +191,11 @@
 					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Engine)
 					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Transmission)
 					@Html.HiddenFor(m => m.WorkOrder.Vehicle.VIN)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Options.HasAC)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Options.Has4WD)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Options.HasAWD)
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Options.HasABS)
+
 					@Html.HiddenForEnumerable(m => Model.WorkOrder.Vehicle.Notes, "WorkOrder.Vehicle")
 				</fieldset>
 			}

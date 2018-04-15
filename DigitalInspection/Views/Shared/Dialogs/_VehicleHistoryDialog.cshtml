@@ -49,7 +49,7 @@
 							@Model.VehicleHistory[i].VehicleOdometer
 						</div>
 						<div class="col-xs-2">
-							@String.Format("{0:d}", @Model.VehicleHistory[i].CompletionDate)
+							@String.Format("{0:d}", Model.VehicleHistory[i].CompletionDate)
 						</div>
 						<div class="col-xs-2">
 							<a href="@ConfigurationManager.AppSettings.Get("MurphyAutomotiveVehicleHistoryInvoiceUrl")@Model.VehicleHistory[i].InvoiceLink"
