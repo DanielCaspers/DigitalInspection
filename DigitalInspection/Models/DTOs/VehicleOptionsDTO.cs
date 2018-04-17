@@ -1,4 +1,6 @@
-﻿namespace DigitalInspection.Models.DTOs
+﻿using DigitalInspection.Models.Orders;
+
+namespace DigitalInspection.Models.DTOs
 {
 	public class VehicleOptionsDTO
 	{
@@ -8,6 +10,10 @@
 		public bool? hasABS { get; set; }
 
 		public VehicleOptionsDTO() { }
+
+		public VehicleOptionsDTO(VehicleOptions options) : this(options.Has4WD, options.HasAWD, options.HasAC, options.HasABS)
+		{
+		}
 
 		public VehicleOptionsDTO(bool? _4WD, bool? _AWD, bool? _AC, bool? _ABS)
 		{

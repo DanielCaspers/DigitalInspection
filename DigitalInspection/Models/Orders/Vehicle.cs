@@ -47,7 +47,7 @@ namespace DigitalInspection.Models.Orders
 			string transmission,
 			int? odometer,
 			IList<string> notes,
-			VehicleOptionsDTO options)
+			IList<VehicleOptionsDTO> options)
 		{
 			VIN = vin;
 			Year = year;
@@ -68,7 +68,7 @@ namespace DigitalInspection.Models.Orders
 
 			Options = options == null ?
 				new VehicleOptions() :
-				new VehicleOptions(options.has4WD, options.hasAWD, options.hasAC, options.hasABS);
+				new VehicleOptions(options[0].has4WD, options[0].hasAWD, options[0].hasAC, options[0].hasABS);
 		}
 	}
 }

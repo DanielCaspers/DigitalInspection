@@ -81,7 +81,7 @@ namespace DigitalInspection.Models.Mappers
 				dto.vehicleTransmission,
 				dto.vehicleOdometer,
 				dto.vehicleNotes,
-				dto.vehicle?.options);
+				dto.vehicleOptions);
 
 			if (dto.vehicleRS != null)
 			{
@@ -178,7 +178,10 @@ namespace DigitalInspection.Models.Mappers
 			dto.vehicleOdometer = order.Vehicle.Odometer;
 			dto.vehicleNotes = order.Vehicle.Notes;
 
-			dto.vehicle = new VehicleDTO(order.Vehicle.Options);
+			dto.vehicleOptions = new List<VehicleOptionsDTO>
+			{
+				new VehicleOptionsDTO(order.Vehicle.Options)
+			};
 
 			if (order.RecommendedServices == null)
 			{
