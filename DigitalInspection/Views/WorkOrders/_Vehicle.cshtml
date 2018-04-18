@@ -171,15 +171,12 @@
 {
 	<div class="container-fluid">
 		<div class="jumbotron">
-			@using (Ajax.BeginForm(
+			@using (Html.BeginForm(
 						"SaveVehicle",
 						"WorkOrders",
 						new { id = Model.WorkOrder.Id },
-						new AjaxOptions
-						{
-							InsertionMode = InsertionMode.Replace,
-							UpdateTargetId = "ajaxContentWrapper"
-						}, new
+						FormMethod.Post,
+						new
 						{
 							id = "editVehicleForm",
 							autocomplete = "off"
