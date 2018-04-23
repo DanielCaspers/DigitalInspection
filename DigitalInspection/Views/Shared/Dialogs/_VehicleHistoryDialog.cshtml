@@ -16,35 +16,35 @@
 			</div>
 
 			<div class="modal-body">
-                <div class="row">
-                    <b class="col-xs-2">
-                        Date
-                    </b>
-                    <b class="col-xs-2">
-                        Odometer
-                    </b>
-                    <b class="col-xs-2">
-                        Order #
-                    </b>
-                    <b class="col-xs-6">
-                        Labor Desc.
-                    </b>
-                </div>
+				<div class="row">
+					<b class="col-xs-2">
+						Date
+					</b>
+					<b class="col-xs-2">
+						Odometer
+					</b>
+					<b class="col-xs-2">
+						Order #
+					</b>
+					<b class="col-xs-6">
+						Labor Desc.
+					</b>
+				</div>
 				@for (int i = 0; i < Model.VehicleHistory.Count; i++)
 				{
 					<div class="row" style="margin-top:10px;">
-                        <div class="col-xs-2">
-                            @String.Format("{0:MM/dd/yy}", Model.VehicleHistory[i].CompletionDate)
+						<div class="col-xs-2">
+							@String.Format("{0:MM/dd/yy}", Model.VehicleHistory[i].CompletionDate)
 
-                        </div>
+						</div>
 						<div class="col-xs-2">
 							@Model.VehicleHistory[i].VehicleOdometer
 						</div>
 						<div class="col-xs-2">
-                            <a href="@ConfigurationManager.AppSettings.Get("MurphyAutomotiveVehicleHistoryInvoiceUrl")@Model.VehicleHistory[i].InvoiceLink"
-                               target="_blank">
-                                @Model.VehicleHistory[i].OrderId.Substring(0,3) - @Model.VehicleHistory[i].OrderId.Substring(3)
-                            </a>
+							<a href="@ConfigurationManager.AppSettings.Get("MurphyAutomotiveVehicleHistoryInvoiceUrl")@Model.VehicleHistory[i].InvoiceLink"
+								target="_blank">
+								@Model.VehicleHistory[i].OrderId.Substring(0,3) - @Model.VehicleHistory[i].OrderId.Substring(3)
+							</a>
 						</div>
 						<div class="col-xs-6">
 							@if (Model.VehicleHistory[i].LaborDescription != null)
