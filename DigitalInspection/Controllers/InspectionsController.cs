@@ -37,6 +37,16 @@ namespace DigitalInspection.Controllers
 		}
 
 		[AllowAnonymous]
+		public JsonResult InspectionIdForOrder(string workOrderId)
+		{
+			var id = _context.Inspections
+				.SingleOrDefault(i => i.WorkOrderId == workOrderId)
+				?.Id;
+
+			return Json(id, JsonRequestBehavior.AllowGet);
+		}
+
+		[AllowAnonymous]
 		public JsonResult ReportForOrder(string workOrderId, bool grouped = false)
 		{
 			var inspectionItems = _context.Inspections
