@@ -41,10 +41,10 @@
 							@Model.VehicleHistory[i].VehicleOdometer
 						</div>
 						<div class="col-xs-2">
-							<a href="@ConfigurationManager.AppSettings.Get("MurphyAutomotiveVehicleHistoryInvoiceUrl")@Model.VehicleHistory[i].InvoiceLink"
-							   target="_blank">
-								@Model.VehicleHistory[i].OrderId.Substring(3)
-							</a>
+                            <a href="@ConfigurationManager.AppSettings.Get("MurphyAutomotiveVehicleHistoryInvoiceUrl")@Model.VehicleHistory[i].InvoiceLink"
+                               target="_blank">
+                                @Model.VehicleHistory[i].OrderId.Substring(0,3) - @Model.VehicleHistory[i].OrderId.Substring(3)
+                            </a>
 						</div>
 						<div class="col-xs-6">
 							@if (Model.VehicleHistory[i].LaborDescription != null)
