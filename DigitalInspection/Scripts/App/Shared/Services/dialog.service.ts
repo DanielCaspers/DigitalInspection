@@ -14,6 +14,15 @@
 		// });
 	}
 
+	public static confirm(formToSubmitOnSuccess: string): void {
+
+		$('#confirmDialog').modal();
+
+		$('#confirmDialog_success').click(() => {
+			$(`#${formToSubmitOnSuccess}`).submit();
+		});
+	}
+
 	public static show(dialogId: string, formName?: string, onShow?: () => void): void {
 		let dialogElement: JQuery = $('#' + dialogId);
 		let formElement: JQuery | null = null;

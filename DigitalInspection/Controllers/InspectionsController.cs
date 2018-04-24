@@ -89,6 +89,28 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
+		public ActionResult MarkAsCompleted(Guid inspectionId)
+		{
+			var inspection = _context.Inspections.Single(i => i.Id == inspectionId);
+
+			var task = Task.Run(async () => {
+				return await WorkOrderService.SetStatus(CurrentUserClaims, inspection.WorkOrderId, GetCompanyNumber(), WorkOrderStatusCode.InspectionCompleted);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			if (task.Result.IsSuccessStatusCode)
+			{
+				return RedirectToAction("Index","WorkOrders");
+			}
+			else
+			{
+				return new EmptyResult();
+			}
+		}
+
+		[HttpPost]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult Condition(Guid inspectionItemId, RecommendedServiceSeverity inspectionItemCondition)
 		{
 			// Save Condition
@@ -357,6 +379,13 @@ namespace DigitalInspection.Controllers
 				},
 				ViewInspectionPhotosVM = new ViewInspectionPhotosViewModel(),
 				VehicleHistoryVM = new VehicleHistoryViewModel(),
+				ConfirmInspectionCompleteViewModel = new ConfirmDialogViewModel
+				{
+					Title = "Mark inspection as completed?",
+					Body = "This cannot be undone without a service advisor.",
+					AffirmativeActionText = "I'm done!",
+					CancelActionText = "Not yet"
+				},
 				ScrollableTabContainerVM = GetScrollableTabContainerViewModel(tagId),
 				FilteringTagId = tagId
 			});

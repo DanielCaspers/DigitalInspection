@@ -252,6 +252,7 @@
     <Compile Include="Models\Mappers\VehicleHistoryItemMapper.cs" />
     <Compile Include="Models\Orders\VehicleOptions.cs" />
     <Compile Include="Services\Core\InspectionService.cs" />
+    <Compile Include="ViewModels\ConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\VehicleHistory\VehicleHistoryViewModel.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
@@ -496,6 +497,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\WorkOrders\_Layout_Locked.cshtml" />
     <Content Include="Views\Shared\Dialogs\_VehicleHistoryDialog.cshtml" />
+    <Content Include="Views\Shared\Dialogs\_Confirm.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Shared\Components\customer-vehicle-summary.component.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\location.service.ts" />

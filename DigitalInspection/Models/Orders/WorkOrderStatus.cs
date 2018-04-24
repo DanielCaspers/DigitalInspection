@@ -1,6 +1,9 @@
 ﻿
 namespace DigitalInspection.Models.Orders
 {
+	// TODO As DI's responsibility with mutating order statuses increases, properly integrate this with model below
+	public enum WorkOrderStatusCode { InspectionCanBeMarkedForCompletion = 15, InspectionCompleted = 22 }
+
 	public class WorkOrderStatus
 	{
 		public int Code { get; set; }

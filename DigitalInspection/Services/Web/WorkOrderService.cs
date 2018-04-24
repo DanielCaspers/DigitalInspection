@@ -169,6 +169,32 @@ namespace DigitalInspection.Services.Web
 
 		#endregion
 
+		#region Set Work Order Status
+
+		public static async Task<HttpResponse<bool>> SetStatus(IEnumerable<Claim> userClaims, string id, string companyNumber, WorkOrderStatusCode status)
+		{
+			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
+			{
+				var url = $"orderstatus/{id}";
+				var formContent = new FormUrlEncodedContent(new[]
+				{
+					new KeyValuePair<string, string>("newstatus", ((int) status).ToString())
+				});
+
+				var response = await httpClient.PostAsync(url, formContent);
+				var json = await response.Content.ReadAsStringAsync();
+
+				HttpResponse<bool> httpResponse = new HttpResponse<bool>(response, json)
+				{
+					Entity = true
+				};
+
+				return httpResponse;
+			}
+		}
+
+		#endregion
+
 		#region Helpers
 
 		private static IList<WorkOrder> GetWorkOrdersInternal(string json)

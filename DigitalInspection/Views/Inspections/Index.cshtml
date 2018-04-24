@@ -1,4 +1,5 @@
-﻿@using DigitalInspection.Views.Helpers
+﻿@using DigitalInspection.Models.Orders
+@using DigitalInspection.Views.Helpers
 @model DigitalInspection.ViewModels.Inspections.InspectionDetailViewModel
 
 @{
@@ -8,14 +9,16 @@
 
 @section Toolbar{
 	<div class="container-flex between ma-nav-info">
-		<div>
-			<a href="@Url.Action("_Inspection", "WorkOrders", new { id = Model.WorkOrder.Id })"
-			   class="btn btn-default back-button no-margin pull-left">
+		<a href="@Url.Action("_Inspection", "WorkOrders", new {id = Model.WorkOrder.Id})"
+		   class="btn btn-default back-button no-margin no-padding-horizontal">
+			<div>
 				<i class="material-icons">arrow_back</i>
-				@Model.Checklist.Name - @Model.WorkOrder.Id.Substring(3)
-			</a>
-
-		</div>
+				@Model.WorkOrder.Id.Substring(3)
+			</div>
+			<div>
+				@Model.Checklist.Name
+			</div>
+		</a>
 
 		<div>
 			@Html.Partial("_CustomerVehicleSummary", Model.WorkOrder)
@@ -55,7 +58,7 @@
 			@if (Model.WorkOrder.RecommendedServices != null)
 			{
 				<button type="button"
-				        class="btn btn-primary bold no-margin"
+				        class="btn btn-primary bold no-margin no-padding-horizontal"
 				        onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
 					<span>RS</span>
 				</button>
@@ -64,12 +67,12 @@
 			{
 				<button type="button"
 				        disabled="disabled"
-				        class="btn btn-primary bold no-margin"
+				        class="btn btn-primary bold no-margin no-padding-horizontal"
 				        onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
 					<span>RS</span>
 				</button>
 			}
-			
+
 			@{
 				var materialIcon = Model.WorkOrder.Notes.All(string.IsNullOrWhiteSpace) ? "chat_bubble_outline" : "chat";
 				var iconHtml = string.Format("<i class='material-icons'>{0}</i>", materialIcon);
@@ -92,6 +95,35 @@
 						@class = "btn btn-primary no-margin no-padding-horizontal"
 					});
 			}
+			
+			@if (Model.WorkOrder.Status != null &&
+			     Model.WorkOrder.Status.Code >= (int) WorkOrderStatusCode.InspectionCanBeMarkedForCompletion &&
+			     Model.WorkOrder.Status.Code < (int) WorkOrderStatusCode.InspectionCompleted)
+			{
+				using (Html.BeginForm(
+					"MarkAsCompleted",
+					"Inspections",
+					new { inspectionId = Model.Inspection.Id },
+					FormMethod.Post,
+					new { id = "markInspectionAsCompletedForm", @class="ma-inline-form" }))
+				{
+				}
+
+				<button type="button"
+				        class="btn btn-primary no-margin no-padding-horizontal"
+				        onclick="DialogService.confirm('markInspectionAsCompletedForm')"
+				        style="color: limegreen">
+					<i class='material-icons'>done_all</i>
+				</button>
+			}
+			else
+			{
+				<button type="button"
+				        class="btn btn-primary no-margin no-padding-horizontal"
+				        disabled="disabled">
+					<i class='material-icons'>done_all</i>
+				</button>
+			}
 
 		</div>
 	</div>
@@ -101,6 +133,8 @@
 {
 	@Html.Partial("../Shared/Dialogs/_EditRecommendedServicesDialog", Model.WorkOrder)
 }
+
+@Html.Partial("../Shared/Dialogs/_Confirm", Model.ConfirmInspectionCompleteViewModel)
 
 <div id="VehicleHistoryDynamicDialogContainer">
 	@Html.Partial("../Shared/Dialogs/_VehicleHistoryDialog", Model.VehicleHistoryVM)

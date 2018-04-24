@@ -30,6 +30,8 @@ namespace DigitalInspection.ViewModels.Inspections
 
 		public VehicleHistoryViewModel VehicleHistoryVM { get; set; }
 
+		public ConfirmDialogViewModel ConfirmInspectionCompleteViewModel { get; set; }
+
 		public ScrollableTabContainerViewModel ScrollableTabContainerVM { get; set; }
 	}
 }
