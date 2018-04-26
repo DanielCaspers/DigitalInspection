@@ -9,6 +9,8 @@ namespace DigitalInspection.Models.DTOs
 		public long? orderDate { get; set; }
 		public long? schedDate { get; set; }
 		public long? completionDate { get; set; }
+		public long? customerWaiting { get; set; }
+		public long? inspectionCompleted { get; set; }
 		public string techNum { get; set; }
 		public string serviceAdvisor { get; set; }
 		public string serviceAdvisorName { get; set; }

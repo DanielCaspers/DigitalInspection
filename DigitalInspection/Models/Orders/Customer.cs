@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DigitalInspection.Utils;
 
@@ -17,6 +18,8 @@ namespace DigitalInspection.Models.Orders
 
 		public IList<string> Notes { get; set; }
 
+		public DateTime? WaitingSinceDate { get; set; }
+
 		public Customer() { }
 
 		public Customer(
@@ -24,13 +27,15 @@ namespace DigitalInspection.Models.Orders
 			string name,
 			Address address,
 			IList<PhoneNumber> phoneNumbers,
-			IList<string> notes)
+			IList<string> notes,
+			long? waitingSince)
 		{
 			Id = id;
 			Name = name?.ToTitleCase();
 			Address = address;
 			PhoneNumbers = phoneNumbers;
 			Notes = notes;
+			WaitingSinceDate = DateTimeUtils.FromUnixTime(waitingSince);
 		}
 	}
 }

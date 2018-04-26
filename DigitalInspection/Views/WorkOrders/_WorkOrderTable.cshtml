@@ -1,4 +1,5 @@
-﻿@model DigitalInspection.ViewModels.WorkOrders.WorkOrderMasterViewModel
+﻿@using DigitalInspection.Utils
+@model DigitalInspection.ViewModels.WorkOrders.WorkOrderMasterViewModel
 
 <script type="text/javascript">
 	var onSelect = function (e, dataTableInstance, type, indexes) {
@@ -61,7 +62,19 @@
 					<td>
 						@if (workOrder.Status != null)
 						{
-							@workOrder.Status.Description
+							<div>@workOrder.Status.Description</div>
+						}
+
+						@if (workOrder.Customer.WaitingSinceDate.HasValue)
+						{
+							var waitTime = DateTimeUtils.DeltaFromNow(workOrder.Customer.WaitingSinceDate.Value);
+							<div class="time-delta customer-wait">Customer waiting @waitTime</div>
+						}
+						
+						@if (workOrder.InspectionCompletionDate.HasValue)
+						{
+							var completedSince = DateTimeUtils.DeltaFromNow(workOrder.InspectionCompletionDate.Value);
+							<div class="time-delta inspection-completed">Inspection completed @completedSince</div>
 						}
 					</td>
 					<!-- http://www.csharp-examples.net/string-format-datetime/ -->

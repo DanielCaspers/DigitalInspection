@@ -36,6 +36,8 @@ namespace DigitalInspection.Models.Orders
 
 		public DateTime? CompletionDate { get; set; }
 
+		public DateTime? InspectionCompletionDate { get; set; }
+
 		[Required]
 		public WorkOrderStatus Status { get; set; }
 

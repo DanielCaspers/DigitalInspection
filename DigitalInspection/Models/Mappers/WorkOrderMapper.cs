@@ -15,6 +15,7 @@ namespace DigitalInspection.Models.Mappers
 			order.Date = DateTimeUtils.FromUnixTime(dto.orderDate);
 			order.ScheduleDate = DateTimeUtils.FromUnixTime(dto.schedDate);
 			order.CompletionDate = DateTimeUtils.FromUnixTime(dto.completionDate);
+			order.InspectionCompletionDate = DateTimeUtils.FromUnixTime(dto.inspectionCompleted);
 			order.EmployeeId = dto.techNum;
 			order.WorkDescription = dto.workDesc;
 
@@ -68,7 +69,8 @@ namespace DigitalInspection.Models.Mappers
 				dto.clientName?.Trim(),
 				clientAddress,
 				clientPhoneNumbers,
-				dto.clientNotes);
+				dto.clientNotes,
+				dto.customerWaiting);
 
 			order.Vehicle = new Vehicle(
 				dto.vehicleID,
@@ -118,6 +120,7 @@ namespace DigitalInspection.Models.Mappers
 			dto.orderDate = DateTimeUtils.ToUnixTime(order.Date);
 			dto.schedDate = DateTimeUtils.ToUnixTime(order.ScheduleDate);
 			dto.completionDate = DateTimeUtils.ToUnixTime(order.CompletionDate);
+			dto.inspectionCompleted = DateTimeUtils.ToUnixTime(order.InspectionCompletionDate);
 			dto.techNum = order.EmployeeId;
 			dto.workDesc = order.WorkDescription;
 			dto.orderNotes = order.Notes;
@@ -142,6 +145,7 @@ namespace DigitalInspection.Models.Mappers
 			dto.clientID = order.Customer.Id;
 			dto.clientName = order.Customer.Name?.ToUpper();
 			dto.clientNotes = order.Customer.Notes;
+			dto.customerWaiting = DateTimeUtils.ToUnixTime(order.Customer.WaitingSinceDate);
 
 			dto.clientAddr = order.Customer.Address.Line1?.ToUpper();
 			dto.clientAddr2 = order.Customer.Address.Line2?.ToUpper();

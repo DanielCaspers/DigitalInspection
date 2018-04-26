@@ -464,6 +464,7 @@
     <Content Include="Content\Components\toolbar.scss" />
     <Content Include="Content\Components\tab-container.scss" />
     <Content Include="Content\Views\views.scss" />
+    <Content Include="Content\Views\work-order-table.scss" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MurphyAuto_Debug.pubxml" />
     <Content Include="Scripts\compiledTS\Shared\Services\location.service.js" />

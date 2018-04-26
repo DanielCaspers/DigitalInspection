@@ -1,0 +1,11 @@
+﻿.time-delta {
+	font-weight: bold;
+
+	&.customer-wait {
+		color: red;
+	}
+
+	&.inspection-completed {
+		color: darkgreen;
+	}
+}

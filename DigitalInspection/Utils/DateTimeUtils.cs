@@ -32,5 +32,21 @@ namespace DigitalInspection.Utils
 
 			return null;
 		}
+
+		public static string DeltaFromNow(DateTime dateTime)
+		{
+			var delta = DateTime.Now.Subtract(dateTime);
+			string waitTime;
+			if (delta.Hours > 0)
+			{
+				waitTime = string.Format("{0} hours, {1} minutes", delta.Hours, delta.Minutes);
+			}
+			else
+			{
+				waitTime = string.Format("{0} minutes", delta.Minutes);
+			}
+
+			return waitTime;
+		}
 	}
 }
