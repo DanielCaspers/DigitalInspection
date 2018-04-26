@@ -23,24 +23,25 @@ namespace DigitalInspection.Services.Core
 		public static bool DeleteInspection(ApplicationDbContext ctx, Inspection inspection)
 		{
 			var inspectionItems = ctx.InspectionItems.Where(ii => ii.Inspection.Id == inspection.Id);
-			// WARNING: FUNCTION IMPLEMENTATION HAS BE DE-OPTIMIZED DUE TO MYSQL LIMIATIONS. SEE GIT HISTORY FOR PREVIOUS IMPL
+			// WARNING: DbSet.RemoveRange() cannot be used on our current install of MySQL because we cannot handle multiple result sets.
+			// This is independent of the number of "save" transactions against the DB.
 			foreach (var inspectionItem in inspectionItems)
 			{
-				ctx.InspectionMeasurements.RemoveRange(inspectionItem.InspectionMeasurements);
-			}
+				foreach (var inspectionMeasurement in inspectionItem.InspectionMeasurements)
+				{
+					ctx.InspectionMeasurements.Remove(inspectionMeasurement);
+				}
 
-			TrySave(ctx);
+				foreach (var inspectionImage in inspectionItem.InspectionImages)
+				{
+					ctx.InspectionImages.Remove(inspectionImage);
+				}
+			}
 
 			foreach (var inspectionItem in inspectionItems)
 			{
-				ctx.InspectionImages.RemoveRange(inspectionItem.InspectionImages);
+				ctx.InspectionItems.Remove(inspectionItem);
 			}
-
-			TrySave(ctx);
-
-			ctx.InspectionItems.RemoveRange(inspectionItems);
-
-			TrySave(ctx);
 
 			ctx.Inspections.Remove(inspection);
 
