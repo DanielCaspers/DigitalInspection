@@ -23,13 +23,24 @@ namespace DigitalInspection.Services.Core
 		public static bool DeleteInspection(ApplicationDbContext ctx, Inspection inspection)
 		{
 			var inspectionItems = ctx.InspectionItems.Where(ii => ii.Inspection.Id == inspection.Id);
+			// WARNING: FUNCTION IMPLEMENTATION HAS BE DE-OPTIMIZED DUE TO MYSQL LIMIATIONS. SEE GIT HISTORY FOR PREVIOUS IMPL
 			foreach (var inspectionItem in inspectionItems)
 			{
 				ctx.InspectionMeasurements.RemoveRange(inspectionItem.InspectionMeasurements);
+			}
+
+			TrySave(ctx);
+
+			foreach (var inspectionItem in inspectionItems)
+			{
 				ctx.InspectionImages.RemoveRange(inspectionItem.InspectionImages);
 			}
 
+			TrySave(ctx);
+
 			ctx.InspectionItems.RemoveRange(inspectionItems);
+
+			TrySave(ctx);
 
 			ctx.Inspections.Remove(inspection);
 
