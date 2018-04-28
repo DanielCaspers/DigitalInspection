@@ -67,14 +67,12 @@
 
 						@if (workOrder.Customer.WaitingSinceDate.HasValue)
 						{
-							var waitTime = DateTimeUtils.DeltaFromNow(workOrder.Customer.WaitingSinceDate.Value);
-							<div class="time-delta customer-wait">Customer waiting @waitTime</div>
+							<i class="material-icons" style="color:royalblue;" title="Customer Waiting">assignment_ind</i>
 						}
 						
-						@if (workOrder.InspectionCompletionDate.HasValue)
+						@if (workOrder.Status!=null && workOrder.Status.Code==22)
 						{
-							var completedSince = DateTimeUtils.DeltaFromNow(workOrder.InspectionCompletionDate.Value);
-							<div class="time-delta inspection-completed">Inspection completed @completedSince</div>
+							<i class="material-icons" style="color:red;" title="Action Required">notifications_active</i>
 						}
 					</td>
 					<!-- http://www.csharp-examples.net/string-format-datetime/ -->
