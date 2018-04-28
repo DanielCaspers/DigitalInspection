@@ -2,18 +2,14 @@
 
 @using DigitalInspection.Views.Helpers;
 
-<span>
-	<div class="container-flex align-center between">
-		@if (Model.Customer.WaitingSinceDate.HasValue)
-		{
-		<i class="material-icons md-36" style="color:royalblue;" title="Customer Waiting">assignment_ind</i>
-		}
-		else
-		{
-			<i class="material-icons md-36 md-light" style="color:#ccc;" title="Customer Waiting">assignment_ind</i>
-		}
-		@HtmlHelpers.Pluralizer(Model.Customer.Name)
-	</div>
+<span class="container-flex align-center between">
+	@{
+		var iconColor = Model.Customer.WaitingSinceDate.HasValue ? "royalblue" : "#ccc";
+		var iconStyles = string.Format("color: {0}", iconColor);
+		<i class="material-icons md-36" style="@iconStyles" title="Customer Waiting">assignment_ind</i>
+	}
+
+	@HtmlHelpers.Pluralizer(Model.Customer.Name)
 </span>
 <span class="car-color-badge" style="background-color: @Model.Vehicle.Color;">
 	@Model.Vehicle.Year
