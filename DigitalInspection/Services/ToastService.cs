@@ -78,7 +78,7 @@ namespace DigitalInspection.Services
 			};
 		}
 
-		public static ToastViewModel WorkOrderError(HttpResponse<WorkOrder> response)
+		public static ToastViewModel WorkOrderError<T>(HttpResponse<T> response)
 		{
 			switch (response.HTTPCode)
 			{

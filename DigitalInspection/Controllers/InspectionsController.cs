@@ -33,7 +33,17 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult Index(string workOrderId, Guid checklistId, Guid? tagId)
 		{
-			return GetInspectionViewModel(workOrderId, checklistId, tagId);
+			return PartialView(GetInspectionViewModel(workOrderId, checklistId, tagId));
+		}
+
+		/*
+		 * Used so that on subsequent gets after we redirect from MarkAsCompleted,
+		 * we can continue navigating around using the tags
+		 */
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
+		public PartialViewResult MarkAsCompleted(string workOrderId, Guid checklistId, Guid? tagId)
+		{
+			return PartialView("Index", GetInspectionViewModel(workOrderId, checklistId, tagId));
 		}
 
 		[AllowAnonymous]
@@ -89,7 +99,7 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
-		public ActionResult MarkAsCompleted(Guid inspectionId)
+		public ActionResult MarkAsCompleted(Guid inspectionId, string workOrderId, Guid checklistId, Guid? tagId)
 		{
 			var inspection = _context.Inspections.Single(i => i.Id == inspectionId);
 
@@ -105,7 +115,9 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				return new EmptyResult();
+				var viewModel = GetInspectionViewModel(workOrderId, checklistId, tagId);
+				viewModel.Toast = ToastService.WorkOrderError(task.Result);
+				return PartialView("Index", viewModel);
 			}
 		}
 
@@ -326,7 +338,7 @@ namespace DigitalInspection.Controllers
 			});
 		}
 
-		private PartialViewResult GetInspectionViewModel(string workOrderId, Guid checklistId, Guid? tagId)
+		private InspectionDetailViewModel GetInspectionViewModel(string workOrderId, Guid checklistId, Guid? tagId)
 		{
 			var workOrderResponse = GetWorkOrderResponse(workOrderId);
 			var workOrder = workOrderResponse.Entity;
@@ -365,7 +377,7 @@ namespace DigitalInspection.Controllers
 				inspectionItem.SelectedCannedResponseIds = inspectionItem.CannedResponses.Select(cr => cr.Id).ToList();
 			}
 
-			return PartialView(new InspectionDetailViewModel
+			return new InspectionDetailViewModel
 			{
 				WorkOrder = workOrder,
 				Checklist = checklist,
@@ -388,7 +400,7 @@ namespace DigitalInspection.Controllers
 				},
 				ScrollableTabContainerVM = GetScrollableTabContainerViewModel(tagId),
 				FilteringTagId = tagId
-			});
+			};
 		}
 
 		private ScrollableTabContainerViewModel GetScrollableTabContainerViewModel(Guid? tagId)

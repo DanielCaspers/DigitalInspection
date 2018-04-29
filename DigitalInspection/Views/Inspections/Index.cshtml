@@ -103,7 +103,14 @@
 				using (Html.BeginForm(
 					"MarkAsCompleted",
 					"Inspections",
-					new { inspectionId = Model.Inspection.Id },
+					new
+					{
+						inspectionId = Model.Inspection.Id,
+						workOrderId = Model.WorkOrder.Id,
+						checklistId = Model.Checklist.Id,
+						tagId = Model.FilteringTagId
+
+					},
 					FormMethod.Post,
 					new { id = "markInspectionAsCompletedForm", @class="ma-inline-form" }))
 				{

@@ -87,7 +87,7 @@
 				@if (Model.WorkOrder.RecommendedServices != null)
 				{
 					<button type="button"
-							class="btn btn-default bold no-margin"
+							class="btn btn-default bold no-margin no-padding-horizontal"
 							onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
 						<span>RS</span>
 					</button>
@@ -96,7 +96,7 @@
 				{
 					<button type="button"
 							disabled="disabled"
-							class="btn btn-default bold no-margin"
+							class="btn btn-default bold no-margin no-padding-horizontal"
 							onclick="DialogService.show('editRecommendedServicesDialog', 'editRecommendedServices')">
 						<span>RS</span>
 					</button>
@@ -130,7 +130,7 @@
 				@if (Model.CanEdit)
 				{
 					<button type="button"
-							class="btn btn-default no-margin"
+							class="btn btn-default no-margin no-padding-horizontal"
 							onclick="FormService.submit('editVehicleForm', true)">
 						<i class="material-icons">save</i>
 					</button>
@@ -138,7 +138,7 @@
 				else
 				{
 					<a href="@Url.Action("_Vehicle", "WorkOrders", new {id = Model.WorkOrder.Id, canEdit = true})"
-					   class="btn btn-default no-margin"
+					   class="btn btn-default no-margin no-padding-horizontal"
 					   onclick="FormService.showProgress()">
 						<i class="material-icons">edit</i>
 					</a>
