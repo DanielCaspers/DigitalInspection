@@ -57,23 +57,23 @@ namespace DigitalInspection.Controllers
 		}
 
 		[AllowAnonymous]
-		public JsonResult ReportForOrder(string workOrderId, bool grouped = false)
+		public JsonResult ReportForOrder(string workOrderId, bool grouped = false, bool includeUnknown = false)
 		{
 			var inspectionItems = _context.Inspections
 				.Single(i => i.WorkOrderId == workOrderId)
 				.InspectionItems;
 
-			return BuildInspectionReportInternal(inspectionItems, grouped);
+			return BuildInspectionReportInternal(inspectionItems, grouped, includeUnknown);
 		}
 
 		[AllowAnonymous]
-		public JsonResult Report(Guid inspectionId, bool grouped = false)
+		public JsonResult Report(Guid inspectionId, bool grouped = false, bool includeUnknown = false)
 		{
 			var inspectionItems = _context.Inspections
 				.Single(i => i.Id == inspectionId)
 				.InspectionItems;
 
-			return BuildInspectionReportInternal(inspectionItems, grouped);
+			return BuildInspectionReportInternal(inspectionItems, grouped, includeUnknown);
 		}
 
 		[HttpPost]
@@ -441,7 +441,7 @@ namespace DigitalInspection.Controllers
 			};
 		}
 
-		private JsonResult BuildInspectionReportInternal(IEnumerable<InspectionItem> unfilteredInspectionItems, bool grouped)
+		private JsonResult BuildInspectionReportInternal(IEnumerable<InspectionItem> unfilteredInspectionItems, bool grouped, bool includeUnknown)
 		{
 			var applicableTags = _context.Tags
 				.Where(t => t.IsVisibleToCustomer)
@@ -454,9 +454,13 @@ namespace DigitalInspection.Controllers
 					.Select(t => t.Id)
 					.Intersect(applicableTags)
 					.Any()
-				)
+				).ToList();
+
+			if (!includeUnknown)
+			{
 				// Only show inspection items which have had a marked condition
-				.Where(ii => ii.Condition != RecommendedServiceSeverity.UNKNOWN);
+				inspectionItems = inspectionItems.Where(ii => ii.Condition != RecommendedServiceSeverity.UNKNOWN).ToList();
+			}
 
 			string baseUrl = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
 
