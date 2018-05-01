@@ -129,11 +129,9 @@ namespace DigitalInspection.Services.Core
 
 		public static bool DeleteInspectionItemImage(
 			ApplicationDbContext ctx,
-			InspectionItem inspectionItem,
-			Image image)
+			InspectionImage image)
 		{
-			var imageToDelete = ctx.InspectionImages.Single(inspectionImage => inspectionImage.Title == image.Title);
-			ctx.InspectionImages.Remove(imageToDelete);
+			ctx.InspectionImages.Remove(image);
 			return TrySave(ctx);
 		}
 

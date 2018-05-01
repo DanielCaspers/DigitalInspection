@@ -33,35 +33,19 @@
 					<div id="inspectionPhotosCarousel" class="carousel" data-ride="carousel" data-interval="false">
 						<!-- Indicators -->
 						<ol class="carousel-indicators">
-							@for(var i = 0; i< Model.ImageSources.Count; i++)
+							@for(var i = 0; i < Model.Images.Count; i++)
 							{
-								if (i == 0)
-								{
-									<li data-target="#inspectionPhotosCarousel" data-slide-to="0" class="active"></li>
-								}
-								else
-								{
-									<li data-target="#inspectionPhotosCarousel" data-slide-to="@i"></li>
-								}
+								<li data-target="#inspectionPhotosCarousel" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
 							}
 						</ol>
 
 						<!-- Wrapper for slides -->
 						<div class="carousel-inner container-flex center">
-							@foreach (var imageSrc in Model.ImageSources)
+							@foreach (var image in Model.Images)
 							{
-								if (imageSrc == Model.ImageSources[0])
-								{
-									<div class="item active">
-										<img src="@imageSrc" style="max-height: 55vh;"/>
-									</div>
-								}
-								else
-								{
-									<div class="item">
-										<img src="@imageSrc" style="max-height: 55vh;"/>
-									</div>
-								}
+								<div class="item @(image.Id == Model.Images[0].Id ? "active" : "")">
+									<img src="@image.Title" data-image-id="@image.Id" style="max-height: 55vh;"/>
+								</div>
 							}
 						</div>
 
@@ -77,14 +61,13 @@
 					</div>
 				</div>
 
-				<div class="modal-footer container-flex end center">
+				<div class="modal-footer container-flex between">
 					<button id="@DELETE"
 					        type="button"
 					        class="btn btn-warning"
-					        style="margin-right: 20px"
 					        data-dismiss="modal"
-					        onclick="var imagePath = $('.carousel-inner .item.active img').attr('src');
-							FormService.triggerExternalSubmit('viewInspectionPhotosForm', false, false, {name: 'path', value: imagePath} )">
+					        onclick="var imageId = $('.carousel-inner .item.active img').attr('data-image-id');
+							FormService.triggerExternalSubmit('viewInspectionPhotosForm', false, false, {name: 'imageId', value: imageId} )">
 						Delete
 					</button>
 					<button id="@CANCEL"

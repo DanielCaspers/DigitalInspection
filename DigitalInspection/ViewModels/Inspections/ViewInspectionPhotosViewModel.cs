@@ -7,6 +7,6 @@ namespace DigitalInspection.ViewModels.Inspections
 	{
 		public ChecklistItem ChecklistItem { get; set; }
 
-		public IList<string> ImageSources { get; set; }
+		public IList<InspectionImage> Images { get; set; }
 	}
 }

@@ -259,28 +259,28 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
-		public ActionResult DeletePhoto(string path /*, Guid checklistId, Guid? tagId*/)
+		public ActionResult DeletePhoto(Guid imageId /*, Guid checklistId, Guid? tagId*/)
 		{
-			var pathParts = path.Split('/');
-			var workOrderId = pathParts[pathParts.Length - 3];
-			var inspectionItemId = Guid.Parse(pathParts[pathParts.Length - 2]);
-			var imageTitle = pathParts[pathParts.Length - 1];
+			var image = _context.InspectionImages.SingleOrDefault(inspectionImage => inspectionImage.Id == imageId);
 
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			if (image == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound("Image"));
+			}
+
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == image.InspectionItem.Id);
 
 			if (inspectionItemInDb == null)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
 
-			Image imageToDelete = _context.InspectionImages.SingleOrDefault(image => image.Title == imageTitle);
+			ImageService.DeleteImage(image);
 
-			ImageService.DeleteImage(imageToDelete);
-
-			if (InspectionService.DeleteInspectionItemImage(_context, inspectionItemInDb, imageToDelete))
+			if (InspectionService.DeleteInspectionItemImage(_context, image))
 			{
 				//return RedirectToAction("Index", new { workOrderId = workOrderId, checklistId = checklistId, tagId = tagId });
-				return RedirectToAction("_Inspection", "WorkOrders", new {id = workOrderId});
+				return RedirectToAction("_Inspection", "WorkOrders", new {id = inspectionItemInDb.Inspection.WorkOrderId});
 			}
 
 			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
@@ -356,14 +356,18 @@ namespace DigitalInspection.Controllers
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			var inspectionItem = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
 
-			IList<string> imageSources = inspectionItem.InspectionImages
-				.Select((image) => Path.Combine($"/Uploads/{IMAGE_DIRECTORY}/{workOrderId}/{inspectionItemId.ToString()}/", image.Title))
+			IList<InspectionImage> images = inspectionItem.InspectionImages
+				.Select((image) =>
+				{
+					image.Title = Path.Combine($"/Uploads/{IMAGE_DIRECTORY}/{workOrderId}/{inspectionItemId.ToString()}/", image.Title);
+					return image;
+				})
 				.ToList();
 
 			return PartialView("_ViewInspectionPhotosDialog", new ViewInspectionPhotosViewModel
 			{
 				ChecklistItem = checklistItem,
-				ImageSources = imageSources
+				Images = images
 			});
 		}
 
