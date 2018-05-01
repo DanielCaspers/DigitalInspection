@@ -3,10 +3,25 @@
 @{
 	const string TEMPLATE_NAMESPACE = "viewInspectionPhotosDialog";
 	const string CANCEL = TEMPLATE_NAMESPACE + "_cancel";
+	const string DELETE = TEMPLATE_NAMESPACE + "_success";
 }
 
 @if (Model.ChecklistItem != null)
 {
+	using (Html.BeginForm(
+		 "DeletePhoto",
+		 "Inspections",
+		 new
+		 {
+		 },
+		 FormMethod.Post,
+		 new
+		 {
+			 id = "viewInspectionPhotosForm",
+		 })
+		 )
+	 {
+	 }
 	<div id="@TEMPLATE_NAMESPACE" class="modal fade">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -62,8 +77,22 @@
 					</div>
 				</div>
 
-				<div class="modal-footer">
-					<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+				<div class="modal-footer container-flex end center">
+					<button id="@DELETE"
+					        type="button"
+					        class="btn btn-warning"
+					        style="margin-right: 20px"
+					        data-dismiss="modal"
+					        onclick="var imagePath = $('.carousel-inner .item.active img').attr('src');
+							FormService.triggerExternalSubmit('viewInspectionPhotosForm', false, false, {name: 'path', value: imagePath} )">
+						Delete
+					</button>
+					<button id="@CANCEL"
+					        type="button"
+					        class="btn btn-default"
+					        data-dismiss="modal">
+						Dismiss
+					</button>
 				</div>
 			</div>
 		</div>

@@ -127,6 +127,16 @@ namespace DigitalInspection.Services.Core
 			return TrySave(ctx);
 		}
 
+		public static bool DeleteInspectionItemImage(
+			ApplicationDbContext ctx,
+			InspectionItem inspectionItem,
+			Image image)
+		{
+			var imageToDelete = ctx.InspectionImages.Single(inspectionImage => inspectionImage.Title == image.Title);
+			ctx.InspectionImages.Remove(imageToDelete);
+			return TrySave(ctx);
+		}
+
 		#endregion
 
 		#region Private Helpers

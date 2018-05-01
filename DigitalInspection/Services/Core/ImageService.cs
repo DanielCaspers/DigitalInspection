@@ -38,7 +38,7 @@ namespace DigitalInspection.Services.Core
 			return null;
 		}
 
-		public static void DeleteImage(Image picture, string subdirectory)
+		public static void DeleteImage(Image picture)
 		{
 			if (picture != null && File.Exists(picture.ImageUrl))
 			{

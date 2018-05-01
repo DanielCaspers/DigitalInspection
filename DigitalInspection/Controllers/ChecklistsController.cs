@@ -109,7 +109,7 @@ namespace DigitalInspection.Controllers
 				// Only update the picture if a new one was uploaded
 				if(picture != null && picture.ContentLength > 0)
 				{
-					ImageService.DeleteImage(checklistInDb.Image, IMAGE_SUBDIRECTORY);
+					ImageService.DeleteImage(checklistInDb.Image);
 					checklistInDb.Image = ImageService.SaveImage(picture, IMAGE_SUBDIRECTORY, id.ToString());
 				}
 
@@ -148,7 +148,7 @@ namespace DigitalInspection.Controllers
 					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 				}
 
-				ImageService.DeleteImage(checklist.Image, IMAGE_SUBDIRECTORY);
+				ImageService.DeleteImage(checklist.Image);
 
 				_context.Checklists.Remove(checklist);
 				_context.SaveChanges();

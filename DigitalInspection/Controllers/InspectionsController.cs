@@ -259,6 +259,35 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
+		public ActionResult DeletePhoto(string path /*, Guid checklistId, Guid? tagId*/)
+		{
+			var pathParts = path.Split('/');
+			var workOrderId = pathParts[pathParts.Length - 3];
+			var inspectionItemId = Guid.Parse(pathParts[pathParts.Length - 2]);
+			var imageTitle = pathParts[pathParts.Length - 1];
+
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+
+			if (inspectionItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+			}
+
+			Image imageToDelete = _context.InspectionImages.SingleOrDefault(image => image.Title == imageTitle);
+
+			ImageService.DeleteImage(imageToDelete);
+
+			if (InspectionService.DeleteInspectionItemImage(_context, inspectionItemInDb, imageToDelete))
+			{
+				//return RedirectToAction("Index", new { workOrderId = workOrderId, checklistId = checklistId, tagId = tagId });
+				return RedirectToAction("_Inspection", "WorkOrders", new {id = workOrderId});
+			}
+
+			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+		}
+
+		[HttpPost]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetAddMeasurementDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.Single(ci => ci.Id == checklistItemId);
