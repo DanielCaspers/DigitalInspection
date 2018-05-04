@@ -259,7 +259,7 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
-		public ActionResult DeletePhoto(Guid imageId /*, Guid checklistId, Guid? tagId*/)
+		public ActionResult DeletePhoto(Guid imageId, Guid checklistId, Guid? tagId, string workOrderId)
 		{
 			var image = _context.InspectionImages.SingleOrDefault(inspectionImage => inspectionImage.Id == imageId);
 
@@ -279,8 +279,7 @@ namespace DigitalInspection.Controllers
 
 			if (InspectionService.DeleteInspectionItemImage(_context, image))
 			{
-				//return RedirectToAction("Index", new { workOrderId = workOrderId, checklistId = checklistId, tagId = tagId });
-				return RedirectToAction("_Inspection", "WorkOrders", new {id = inspectionItemInDb.Inspection.WorkOrderId});
+				return RedirectToAction("Index", new { workOrderId, checklistId, tagId });
 			}
 
 			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
@@ -351,7 +350,7 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
-		public PartialViewResult GetViewInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, string workOrderId)
+		public PartialViewResult GetViewInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, Guid checklistId, Guid? tagId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			var inspectionItem = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
@@ -367,7 +366,10 @@ namespace DigitalInspection.Controllers
 			return PartialView("_ViewInspectionPhotosDialog", new ViewInspectionPhotosViewModel
 			{
 				ChecklistItem = checklistItem,
-				Images = images
+				Images = images,
+				ChecklistId = checklistId,
+				TagId = tagId,
+				WorkOrderId = workOrderId
 			});
 		}
 

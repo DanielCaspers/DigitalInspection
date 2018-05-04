@@ -65,9 +65,19 @@
 	private static addUrlParameter(
 		formId: string,
 		urlParam: { name: string, value: string }): void {
-		let formElement = $('#' + formId);
+		let formElement = $(`#${formId}`);
 		const routingAction = formElement.attr('action');
-		const query = `?${urlParam.name}=${urlParam.value}`;
+
+		let query = "";
+		// If query parameter is missing, begin the query parameter list
+		if (routingAction.indexOf('?') === -1) {
+			query += '?';
+		}
+		// Else, tack on one add'l parameter to existing query string
+		else {
+			query += '&';
+		}
+		query += `${urlParam.name}=${urlParam.value}`;
 		formElement.attr('action', routingAction + query);
 	}
 }
