@@ -3,7 +3,7 @@
 @model DigitalInspection.ViewModels.WorkOrders.WorkOrderMasterViewModel
 
 <script type="text/javascript">
-	var onSelect = function (e, dataTableInstance, type, indexes) {
+	var onSelect = function(e, dataTableInstance, type, indexes) {
 		// console.log('Running onSelect', e, dataTableInstance, type, indexes);
 		if (type === 'row') {
 			FormService.showProgress();
@@ -16,11 +16,59 @@
 	var config = TableService.BASE_TABLE_CONFIG;
 	config.select = !!onSelect;
 	config.lengthMenu = [10, 15, 20, 40];
-	config.columnDefs = [{
-		targets: 3,
-		orderable: false,
-		searchable: false
-	}];
+	config.columnDefs = [
+		{
+			targets: 3,
+			orderable: false,
+			searchable: false
+		}
+	];
+
+	var columnsToFilter = [1, 2, 5, 6];
+
+	config.initComplete = function() {
+		this.api().columns().every(function (index) {
+			if (!columnsToFilter.includes(index)) return;
+
+			var column = this;
+			var select = $('<select><option value=""></option></select>')
+				.appendTo($(column.footer()).empty())
+				.on('change',
+				function () {
+					// Get the recently changed select box value
+					var filterValue = $(this).find(':selected').text();
+
+					// Get the current search box input
+					var currentSearch = $('#workOrderTable_searchInput').val();
+
+					// Append the latest filter parameter to the query
+					var updatedSearch = `${currentSearch} ${filterValue}`;
+
+					// Update the table
+					$('#workOrderTable_searchInput').val(updatedSearch);
+					$('#workOrderTable').DataTable().search(updatedSearch).draw();
+				});
+
+			var sortedColumns = column.data().unique().sort();
+			sortedColumns.each(function(value, key) {
+				var temporalDivElement = document.createElement("div");
+				temporalDivElement.innerHTML = value;
+
+				// Retrieve the text property of the element, without any additional descendant HTML
+				var sanitizedText = $(temporalDivElement)
+					.children() // Select all the children
+					.remove() // Remove all the children
+					.end() // Again go back to selected element
+					.text()
+					.trim(); // Uniquely identify columns regardless of the HTML junk inside. Looking at you work order status icons...
+
+				var isOptionUnique = $(select).find(`option[value="${sanitizedText}"]`).length === 0;
+				if (!!value && isOptionUnique) {
+					select.append(`<option value="${sanitizedText}"> ${sanitizedText} </option>`);
+				}
+			});
+		});
+	}
 
 	TableService.showTable('workOrderTable', config, onSelect);
 </script>
@@ -29,60 +77,77 @@
 <div class="jumbotron">
 	<table id="workOrderTable" class="table table-striped table-condensed table-responsive form-group">
 		<thead>
-			<tr>
-				<th>Order #</th>
-				<th>Emp. #</th>
-				<th>Customer</th>
-				<!-- Empty is used for vehicle color -->
-				<th></th>
-				<th>Vehicle</th>
-				<th>Status</th>
-				<th>Date</th>
-			</tr>
+		<tr>
+			<th>Order #</th>
+			<th>Emp. #</th>
+			<th>Customer</th>
+			<!-- Empty is used for vehicle color -->
+			<th></th>
+			<th>Vehicle</th>
+			<th>Status</th>
+			<th>Date</th>
+		</tr>
 		</thead>
 		<tbody>
-			@foreach (var workOrder in Model.WorkOrders)
-			{
-				<!-- data-url is used by TableService to take generated URL and navigate to page -->
-				<tr data-url="@Url.Action("_Vehicle", "WorkOrders", new { id = workOrder.Id })">
-					<td>@workOrder.Id.Substring(3)</td>
-					<td>@workOrder.EmployeeId</td>
-					<td>@workOrder.Customer.Name</td>
-					@if (String.IsNullOrWhiteSpace(workOrder.Vehicle.Color))
+		@foreach (var workOrder in Model.WorkOrders)
+		{
+			<!-- data-url is used by TableService to take generated URL and navigate to page -->
+			<tr data-url="@Url.Action("_Vehicle", "WorkOrders", new { id = workOrder.Id })">
+				<td>@workOrder.Id.Substring(3)</td>
+				<td>@workOrder.EmployeeId</td>
+				<td>@workOrder.Customer.Name</td>
+				@if (String.IsNullOrWhiteSpace(workOrder.Vehicle.Color))
+				{
+					<td>?</td>
+				}
+				else
+				{
+					<td class="color-indicator" style="background-color: @workOrder.Vehicle.Color;"></td>
+				}
+				<td>
+					<div>@workOrder.Vehicle.Year @workOrder.Vehicle.Make @workOrder.Vehicle.Model</div>
+					<div>@workOrder.Vehicle.License</div>
+				</td>
+				<td>
+					@if (workOrder.Status != null)
 					{
-						<td>?</td>
+						@workOrder.Status.Description
 					}
-					else
+					
+					@if (workOrder.Customer.WaitingSinceDate.HasValue || (workOrder.Status != null && workOrder.Status.Code == (int)WorkOrderStatusCode.InspectionCompleted))
 					{
-						<td class="color-indicator" style="background-color: @workOrder.Vehicle.Color;"></td>
-					}
-					<td>
-						<div>@workOrder.Vehicle.Year @workOrder.Vehicle.Make @workOrder.Vehicle.Model</div>
-						<div>@workOrder.Vehicle.License</div>
-					</td>
-					<td>
-						@if (workOrder.Status != null)
-						{
-							<div>@workOrder.Status.Description</div>
-						}
-
-						@if (workOrder.Customer.WaitingSinceDate.HasValue)
-						{
-							<i class="material-icons" style="color:royalblue;" title="Customer Waiting">assignment_ind</i>
-						}
+						<div>
+							@if (workOrder.Customer.WaitingSinceDate.HasValue)
+							{
+								<i class="material-icons" style="color:royalblue;" title="Customer Waiting">assignment_ind</i>
+							}
 						
-						@if (workOrder.Status != null && workOrder.Status.Code == (int) WorkOrderStatusCode.InspectionCompleted)
-						{
-							<i class="material-icons" style="color:red;" title="Action Required">notifications_active</i>
-						}
-					</td>
-					<!-- http://www.csharp-examples.net/string-format-datetime/ -->
-					<td>
-						<div>@string.Format("{0:d}", workOrder.Date)</div>
-						@*<div>@string.Format("{0:t}", workOrder.Date)</div>*@
-					</td>
-				</tr>
-			}
+							@if (workOrder.Status != null && workOrder.Status.Code == (int)WorkOrderStatusCode.InspectionCompleted)
+							{
+								<i class="material-icons" style="color:red;" title="Action Required">notifications_active</i>
+							}
+						</div>
+					}
+
+				</td>
+				<!-- http://www.csharp-examples.net/string-format-datetime/ -->
+				<td>
+					@string.Format("{0:d}", workOrder.Date)
+				</td>
+			</tr>
+		}
 		</tbody>
+		<tfoot>
+		<tr>
+			<th></th>
+			<th>Emp. #</th>
+			<th>Customer</th>
+			<!-- Empty is used for vehicle color -->
+			<th></th>
+			<th></th>
+			<th>Status</th>
+			<th>Date</th>
+		</tr>
+		</tfoot>
 	</table>
 </div>
