@@ -50,17 +50,22 @@
 		}
 		
 		<div>
-			@Html.Partial("Toasts/_Toast", new ToastViewModel
-			{
-				Message = "Work order now locked. Make changes and save, or navigate back.",
-				Icon="lock",
-				Type=ToastType.Info,
-				Action = ToastActionType.Close
-			})
-
+			
+			<!-- Show error if couldn't obtain lock -->
 			@if (Model != null && Model.Toast != null)
 			{
 				@Html.Partial("Toasts/_Toast", Model.Toast)
+			}
+			else
+			{
+				<!-- Else show successful lock toast -->
+				@Html.Partial("Toasts/_Toast", new ToastViewModel
+				{
+					Message = "Work order now locked. Make changes and save, or navigate back.",
+					Icon = "lock",
+					Type = ToastType.Info,
+					Action = ToastActionType.Close
+				})
 			}
 		</div>
 
