@@ -36,13 +36,13 @@
 				.on('change',
 				function () {
 					// Get the recently changed select box value
-					var filterValue = $(this).find(':selected').text();
+					var filterValue = $('tfoot select option:selected').text();
 
 					// Get the current search box input
-					var currentSearch = $('#workOrderTable_searchInput').val();
+					//var currentSearch = $('#workOrderTable_searchInput').val();
 
 					// Append the latest filter parameter to the query
-					var updatedSearch = `${currentSearch} ${filterValue}`;
+					var updatedSearch = `${filterValue}`;
 
 					// Update the table
 					$('#workOrderTable_searchInput').val(updatedSearch);

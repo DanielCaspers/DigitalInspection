@@ -29,7 +29,7 @@ namespace DigitalInspection.Services.Web
 			return httpClient;
 		}
 
-		private const int DEFAULT_NUM_ORDERS = 60;
+		private const int DEFAULT_NUM_ORDERS = 100;
 		// https://stackoverflow.com/questions/31129873/make-http-client-synchronous-wait-for-response
 
 		#region Get Multiple Orders
