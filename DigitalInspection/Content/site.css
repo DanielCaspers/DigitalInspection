@@ -64,10 +64,6 @@
 .field-validation-error, .field-validation-valid {
   color: #f44336; }
 
-.form-group .form-control.no-vertical-padding {
-  margin-bottom: 0 !important;
-  height: 30px; }
-
 .form-control[disabled],
 .form-group .form-control[disabled] {
   color: rgba(0, 0, 0, 0.75) !important;

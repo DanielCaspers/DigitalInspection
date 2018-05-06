@@ -30,7 +30,8 @@ namespace DigitalInspection.Models.Orders
 		[DisplayName("Mileage")]
 		public int? Odometer { get; set; }
 
-		public IList<string> Notes { get; set; }
+		[DisplayName("Vehicle notes")]
+		public string Notes { get; set; }
 
 		public VehicleOptions Options { get; set; }
 
@@ -64,7 +65,7 @@ namespace DigitalInspection.Models.Orders
 			Engine = engine;
 			Transmission = transmission?.ToTitleCase();
 			Odometer = odometer;
-			Notes = notes;
+			Notes = StringExtensions.JoinByLineEnding(notes);
 
 			Options = options == null ?
 				new VehicleOptions() :

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using DigitalInspection.Utils;
 
@@ -16,7 +17,8 @@ namespace DigitalInspection.Models.Orders
 
 		public IList<PhoneNumber> PhoneNumbers { get; set; }
 
-		public IList<string> Notes { get; set; }
+		[DisplayName("Customer notes")]
+		public string Notes { get; set; }
 
 		public DateTime? WaitingSinceDate { get; set; }
 
@@ -34,7 +36,7 @@ namespace DigitalInspection.Models.Orders
 			Name = name?.ToTitleCase();
 			Address = address;
 			PhoneNumbers = phoneNumbers;
-			Notes = notes;
+			Notes = StringExtensions.JoinByLineEnding(notes);
 			WaitingSinceDate = DateTimeUtils.FromUnixTime(waitingSince);
 		}
 	}

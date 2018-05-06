@@ -17,9 +17,8 @@ namespace DigitalInspection.Models.Mappers
 			order.CompletionDate = DateTimeUtils.FromUnixTime(dto.completionDate);
 			order.InspectionCompletionDate = DateTimeUtils.FromUnixTime(dto.inspectionCompleted);
 			order.EmployeeId = dto.techNum;
-			order.WorkDescription = dto.workDesc;
-
-			order.Notes = dto.orderNotes ?? new List<string>() {""};
+			order.WorkDescription = StringExtensions.JoinByLineEnding(dto.workDesc);
+			order.Notes = StringExtensions.JoinByLineEnding(dto.orderNotes);
 			order.TotalBill = dto.totalBill;
 			order.ServiceAdvisor = dto.serviceAdvisor;
 			order.ServiceAdvisorName = dto.serviceAdvisorName;
@@ -122,8 +121,8 @@ namespace DigitalInspection.Models.Mappers
 			dto.completionDate = DateTimeUtils.ToUnixTime(order.CompletionDate);
 			dto.inspectionCompleted = DateTimeUtils.ToUnixTime(order.InspectionCompletionDate);
 			dto.techNum = order.EmployeeId;
-			dto.workDesc = order.WorkDescription;
-			dto.orderNotes = order.Notes;
+			dto.workDesc = order.WorkDescription?.GroupByLineEnding();
+			dto.orderNotes = order.Notes?.GroupByLineEnding();
 			dto.totalBill = order.TotalBill;
 			dto.serviceAdvisor = order.ServiceAdvisor;
 			dto.serviceAdvisorName = order.ServiceAdvisorName;
@@ -144,7 +143,7 @@ namespace DigitalInspection.Models.Mappers
 
 			dto.clientID = order.Customer.Id;
 			dto.clientName = order.Customer.Name?.ToUpper();
-			dto.clientNotes = order.Customer.Notes;
+			dto.clientNotes = order.Customer.Notes?.GroupByLineEnding();
 			dto.customerWaiting = DateTimeUtils.ToUnixTime(order.Customer.WaitingSinceDate);
 
 			dto.clientAddr = order.Customer.Address.Line1?.ToUpper();
@@ -180,7 +179,7 @@ namespace DigitalInspection.Models.Mappers
 			dto.vehicleEngine = order.Vehicle.Engine;
 			dto.vehicleTransmission = order.Vehicle.Transmission?.ToUpper();
 			dto.vehicleOdometer = order.Vehicle.Odometer;
-			dto.vehicleNotes = order.Vehicle.Notes;
+			dto.vehicleNotes = order.Vehicle.Notes?.GroupByLineEnding();
 
 			dto.vehicleOptions = new List<VehicleOptionsDTO>
 			{

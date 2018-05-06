@@ -140,13 +140,10 @@
 					</div>
 
 					<div class="row">
-						<div class="col-sm-6 form-group ma-form-group">
-							@Html.Label("Customer Notes", new { @class = "control-label" })
-
-							@for (int i = 0; i < Model.WorkOrder.Customer.Notes.Count; i++)
-							{
-								@Html.TextBoxFor(m => Model.WorkOrder.Customer.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control no-vertical-padding" }))
-							}
+						<div class="col-sm-12 form-group ma-form-group">
+							@Html.LabelFor(m => m.WorkOrder.Customer.Notes, new { @class = "control-label" })
+							@Html.TextAreaFor(m => m.WorkOrder.Customer.Notes, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", rows = "15", spellcheck = true }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Customer.Notes)
 						</div>
 					</div>
 
@@ -157,11 +154,11 @@
 					@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
 					@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
 					@Html.HiddenFor(m => m.WorkOrder.TotalBill)
-					@Html.HiddenForEnumerable(m => m.WorkOrder.Notes, "WorkOrder")
+					@Html.HiddenFor(m => m.WorkOrder.Notes)
 					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
 					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisorName)
 					@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
-					@Html.HiddenForEnumerable(m => m.WorkOrder.WorkDescription, "WorkOrder")
+					@Html.HiddenFor(m => m.WorkOrder.WorkDescription)
 					@Html.HiddenForEnumerable(m => Model.WorkOrder.RecommendedServices, true, "WorkOrder")
 
 					@if (Model.WorkOrder.Status != null)
@@ -192,8 +189,7 @@
 					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Options.Has4WD)
 					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Options.HasAWD)
 					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Options.HasABS)
-
-					@Html.HiddenForEnumerable(m => Model.WorkOrder.Vehicle.Notes, "WorkOrder.Vehicle")
+					@Html.HiddenFor(m => m.WorkOrder.Vehicle.Notes)
 				</fieldset>
 			}
 		</div>

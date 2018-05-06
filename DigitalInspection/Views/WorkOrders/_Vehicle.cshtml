@@ -104,7 +104,7 @@
 				
 				@if (Model.CanEdit == false)
 				{
-					var materialIcon = Model.WorkOrder.Notes.All(note => note.Trim() == string.Empty) ? "chat_bubble_outline" : "chat";
+					var materialIcon = string.IsNullOrWhiteSpace(Model.WorkOrder.Notes) ? "chat_bubble_outline" : "chat";
 					var iconHtml = string.Format("<i class='material-icons'>{0}</i>", materialIcon);
 
 					@Ajax.RawActionLink(iconHtml,
@@ -294,23 +294,16 @@
 					</div>
 
 					<div class="row">
-						<!-- TODO: Fix the null issues!!!-->
 						<div class="col-sm-6 form-group ma-form-group">
-							@Html.Label("Work Description", new { @class = "control-label" })
-
-							@for (int i = 0; i < Model.WorkOrder.WorkDescription.Count; i++)
-							{
-								@Html.TextBoxFor(m => Model.WorkOrder.WorkDescription[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							}
+							@Html.LabelFor(m => m.WorkOrder.WorkDescription, new { @class = "control-label" })
+							@Html.TextAreaFor(m => m.WorkOrder.WorkDescription, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", rows = "15", spellcheck = true }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.WorkDescription)
 						</div>
 
 						<div class="col-sm-6 form-group ma-form-group">
-							@Html.Label("Vehicle Notes", new { @class = "control-label" })
-
-							@for (int i = 0; i < Model.WorkOrder.Vehicle.Notes.Count; i++)
-							{
-								@Html.TextBoxFor(m => Model.WorkOrder.Vehicle.Notes[i], HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control" }))
-							}
+							@Html.LabelFor(m => m.WorkOrder.Vehicle.Notes, new { @class = "control-label" })
+							@Html.TextAreaFor(m => m.WorkOrder.Vehicle.Notes, HtmlHelpers.ConditionalDisable(!Model.CanEdit, new { @class = "form-control", rows = "15", spellcheck = true }))
+							@Html.ValidationMessageFor(m => m.WorkOrder.Vehicle.Notes)
 						</div>
 					</div>
 
@@ -321,7 +314,7 @@
 					@Html.HiddenFor(m => m.WorkOrder.CompletionDate)
 					@Html.HiddenFor(m => m.WorkOrder.EmployeeId)
 					@Html.HiddenFor(m => m.WorkOrder.TotalBill)
-					@Html.HiddenForEnumerable(m => m.WorkOrder.Notes, "WorkOrder")
+					@Html.HiddenFor(m => m.WorkOrder.Notes)
 					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisor)
 					@Html.HiddenFor(m => m.WorkOrder.ServiceAdvisorName)
 					@Html.HiddenForEnumerable(m => m.WorkOrder.BillingSummary, "WorkOrder")
@@ -341,7 +334,7 @@
 
 					@Html.HiddenFor(m => m.WorkOrder.Customer.Id)
 					@Html.HiddenFor(m => m.WorkOrder.Customer.Name)
-					@Html.HiddenForEnumerable(m => Model.WorkOrder.Customer.Notes, "WorkOrder.Customer")
+					@Html.HiddenFor(m => m.WorkOrder.Customer.Notes)
 					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line1)
 					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.Line2)
 					@Html.HiddenFor(m => m.WorkOrder.Customer.Address.City)
