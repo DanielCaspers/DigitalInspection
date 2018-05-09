@@ -498,6 +498,7 @@
     <Content Include="Views\WorkOrders\_Layout_Locked.cshtml" />
     <Content Include="Views\Shared\Dialogs\_VehicleHistoryDialog.cshtml" />
     <Content Include="Views\Shared\Dialogs\_Confirm.cshtml" />
+    <Content Include="Views\ChecklistItems\Report.cshtml" />
     <TypeScriptCompile Include="Scripts\App\Shared\Components\customer-vehicle-summary.component.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\dialog.service.ts" />
     <TypeScriptCompile Include="Scripts\App\Shared\Services\location.service.ts" />

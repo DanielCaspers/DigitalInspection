@@ -43,6 +43,11 @@ namespace DigitalInspection.Controllers
 			return PartialView(GetChecklistItemViewModel());
 		}
 
+		public ViewResult Report()
+		{
+			return View("Report", GetChecklistItemViewModel());
+		}
+
 		//GET: ChecklistItems/Edit/:id
 		public PartialViewResult Edit(Guid id)
 		{

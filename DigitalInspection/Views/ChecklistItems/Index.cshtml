@@ -13,9 +13,16 @@
 
 @section Toolbar {
 	<div class="container-flex end">
+
+		<a href="@Url.Action("Report", "ChecklistItems")"
+		   onclick="FormService.showProgress()"
+		   class="btn btn-default no-margin">
+			<i class="material-icons">print</i>
+		</a>
+
 		<button type="button"
-				class="btn btn-default no-margin"
-				onclick="DialogService.show('addChecklistItemDialog', 'addChecklistItemForm')">
+		        class="btn btn-default no-margin"
+		        onclick="DialogService.show('addChecklistItemDialog', 'addChecklistItemForm')">
 			<i class="material-icons">add</i>
 		</button>
 	</div>

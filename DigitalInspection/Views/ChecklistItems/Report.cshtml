@@ -1,0 +1,51 @@
+﻿@using DigitalInspection.Models.Orders
+@model DigitalInspection.ViewModels.ChecklistItems.ManageChecklistItemsViewModel
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Digital Inspection";
+}
+<style>
+	.force-inline-deep * {
+		display: inline !important;
+	}
+
+	table {
+		width: 100%;
+		margin-bottom: 20px;
+	}
+
+	.no-canned-responses {
+		margin-bottom: 20px
+	}
+</style>
+<div class="container-fluid">
+	<h3>Checklist Item Report</h3>
+
+	@foreach (var checklistitem in Model.ChecklistItems)
+	{
+		<h4>@checklistitem.Name</h4>
+
+		if (checklistitem.CannedResponses.Count > 0)
+		 {
+			 <table>
+				 @foreach (var cr in checklistitem.CannedResponses)
+				 {
+					 <tr>
+						 <td style="width: 20%;">@cr.Response</td>
+						 <td style="width: 15%;" class="force-inline-deep">
+							 @foreach (var level in cr.LevelsOfConcern)
+							 {
+								 @Html.Partial("../Shared/_RecommendedServiceSeverity", new RecommendedService {Severity = level})
+							 }
+						 </td>
+						 <td>@cr.Description</td>
+					 </tr>
+				 }
+			 </table>
+		}
+		else
+		{
+			<div class="no-canned-responses">No canned responses</div>
+		}
+	}
+</div>
