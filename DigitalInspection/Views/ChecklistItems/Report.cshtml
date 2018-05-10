@@ -31,14 +31,14 @@
 				 @foreach (var cr in checklistitem.CannedResponses)
 				 {
 					 <tr>
-						 <td style="width: 20%;">@cr.Response</td>
-						 <td style="width: 15%;" class="force-inline-deep">
+						 <td style="width: 20%; vertical-align:top !important;">@cr.Response</td>
+						 <td style="width: 15%; vertical-align:top !important;" class="force-inline-deep">
 							 @foreach (var level in cr.LevelsOfConcern)
 							 {
 								 @Html.Partial("../Shared/_RecommendedServiceSeverity", new RecommendedService {Severity = level})
 							 }
 						 </td>
-						 <td>@cr.Description</td>
+						 <td style="padding-bottom: 15px; vertical-align:top !important;">@cr.Description</td>
 					 </tr>
 				 }
 			 </table>
