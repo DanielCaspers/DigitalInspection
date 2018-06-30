@@ -29,12 +29,15 @@ namespace DigitalInspection.Models.Inspections.Reports
 			Name = ii.ChecklistItem.Name;
 
 			CannedResponses = ii.CannedResponses
-				.Select(cr => new CannedResponseReportItem(cr.Response, cr.Description, cr.Url));
+				.Select(cr => new CannedResponseReportItem(cr.Response, cr.Description, cr.Url))
+				.OrderBy(cri => cri.Response);
 
 			Measurements = ii.InspectionMeasurements
+				.OrderBy(im => im.Measurement.Label)
 				.Select(im => new MeasurementReportItem(im.Value, im.Measurement.Label, im.Measurement.Unit));
 
 			Images = ii.InspectionImages
+				.OrderBy(image => image.CreatedDate)
 				.Select(image => new ImageReportItem(baseUrl, ii, image));
 		}
 	}
