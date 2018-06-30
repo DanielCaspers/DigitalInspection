@@ -59,7 +59,11 @@
 	@Html.Partial("../Shared/Dialogs/_VehicleHistoryDialog", Model.VehicleHistoryVM)
 </div>
 
+<!-- Outlet for displaying table specific errors-->
 <div id="inspectionTableErrorContainer"></div>
+
+<!-- Outlet for displaying sharable inspection work order note errors-->
+<div id="addInspectionWorkOrderNoteErrorContainer"></div>
 
 <div class="jumbotron">
 	<table id="inspectionTable" class="table table-striped table-condensed table-responsive form-group">
