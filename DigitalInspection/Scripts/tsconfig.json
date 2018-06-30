@@ -1,14 +1,15 @@
-  {
-	"compilerOptions": {
-	  "noImplicitAny": false,
-	  "noEmitOnError": true,
-	  "removeComments": false,
-	  "sourceMap": false,
-	  "inlineSourceMap": false,
-	  "target": "es5",
-	  "outDir": "compiledTS"
-	},
-	"exclude": [
-	  "library"
-	]
-  }
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+  "noImplicitAny": false,
+  "noEmitOnError": true,
+  "removeComments": false,
+  "sourceMap": false,
+  "inlineSourceMap": false,
+  "target": "es5",
+  "outDir": "compiledTS"
+  },
+  "exclude": [
+  "library"
+  ]
+}

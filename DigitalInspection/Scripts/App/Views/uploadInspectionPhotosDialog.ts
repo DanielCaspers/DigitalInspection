@@ -5,6 +5,7 @@
 
 		$("#fileInput").change(function () {
 			UploadInspectionPhotosDialog.previewPhotoUpload(this);
+			$("#uploadInspectionPhotosDialog_success").removeAttr("disabled");
 		});
 	}
 
