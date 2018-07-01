@@ -255,6 +255,10 @@ span.recommended-service.label {
     font-weight: bold !important;
     padding-top: 17px; }
 
+@media screen and (max-width: 767px) {
+  table.dataTable.table-responsive {
+    border: none !important; } }
+
 table.dataTable.no-footer {
   border-bottom: none; }
 
@@ -468,6 +472,10 @@ a.no-transform, button.no-transform {
 
 .modal-dialog.modal-lg {
   width: 95% !important; }
+
+.jumbotron.no-padding-horizontal {
+  padding-left: 0 !important;
+  padding-right: 0 !important; }
 
 i.mdi::before {
   margin-top: -5px;

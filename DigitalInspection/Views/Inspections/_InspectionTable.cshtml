@@ -65,13 +65,16 @@
 <!-- Outlet for displaying sharable inspection work order note errors-->
 <div id="addInspectionWorkOrderNoteErrorContainer"></div>
 
-<div class="jumbotron">
+<div class="jumbotron no-padding-horizontal">
 	<table id="inspectionTable" class="table table-striped table-condensed table-responsive form-group">
 		<thead>
 			<tr>
 				<th>Item</th>
 				<th>Condition</th>
 				<th>Canned Response</th>
+				<th>
+					Customer Concern?
+				</th>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -202,6 +205,41 @@
 								// and re-serialize once it hits the controller. Thus, we send a partial array of Ids from 0 to i.
 								@Html.HiddenFor(m => m.Inspection.InspectionItems[k].Id)
 							}
+						}
+					</td>
+					<td>
+						@using (Ajax.BeginForm(
+							"IsCustomerConcern",
+							"Inspections",
+							new
+							{
+								inspectionItemId = inspectionItem.Id,
+								// isCustomerConcern is dynamically tacked on via JS
+							},
+							new AjaxOptions
+							{
+								InsertionMode = InsertionMode.Replace,
+								UpdateTargetId = "inspectionTableErrorContainer"
+							},
+							new
+							{
+								// Used for preventing 'Confirm unsaved changes' dialog
+								ma_dirtyforms_ignore = ""
+							}))
+						{
+							<div class="checkbox">
+								<label>
+									@*If it started as customer concern, start in checked state*@
+									@if (inspectionItem.IsCustomerConcern)
+									{
+										<input type="checkbox" onchange="InspectionTable.onCustomerConcernToggle(this)" checked/>
+									}
+									else
+									{
+										<input type="checkbox" onchange="InspectionTable.onCustomerConcernToggle(this)"/>
+									}
+								</label>
+							</div>
 						}
 					</td>
 					<td>

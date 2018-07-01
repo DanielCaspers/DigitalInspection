@@ -60,6 +60,12 @@ a, button {
 	width: 95% !important;
 }
 
+// Override Bootstrap Jumbotron
+.jumbotron.no-padding-horizontal {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
 i.mdi::before {
 	margin-top: -5px;
 	height: 24px;

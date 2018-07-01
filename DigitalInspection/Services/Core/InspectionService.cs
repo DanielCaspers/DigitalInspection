@@ -85,6 +85,16 @@ namespace DigitalInspection.Services.Core
 			return TrySave(ctx);
 		}
 
+		public static bool UpdateIsCustomerConcern(
+			ApplicationDbContext ctx,
+			InspectionItem inspectionItem,
+			bool isCustomerConcern)
+		{
+			inspectionItem.IsCustomerConcern = isCustomerConcern;
+
+			return TrySave(ctx);
+		}
+
 		public static bool UpdateInspectionItemNote(
 			ApplicationDbContext ctx,
 			InspectionItem inspectionItem,

@@ -174,6 +174,25 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
+		public ActionResult IsCustomerConcern(Guid inspectionItemId, bool isCustomerConcern)
+		{
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+
+			if (inspectionItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+			}
+
+			if (InspectionService.UpdateIsCustomerConcern(_context, inspectionItemInDb, isCustomerConcern))
+			{
+				return new EmptyResult();
+			}
+
+			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+		}
+
+		[HttpPost]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult ItemNote(AddInspectionItemNoteViewModel itemNoteVm)
 		{
 			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == itemNoteVm.InspectionItem.Id);

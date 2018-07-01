@@ -241,6 +241,10 @@
     <Compile Include="Migrations\201804130247327_InspectionMeasurementValueDefaultToNull.Designer.cs">
       <DependentUpon>201804130247327_InspectionMeasurementValueDefaultToNull.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807011422356_AddsCustomerConcernToInspectionItem.cs" />
+    <Compile Include="Migrations\201807011422356_AddsCustomerConcernToInspectionItem.Designer.cs">
+      <DependentUpon>201807011422356_AddsCustomerConcernToInspectionItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\DTOs\VehicleHistoryItemDTO.cs" />
     <Compile Include="Models\DTOs\VehicleDTO.cs" />
     <Compile Include="Models\DTOs\VehicleOptionsDTO.cs" />
@@ -677,6 +681,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804130247327_InspectionMeasurementValueDefaultToNull.resx">
       <DependentUpon>201804130247327_InspectionMeasurementValueDefaultToNull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807011422356_AddsCustomerConcernToInspectionItem.resx">
+      <DependentUpon>201807011422356_AddsCustomerConcernToInspectionItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

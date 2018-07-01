@@ -13,7 +13,7 @@
 		}
 
 		if (urlParam) {
-			FormService.addUrlParameter(formId, urlParam);
+			FormService.addUrlParameter(formElement, urlParam);
 		}
 
 		formElement.submit();
@@ -62,10 +62,13 @@
 	}
 
 	// TODO Move to the urlRewriterService
-	private static addUrlParameter(
-		formId: string,
+	/**
+	 * @param formElement - A jQuery wrapped form tag
+	 * @param urlParam
+	 */
+	public static addUrlParameter(
+		formElement: any,
 		urlParam: { name: string, value: string }): void {
-		let formElement = $(`#${formId}`);
 		const routingAction = formElement.attr('action');
 
 		let query = "";

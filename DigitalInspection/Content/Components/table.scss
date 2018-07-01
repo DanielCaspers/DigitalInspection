@@ -1,5 +1,12 @@
 ﻿@import "colors.scss";
 
+
+@media screen and (max-width: 767px) {
+	table.dataTable.table-responsive {
+		border: none !important;
+	}
+}
+	
 table {
 	&.dataTable {
 		&.no-footer {

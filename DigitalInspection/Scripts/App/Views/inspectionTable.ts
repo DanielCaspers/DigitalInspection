@@ -10,6 +10,12 @@
 		$(InspectionTable.initializeScrollableTabs);
 	}
 
+	public static onCustomerConcernToggle(element): void {
+		let formElement = $(element).closest('form');
+		FormService.addUrlParameter(formElement, { name: 'isCustomerConcern', value: element.checked });
+		formElement.submit();
+	}
+
 	private static onSelect(e: Event, dataTableInstance: any, type: string, indexes: any): void {
 		if (type === 'row') {
 			var row = dataTableInstance.row(indexes).node();
