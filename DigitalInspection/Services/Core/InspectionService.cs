@@ -25,7 +25,9 @@ namespace DigitalInspection.Services.Core
 			var inspectionMeasurements = ctx.InspectionMeasurements.Where(im => im.InspectionItem.Inspection.Id == inspection.Id);
 			ctx.InspectionMeasurements.RemoveRange(inspectionMeasurements);
 
-			var inspectionImages = ctx.InspectionImages.Where(ii => ii.InspectionItem.Inspection.Id == inspection.Id);
+			var inspectionImages = ctx.InspectionImages.Where(ii => ii.InspectionItem.Inspection.Id == inspection.Id).ToList();
+			inspectionImages.ForEach(ImageService.DeleteImage);
+
 			ctx.InspectionImages.RemoveRange(inspectionImages);
 
 			var inspectionItems = ctx.InspectionItems.Where(ii => ii.Inspection.Id == inspection.Id);
