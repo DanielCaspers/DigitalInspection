@@ -21,12 +21,15 @@ namespace DigitalInspection.Models.Inspections.Reports
 
 		public IEnumerable<ImageReportItem> Images { get; set; }
 
+		public bool IsCustomerConcern { get; set; }
+
 		public InspectionReportItem(InspectionItem ii, string baseUrl)
 		{
 			InspectionItemId = ii.Id;
 			Condition = ii.Condition;
 			Note = ii.Note;
 			Name = ii.ChecklistItem.Name;
+			IsCustomerConcern = ii.IsCustomerConcern;
 
 			CannedResponses = ii.CannedResponses
 				.Select(cr => new CannedResponseReportItem(cr.Response, cr.Description, cr.Url))
