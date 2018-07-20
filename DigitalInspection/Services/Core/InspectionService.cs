@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
+using System.Web;
 using DigitalInspection.Models;
 using DigitalInspection.Models.Inspections;
 using DigitalInspection.Models.Orders;
@@ -27,6 +29,21 @@ namespace DigitalInspection.Services.Core
 
 			var inspectionImages = ctx.InspectionImages.Where(ii => ii.InspectionItem.Inspection.Id == inspection.Id).ToList();
 			inspectionImages.ForEach(ImageService.DeleteImage);
+
+			// TODO: Revise service when dependency injection framework is in use, and abstract into a service
+			string path = HttpContext.Current.Server.MapPath($"~/Uploads/Inspections/{inspection.WorkOrderId}");
+			try
+			{
+				Directory.Delete(path, true);
+			}
+			catch (IOException)
+			{
+				Directory.Delete(path, true);
+			}
+			catch (UnauthorizedAccessException)
+			{
+				Directory.Delete(path, true);
+			}
 
 			ctx.InspectionImages.RemoveRange(inspectionImages);
 
