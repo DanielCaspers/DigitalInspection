@@ -245,6 +245,10 @@
     <Compile Include="Migrations\201807011422356_AddsCustomerConcernToInspectionItem.Designer.cs">
       <DependentUpon>201807011422356_AddsCustomerConcernToInspectionItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807211500160_InspectionImageVisibility.cs" />
+    <Compile Include="Migrations\201807211500160_InspectionImageVisibility.Designer.cs">
+      <DependentUpon>201807211500160_InspectionImageVisibility.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\DTOs\VehicleHistoryItemDTO.cs" />
     <Compile Include="Models\DTOs\VehicleDTO.cs" />
     <Compile Include="Models\DTOs\VehicleOptionsDTO.cs" />
@@ -493,8 +497,10 @@
     <Content Include="Content\Views\work-order-table.scss" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\MurphyAuto_Debug.pubxml" />
+    <Content Include="Scripts\compiledTS\Shared\Components\customer-vehicle-summary.component.js" />
     <Content Include="Scripts\compiledTS\Shared\Services\location.service.js" />
     <Content Include="Scripts\compiledTS\Shared\Services\scrollableTab.service.js" />
+    <Content Include="Scripts\compiledTS\Views\viewInspectionPhotosDialog.js" />
     <Content Include="Scripts\Library\JQuery-Bootstrap-Scrolling-Tabs\jquery.scrolling-tabs.min.js" />
     <Content Include="Views\Inspections\_ViewInspectionPhotosDialog.cshtml" />
     <Content Include="Views\Shared\Dialogs\_AddInspectionWorkOrderNoteDialog.cshtml" />
@@ -605,6 +611,7 @@
     <Content Include="Views\Inspections\_AddInspectionItemNoteDialog.cshtml" />
     <Content Include="Views\Inspections\_UploadInspectionPhotosDialog.cshtml" />
     <Content Include="Views\Inspections\_AddMeasurementDialog.cshtml" />
+    <TypeScriptCompile Include="Scripts\App\Views\viewInspectionPhotosDialog.ts" />
     <TypeScriptCompile Include="Scripts\App\Views\inspectionTable.ts" />
     <TypeScriptCompile Include="Scripts\App\Views\uploadInspectionPhotosDialog.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
@@ -684,6 +691,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807011422356_AddsCustomerConcernToInspectionItem.resx">
       <DependentUpon>201807011422356_AddsCustomerConcernToInspectionItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807211500160_InspectionImageVisibility.resx">
+      <DependentUpon>201807211500160_InspectionImageVisibility.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

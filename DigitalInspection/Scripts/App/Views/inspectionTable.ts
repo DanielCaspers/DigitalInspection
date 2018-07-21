@@ -11,7 +11,7 @@
 	}
 
 	public static onCustomerConcernToggle(element): void {
-		let formElement = $(element).closest('form');
+		const formElement = $(element).closest('form');
 		FormService.addUrlParameter(formElement, { name: 'isCustomerConcern', value: element.checked });
 		formElement.submit();
 	}

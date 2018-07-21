@@ -26,6 +26,7 @@
 		 )
 	 {
 	 }
+
 	<div id="@TEMPLATE_NAMESPACE" class="modal fade">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -70,10 +71,49 @@
 					        type="button"
 					        class="btn btn-warning"
 					        data-dismiss="modal"
-					        onclick="var imageId = $('.carousel-inner .item.active img').attr('data-image-id');
-							FormService.triggerExternalSubmit('viewInspectionPhotosForm', false, false, {name: 'imageId', value: imageId} )">
+					        onclick="ViewInspectionPhotosDialog.deletePhoto()">
 						Delete
 					</button>
+					
+					<div id="checkbox-carousel" class="container-flex between">
+						Visible to customer?
+						<div class="togglebutton ma-checkbox-inline-label">
+							<label>
+								@for (var i = 0; i < Model.Images.Count; i++)
+								{
+									using (Ajax.BeginForm(
+										 "IsPhotoVisibleToCustomer",
+										 "Inspections",
+										 new
+										 {
+											 inspectionItemId = Model.Images[i].InspectionItem.Id,
+											 inspectionImageId = Model.Images[i].Id
+											 // isVisibleToCustomer is dynamically tacked on via JS
+										 },
+										 new AjaxOptions
+										 {
+											 InsertionMode = InsertionMode.Replace,
+											 UpdateTargetId = "inspectionTableErrorContainer"
+										 },
+										 new
+										 {
+											 // Used for preventing 'Confirm unsaved changes' dialog
+											 ma_dirtyforms_ignore = "",
+											 style = "display:inline !important"
+										 }))
+									 {
+										 @Html.CheckBoxFor(m => m.Images[i].IsVisibleToCustomer, new
+										 {
+											 style = "opacity: 1; width: 20px; height: 20px; margin-right: 10px;",
+											 data_image_id = Model.Images[i].Id,
+											 onchange="ViewInspectionPhotosDialog.onImageVisibilityToggle(this)",
+										 })
+									 }
+								}
+							</label>
+						</div>
+					</div>
+
 					<button id="@CANCEL"
 					        type="button"
 					        class="btn btn-default"

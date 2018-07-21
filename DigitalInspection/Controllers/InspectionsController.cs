@@ -307,6 +307,30 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
+		public ActionResult IsPhotoVisibleToCustomer(Guid inspectionItemId, Guid inspectionImageId, bool isVisibleToCustomer)
+		{
+			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			if (inspectionItemInDb == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+			}
+
+			var inspectionImage = inspectionItemInDb.InspectionImages.SingleOrDefault(ii => ii.Id == inspectionImageId);
+			if (inspectionImage == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound("Inspection Image"));
+			}
+
+			if (InspectionService.UpdateInspectionImageVisibility(_context, inspectionImage, isVisibleToCustomer))
+			{
+				return new EmptyResult();
+			}
+
+			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+		}
+
+		[HttpPost]
+		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetAddMeasurementDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
 			var checklistItem = _context.ChecklistItems.Single(ci => ci.Id == checklistItemId);
@@ -381,6 +405,7 @@ namespace DigitalInspection.Controllers
 					image.Title = Path.Combine($"/Uploads/{IMAGE_DIRECTORY}/{workOrderId}/{inspectionItemId.ToString()}/", image.Title);
 					return image;
 				})
+				.OrderBy(image => image.CreatedDate)
 				.ToList();
 
 			return PartialView("_ViewInspectionPhotosDialog", new ViewInspectionPhotosViewModel

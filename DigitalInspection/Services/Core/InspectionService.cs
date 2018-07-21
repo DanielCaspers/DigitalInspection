@@ -164,6 +164,16 @@ namespace DigitalInspection.Services.Core
 			return TrySave(ctx);
 		}
 
+		public static bool UpdateInspectionImageVisibility(
+			ApplicationDbContext ctx,
+			InspectionImage image,
+			bool isVisibleToCustomer)
+		{
+			image.IsVisibleToCustomer = isVisibleToCustomer;
+
+			return TrySave(ctx);
+		}
+
 		#endregion
 
 		#region Private Helpers

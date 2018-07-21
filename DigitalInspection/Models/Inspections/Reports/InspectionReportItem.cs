@@ -40,6 +40,7 @@ namespace DigitalInspection.Models.Inspections.Reports
 				.Select(im => new MeasurementReportItem(im.Value, im.Measurement.Label, im.Measurement.Unit));
 
 			Images = ii.InspectionImages
+				.Where(image => image.IsVisibleToCustomer)
 				.OrderBy(image => image.CreatedDate)
 				.Select(image => new ImageReportItem(baseUrl, ii, image));
 		}
