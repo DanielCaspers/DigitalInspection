@@ -30,8 +30,7 @@ namespace DigitalInspection.Controllers
 				Checklists = checklists.OrderBy(c => c.Name).ToList(),
 				AddChecklistVM = new AddChecklistViewModel
 				{
-					Name = "",
-					Picture = null
+					Name = ""
 				}
 			};
 		}
@@ -104,15 +103,6 @@ namespace DigitalInspection.Controllers
 				}
 				checklistInDb.ChecklistItems = selectedItems;
 
-				HttpPostedFileBase picture = Request.Files[0];
-
-				// Only update the picture if a new one was uploaded
-				if(picture != null && picture.ContentLength > 0)
-				{
-					ImageService.DeleteImage(checklistInDb.Image);
-					checklistInDb.Image = ImageService.SaveImage(picture, IMAGE_SUBDIRECTORY, id.ToString());
-				}
-
 				_context.SaveChanges();
 				return RedirectToAction("Edit", new { id = checklistInDb.Id });
 			}
@@ -127,7 +117,11 @@ namespace DigitalInspection.Controllers
 				Id = Guid.NewGuid()
 			};
 
-			newList.Image = ImageService.SaveImage(list.Picture, IMAGE_SUBDIRECTORY, newList.Id.ToString());
+			// TODO DJC Remove fully once .NET core migration is complete.
+			// Cannot remove now due to difficulties with EF ORM migration steps getting
+			// stuck applying the migration. It seems its internal representation of 
+			// SQL steps to perform, though it makes correct migration assets. 
+			newList.Image = new Image { };
 
 			_context.Checklists.Add(newList);
 			_context.SaveChanges();
@@ -147,8 +141,6 @@ namespace DigitalInspection.Controllers
 				{
 					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 				}
-
-				ImageService.DeleteImage(checklist.Image);
 
 				_context.Checklists.Remove(checklist);
 				_context.SaveChanges();
