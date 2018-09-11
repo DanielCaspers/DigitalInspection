@@ -260,6 +260,9 @@
     <Compile Include="Models\Mappers\VehicleHistoryItemMapper.cs" />
     <Compile Include="Models\Orders\VehicleOptions.cs" />
     <Compile Include="Services\Core\InspectionService.cs" />
+    <Compile Include="Services\Web\ChecklistItemService.cs" />
+    <Compile Include="Services\Web\ChecklistService.cs" />
+    <Compile Include="Services\Web\TagService.cs" />
     <Compile Include="ViewModels\ConfirmDialogViewModel.cs" />
     <Compile Include="ViewModels\VehicleHistory\VehicleHistoryViewModel.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />

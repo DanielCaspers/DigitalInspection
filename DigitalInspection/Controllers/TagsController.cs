@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using DigitalInspection.Models;
-using DigitalInspection.Models.Inspections;
 using DigitalInspection.Services;
+using DigitalInspection.Services.Web;
 using DigitalInspection.ViewModels.Tags;
 
 namespace DigitalInspection.Controllers
@@ -18,10 +19,15 @@ namespace DigitalInspection.Controllers
 
 		private ManageTagsViewModel GetTagViewModel()
 		{
-			var tags = _context.Tags;
+			var task = Task.Run(async () => {
+				return await TagService.GetTags();
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
 			return new ManageTagsViewModel
 			{
-				Tags = tags.OrderBy(tag => tag.Name).ToList(),
+				Tags = task.Result.Entity.ToList(),
 				AddTagVM = new AddTagViewModel { Name = "" }
 			};
 		}
@@ -41,53 +47,53 @@ namespace DigitalInspection.Controllers
 		//GET: Tags/Edit/:id
 		public PartialViewResult Edit(Guid id)
 		{
-			var tag = _context.Tags.SingleOrDefault(t => t.Id == id);
+			var task = Task.Run(async () => {
+				return await TagService.GetTag(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var tag = task.Result.Entity;
 
 			if (tag == null)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
-			else
+
+			var viewModel = new EditTagViewModel
 			{
-				var viewModel = new EditTagViewModel
-				{
-					Tag = tag
-				};
-				return PartialView("_EditTag", viewModel);
-			}
+				Tag = tag
+			};
+			return PartialView("_EditTag", viewModel);
 		}
 
 		[HttpPost]
 		public ActionResult Update(Guid id, AddTagViewModel tag)
 		{
-			var tagInDb = _context.Tags.SingleOrDefault(t => t.Id == id);
-			if(tagInDb == null)
+			var task = Task.Run(async () => {
+				return await TagService.UpdateTag(id, tag);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var wasSuccessful = task.Result.IsSuccessStatusCode;
+
+			if (wasSuccessful == false)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
-			else
-			{
-				tagInDb.Name = tag.Name;
-				tagInDb.IsVisibleToCustomer = tag.IsVisibleToCustomer;
-				tagInDb.IsVisibleToEmployee = tag.IsVisibleToEmployee;
 
-				_context.SaveChanges();
-				return RedirectToAction("Edit", new { id = tagInDb.Id });
-			}
+			return RedirectToAction("Edit", new { id });
 		}
 
 		[HttpPost]
 		public ActionResult Create(AddTagViewModel tag)
 		{
-			Tag newTag = new Tag
-			{
-				Name = tag.Name,
-				IsVisibleToCustomer = tag.IsVisibleToCustomer,
-				IsVisibleToEmployee = tag.IsVisibleToEmployee
-			};
-
-			_context.Tags.Add(newTag);
-			_context.SaveChanges();
+			var task = Task.Run(async () => {
+				return await TagService.CreateTag(tag);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
 			return RedirectToAction("_TagList");
 		}
@@ -96,22 +102,12 @@ namespace DigitalInspection.Controllers
 		[HttpPost]
 		public ActionResult Delete(Guid id)
 		{
-			try
-			{
-				var tagInDb = _context.Tags.Find(id);
+			var task = Task.Run(async () => {
+				return await TagService.DeleteTag(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-				if (tagInDb == null)
-				{
-					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
-				}
-
-				_context.Tags.Remove(tagInDb);
-				_context.SaveChanges();
-			}
-			catch (Exception e)
-			{
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred(e));
-			}
 			return RedirectToAction("_TagList");
 		}
 

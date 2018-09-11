@@ -6,10 +6,14 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using DigitalInspection.Models.Inspections;
+using DigitalInspection.Models.Web;
+using Newtonsoft.Json;
 
 namespace DigitalInspection.Services.Web
 {
-	public class HttpClientService
+	public class HttpClientService<T>
 	{
 		protected static HttpClient InitializeAnonymousHttpClient()
 		{
@@ -62,9 +66,21 @@ namespace DigitalInspection.Services.Web
 			return httpClient;
 		}
 
-		protected static Uri ConstructBaseUri()
+		protected static HttpClient InitializeDINetCoreHttpClient()
 		{
-			var apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
+			var httpClient = new HttpClient();
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+			httpClient.BaseAddress = ConstructBaseUri("DigitalInspection-NetCoreBaseUrl");
+			httpClient.DefaultRequestHeaders.Accept.Clear();
+			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+			return httpClient;
+		}
+
+		protected static Uri ConstructBaseUri(string appSettingsKey = "MurphyAutomotiveD3apiBaseUrl")
+		{
+			var apiBaseUrl = ConfigurationManager.AppSettings.Get(appSettingsKey).TrimEnd('/');
 
 			var uri = $"{apiBaseUrl}/";
 
@@ -94,5 +110,68 @@ namespace DigitalInspection.Services.Web
 
 			return claim;
 		}
+
+		#region DI Net Core Client
+
+		protected static async Task<HttpResponse<IEnumerable<T>>> GetEntities(string url)
+		{
+			using (var httpClient = InitializeDINetCoreHttpClient())
+			{
+				HttpResponseMessage response = await httpClient.GetAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				return CreateDomainEntityListResponse(response, json);
+			}
+		}
+
+		protected static async Task<HttpResponse<T>> GetEntity(string url)
+		{
+			using (var httpClient = InitializeDINetCoreHttpClient())
+			{
+				HttpResponseMessage response = await httpClient.GetAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				return CreateDomainEntityResponse(response, json);
+			}
+		}
+
+		public static async Task<HttpResponse<T>> DeleteEntity(string url)
+		{
+			using (var httpClient = InitializeDINetCoreHttpClient())
+			{
+				HttpResponseMessage response = await httpClient.DeleteAsync(url);
+				string json = await response.Content.ReadAsStringAsync();
+
+				return CreateDomainEntityResponse(response, json);
+			}
+		}
+
+		protected static HttpResponse<T> CreateDomainEntityResponse(HttpResponseMessage httpResponse, string responseContent)
+		{
+			var entityResponse = new HttpResponse<T>(httpResponse, responseContent);
+
+			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
+			{
+				var entity = JsonConvert.DeserializeObject<T>(responseContent);
+				entityResponse.Entity = entity;
+			}
+
+			return entityResponse;
+		}
+
+		protected static HttpResponse<IEnumerable<T>> CreateDomainEntityListResponse(HttpResponseMessage httpResponse, string responseContent)
+		{
+			var entitiesResponse = new HttpResponse<IEnumerable<T>>(httpResponse, responseContent);
+
+			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
+			{
+				var entities = JsonConvert.DeserializeObject<IEnumerable<T>>(responseContent);
+				entitiesResponse.Entity = entities;
+			}
+
+			return entitiesResponse;
+		}
+
+		#endregion
 	}
 }

@@ -12,13 +12,13 @@ using Newtonsoft.Json;
 
 namespace DigitalInspection.Services.Web
 {
-	public class VehicleHistoryService: HttpClientService
+	public class VehicleHistoryService: HttpClientService<VehicleHistoryItem>
 	{
 		// TODO: Find way to override static superclass, and instead only change ConstructBaseUri() method.
 		//  Might require factory pattern for httpClient like DbContextFactories?
 		protected static HttpClient InitializeHttpClient(IEnumerable<Claim> userClaims, string companyNumber)
 		{
-			var httpClient = HttpClientService.InitializeHttpClient(userClaims, false);
+			var httpClient = HttpClientService<VehicleHistoryItem>.InitializeHttpClient(userClaims, false);
 
 			string apiBaseUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveD3apiBaseUrl").TrimEnd('/');
 

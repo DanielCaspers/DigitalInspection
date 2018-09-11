@@ -5,7 +5,9 @@ using DigitalInspection.Models;
 using DigitalInspection.Services;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Threading.Tasks;
 using DigitalInspection.Models.Inspections;
+using DigitalInspection.Services.Web;
 using DigitalInspection.ViewModels.ChecklistItems;
 
 namespace DigitalInspection.Controllers
@@ -20,14 +22,24 @@ namespace DigitalInspection.Controllers
 
 		private ManageChecklistItemsViewModel GetChecklistItemViewModel()
 		{
-			var checklistItems = _context.ChecklistItems.OrderBy(c => c.Name).ToList();
-			var tags = _context.Tags.OrderBy(t => t.Name).ToList();
-			// TODO: Why is this necessary?
-			var measurements = new List<Measurement>();
+			var tagsTask = Task.Run(async () => {
+				return await TagService.GetTags();
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			tagsTask.Wait();
+
+			var checklistItemsTask = Task.Run(async () => {
+				return await ChecklistItemService.GetChecklistItems();
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			tagsTask.Wait();
+
+			var checklistItems = checklistItemsTask.Result.Entity.ToList();
+			var tags = tagsTask.Result.Entity.ToList();
 			return new ManageChecklistItemsViewModel
 			{
 				ChecklistItems = checklistItems,
-				AddChecklistItemVM = new AddChecklistItemViewModel { Name = "", Tags = tags, Measurements = measurements }
+				AddChecklistItemVM = new AddChecklistItemViewModel { Name = "", Tags = tags }
 			};
 		}
 
@@ -51,29 +63,21 @@ namespace DigitalInspection.Controllers
 		//GET: ChecklistItems/Edit/:id
 		public PartialViewResult Edit(Guid id)
 		{
-			var checklistItem = _context.ChecklistItems.SingleOrDefault(c => c.Id == id);
+			var task = Task.Run(async () => {
+				return await ChecklistItemService.GetEdit(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (checklistItem == null)
-			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
-			}
-			else
-			{
-				checklistItem.Measurements = checklistItem.Measurements.OrderBy(m => m.Label).ToList();
-				checklistItem.CannedResponses = checklistItem.CannedResponses.OrderBy(c => c.Response).ToList();
-				var tags = _context.Tags.OrderBy(t => t.Name).ToList();
-				var selectedTagIds = checklistItem.Tags.Select(t => t.Id);
-				var viewModel = new EditChecklistItemViewModel
-				{
-					ChecklistItem = checklistItem,
-					Tags = tags,
-					SelectedTagIds = selectedTagIds
-				};
-				return PartialView("_EditChecklistItem", viewModel);
-			}
+			var viewModel = task.Result.Entity;
+
+			return viewModel == null ?
+				PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName)) :
+				PartialView("_EditChecklistItem", viewModel);
 		}
 
-		[HttpPost] //TODO: Move Tags parameter into viewModel??
+		// TODO DJC FINISH converting this endpoint
+		[HttpPost]
 		public ActionResult Create(AddChecklistItemViewModel checklistItem, IList<Guid> tags)
 		{
 			ChecklistItem newItem = new ChecklistItem
@@ -106,117 +110,42 @@ namespace DigitalInspection.Controllers
 			return RedirectToAction("_ChecklistItemList");
 		}
 
+		// TODO DJC: Verify model binding from here to NET Core. Getting HTTP 500 with duplicate for primary key error
 		[HttpPost]
 		public ActionResult Update(Guid id, EditChecklistItemViewModel vm)
 		{
-			var checklistItemInDb = _context.ChecklistItems.SingleOrDefault(c => c.Id == id);
-			if(checklistItemInDb == null)
+			var task = Task.Run(async () => {
+				return await ChecklistItemService.UpdateChecklistItem(id, vm);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var wasSuccessful = task.Result.IsSuccessStatusCode;
+			if (wasSuccessful == false)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
-			else
-			{
-				// Duplicating database entries bug - MUST BE DONE BEFORE PROP CHANGES 
-				// http://stackoverflow.com/a/22389505/2831961
-				foreach (var measurement in checklistItemInDb.Measurements)
-				{
-					_context.Measurements.Attach(measurement);
-				}
 
-				foreach (var cannedResponse in checklistItemInDb.CannedResponses)
-				{
-					_context.CannedResponses.Attach(cannedResponse);
-				}
-
-				foreach (var tag in checklistItemInDb.Tags)
-				{
-					_context.Tags.Attach(tag);
-				}
-
-				foreach (var measurementInVm in vm.ChecklistItem.Measurements)
-				{
-					var measurementInDb = checklistItemInDb.Measurements.SingleOrDefault(cm => cm.Id == measurementInVm.Id);
-					if (measurementInDb != null)
-					{
-						measurementInDb.Label = measurementInVm.Label;
-						measurementInDb.Unit = measurementInVm.Unit;
-						measurementInDb.MinValue = measurementInVm.MinValue;
-						measurementInDb.MaxValue = measurementInVm.MaxValue;
-						measurementInDb.StepSize = measurementInVm.StepSize;
-					}
-				}
-
-				foreach (var cannedResponseInVm in vm.ChecklistItem.CannedResponses)
-				{
-					var cannedResponseInDb = checklistItemInDb.CannedResponses.SingleOrDefault(cr => cr.Id == cannedResponseInVm.Id);
-					if (cannedResponseInDb != null)
-					{
-						cannedResponseInDb.Response = cannedResponseInVm.Response;
-						cannedResponseInDb.LevelsOfConcern = cannedResponseInVm.LevelsOfConcern;
-						cannedResponseInDb.Url = cannedResponseInVm.Url;
-						cannedResponseInDb.Description = cannedResponseInVm.Description;
-					}
-				}
-
-				checklistItemInDb.Name = vm.ChecklistItem.Name;
-				checklistItemInDb.Tags = _context.Tags.Where(t => vm.SelectedTagIds.Contains(t.Id)).ToList();
-
-				try
-				{
-					_context.SaveChanges();
-				}
-				catch (DbEntityValidationException dbEx)
-				{
-					ExceptionHandlerService.HandleException(dbEx);
-				}
-
-				return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
-			}
+			return RedirectToAction("Edit", new { id });
 		}
 
-		// POST: ChecklistItems/Delete/5
+		// TODO DJC: Noticed checklist items count is broken in checklists view, because join tags are not present. Consider porting new join models to old client
+		// TODO DJC: Verify model binding from here to NET Core. Getting HTTP 500 with cannot update due to foreign key constraint error
 		[HttpPost]
 		public ActionResult Delete(Guid id)
 		{
-			try
+			var task = Task.Run(async () => {
+				return await ChecklistItemService.DeleteChecklistItem(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var wasSuccessful = task.Result.IsSuccessStatusCode;
+			if (wasSuccessful == false)
 			{
-				var checklistItemInDb = _context.ChecklistItems.Find(id);
-
-				if (checklistItemInDb == null)
-				{
-					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
-				}
-
-				// TODO: DJC Should cascade delete work from checklistitem to measurement and canned response
-				foreach (var measurement in _context.Measurements)
-				{
-					if (measurement.ChecklistItemId == id)
-					{
-						_context.Measurements.Remove(measurement);
-					}
-				}
-
-				// TODO: DJC Should cascade delete work from checklistitem to measurement and canned response
-				foreach (var cannedResponse in _context.CannedResponses)
-				{
-					if (cannedResponse.ChecklistItemId == id)
-					{
-						_context.CannedResponses.Remove(cannedResponse);
-					}
-				}
-
-				_context.ChecklistItems.Remove(checklistItemInDb);
-				_context.SaveChanges();
+				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred(new Exception()));
 			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred(dbEx));
-			}
-			catch (Exception e)
-			{
-				return PartialView("Toasts/_Toast", ToastService.DatabaseException(e));
-			}
+
 			return RedirectToAction("_ChecklistItemList");
 		}
 
