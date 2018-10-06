@@ -30,7 +30,7 @@
 						<a href="@Url.Action("Edit", "Checklists", new { id = checklist.Id} )"
 						   onclick="FormService.showProgress()">
 							<h4 class="list-group-item-heading">@checklist.Name</h4>
-							<span class="list-group-item-text">Items: @checklist.ChecklistItems.Count</span>
+							@*<span class="list-group-item-text">Items: @checklist.ChecklistItems.Count</span>*@
 						</a>
 					</div>
 

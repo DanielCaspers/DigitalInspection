@@ -18,15 +18,6 @@ namespace DigitalInspection.ViewModels.ChecklistItems
 		[Required(ErrorMessage = "One or more tags are required")]
 		public IEnumerable<Guid> SelectedTagIds { get; set; }
 
-		public IEnumerable<RecommendedServiceSeverity> RecommendedServiceSeverities { get; set; } = new List<RecommendedServiceSeverity>()
-		{
-			RecommendedServiceSeverity.OK,
-			RecommendedServiceSeverity.IMMEDIATE,
-			RecommendedServiceSeverity.MODERATE,
-			RecommendedServiceSeverity.SHOULD_WATCH,
-			RecommendedServiceSeverity.MAINTENANCE,
-			RecommendedServiceSeverity.NOTES,
-			RecommendedServiceSeverity.NOT_APPLICABLE
-		};
+		public IEnumerable<RecommendedServiceSeverity> RecommendedServiceSeverities { get; set; }
 	}
 }

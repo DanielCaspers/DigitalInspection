@@ -76,41 +76,20 @@ namespace DigitalInspection.Controllers
 				PartialView("_EditChecklistItem", viewModel);
 		}
 
-		// TODO DJC FINISH converting this endpoint
 		[HttpPost]
 		public ActionResult Create(AddChecklistItemViewModel checklistItem, IList<Guid> tags)
 		{
-			ChecklistItem newItem = new ChecklistItem
-			{
-				Name = checklistItem.Name,
-				Tags = new List<Tag>(),
-				CannedResponses = new List<CannedResponse>(),
-				Measurements = new List<Measurement>()
-			};
+			checklistItem.TagIds = tags;
 
-			// TODO: Figure out how to do this with LINQ
-			// Push each full tag object onto list
-			foreach (var tagId in tags)
-			{
-				var tag = _context.Tags.Find(tagId);
-				newItem.Tags.Add(tag);
-			}
-
-			_context.ChecklistItems.Add(newItem);
-
-			try
-			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-			}
+			var task = Task.Run(async () => {
+				return await ChecklistItemService.CreateChecklistItem(checklistItem);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
 			return RedirectToAction("_ChecklistItemList");
 		}
 
-		// TODO DJC: Verify model binding from here to NET Core. Getting HTTP 500 with duplicate for primary key error
 		[HttpPost]
 		public ActionResult Update(Guid id, EditChecklistItemViewModel vm)
 		{
@@ -129,8 +108,6 @@ namespace DigitalInspection.Controllers
 			return RedirectToAction("Edit", new { id });
 		}
 
-		// TODO DJC: Noticed checklist items count is broken in checklists view, because join tags are not present. Consider porting new join models to old client
-		// TODO DJC: Verify model binding from here to NET Core. Getting HTTP 500 with cannot update due to foreign key constraint error
 		[HttpPost]
 		public ActionResult Delete(Guid id)
 		{
@@ -152,111 +129,59 @@ namespace DigitalInspection.Controllers
 		[HttpPost]
 		public ActionResult AddMeasurement(Guid id)
 		{
-			var checklistItemInDb = _context.ChecklistItems.Find(id);
+			var task = Task.Run(async () => {
+				return await ChecklistItemService.CreateMeasurement(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (checklistItemInDb == null)
+			if (task.Result.IsSuccessStatusCode == false)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 
-			checklistItemInDb.Measurements.Add(new Measurement());
-
-			try
-			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-			}
-
-			return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
+			return RedirectToAction("Edit", new { id });
 		}
 
 		[HttpPost]
 		public ActionResult DeleteMeasurement(Guid id)
 		{
-			var checklistItemInDb = _context.ChecklistItems.FirstOrDefault(ci => ci.Measurements.Any(m => m.Id == id));
+			var task = Task.Run(async () => {
+				return await ChecklistItemService.DeleteMeasurement(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (checklistItemInDb == null)
-			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
-			}
-
-			var measurementToRemove = checklistItemInDb.Measurements.Single(m => m.Id == id);
-			checklistItemInDb.Measurements.Remove(measurementToRemove);
-
-			// Uncomment this line if it is desired to remove all notions of this measurement from the APP.
-			// Leaving this commented out only removes its association from a checklist for new items, but allows
-			// old inspections to remain historically accurate. 
-			//_context.Measurements.Remove(measurementToRemove);
-			try
-			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-			}
-
-			return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
+			return RedirectToAction("Index");
 		}
 
 		[HttpPost]
 		public ActionResult AddCannedResponse(Guid id)
 		{
-			var checklistItemInDb = _context.ChecklistItems.Find(id);
+			var task = Task.Run(async () => {
+				return await ChecklistItemService.CreateCannedResponse(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (checklistItemInDb == null)
+			if (task.Result.IsSuccessStatusCode == false)
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
 			}
 
-			var cannedResponse = new CannedResponse()
-			{
-				Response = "A new response"
-			};
-			checklistItemInDb.CannedResponses.Add(cannedResponse);
-
-			try
-			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-			}
-
-			return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
+			return RedirectToAction("Edit", new { id });
 		}
 
 		[HttpPost]
 		public ActionResult DeleteCannedResponse(Guid id)
 		{
-			var checklistItemInDb = _context.ChecklistItems.FirstOrDefault(ci => ci.CannedResponses.Any(m => m.Id == id));
+			var task = Task.Run(async () => {
+				return await ChecklistItemService.DeleteCannedResponse(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (checklistItemInDb == null)
-			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(ResourceName));
-			}
-
-			var cannedResponseToRemove = checklistItemInDb.CannedResponses.Single(m => m.Id == id);
-			checklistItemInDb.CannedResponses.Remove(cannedResponseToRemove);
-
-			// Uncomment this line if it is desired to remove all notions of this canned response from the APP.
-			// Leaving this commented out only removes its association from a checklist for new items, but allows
-			// old inspections to remain historically accurate. 
-			//_context.CannedResponses.Remove(cannedResponseToRemove);
-			try
-			{
-				_context.SaveChanges();
-			}
-			catch (DbEntityValidationException dbEx)
-			{
-				ExceptionHandlerService.HandleException(dbEx);
-			}
-
-			return RedirectToAction("Edit", new { id = checklistItemInDb.Id });
+			return RedirectToAction("Index");
 		}
 	}
 }
