@@ -20,7 +20,7 @@ namespace DigitalInspection.Controllers
 		private ManageTagsViewModel GetTagViewModel()
 		{
 			var task = Task.Run(async () => {
-				return await TagService.GetTags();
+				return await TagHttpService.GetTags();
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -48,7 +48,7 @@ namespace DigitalInspection.Controllers
 		public PartialViewResult Edit(Guid id)
 		{
 			var task = Task.Run(async () => {
-				return await TagService.GetTag(id);
+				return await TagHttpService.GetTag(id);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -71,7 +71,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult Update(Guid id, AddTagViewModel tag)
 		{
 			var task = Task.Run(async () => {
-				return await TagService.UpdateTag(id, tag);
+				return await TagHttpService.UpdateTag(id, tag);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -90,7 +90,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult Create(AddTagViewModel tag)
 		{
 			var task = Task.Run(async () => {
-				return await TagService.CreateTag(tag);
+				return await TagHttpService.CreateTag(tag);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -103,7 +103,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult Delete(Guid id)
 		{
 			var task = Task.Run(async () => {
-				return await TagService.DeleteTag(id);
+				return await TagHttpService.DeleteTag(id);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();

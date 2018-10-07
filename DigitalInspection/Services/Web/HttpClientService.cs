@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using DigitalInspection.Models.Inspections;
 using DigitalInspection.Models.Web;
 using Newtonsoft.Json;
@@ -144,6 +145,19 @@ namespace DigitalInspection.Services.Web
 
 				return CreateDomainEntityResponse(response, json);
 			}
+		}
+
+		protected static HttpResponse<TResponse> CreateDomainEntityResponse<TResponse>(HttpResponseMessage httpResponse, string responseContent)
+		{
+			var entityResponse = new HttpResponse<TResponse>(httpResponse, responseContent);
+
+			if (httpResponse.IsSuccessStatusCode && responseContent != string.Empty)
+			{
+				var entity = JsonConvert.DeserializeObject<TResponse>(responseContent);
+				entityResponse.Entity = entity;
+			}
+
+			return entityResponse;
 		}
 
 		protected static HttpResponse<T> CreateDomainEntityResponse(HttpResponseMessage httpResponse, string responseContent)

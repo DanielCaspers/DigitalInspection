@@ -10,14 +10,14 @@ using Newtonsoft.Json;
 
 namespace DigitalInspection.Services.Web
 {
-	public class ChecklistService: HttpClientService<Checklist>
+	public class ChecklistHttpService: HttpClientService<Checklist>
 	{
 		public static async Task<HttpResponse<IEnumerable<Checklist>>> GetChecklists()
 		{
 			return await GetEntities($"Checklists/");
 		}
 
-		public static async Task<HttpResponse<Checklist>> GetChecklist(Guid id)
+		public static async Task<HttpResponse<Checklist>> GetById(Guid id)
 		{
 			return await GetEntity($"Checklists/{id}");
 		}
@@ -34,7 +34,7 @@ namespace DigitalInspection.Services.Web
 			}
 		}
 
-		public static async Task<HttpResponse<Checklist>> UpdateChecklist(Guid id, EditChecklistViewModel checklist)
+		public static async Task<HttpResponse<Checklist>> Update(Guid id, EditChecklistViewModel checklist)
 		{
 			using (HttpClient httpClient = InitializeDINetCoreHttpClient())
 			{
@@ -49,7 +49,7 @@ namespace DigitalInspection.Services.Web
 			}
 		}
 
-		public static async Task<HttpResponse<Checklist>> CreateChecklist(AddChecklistViewModel checklist)
+		public static async Task<HttpResponse<Checklist>> Create(AddChecklistViewModel checklist)
 		{
 			using (HttpClient httpClient = InitializeDINetCoreHttpClient())
 			{
@@ -64,7 +64,7 @@ namespace DigitalInspection.Services.Web
 			}
 		}
 
-		public static async Task<HttpResponse<Checklist>> DeleteChecklist(Guid id)
+		public static async Task<HttpResponse<Checklist>> Delete(Guid id)
 		{
 			return await DeleteEntity($"Checklists/{id}");
 		}

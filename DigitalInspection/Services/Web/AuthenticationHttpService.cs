@@ -17,7 +17,7 @@ using SecurityToken = Microsoft.IdentityModel.Tokens.SecurityToken;
 
 namespace DigitalInspection.Services.Web
 {
-	public class AuthenticationService : HttpClientService<object>
+	public class AuthenticationHttpService : HttpClientService<object>
 	{
 		// https://stackoverflow.com/questions/31129873/make-http-client-synchronous-wait-for-response
 		public static async Task<HttpResponse<ClaimsIdentity>> Login(string username, string password)

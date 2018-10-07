@@ -56,7 +56,7 @@ namespace DigitalInspection.Controllers
 		public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
 		{
 			var task = Task.Run(async () => {
-				return await AuthenticationService.Login(model.Username, model.Password);
+				return await AuthenticationHttpService.Login(model.Username, model.Password);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -95,7 +95,7 @@ namespace DigitalInspection.Controllers
 		public async Task<ActionResult> Logout()
 		{
 			var task = Task.Run(async () => {
-				return await AuthenticationService.Logout(CurrentUserClaims);
+				return await AuthenticationHttpService.Logout(CurrentUserClaims);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();

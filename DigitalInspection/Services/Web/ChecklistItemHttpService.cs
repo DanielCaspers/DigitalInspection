@@ -10,14 +10,14 @@ using Newtonsoft.Json;
 
 namespace DigitalInspection.Services.Web
 {
-	public class ChecklistItemService: HttpClientService<ChecklistItem>
+	public class ChecklistItemHttpService: HttpClientService<ChecklistItem>
 	{
 		public static async Task<HttpResponse<IEnumerable<ChecklistItem>>> GetChecklistItems()
 		{
 			return await GetEntities($"ChecklistItems/");
 		}
 
-		public static async Task<HttpResponse<ChecklistItem>> GetChecklistItem(Guid id)
+		public static async Task<HttpResponse<ChecklistItem>> GetById(Guid id)
 		{
 			return await GetEntity($"ChecklistItems/{id}");
 		}

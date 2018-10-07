@@ -10,7 +10,7 @@ namespace DigitalInspection.Controllers
 		public JsonResult Json(string companyNumber)
 		{
 			var task = Task.Run(async () => {
-				return await StoreInfoService.GetStoreInfo(companyNumber);
+				return await StoreInfoHttpService.GetStoreInfo(companyNumber);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();

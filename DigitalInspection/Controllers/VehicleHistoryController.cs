@@ -13,7 +13,7 @@ namespace DigitalInspection.Controllers
 		public PartialViewResult GetVehicleHistoryDialog(string VIN)
 		{
 			var task = Task.Run(async () => {
-				return await VehicleHistoryService.GetVehicleHistory(CurrentUserClaims, VIN, GetCompanyNumber());
+				return await VehicleHistoryHttpService.GetVehicleHistory(CurrentUserClaims, VIN, GetCompanyNumber());
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();

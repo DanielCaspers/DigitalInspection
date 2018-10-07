@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using DigitalInspection.Models.Orders;
 using System.IO;
+using System.Net;
 using DigitalInspection.Models.Inspections;
-using DigitalInspection.Models.Inspections.Reports;
 using DigitalInspection.Services.Core;
 using DigitalInspection.Services.Web;
 using DigitalInspection.Utils;
@@ -50,31 +50,43 @@ namespace DigitalInspection.Controllers
 		[AllowAnonymous]
 		public JsonResult InspectionIdForOrder(string workOrderId)
 		{
-			var id = _context.Inspections
-				.SingleOrDefault(i => i.WorkOrderId == workOrderId)
-				?.Id;
+			var task = Task.Run(async () => {
+				return await InspectionHttpService.GetInspectionId(workOrderId);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var id = task.Result.Entity;
 
 			return Json(id, JsonRequestBehavior.AllowGet);
 		}
 
 		[AllowAnonymous]
-		public JsonResult ReportForOrder(string workOrderId, bool grouped = false, bool includeUnknown = false)
+		public ActionResult ReportForOrder(string workOrderId, bool grouped = false, bool includeUnknown = false)
 		{
-			var inspectionItems = _context.Inspections
-				.Single(i => i.WorkOrderId == workOrderId)
-				.InspectionItems;
+			var task = Task.Run(async () => {
+				return await InspectionHttpService.GetInspectionReport(workOrderId);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			return BuildInspectionReportInternal(inspectionItems, grouped, includeUnknown);
+			return task.Result.IsSuccessStatusCode
+				? (ActionResult) Json(task.Result.Entity, JsonRequestBehavior.AllowGet)
+				: new HttpNotFoundResult();
 		}
 
 		[AllowAnonymous]
-		public JsonResult Report(Guid inspectionId, bool grouped = false, bool includeUnknown = false)
+		public ActionResult Report(Guid inspectionId, bool grouped = false, bool includeUnknown = false)
 		{
-			var inspectionItems = _context.Inspections
-				.Single(i => i.Id == inspectionId)
-				.InspectionItems;
+			var task = Task.Run(async () => {
+				return await InspectionHttpService.GetInspectionReport(inspectionId);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			return BuildInspectionReportInternal(inspectionItems, grouped, includeUnknown);
+			return task.Result.IsSuccessStatusCode
+				? (ActionResult)Json(task.Result.Entity, JsonRequestBehavior.AllowGet)
+				: new HttpNotFoundResult();
 		}
 
 		[HttpPost]
@@ -87,25 +99,23 @@ namespace DigitalInspection.Controllers
 				return Json($"Not authorized to delete inspection for {workOrderId}");
 			}
 
-			var inspection = _context.Inspections.SingleOrDefault(i => i.WorkOrderId == workOrderId);
-			if (inspection == null)
-			{
-				return new EmptyResult();
-			}
+			var task = Task.Run(async () => {
+				return await InspectionHttpService.Delete(workOrderId);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			InspectionService.DeleteInspection(_context, inspection);
-
-			return new EmptyResult();
+			return task.Result.IsSuccessStatusCode ? 
+				new EmptyResult() :
+				(ActionResult) new HttpStatusCodeResult(500);
 		}
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult MarkAsCompleted(Guid inspectionId, string workOrderId, Guid checklistId, Guid? tagId)
 		{
-			var inspection = _context.Inspections.Single(i => i.Id == inspectionId);
-
 			var task = Task.Run(async () => {
-				return await WorkOrderService.SetStatus(CurrentUserClaims, inspection.WorkOrderId, GetCompanyNumber(), WorkOrderStatusCode.InspectionCompleted);
+				return await WorkOrderHttpService.SetStatus(CurrentUserClaims, workOrderId, GetCompanyNumber(), WorkOrderStatusCode.InspectionCompleted);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -124,24 +134,31 @@ namespace DigitalInspection.Controllers
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
-		public ActionResult Condition(Guid inspectionItemId, RecommendedServiceSeverity inspectionItemCondition)
+		public ActionResult Condition(Guid inspectionItemId, RecommendedServiceSeverity condition)
 		{
 			// Save Condition
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			var task = Task.Run(async () => {
+				return await InspectionItemHttpService.SetCondition(inspectionItemId, condition);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (inspectionItemInDb == null)
+			switch (task.Result.HTTPCode)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+				case HttpStatusCode.NoContent:
+					// Continue on 
+					break;
+				case HttpStatusCode.NotFound:
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+				default:
+					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
 
-			if (InspectionService.UpdateInspectionItemCondition(_context, inspectionItemInDb, inspectionItemCondition) == false)
-			{
-				return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
-			}
+			var inspectionItemInDb = GetInspectionItem(inspectionItemId);
 
 			// Prepare updated multiselect list for client
-			var checklistItem = _context.ChecklistItems.Single(ci => ci.Id == inspectionItemInDb.ChecklistItem.Id);
-			var filteredCRs = checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(inspectionItemCondition));
+			var checklistItem = GetChecklistItem(inspectionItemInDb.ChecklistItem.Id);
+			var filteredCRs = checklistItem.CannedResponses.Where(cr => cr.LevelsOfConcern.Contains(condition));
 
 			// Options may be selected in the case where we haven't changed to a new condition
 			var options = filteredCRs.Select(cr => new
@@ -164,11 +181,14 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult CannedResponse(Guid inspectionItemId, InspectionDetailViewModel vm)
 		{
-			var inspectionItemInDb = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
+			var selectedCannedResponseIds = vm.Inspection.InspectionItems.Single(ii => ii.Id == inspectionItemId).SelectedCannedResponseIds;
 
-			IList<Guid> selectedCannedResponseIds = vm.Inspection.InspectionItems.Single(ii => ii.Id == inspectionItemId).SelectedCannedResponseIds;
+			var task = Task.Run(async () => {
+				return await InspectionItemHttpService.SetCannedResponses(inspectionItemId, selectedCannedResponseIds);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			InspectionService.UpdateInspectionItemCannedResponses(_context, inspectionItemInDb, selectedCannedResponseIds);
 			return new EmptyResult();
 		}
 
@@ -176,38 +196,42 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult IsCustomerConcern(Guid inspectionItemId, bool isCustomerConcern)
 		{
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			var task = Task.Run(async () => {
+				return await InspectionItemHttpService.SetCustomerConcern(inspectionItemId, isCustomerConcern);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (inspectionItemInDb == null)
+			switch (task.Result.HTTPCode)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+				case HttpStatusCode.NoContent:
+					return new EmptyResult();
+				case HttpStatusCode.NotFound:
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+				default:
+					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
-
-			if (InspectionService.UpdateIsCustomerConcern(_context, inspectionItemInDb, isCustomerConcern))
-			{
-				return new EmptyResult();
-			}
-
-			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult ItemNote(AddInspectionItemNoteViewModel itemNoteVm)
 		{
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == itemNoteVm.InspectionItem.Id);
+			var task = Task.Run(async () => {
+				return await InspectionItemHttpService.SetNotes(itemNoteVm.InspectionItem.Id, itemNoteVm.Note);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (inspectionItemInDb == null)
+			switch (task.Result.HTTPCode)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+				case HttpStatusCode.NoContent:
+					return new EmptyResult();
+				case HttpStatusCode.NotFound:
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+				default:
+					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
-
-			if (InspectionService.UpdateInspectionItemNote(_context, inspectionItemInDb, itemNoteVm.Note))
-			{
-				return new EmptyResult();
-			}
-
-			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]
@@ -224,7 +248,7 @@ namespace DigitalInspection.Controllers
 			IList<string> returnCarriageSeparatedNotes = workOrderNoteVm.Note.GroupByLineEnding();
 
 			var task = Task.Run(async () => {
-				return await WorkOrderService.SaveWorkOrderNote(CurrentUserClaims, workOrderNoteVm.WorkOrderId, GetCompanyNumber(), returnCarriageSeparatedNotes);
+				return await WorkOrderHttpService.SaveWorkOrderNote(CurrentUserClaims, workOrderNoteVm.WorkOrderId, GetCompanyNumber(), returnCarriageSeparatedNotes);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -241,19 +265,24 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult Measurements(AddMeasurementViewModel MeasurementsVM)
 		{
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == MeasurementsVM.InspectionItem.Id);
+			var measurementUpdates = MeasurementsVM.InspectionItem.InspectionMeasurements
+				.Select(im => new UpdateInspectionMeasurementRequest {Id = im.Id, Value = im.Value});
 
-			if (inspectionItemInDb == null)
+			var task = Task.Run(async () => {
+				return await InspectionItemHttpService.SetMeasurements(MeasurementsVM.InspectionItem.Id, measurementUpdates);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			switch (task.Result.HTTPCode)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+				case HttpStatusCode.NoContent:
+					return new EmptyResult();
+				case HttpStatusCode.NotFound:
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
+				default:
+					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
-
-			if (InspectionService.UpdateInspectionItemMeasurements(_context, inspectionItemInDb, MeasurementsVM.InspectionItem.InspectionMeasurements))
-			{
-				return new EmptyResult();
-			}
-
-			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]
@@ -275,66 +304,65 @@ namespace DigitalInspection.Controllers
 			}
 
 			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+
+			//var task = Task.Run(async () => {
+			//	return await InspectionImageHttpService.Upload(photoVM.InspectionItem.Id, photoVM.Picture);
+			//});
+			//// Force Synchronous run for Mono to work. See Issue #37
+			//task.Wait();
+
+			//var wasSuccessful = task.Result.IsSuccessStatusCode;
+
+			//return wasSuccessful
+			//	? RedirectToAction("Index", new { workOrderId = photoVM.WorkOrderId, checklistId = photoVM.ChecklistId, tagId = photoVM.TagId })
+			//	: (ActionResult)PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
-		public ActionResult DeletePhoto(Guid imageId, Guid checklistId, Guid? tagId, string workOrderId)
+		public ActionResult DeletePhoto(Guid imageId, Guid inspectionItemId, Guid checklistId, Guid? tagId, string workOrderId)
 		{
-			var image = _context.InspectionImages.SingleOrDefault(inspectionImage => inspectionImage.Id == imageId);
+			var task = Task.Run(async () => {
+				return await InspectionImageHttpService.Delete(inspectionItemId, imageId);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			if (image == null)
-			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound("Image"));
-			}
+			var wasSuccessful = task.Result.IsSuccessStatusCode;
 
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == image.InspectionItem.Id);
-
-			if (inspectionItemInDb == null)
-			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
-			}
-
-			ImageService.DeleteImage(image);
-
-			if (InspectionService.DeleteInspectionItemImage(_context, image))
-			{
-				return RedirectToAction("Index", new { workOrderId, checklistId, tagId });
-			}
-
-			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
+			return wasSuccessful ?
+				RedirectToAction("Index", new { workOrderId, checklistId, tagId }) :
+				(ActionResult)PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public ActionResult IsPhotoVisibleToCustomer(Guid inspectionItemId, Guid inspectionImageId, bool isVisibleToCustomer)
 		{
-			var inspectionItemInDb = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
-			if (inspectionItemInDb == null)
-			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
-			}
+			var task = Task.Run(async () => {
+				return await InspectionImageHttpService.SetVisibility(inspectionItemId, inspectionImageId, isVisibleToCustomer);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
 
-			var inspectionImage = inspectionItemInDb.InspectionImages.SingleOrDefault(ii => ii.Id == inspectionImageId);
-			if (inspectionImage == null)
+			switch (task.Result.HTTPCode)
 			{
-				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound("Inspection Image"));
+				case HttpStatusCode.NoContent:
+					return new EmptyResult();
+				case HttpStatusCode.NotFound:
+					return PartialView("Toasts/_Toast", ToastService.ResourceNotFound("Inspection item or image"));
+				default:
+					return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 			}
-
-			if (InspectionService.UpdateInspectionImageVisibility(_context, inspectionImage, isVisibleToCustomer))
-			{
-				return new EmptyResult();
-			}
-
-			return PartialView("Toasts/_Toast", ToastService.UnknownErrorOccurred());
 		}
 
 		[HttpPost]
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult GetAddMeasurementDialog(Guid inspectionItemId, Guid checklistItemId)
 		{
-			var checklistItem = _context.ChecklistItems.Single(ci => ci.Id == checklistItemId);
+			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
 			var inspectionItem = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
+
 			inspectionItem.InspectionMeasurements = inspectionItem.InspectionMeasurements.OrderBy(im => im.Measurement.Label).ToList();
 
 			return PartialView("_AddMeasurementDialog", new AddMeasurementViewModel
@@ -381,7 +409,7 @@ namespace DigitalInspection.Controllers
 		public PartialViewResult GetUploadInspectionPhotosDialog(Guid inspectionItemId, Guid checklistItemId, Guid checklistId, Guid? tagId, string workOrderId)
 		{
 			var checklistItem = _context.ChecklistItems.SingleOrDefault(ci => ci.Id == checklistItemId);
-			var inspectionItem = _context.InspectionItems.SingleOrDefault(item => item.Id == inspectionItemId);
+			var inspectionItem = _context.InspectionItems.Single(item => item.Id == inspectionItemId);
 
 			return PartialView("_UploadInspectionPhotosDialog", new UploadInspectionPhotosViewModel
 			{
@@ -485,11 +513,14 @@ namespace DigitalInspection.Controllers
 
 		private ScrollableTabContainerViewModel GetScrollableTabContainerViewModel(Guid? tagId)
 		{
+			var task = Task.Run(async () => {
+				return await TagHttpService.GetEmployeeVisibleTags();
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
 			// Construct tabs based on current selection
-			var applicableTags = _context.Tags
-				.Where(t => t.IsVisibleToEmployee)
-				.OrderBy(t => t.Name)
-				.ToList();
+			var applicableTags = task.Result.Entity?.ToList() ?? new List<Tag>();
 
 			IList<ScrollableTab> tabs = new List<ScrollableTab>
 			{
@@ -499,7 +530,7 @@ namespace DigitalInspection.Controllers
 				}
 			};
 
-			foreach (Tag tag in applicableTags)
+			foreach (var tag in applicableTags)
 			{
 				tabs.Add(new ScrollableTab { paneId = tag.Id, title = tag.Name });
 			}
@@ -521,62 +552,48 @@ namespace DigitalInspection.Controllers
 			};
 		}
 
-		private JsonResult BuildInspectionReportInternal(IEnumerable<InspectionItem> unfilteredInspectionItems, bool grouped, bool includeUnknown)
-		{
-			var applicableTags = _context.Tags
-				.Where(t => t.IsVisibleToCustomer)
-				.Select(t => t.Id)
-				.ToList();
-
-			// Only show inspection items which correspond to one or more customer visible tags
-			var inspectionItems = unfilteredInspectionItems
-				.Where(ii => ii.ChecklistItem.Tags
-					.Select(t => t.Id)
-					.Intersect(applicableTags)
-					.Any()
-				).ToList();
-
-			if (!includeUnknown)
-			{
-				// Only show inspection items which have had a marked condition
-				inspectionItems = inspectionItems.Where(ii => ii.Condition != RecommendedServiceSeverity.UNKNOWN).ToList();
-			}
-
-			string baseUrl = HttpContext.Request.Url.GetLeftPart(UriPartial.Authority);
-
-			if (grouped)
-			{
-				var inspectionReportGroups = inspectionItems
-					.GroupBy(ii =>
-						ii.ChecklistItem.Tags
-							.Where(t => t.IsVisibleToCustomer)
-							.Select(t => t.Name)
-							.First()
-					)
-					.OrderBy(ig => ig.OrderBy(ii => ii.Condition).First().Condition)
-					.Select(ig => new InspectionReportGroup(ig, baseUrl));
-
-				return Json(inspectionReportGroups, JsonRequestBehavior.AllowGet);
-			}
-			else
-			{
-				var inspectionReportItems = inspectionItems
-					.OrderBy(ii => ii.Condition)
-					.Select(ii => new InspectionReportItem(ii, baseUrl));
-
-				return Json(inspectionReportItems, JsonRequestBehavior.AllowGet);
-			}
-		}
-
 		private HttpResponse<WorkOrder> GetWorkOrderResponse(string workOrderId)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(CurrentUserClaims, workOrderId, GetCompanyNumber(), false);
+				return await WorkOrderHttpService.GetWorkOrder(CurrentUserClaims, workOrderId, GetCompanyNumber(), false);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
 
 			return task.Result;
+		}
+
+		private ChecklistItem GetChecklistItem(Guid id)
+		{
+			var checklistItemTask = Task.Run(async () => {
+				return await ChecklistItemHttpService.GetById(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			checklistItemTask.Wait();
+
+			return checklistItemTask.Result.Entity;
+		}
+
+		private InspectionItem GetInspectionItem(Guid id)
+		{
+			var inspectionItemTask = Task.Run(async () => {
+				return await InspectionItemHttpService.GetById(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			inspectionItemTask.Wait();
+
+			return inspectionItemTask.Result.Entity;
+		}
+
+		private Checklist GetChecklist(Guid id)
+		{
+			var checklistTask = Task.Run(async () => {
+				return await ChecklistHttpService.GetById(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			checklistTask.Wait();
+
+			return checklistTask.Result.Entity;
 		}
 	}
 }

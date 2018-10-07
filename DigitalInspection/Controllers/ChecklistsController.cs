@@ -23,7 +23,7 @@ namespace DigitalInspection.Controllers
 		private ManageChecklistMasterViewModel GetChecklistViewModel()
 		{
 			var task = Task.Run(async () => {
-				return await ChecklistService.GetChecklists();
+				return await ChecklistHttpService.GetChecklists();
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -54,7 +54,7 @@ namespace DigitalInspection.Controllers
 		public PartialViewResult Edit(Guid id)
 		{
 			var task = Task.Run(async () => {
-				return await ChecklistService.GetEdit(id);
+				return await ChecklistHttpService.GetEdit(id);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -70,7 +70,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult Update(Guid id, EditChecklistViewModel vm)
 		{
 			var task = Task.Run(async () => {
-				return await ChecklistService.UpdateChecklist(id, vm);
+				return await ChecklistHttpService.Update(id, vm);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -88,7 +88,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult Create(AddChecklistViewModel list)
 		{
 			var task = Task.Run(async () => {
-				return await ChecklistService.CreateChecklist(list);
+				return await ChecklistHttpService.Create(list);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -101,7 +101,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult Delete(Guid id)
 		{
 			var task = Task.Run(async () => {
-				return await ChecklistService.DeleteChecklist(id);
+				return await ChecklistHttpService.Delete(id);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();

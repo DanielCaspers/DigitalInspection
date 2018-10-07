@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace DigitalInspection.Services.Web
 {
-	public class StoreInfoService: HttpClientService<StoreInfo>
+	public class StoreInfoHttpService: HttpClientService<StoreInfo>
 	{
 		public static async Task<HttpResponse<StoreInfo>> GetStoreInfo(string companyNumber)
 		{

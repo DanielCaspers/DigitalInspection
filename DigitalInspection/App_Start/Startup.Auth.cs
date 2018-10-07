@@ -40,7 +40,7 @@ namespace DigitalInspection
 					// This is a security feature which is used when you change a password or add an external login to your account.  
 					OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
 						validateInterval: authValidationInterval,
-						regenerateIdentity: (manager, user) => AuthenticationService.RefreshIdentityAsync(manager, user))
+						regenerateIdentity: (manager, user) => AuthenticationHttpService.RefreshIdentityAsync(manager, user))
 				}
 			});
 			app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);

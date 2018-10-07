@@ -10,11 +10,16 @@ using Newtonsoft.Json;
 
 namespace DigitalInspection.Services.Web
 {
-	public class TagService: HttpClientService<Tag>
+	public class TagHttpService: HttpClientService<Tag>
 	{
 		public static async Task<HttpResponse<IEnumerable<Tag>>> GetTags()
 		{
 			return await GetEntities($"Tags/");
+		}
+
+		public static async Task<HttpResponse<IEnumerable<Tag>>> GetEmployeeVisibleTags()
+		{
+			return await GetEntities($"Tags/VisibleToEmployee");
 		}
 
 		public static async Task<HttpResponse<Tag>> GetTag(Guid id)

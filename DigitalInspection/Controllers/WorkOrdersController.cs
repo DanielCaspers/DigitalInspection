@@ -90,12 +90,24 @@ namespace DigitalInspection.Controllers
 		[AuthorizeRoles(Roles.Admin, Roles.User, Roles.LocationManager, Roles.ServiceAdvisor, Roles.Technician)]
 		public PartialViewResult _Inspection(string id)
 		{
+			var checklistsTask = Task.Run(async () => {
+				return await ChecklistHttpService.GetChecklists();
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			checklistsTask.Wait();
+
+			var inspectionIdTask = Task.Run(async () => {
+				return await InspectionHttpService.GetInspectionId(id);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			inspectionIdTask.Wait();
+
 			return PartialView(new WorkOrderInspectionViewModel
 			{
 				WorkOrder = GetWorkOrderResponse(CurrentUserClaims, id).Entity,
 				TabViewModel = BuildInspectionTab(id),
-				Checklists = _context.Checklists.OrderBy(c => c.Name).ToList(),
-				InspectionId = _context.Inspections.Where(i => i.WorkOrderId == id).Select(i => i.Id).SingleOrDefault()
+				Checklists = checklistsTask.Result.Entity.ToList(),
+				InspectionId = inspectionIdTask.Result.Entity
 			});
 		}
 
@@ -104,7 +116,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult ReleaseCustomerFileLock(string id)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.ReleaseLock(CurrentUserClaims, id, GetCompanyNumber());
+				return await WorkOrderHttpService.ReleaseLock(CurrentUserClaims, id, GetCompanyNumber());
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -124,7 +136,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult ReleaseVehicleFileLock(string id)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.ReleaseLock(CurrentUserClaims, id, GetCompanyNumber());
+				return await WorkOrderHttpService.ReleaseLock(CurrentUserClaims, id, GetCompanyNumber());
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -144,7 +156,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult SaveCustomer(string id, WorkOrderDetailViewModel vm, bool releaselockonly = false)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.SaveWorkOrder(CurrentUserClaims, vm.WorkOrder, GetCompanyNumber(), releaselockonly);
+				return await WorkOrderHttpService.SaveWorkOrder(CurrentUserClaims, vm.WorkOrder, GetCompanyNumber(), releaselockonly);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -164,7 +176,7 @@ namespace DigitalInspection.Controllers
 		public ActionResult SaveVehicle(string id, WorkOrderDetailViewModel vm)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.SaveWorkOrder(CurrentUserClaims, vm.WorkOrder, GetCompanyNumber());
+				return await WorkOrderHttpService.SaveWorkOrder(CurrentUserClaims, vm.WorkOrder, GetCompanyNumber());
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -186,7 +198,14 @@ namespace DigitalInspection.Controllers
 		[AllowAnonymous]
 		public ActionResult Json(Guid inspectionId)
 		{
-			var workOrderId = _context.Inspections.Single(i => i.Id == inspectionId).WorkOrderId;
+			var task = Task.Run(async () => {
+				return await InspectionHttpService.GetWorkOrderId(inspectionId);
+			});
+			// Force Synchronous run for Mono to work. See Issue #37
+			task.Wait();
+
+			var workOrderId = task.Result.Entity;
+
 			return BuildJsonInternal(workOrderId);
 		}
 
@@ -207,19 +226,19 @@ namespace DigitalInspection.Controllers
 			if (HttpContext.User.IsInRole(Roles.ServiceAdvisor))
 			{
 				task = Task.Run(async () => {
-					return await WorkOrderService.GetWorkOrdersForServiceAdvisor(CurrentUserClaims, GetCompanyNumber());
+					return await WorkOrderHttpService.GetWorkOrdersForServiceAdvisor(CurrentUserClaims, GetCompanyNumber());
 				});
 			}
 			else if (HttpContext.User.IsInRole(Roles.Technician) || HttpContext.User.IsInRole(Roles.User))
 			{
 				task = Task.Run(async () => {
-					return await WorkOrderService.GetWorkOrdersForTech(CurrentUserClaims, GetCompanyNumber());
+					return await WorkOrderHttpService.GetWorkOrdersForTech(CurrentUserClaims, GetCompanyNumber());
 				});
 			}
 			else // Admin, LocationManager
 			{
 				task = Task.Run(async () => {
-					return await WorkOrderService.GetWorkOrders(CurrentUserClaims, GetCompanyNumber());
+					return await WorkOrderHttpService.GetWorkOrders(CurrentUserClaims, GetCompanyNumber());
 				});
 			}
 
@@ -261,7 +280,7 @@ namespace DigitalInspection.Controllers
 		private HttpResponse<WorkOrder> GetWorkOrderResponse(string workOrderId, bool canEdit = false)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(workOrderId, canEdit);
+				return await WorkOrderHttpService.GetWorkOrder(workOrderId, canEdit);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
@@ -272,7 +291,7 @@ namespace DigitalInspection.Controllers
 		private HttpResponse<WorkOrder> GetWorkOrderResponse(IEnumerable<Claim> userClaims, string workOrderId, bool canEdit = false)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(userClaims, workOrderId, GetCompanyNumber(), canEdit);
+				return await WorkOrderHttpService.GetWorkOrder(userClaims, workOrderId, GetCompanyNumber(), canEdit);
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();

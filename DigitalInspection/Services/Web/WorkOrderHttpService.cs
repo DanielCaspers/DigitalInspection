@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace DigitalInspection.Services.Web
 {
-	public class WorkOrderService : HttpClientService<WorkOrder>
+	public class WorkOrderHttpService : HttpClientService<WorkOrder>
 	{
 		// TODO: Find way to override static superclass, and instead only change ConstructBaseUri() method.
 		//  Might require factory pattern for httpClient like DbContextFactories?
