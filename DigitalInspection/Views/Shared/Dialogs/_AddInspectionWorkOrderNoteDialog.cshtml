@@ -30,14 +30,16 @@
 					<div class="modal-body">
 						<div class="form-group">
 							@Html.LabelFor(m => m.Note, new { @class = "control-label" })
-							@Html.TextAreaFor(m => m.Note, new { @class = "form-control", autofocus = "", rows = "15", spellcheck = true})
+							@Html.TextAreaFor(m => m.Note, new { @class = "form-control", autofocus = "", rows = "15", spellcheck = true, id="work-order-notes-textarea"})
 							@Html.ValidationMessageFor(m => m.Note)
+							
+							<span class="text-info">Your notes are <i>always</i> saved to the clipboard, even if saving fails.</span>
 						</div>
 					</div>
 
 					<div class="modal-footer">
 						<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+						<button id="@SUCCESS" type="submit" onclick="document.getElementById('work-order-notes-textarea').select(); document.execCommand('copy');" class="btn btn-primary" data-dismiss="modal">Save</button>
 					</div>
 
 					@Html.HiddenFor(m => m.WorkOrderId)
