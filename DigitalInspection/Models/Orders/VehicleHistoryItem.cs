@@ -7,6 +7,14 @@ namespace DigitalInspection.Models.Orders
 	{
 		public string OrderId { get; set; }
 
+		/// <summary>
+		/// An Inspection Id of the associated work order, if available.
+		/// </summary>
+		/// <remarks>
+		/// Owned by DigitalInspection persistence, not D3-API
+		/// </remarks>
+		public Guid? InspectionId { get; set; }
+
 		public DateTime? CompletionDate { get; set; }
 
 		public int? VehicleOdometer { get; set; }

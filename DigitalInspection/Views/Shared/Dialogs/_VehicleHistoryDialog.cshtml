@@ -26,7 +26,10 @@
 					<b class="col-xs-2">
 						Order #
 					</b>
-					<b class="col-xs-6">
+					<b class="col-xs-2">
+						Inspection
+					</b>
+					<b class="col-xs-4">
 						Labor Desc.
 					</b>
 				</div>
@@ -42,11 +45,22 @@
 						</div>
 						<div class="col-xs-2">
 							<a href="@ConfigurationManager.AppSettings.Get("MurphyAutomotiveVehicleHistoryInvoiceUrl")@Model.VehicleHistory[i].InvoiceLink"
-								target="_blank">
-								@Model.VehicleHistory[i].OrderId.Substring(0,3) - @Model.VehicleHistory[i].OrderId.Substring(3)
+							   target="_blank">
+								@Model.VehicleHistory[i].OrderId.Substring(0,3)-@Model.VehicleHistory[i].OrderId.Substring(3)
 							</a>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-2">
+							@if (Model.VehicleHistory[i].InspectionId != null)
+							{
+								var serviceAdvisorPortalUrl = ConfigurationManager.AppSettings.Get("MurphyAutomotiveServiceAdvisorPortalBaseUrl") + "/#/inspections/" + Model.VehicleHistory[i].InspectionId;
+
+								<a href="@serviceAdvisorPortalUrl"
+								   target="_blank">
+									Inspection
+								</a>
+							}
+						</div>
+						<div class="col-xs-4">
 							@if (Model.VehicleHistory[i].LaborDescription != null)
 							{
 								<ul style="padding-left: 10px !important;">
@@ -65,7 +79,6 @@
 
 			<div class="modal-footer">
 				<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				@*<button id="@SUCCESS" type="submit" class="btn btn-primary" data-dismiss="modal">Edit</button>*@
 			</div>
 		</div>
 	</div>
