@@ -18,33 +18,12 @@
 	{
 		<div class="container-flex between ma-nav-info">
 			<div>
-				@if (Model.CanEdit)
-				{
-					using (Html.BeginForm(
-						 "ReleaseCustomerFileLock",
-						 "WorkOrders",
-						 new { id = Model.WorkOrder.Id },
-						 FormMethod.Post,
-						new { style="display: inline;"}
-					))
-					 {
-						 <button type="submit"
-						    onclick="FormService.showProgress()"
-						    class="btn btn-default back-button no-margin pull-left">
-							 <i class="material-icons">arrow_back</i>
-							 Order @Model.WorkOrder.Id.Substring(3)
-						 </button>
-					 }
-				}
-				else
-				{
-					<a href="@Url.Action("Index", "WorkOrders")"
+				<a href="@Url.Action("_Customer", "WorkOrders", new { id = Model.WorkOrder.Id })"
 					   onclick="FormService.showProgress()"
 					   class="btn btn-default back-button no-margin pull-left">
 						<i class="material-icons">arrow_back</i>
 						Order @Model.WorkOrder.Id.Substring(3)
 					</a>
-				}
 			</div>
 			
 			<div class="customer-vehicle-summary-container">
@@ -72,12 +51,6 @@
 		</div>
 	}
 }
-
-<script type="text/javascript">
-	DialogService.confirmLeavingUnsavedChanges_onProceed = function () {
-		FormService.triggerExternalSubmit('editCustomerForm', false, true, { name: 'releaselockonly', value: 'true' });
-	}
-</script>
 
 @if (Model.WorkOrder != null)
 {

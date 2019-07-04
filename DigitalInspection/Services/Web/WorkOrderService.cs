@@ -6,10 +6,12 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using DigitalInspection.Models.DTOs;
 using DigitalInspection.Models.Mappers;
 using DigitalInspection.Models.Orders;
 using DigitalInspection.Models.Web;
+using DigitalInspection.Utils;
 using Newtonsoft.Json;
 
 namespace DigitalInspection.Services.Web
@@ -77,11 +79,11 @@ namespace DigitalInspection.Services.Web
 		#region Get Single Work Order
 
 		// For the overload without user claims, we must manually infer the company number from the order number
-		public static async Task<HttpResponse<WorkOrder>> GetWorkOrder(string id, bool requestlock = false)
+		public static async Task<HttpResponse<WorkOrder>> GetWorkOrder(string id)
 		{
 			using (HttpClient httpClient = InitializeAnonymousHttpClient())
 			{
-				var url = $"{id.Substring(0,3)}/orders/{id}?$requestlock={Convert.ToInt32(requestlock)}";
+				var url = $"{id.Substring(0,3)}/orders/{id}";
 				var response = await httpClient.GetAsync(url);
 				var json = await response.Content.ReadAsStringAsync();
 
@@ -90,11 +92,11 @@ namespace DigitalInspection.Services.Web
 		}
 
 		// For the overload with user claims, we grab the user's company number from their selected company via a cookie set for DI
-		public static async Task<HttpResponse<WorkOrder>> GetWorkOrder(IEnumerable<Claim> userClaims, string id, string companyNumber, bool requestlock = false)
+		public static async Task<HttpResponse<WorkOrder>> GetWorkOrder(IEnumerable<Claim> userClaims, string id, string companyNumber)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
-				var url = $"orders/{id}?$requestlock={Convert.ToInt32(requestlock)}";
+				var url = $"orders/{id}";
 				var response = await httpClient.GetAsync(url);
 				var json = await response.Content.ReadAsStringAsync();
 
@@ -106,21 +108,7 @@ namespace DigitalInspection.Services.Web
 
 		#region Save Work Order
 
-		public static async Task<HttpResponse<WorkOrder>> ReleaseLock(IEnumerable<Claim> userClaims, string orderId, string companyNumber)
-		{
-			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
-			{
-				var httpContent = new StringContent("", Encoding.UTF8, "application/json");
-
-				var url = $"orders/{orderId}?$releaselockonly=1";
-				var response = await httpClient.PutAsync(url, httpContent);
-				var responseJson = await response.Content.ReadAsStringAsync();
-
-				return CreateWorkOrderResponse(response, responseJson);
-			}
-		}
-
-		public static async Task<HttpResponse<WorkOrder>> SaveWorkOrder(IEnumerable<Claim> userClaims, WorkOrder order, string companyNumber, bool releaselockonly = false)
+		public static async Task<HttpResponse<WorkOrder>> SaveWorkOrder(IEnumerable<Claim> userClaims, WorkOrder order, string companyNumber)
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
@@ -131,8 +119,8 @@ namespace DigitalInspection.Services.Web
 				string requestJson = JsonConvert.SerializeObject(dto);
 				var httpContent = new StringContent(requestJson, Encoding.UTF8, "application/json");
 
-				var url = $"orders/{order.Id}?$releaselockonly={Convert.ToInt32(releaselockonly)}";
-				var response = await httpClient.PutAsync(url, httpContent);
+				var url = $"orders/{order.Id}";
+				var response = await httpClient.PatchAsync(url, httpContent);
 				var responseJson = await response.Content.ReadAsStringAsync();
 
 				return CreateWorkOrderResponse(response, responseJson);
@@ -143,25 +131,15 @@ namespace DigitalInspection.Services.Web
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
-				var url = $"orders/{workOrderId}?$requestlock=1";
-				var response = await httpClient.GetAsync(url);
-				var json = await response.Content.ReadAsStringAsync();
-
-				HttpResponse<WorkOrder> workOrderResponse = CreateWorkOrderResponse(response, json);
-
-				if (workOrderResponse.IsSuccessStatusCode == false)
-				{
-					return workOrderResponse;
-				}
+				var url = $"orders/{workOrderId}";
 
 				object noteDTO = new {orderNotes = notes, orderID = workOrderId};
 				// Serialize mapped object
 				string noteJson = JsonConvert.SerializeObject(noteDTO);
 				var httpContent = new StringContent(noteJson, Encoding.UTF8, "application/json");
 
-				url = $"orders/{workOrderId}?$releaselockonly=0";
-				response = await httpClient.PutAsync(url, httpContent);
-				json = await response.Content.ReadAsStringAsync();
+				HttpResponseMessage response = await httpClient.PatchAsync(url, httpContent);
+				string json = await response.Content.ReadAsStringAsync();
 
 				return CreateWorkOrderResponse(response, json);
 			}
@@ -175,13 +153,16 @@ namespace DigitalInspection.Services.Web
 		{
 			using (HttpClient httpClient = InitializeHttpClient(userClaims, companyNumber))
 			{
-				var url = $"orderstatus/{id}";
+				// TODO: DJC SAC SetStatus will eventually read content from the body. Agreed on 7/3/2019
+				var url = $"orderstatus/{id}?newstatus={ ((int) status).ToString() }";
+
+				// WARNING: This is only used to satisfy the HttpClient.PatchAsync() method signature. It was not working with newstatus in the FormUrlEncodedContent
 				var formContent = new FormUrlEncodedContent(new[]
 				{
-					new KeyValuePair<string, string>("newstatus", ((int) status).ToString())
+					new KeyValuePair<string, string>("", "")
 				});
 
-				var response = await httpClient.PostAsync(url, formContent);
+				var response = await httpClient.PatchAsync(url, formContent);
 				var json = await response.Content.ReadAsStringAsync();
 
 				HttpResponse<bool> httpResponse = new HttpResponse<bool>(response, json)

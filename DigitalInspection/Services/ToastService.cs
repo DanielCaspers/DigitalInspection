@@ -2,35 +2,12 @@
 using DigitalInspection.ViewModels;
 using System.Net;
 using System.Web.Mvc;
-using DigitalInspection.Models.Orders;
 using DigitalInspection.Models.Web;
 
 namespace DigitalInspection.Services
 {
 	public static class ToastService
 	{
-
-		public static ToastViewModel FileLockRequired()
-		{
-			return Error("Work order lock expired - Please request edit rights again.");
-		}
-
-		public static ToastViewModel FileLockedByAnotherClient(string message, ToastActionType action = ToastActionType.NavigateBack)
-		{
-			return new ToastViewModel
-			{
-				Icon = "lock",
-				Message = message,
-				Type = ToastType.Warn,
-				Action = action
-			};
-		}
-
-		public static ToastViewModel NotYetImplemented()
-		{
-			return Error("This feature isn't ready yet. Please navigate back and refresh the page.", ToastActionType.NavigateBack);
-		}
-
 		public static ToastViewModel ResourceNotFound(string resource, ToastActionType action = ToastActionType.Refresh)
 		{
 			return Error(resource + " could not be found.", action);
@@ -84,10 +61,6 @@ namespace DigitalInspection.Services
 			{
 				case HttpStatusCode.NotFound:
 					return ResourceNotFound("Work order", ToastActionType.NavigateBack);
-				case (HttpStatusCode)423:
-					return FileLockedByAnotherClient(response.ErrorMessage, ToastActionType.Refresh);
-				case (HttpStatusCode)428:
-					return FileLockRequired();
 				default:
 					return UnknownErrorOccurred(response.HTTPCode, response.ErrorMessage);
 			}

@@ -571,7 +571,7 @@ namespace DigitalInspection.Controllers
 		private HttpResponse<WorkOrder> GetWorkOrderResponse(string workOrderId)
 		{
 			var task = Task.Run(async () => {
-				return await WorkOrderService.GetWorkOrder(CurrentUserClaims, workOrderId, GetCompanyNumber(), false);
+				return await WorkOrderService.GetWorkOrder(CurrentUserClaims, workOrderId, GetCompanyNumber());
 			});
 			// Force Synchronous run for Mono to work. See Issue #37
 			task.Wait();
