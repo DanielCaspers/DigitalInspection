@@ -3,6 +3,7 @@
 # Secret files which should NEVER be shared publicly on GitHub
 DigitalInspection/AppSettingsSecrets.config
 DigitalInspection/ConnectionStrings.config
+db-docker/mysql-secrets.env
 
 .vs/
 DigitalInspection/obj/
@@ -19,3 +20,4 @@ DigitalInspection/bin/
 #User uploaded content
 Uploads/
 DigitalInspection/DigitalInspection.csproj.user
+

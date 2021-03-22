@@ -1,0 +1,19 @@
+
+version: '3'
+
+services:
+  digital-inspection-mysql-production: # This is the connection name needed in tools like MySQL WorkBench
+    image: mysql:5.7.33
+    ports:
+      - "3308:3306" # Map the host port (3308) to the container port (3306)
+    volumes: 
+     - ./db-seed-scripts:/docker-entrypoint-initdb.d
+    env_file:
+      - ./mysql-secrets.env
+
+  digital-inspection-db-viewer:
+    image: adminer
+    ports:
+    - "3309:8080" # Map the host port (3309) to the container port (8080)
+    environment:
+      ADMINER_DESIGN: dracula
