@@ -97,11 +97,24 @@ i.mdi::before {
 	}
 }
 
+.carousel-content {
+	&.alert {
+		height: 100px;
+	}
+}
+
 .carousel-control {
 	color: $material-primary;
+	height: 80%;
+
+	background-image: none !important;
 	opacity: 1;
 
 	&:focus {
 		color: $material-primary;
 	}
+}
+
+.flex-media-viewer {
+	max-height: 55vh;
 }

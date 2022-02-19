@@ -21,9 +21,9 @@ namespace DigitalInspection.ViewModels.Inspections
 		// for the use case of pruning old inspection images which no longer need to be kept on file.
 		public string WorkOrderId { get; set; }
 
-		[Required(ErrorMessage = "Picture is required")]
-		[DisplayName("Attach a picture *")]
-		[MaxFileSize(8 * 1024 * 1024, ErrorMessage = "Max image size is 8 MB")]
+		[Required(ErrorMessage = "Picture or video is required")]
+		[DisplayName("Attach a picture or video *")]
+		[MaxFileSize(100 * 1024 * 1024, ErrorMessage = "Max image or video size is 100 MB")]
 		[DataType(DataType.Upload)]
 		public HttpPostedFileBase Picture { get; set; }
 	}

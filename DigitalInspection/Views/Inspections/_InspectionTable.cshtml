@@ -306,7 +306,7 @@
 															 HttpMethod = "POST",
 															 InsertionMode = InsertionMode.Replace,
 															 UpdateTargetId = "UploadInspectionPhotosDynamicDialogContainer",
-															 OnComplete = "DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm',  UploadInspectionPhotosDialog.initialize)"
+															 OnComplete = "DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm',  UploadInspectionPhotosDialog.initialize, UploadInspectionPhotosDialog.onHide)"
 														 },
 														 new
 														 {
@@ -332,7 +332,7 @@
 															 HttpMethod = "POST",
 															 InsertionMode = InsertionMode.Replace,
 															 UpdateTargetId = "ViewInspectionPhotosDynamicDialogContainer",
-															 OnComplete = "DialogService.show('viewInspectionPhotosDialog')"
+															 OnComplete = "DialogService.show('viewInspectionPhotosDialog', 'viewInspectionPhotosForm', ViewInspectionPhotosDialog.initialize, ViewInspectionPhotosDialog.onHide)"
 														 },
 														 new
 														 {

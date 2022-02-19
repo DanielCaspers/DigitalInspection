@@ -500,9 +500,16 @@ i.mdi::before {
   font-size: 16px;
   padding: 5px; }
 
+.carousel-content.alert {
+  height: 100px; }
+
 .carousel-control {
   color: #009688;
+  height: 80%;
+  background-image: none !important;
   opacity: 1; }
   .carousel-control:focus {
     color: #009688; }
 
+.flex-media-viewer {
+  max-height: 55vh; }

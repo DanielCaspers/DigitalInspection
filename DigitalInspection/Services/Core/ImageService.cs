@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -13,38 +11,36 @@ namespace DigitalInspection.Services.Core
 	{
 		private static readonly string UPLOAD_DIR = "~/Uploads/";
 
-		public static Image SaveImage(HttpPostedFileBase picture, string uploadSubdirectory, string fileNamePrefix, bool compress = true)
+		public static Image SaveImage(HttpPostedFileBase file, string uploadSubdirectory, string fileNamePrefix)
 		{
-			// TODO Improve error handling and prevent NPEs
-			if (picture != null && picture.ContentLength > 0)
+			if (!IsValid(file))
 			{
-				var imageDirectoryPath = CreateFolderTree(UPLOAD_DIR, new[] { uploadSubdirectory });
-				return SaveImageInternal(picture, imageDirectoryPath, fileNamePrefix, compress);
+				return null;
 			}
 
-			return null;
+			var imageDirectoryPath = CreateFolderTree(UPLOAD_DIR, new[] { uploadSubdirectory });
+			return SaveImageInternal(file, imageDirectoryPath, fileNamePrefix);
 		}
 
 		// uploadDirectoryTree represents a route tree, like the Angular router. 
-		public static Image SaveImage(HttpPostedFileBase picture, string[] uploadDirectoryTree, string fileNamePrefix, bool compress = true)
+		public static Image SaveImage(HttpPostedFileBase file, string[] uploadDirectoryTree, string fileNamePrefix)
 		{
-			// TODO Improve error handling and prevent NPEs
-			if (picture != null && picture.ContentLength > 0)
+			if (!IsValid(file))
 			{
-				var imageDirectoryPath = CreateFolderTree(UPLOAD_DIR, uploadDirectoryTree);
-				return SaveImageInternal(picture, imageDirectoryPath, fileNamePrefix, compress);
+				return null;
 			}
 
-			return null;
+			var imageDirectoryPath = CreateFolderTree(UPLOAD_DIR, uploadDirectoryTree);
+			return SaveImageInternal(file, imageDirectoryPath, fileNamePrefix);
 		}
 
-		public static void DeleteImage(Image picture)
+		public static void DeleteImage(Image file)
 		{
-			if (picture != null && File.Exists(picture.ImageUrl))
+			if (file != null && File.Exists(file.ImageUrl))
 			{
 				try
 				{
-					File.Delete(picture.ImageUrl);
+					File.Delete(file.ImageUrl);
 				}
 				catch (IOException e)
 				{
@@ -67,19 +63,23 @@ namespace DigitalInspection.Services.Core
 			return folderPath;
 		}
 
-		private static Image SaveImageInternal(HttpPostedFileBase picture, string imageDirectoryPath, string fileNamePrefix, bool compress)
+		private static bool IsValid(HttpPostedFileBase file)
 		{
-			var imageFileName = fileNamePrefix + "_" + picture.FileName;
-			var imagePath = Path.Combine(imageDirectoryPath, imageFileName);
-			System.Drawing.Image image = System.Drawing.Image.FromStream(picture.InputStream, true, true);
-			// TODO: Allow users of function to pass in image quality, or decide whether or not to save at some setting. Maybe custom enum model for image quality?
-
-			if (compress)
+			if (file == null || file.ContentLength == 0)
 			{
-				image = ReduceImageSize(image, 240, 320);
+				return false;
 			}
 
-			image.Save(imagePath);
+			// Only images and videos are valid for upload.
+			return file.ContentType.StartsWith("image/") || file.ContentType.StartsWith("video/");
+		}
+
+		private static Image SaveImageInternal(HttpPostedFileBase file, string imageDirectoryPath, string fileNamePrefix)
+		{
+			var imageFileName = fileNamePrefix + "_" + file.FileName;
+			var imagePath = Path.Combine(imageDirectoryPath, imageFileName);
+
+			file.SaveAs(imagePath);
 
 			return new Image
 			{
@@ -97,20 +97,5 @@ namespace DigitalInspection.Services.Core
 			sec.AddAccessRule(new FileSystemAccessRule(everyone, FileSystemRights.Modify | FileSystemRights.Synchronize, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow));
 			Directory.SetAccessControl(path, sec);
 		}
-
-		// http://stackoverflow.com/a/21394605/2831961
-		private static Bitmap ReduceImageSize(System.Drawing.Image image, int height, int width)
-		{
-			Bitmap newImg = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-			Graphics newGraphic = Graphics.FromImage(newImg);
-
-			newGraphic.InterpolationMode = InterpolationMode.Bicubic;
-			newGraphic.DrawImage(image, 0, 0, width, height);
-			newGraphic.Dispose();
-
-			return newImg;
-		}
-
-
 	}
 }

@@ -16,38 +16,38 @@
 					<h4 class="modal-title">Upload photo - @Model.ChecklistItem.Name</h4>
 				</div>
 				@*@using (Ajax.BeginForm(
+				"Photo",
+				"Inspections",
+				FormMethod.Post,
+				new AjaxOptions
+				{
+					InsertionMode = InsertionMode.Replace,
+					UpdateTargetId = "inspectionTableErrorContainer"
+				},
+				new {
+					id = "uploadInspectionPhotosForm",
+					autocomplete = "off",
+					enctype = "multipart/form-data"
+				})
+			)
+		{*@
+				@using (Html.BeginForm(
 						"Photo",
 						"Inspections",
 						FormMethod.Post,
-						new AjaxOptions
+						new
 						{
-							InsertionMode = InsertionMode.Replace,
-							UpdateTargetId = "inspectionTableErrorContainer"
-						},
-						new {
 							id = "uploadInspectionPhotosForm",
 							autocomplete = "off",
 							enctype = "multipart/form-data"
 						})
 					)
-				{*@
-					@using (Html.BeginForm(
-							"Photo",
-							"Inspections",
-							FormMethod.Post,
-							new
-							{
-								id = "uploadInspectionPhotosForm",
-								autocomplete = "off",
-								enctype = "multipart/form-data"
-							})
-						)
-					{
+				{
 					<div class="modal-body">
 						<div class="container-flex center">
 							<!-- Center the image using extra div wrapper + flex, while preventing flex from messing with aspect ratio -->
-							<div>
-								<img id="camera-viewfinder" class="img-responsive" style="max-height:55vh" src="#" />
+							<div class="upload-content-container">
+								<!-- A video or image will be dynamically appended here by jQuery on upload -->
 							</div>
 						</div>
 					</div>
@@ -57,11 +57,13 @@
 							<label for="fileInput" class="btn btn-primary">
 								<i class="material-icons md-36">camera_alt</i>
 							</label>
-							@Html.TextBoxFor(m => m.Picture, new { type = "file", accept = "image/*", id="fileInput" })
+							@Html.TextBoxFor(m => m.Picture, new { type = "file", accept = "image/*,video/*", id = "fileInput" })
 						</div>
 					</div>
 
-					<div class="container-flex center text-warning">Max Size is 8 MB</div>
+					<div class="container-flex center text-warning">&nbsp;Max file size is&nbsp;100 MB</div>
+					<!-- Size of file to upload is set dynamically in JS on input change -->
+					<div id="fileInputSizeDisplay"></div>
 
 					<div class="modal-footer">
 						<button id="@CANCEL" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

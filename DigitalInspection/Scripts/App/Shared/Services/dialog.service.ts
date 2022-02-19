@@ -23,7 +23,7 @@
 		});
 	}
 
-	public static show(dialogId: string, formName?: string, onShow?: () => void): void {
+	public static show(dialogId: string, formName?: string, onShow?: () => void, onHide?: () => void): void {
 		let dialogElement: JQuery = $('#' + dialogId);
 		let formElement: JQuery | null = null;
 		let validator: any;
@@ -49,6 +49,9 @@
 		});
 
 		dialogElement.on('hidden.bs.modal', () => {
+			if (onHide) {
+				onHide();
+			}
 			// Reset values in the form for next open
 			if (formElement && formElement[0]) {
 				(formElement[0] as any).reset();
@@ -65,7 +68,6 @@
 		if (onShow) {
 			dialogElement.on('shown.bs.modal', onShow);
 		}
-
 	}
 
 	public static confirmLeavingUnsavedChanges(): void {

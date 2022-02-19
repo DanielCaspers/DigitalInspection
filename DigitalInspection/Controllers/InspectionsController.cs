@@ -266,8 +266,14 @@ namespace DigitalInspection.Controllers
 			{
 				return PartialView("Toasts/_Toast", ToastService.ResourceNotFound(_subresource));
 			}
+
 			// New guid is used as a random prefix to the filename to ensure uniqueness
-			Image imageDto = ImageService.SaveImage(photoVM.Picture, new[] { IMAGE_DIRECTORY, photoVM.WorkOrderId, photoVM.InspectionItem.Id.ToString() }, Guid.NewGuid().ToString(), false);
+			Image imageDto = ImageService.SaveImage(photoVM.Picture, new[] { IMAGE_DIRECTORY, photoVM.WorkOrderId, photoVM.InspectionItem.Id.ToString() }, Guid.NewGuid().ToString());
+
+			if (imageDto == null)
+			{
+				return PartialView("Toasts/_Toast", ToastService.Error("The file uploaded was not an image or a video; it was not attached to the inspection!", ToastActionType.NavigateBack));
+			}
 
 			if (InspectionService.AddInspectionItemImage(_context, inspectionItemInDb, imageDto))
 			{

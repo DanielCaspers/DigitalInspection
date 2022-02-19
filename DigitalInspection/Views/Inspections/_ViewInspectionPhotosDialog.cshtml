@@ -1,4 +1,5 @@
-﻿@model DigitalInspection.ViewModels.Inspections.ViewInspectionPhotosViewModel
+﻿@using System.Web;
+@model DigitalInspection.ViewModels.Inspections.ViewInspectionPhotosViewModel
 
 @{
 	const string TEMPLATE_NAMESPACE = "viewInspectionPhotosDialog";
@@ -48,8 +49,25 @@
 						<div class="carousel-inner container-flex center">
 							@foreach (var image in Model.Images)
 							{
+								string mimeType = MimeMapping.GetMimeMapping(image.Title);
+
 								<div class="item @(image.Id == Model.Images[0].Id ? "active" : "")">
-									<img src="@image.Title" data-image-id="@image.Id" style="max-height: 55vh;"/>
+									@if (mimeType.StartsWith("image/"))
+									{
+										<img src="@image.Title" data-image-id="@image.Id" class="carousel-content flex-media-viewer" />
+									}
+									else if(mimeType.StartsWith("video/"))
+									{
+										<video loop controls data-image-id="@image.Id" class="carousel-content flex-media-viewer">
+											<source src="@image.Title" />
+										</video>
+									}
+									else
+									{
+										<div data-image-id="@image.Id" class="alert alert-danger carousel-content" role="alert">
+											Only image and video content types are supported! Failed to render mime type: @mimeType
+										</div>
+									}
 								</div>
 							}
 						</div>
@@ -68,13 +86,13 @@
 
 				<div class="modal-footer container-flex between">
 					<button id="@DELETE"
-					        type="button"
-					        class="btn btn-warning"
-					        data-dismiss="modal"
-					        onclick="ViewInspectionPhotosDialog.deletePhoto()">
+							type="button"
+							class="btn btn-warning"
+							data-dismiss="modal"
+							onclick="ViewInspectionPhotosDialog.deletePhoto()">
 						Delete
 					</button>
-					
+
 					<div id="checkbox-carousel" class="container-flex between">
 						Visible to customer?
 						<div class="togglebutton ma-checkbox-inline-label">
@@ -82,42 +100,42 @@
 								@for (var i = 0; i < Model.Images.Count; i++)
 								{
 									using (Ajax.BeginForm(
-										 "IsPhotoVisibleToCustomer",
-										 "Inspections",
-										 new
-										 {
-											 inspectionItemId = Model.Images[i].InspectionItem.Id,
-											 inspectionImageId = Model.Images[i].Id
-											 // isVisibleToCustomer is dynamically tacked on via JS
-										 },
-										 new AjaxOptions
-										 {
-											 InsertionMode = InsertionMode.Replace,
-											 UpdateTargetId = "inspectionTableErrorContainer"
-										 },
-										 new
-										 {
-											 // Used for preventing 'Confirm unsaved changes' dialog
-											 ma_dirtyforms_ignore = "",
-											 style = "display:inline !important"
-										 }))
-									 {
-										 @Html.CheckBoxFor(m => m.Images[i].IsVisibleToCustomer, new
-										 {
-											 style = "opacity: 1; width: 20px; height: 20px; margin-right: 10px;",
-											 data_image_id = Model.Images[i].Id,
-											 onchange="ViewInspectionPhotosDialog.onImageVisibilityToggle(this)",
-										 })
-									 }
+											"IsPhotoVisibleToCustomer",
+											"Inspections",
+											new
+											{
+												inspectionItemId = Model.Images[i].InspectionItem.Id,
+												inspectionImageId = Model.Images[i].Id
+												// isVisibleToCustomer is dynamically tacked on via JS
+											},
+											new AjaxOptions
+											{
+												InsertionMode = InsertionMode.Replace,
+												UpdateTargetId = "inspectionTableErrorContainer"
+											},
+											new
+											{
+												// Used for preventing 'Confirm unsaved changes' dialog
+												ma_dirtyforms_ignore = "",
+													style = "display:inline !important"
+												}))
+									{
+										@Html.CheckBoxFor(m => m.Images[i].IsVisibleToCustomer, new
+										{
+											style = "opacity: 1; width: 20px; height: 20px; margin-right: 10px;",
+											data_image_id = Model.Images[i].Id,
+											onchange="ViewInspectionPhotosDialog.onImageVisibilityToggle(this)",
+										})
+									}
 								}
 							</label>
 						</div>
 					</div>
 
 					<button id="@CANCEL"
-					        type="button"
-					        class="btn btn-default"
-					        data-dismiss="modal">
+							type="button"
+							class="btn btn-default"
+							data-dismiss="modal">
 						Dismiss
 					</button>
 				</div>
