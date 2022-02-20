@@ -22,7 +22,7 @@
 	public static initialize(e: any): void {
 		// On carousel slide, pause the active video (since the video element will still be in the DOM)
 		$(ViewInspectionPhotosDialog.CAROUSEL_SELECTOR).on('slide.bs.carousel', () => {
-			$(ViewInspectionPhotosDialog.CAROUSEL_CONTENT_CONTAINER_SELECTOR + ' video').each(() => {
+			$(ViewInspectionPhotosDialog.CAROUSEL_CONTENT_CONTAINER_SELECTOR + ' video').each(function() { // Needed for "this" scope to work correctly
 				$(this).trigger('pause');
 			});
 		})
