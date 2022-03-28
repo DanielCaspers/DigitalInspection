@@ -505,9 +505,11 @@ i.mdi::before {
 
 .carousel-control {
   color: #009688;
-  height: 80%;
+  top: calc(50% - 36px);
   background-image: none !important;
   opacity: 1; }
+  .carousel-control i.material-icons {
+    font-size: 72px !important; }
   .carousel-control:focus {
     color: #009688; }
 

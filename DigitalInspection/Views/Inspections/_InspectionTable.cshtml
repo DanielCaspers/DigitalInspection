@@ -71,14 +71,17 @@
 			<tr>
 				<th>Item</th>
 				<th>Condition</th>
-				<th>Canned Response</th>
 				<th>
-					Customer Concern?
+					Canned 
+					<br/>
+					Response
 				</th>
-				<th></th>
-				<th></th>
-				<th></th>
-				<th></th>
+				<th>
+					Customer 
+					<br/>
+					Concern?
+				</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -245,7 +248,7 @@
 					<td>
 						@if (checklistItem.Measurements.Count > 0)
 						{
-							@Ajax.RawActionLink("<i class='mdi mdi-ruler mdi-24px'></i>",
+							@Ajax.RawActionLink("<i class='material-icons'>straighten</i>",
 														 "GetAddMeasurementDialog",
 														 "Inspections",
 														 new
@@ -260,84 +263,81 @@
 															 UpdateTargetId = "AddMeasurementDynamicDialogContainer",
 															 OnComplete = "DialogService.show('addMeasurementDialog', 'addMeasurementForm')"
 														 },
-														 new { @class = "btn btn-primary no-margin no-padding-horizontal" })
+														 new { @class = "btn btn-primary no-margin no-horizontal-padding" })
 						}
-					</td>
-				<td>
-					@{
-						var materialIcon = string.IsNullOrWhiteSpace(inspectionItem.Note) ? "chat_bubble_outline" : "chat";
 
-						var iconHtml = string.Format("<i class='material-icons'>{0}</i>", materialIcon);
-						@Ajax.RawActionLink(iconHtml,
-							"GetAddInspectionItemNoteDialog",
-							"Inspections",
-							new
-							{
-								inspectionItemId = inspectionItem.Id,
-								checklistItemId = checklistItem.Id
-							},
-							new AjaxOptions
-							{
-								HttpMethod = "POST",
-								InsertionMode = InsertionMode.Replace,
-								UpdateTargetId = "AddInspectionItemNoteDynamicDialogContainer",
-								OnComplete = "DialogService.show('addInspectionItemNoteDialog', 'addInspectionItemNoteForm')"
-							},
-							new
-							{
-								@class = "btn btn-primary no-margin no-padding-horizontal"
-							})
-					}
-				</td>
-					<td>
+						@{
+							var materialIcon = string.IsNullOrWhiteSpace(inspectionItem.Note) ? "chat_bubble_outline" : "chat";
+
+							var iconHtml = string.Format("<i class='material-icons'>{0}</i>", materialIcon);
+							@Ajax.RawActionLink(iconHtml,
+								"GetAddInspectionItemNoteDialog",
+								"Inspections",
+								new
+								{
+									inspectionItemId = inspectionItem.Id,
+									checklistItemId = checklistItem.Id
+								},
+								new AjaxOptions
+								{
+									HttpMethod = "POST",
+									InsertionMode = InsertionMode.Replace,
+									UpdateTargetId = "AddInspectionItemNoteDynamicDialogContainer",
+									OnComplete = "DialogService.show('addInspectionItemNoteDialog', 'addInspectionItemNoteForm')"
+								},
+								new
+								{
+									@class = "btn btn-primary no-margin no-horizontal-padding"
+								})
+						}
+
 						@Ajax.RawActionLink("<i class='material-icons'>add_a_photo</i>",
-														 "GetUploadInspectionPhotosDialog",
-														 "Inspections",
-														 new
-														 {
-															 inspectionItemId = inspectionItem.Id,
-															 checklistItemId = checklistItem.Id,
-															 checklistId = Model.Checklist.Id,
-															 tagId = Model.FilteringTagId,
-															 workOrderId = Model.WorkOrder.Id
-														 },
-														 new AjaxOptions
-														 {
-															 HttpMethod = "POST",
-															 InsertionMode = InsertionMode.Replace,
-															 UpdateTargetId = "UploadInspectionPhotosDynamicDialogContainer",
-															 OnComplete = "DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm',  UploadInspectionPhotosDialog.initialize, UploadInspectionPhotosDialog.onHide)"
-														 },
-														 new
-														 {
-															 @class = "btn btn-primary no-margin no-padding-horizontal"
-														 })
-					</td>
-					<td>
+										"GetUploadInspectionPhotosDialog",
+										"Inspections",
+										new
+										{
+											inspectionItemId = inspectionItem.Id,
+											checklistItemId = checklistItem.Id,
+											checklistId = Model.Checklist.Id,
+											tagId = Model.FilteringTagId,
+											workOrderId = Model.WorkOrder.Id
+										},
+										new AjaxOptions
+										{
+											HttpMethod = "POST",
+											InsertionMode = InsertionMode.Replace,
+											UpdateTargetId = "UploadInspectionPhotosDynamicDialogContainer",
+											OnComplete = "DialogService.show('uploadInspectionPhotosDialog', 'uploadInspectionPhotosForm',  UploadInspectionPhotosDialog.initialize, UploadInspectionPhotosDialog.onHide)"
+										},
+										new
+										{
+											@class = "btn btn-primary no-margin no-horizontal-padding"
+										})
+
 						@if (inspectionItem.InspectionImages.Count > 0)
 						{
 							@Ajax.RawActionLink("<i class='material-icons'>collections</i>",
-														 "GetViewInspectionPhotosDialog",
-														 "Inspections",
-														 new
-														 {
-															 inspectionItemId = inspectionItem.Id,
-															 checklistItemId = checklistItem.Id,
-															 checklistId = Model.Checklist.Id,
-															 tagId = Model.FilteringTagId,
-															 workOrderId = Model.WorkOrder.Id
-														 },
-														 new AjaxOptions
-														 {
-															 HttpMethod = "POST",
-															 InsertionMode = InsertionMode.Replace,
-															 UpdateTargetId = "ViewInspectionPhotosDynamicDialogContainer",
-															 OnComplete = "DialogService.show('viewInspectionPhotosDialog', 'viewInspectionPhotosForm', ViewInspectionPhotosDialog.initialize, ViewInspectionPhotosDialog.onHide)"
-														 },
-														 new
-														 {
-															 @class = "btn btn-primary no-margin no-padding-horizontal"
-														 })
+															"GetViewInspectionPhotosDialog",
+															"Inspections",
+															new
+															{
+																inspectionItemId = inspectionItem.Id,
+																checklistItemId = checklistItem.Id,
+																checklistId = Model.Checklist.Id,
+																tagId = Model.FilteringTagId,
+																workOrderId = Model.WorkOrder.Id
+															},
+															new AjaxOptions
+															{
+																HttpMethod = "POST",
+																InsertionMode = InsertionMode.Replace,
+																UpdateTargetId = "ViewInspectionPhotosDynamicDialogContainer",
+																OnComplete = "DialogService.show('viewInspectionPhotosDialog', 'viewInspectionPhotosForm', ViewInspectionPhotosDialog.initialize, ViewInspectionPhotosDialog.onHide)"
+															},
+															new
+															{
+																@class = "btn btn-primary no-margin no-horizontal-padding"
+															})
 						}
 					</td>
 				</tr>
