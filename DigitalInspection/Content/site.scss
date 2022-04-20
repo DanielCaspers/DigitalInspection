@@ -106,6 +106,7 @@ i.mdi::before {
 .carousel-control {
 	color: $material-primary;
 	top: calc(50% - 36px);
+	bottom: calc(50% - 36px);
 	background-image: none !important;
 	opacity: 1;
 
