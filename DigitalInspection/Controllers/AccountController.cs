@@ -83,7 +83,7 @@ namespace DigitalInspection.Controllers
 			}
 			else
 			{
-				model.Toast = ToastService.Error(response.ErrorMessage, ToastActionType.Close);
+				model.Toast = ToastService.Error(response.ErrorMessage, ToastActionType.Refresh);
 				return View(model);
 			}
 		}

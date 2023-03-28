@@ -5,12 +5,29 @@
 	ViewBag.Title = "Digital Inspection";
 }
 
+<script type="text/javascript">
+	const onLogin = function (e) {
+		console.log('Form submission received');
+		var form = document.getElementById("loginForm");
+		var submitButton = document.getElementById("loginSubmitButton");
+
+		var isFormSubmissionInProgress = JSON.parse(form.getAttribute("data-submitting"));
+		if (isFormSubmissionInProgress) {
+			console.warn("Please wait a moment while we log you in...");
+			e.preventDefault();
+			return;
+		}
+		form.setAttribute("data-submitting", true);
+		submitButton.setAttribute("disabled", "disabled");
+	}
+</script>
+
 <div class="container" style="width:500px; margin-top:50px;">
 	<div class="jumbotron">
 
 		<h2>Digital Inspection</h2>
-		<section id="loginForm">
-			@using (Html.BeginForm("Login", "Account", new {ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+		<section>
+			@using (Html.BeginForm("Login", "Account", new {ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", id="loginForm", data_submitting = "false" }))
 			{
 				@Html.AntiForgeryToken()
 
@@ -24,10 +41,17 @@
 					@Html.PasswordFor(m => m.Password, new { @class = "form-control" })
 					@Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
 				</div>
-				<button type="submit" value="" class="btn btn-default btn-info btn-raised btn-block">
+				<button type="submit"
+						value="submit"
+						id="loginSubmitButton"
+						class="btn btn-default btn-info btn-raised btn-block" >
 					Log in
 				</button>
 			}
 		</section>
 	</div>
 </div>
+
+<script type="text/javascript">
+	document.querySelector("#loginForm").addEventListener("submit", onLogin);
+</script>
