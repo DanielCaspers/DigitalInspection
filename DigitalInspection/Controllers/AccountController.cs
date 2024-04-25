@@ -109,7 +109,7 @@ namespace DigitalInspection.Controllers
 			{
 				var model = new LoginViewModel()
 				{
-					Toast = ToastService.Error(task.Result.ErrorMessage, ToastActionType.Close)
+					Toast = ToastService.Error(task.Result.ErrorMessage, ToastActionType.Close  )
 				};
 				return View("Login", model);
 			}

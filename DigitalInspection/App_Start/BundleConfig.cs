@@ -27,7 +27,8 @@ namespace DigitalInspection
 					LIB_DIR_PREFIX + "Bootstrap-Material/material.js",
 					LIB_DIR_PREFIX + "Bootstrap-Material/ripples.js",
 					LIB_DIR_PREFIX + "Bootstrap-Multiselect/bootstrap-multiselect.js",
-					LIB_DIR_PREFIX + "Bootstrap-Select/bootstrap-select.min.js"
+					LIB_DIR_PREFIX + "Bootstrap-Select/bootstrap-select.min.js" // ,
+					// LIB_DIR_PREFIX + "MarkerJS/markerjs2.js"
 				)
 			);
 

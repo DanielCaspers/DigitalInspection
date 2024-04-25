@@ -66,7 +66,13 @@ class UploadInspectionPhotosDialog {
 			case MediaType.Image:
 				return $('<img>')
 					.attr('src', source)
-					.addClass('img-responsive flex-media-viewer');
+					.attr('id', 'imageToUpload')
+					.addClass('img-responsive flex-media-viewer')
+					.on('click', () => {
+						const markerArea = new markerjs2.MarkerArea(target);
+						markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
+						markerArea.show();
+					});
 
 			case MediaType.Video: {
 				const videoSource =
@@ -94,6 +100,23 @@ class UploadInspectionPhotosDialog {
 			.addClass('container-flex center text-info')
 			.text(`Your file size is ${fileSizeInMB.toFixed(1)} MB`);
 	}
+
+	//private static showMarkerArea(target) {
+	//	debugger;
+	//	const markerArea = new markerjs2.MarkerArea(target);
+
+	//	// add all marker types
+	//	markerArea.availableMarkerTypes = markerArea.ALL_MARKER_TYPES;
+
+	//	// enable redo, notes, zoom, and clear buttons (hidden by default)
+	//	markerArea.uiStyleSettings.redoButtonVisible = true;
+	//	markerArea.uiStyleSettings.notesButtonVisible = true;
+	//	markerArea.uiStyleSettings.zoomButtonVisible = true;
+	//	markerArea.uiStyleSettings.zoomOutButtonVisible = true;
+	//	markerArea.uiStyleSettings.clearButtonVisible = true;
+
+	//	markerArea.addEventListener("render", (event) => (target.src = event.dataUrl));
+
+	//	markerArea.show();
+	//}
 }
-
-
