@@ -31,18 +31,34 @@ namespace DigitalInspection.Services.Core
 			inspectionImages.ForEach(ImageService.DeleteImage);
 
 			// TODO: Revise service when dependency injection framework is in use, and abstract into a service
-			string path = HttpContext.Current.Server.MapPath($"~/Uploads/Inspections/{inspection.WorkOrderId}");
+			string path = null;
+
 			try
 			{
-				Directory.Delete(path, true);
+				path = HttpContext.Current.Server.MapPath($"~/Uploads/Inspections/{inspection.WorkOrderId}");
 			}
-			catch (IOException)
+			catch(DirectoryNotFoundException e)
 			{
-				Directory.Delete(path, true);
+				Console.WriteLine($"Work order {inspection.WorkOrderId} has no uploaded images to delete.");
 			}
-			catch (UnauthorizedAccessException)
+
+			if (path != null)
 			{
-				Directory.Delete(path, true);
+				try
+				{
+					Directory.Delete(path, true);
+				}
+				catch (IOException e)
+				{
+					Directory.Delete(path, true);
+					Console.WriteLine(e.Message, inspection.WorkOrderId);
+
+				}
+				catch (UnauthorizedAccessException e)
+				{
+					Directory.Delete(path, true);
+					Console.WriteLine(e.Message, inspection.WorkOrderId);
+				}
 			}
 
 			ctx.InspectionImages.RemoveRange(inspectionImages);
