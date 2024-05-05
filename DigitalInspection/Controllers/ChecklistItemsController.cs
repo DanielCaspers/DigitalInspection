@@ -155,6 +155,7 @@ namespace DigitalInspection.Controllers
 						cannedResponseInDb.LevelsOfConcern = cannedResponseInVm.LevelsOfConcern;
 						cannedResponseInDb.Url = cannedResponseInVm.Url;
 						cannedResponseInDb.Description = cannedResponseInVm.Description;
+						cannedResponseInDb.RecommenededServiceDescription = cannedResponseInVm.RecommenededServiceDescription;
 					}
 				}
 

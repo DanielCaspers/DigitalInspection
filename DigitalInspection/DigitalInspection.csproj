@@ -245,6 +245,7 @@
     <Compile Include="Migrations\201807011422356_AddsCustomerConcernToInspectionItem.Designer.cs">
       <DependentUpon>201807011422356_AddsCustomerConcernToInspectionItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202405042200000_AddsCannedResponseRecommendedServiceDescription.cs" />
     <Compile Include="Migrations\201807211500160_InspectionImageVisibility.cs" />
     <Compile Include="Migrations\201807211500160_InspectionImageVisibility.Designer.cs">
       <DependentUpon>201807211500160_InspectionImageVisibility.cs</DependentUpon>
