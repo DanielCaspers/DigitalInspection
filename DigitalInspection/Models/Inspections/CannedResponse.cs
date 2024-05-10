@@ -30,6 +30,9 @@ namespace DigitalInspection.Models.Inspections
 		[DisplayName("Description")]
 		public string Description { get; set; } = String.Empty;
 
+		[DisplayName("RecommenededServiceDescription")]
+		public string RecommenededServiceDescription { get; set; } = String.Empty;
+
 		[DisplayName("Levels of Concern *")]
 		[Required(ErrorMessage = "One or more levels of concern are required")]
 		public IList<RecommendedServiceSeverity> LevelsOfConcern { get; set; } = new List<RecommendedServiceSeverity>();

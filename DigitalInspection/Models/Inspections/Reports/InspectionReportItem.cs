@@ -32,7 +32,7 @@ namespace DigitalInspection.Models.Inspections.Reports
 			IsCustomerConcern = ii.IsCustomerConcern;
 
 			CannedResponses = ii.CannedResponses
-				.Select(cr => new CannedResponseReportItem(cr.Response, cr.Description, cr.Url))
+				.Select(cr => new CannedResponseReportItem(cr.Response, cr.Description, cr.Url, cr.RecommenededServiceDescription))
 				.OrderBy(cri => cri.Response);
 
 			Measurements = ii.InspectionMeasurements

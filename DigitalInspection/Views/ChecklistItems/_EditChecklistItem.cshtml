@@ -196,7 +196,13 @@
 									@Html.TextAreaFor(m => Model.ChecklistItem.CannedResponses[i].Description, new { @class = "form-control" })
 									@Html.ValidationMessageFor(m => Model.ChecklistItem.CannedResponses[i].Description)
 								</div>
-								
+
+								<div class="form-group col-sm-12">
+									@Html.LabelFor(m => Model.ChecklistItem.CannedResponses[i].RecommenededServiceDescription, new { @class = "control-label" })
+									@Html.TextAreaFor(m => Model.ChecklistItem.CannedResponses[i].RecommenededServiceDescription, new { @class = "form-control" })
+									@Html.ValidationMessageFor(m => Model.ChecklistItem.CannedResponses[i].RecommenededServiceDescription)
+								</div>
+
 								<!-- Needed to prevent model binding collisions when saving -->
 								@Html.HiddenFor(m => Model.ChecklistItem.CannedResponses[i].ChecklistItemId)
 								@Html.HiddenFor(m => Model.ChecklistItem.CannedResponses[i].Id)
