@@ -88,6 +88,7 @@ CREATE TABLE `CannedResponses` (
   `Url` longtext,
   `Description` longtext,
   `LevelsOfConcernInDb` longtext,
+  `RecommenededServiceDescription` longtext,
   PRIMARY KEY (`Id`),
   KEY `IX_ChecklistItemId` (`ChecklistItemId`) USING HASH,
   CONSTRAINT `FK_CannedResponses_ChecklistItems_ChecklistItemId` FOREIGN KEY (`ChecklistItemId`) REFERENCES `ChecklistItems` (`Id`)
@@ -100,7 +101,7 @@ CREATE TABLE `CannedResponses` (
 
 LOCK TABLES `CannedResponses` WRITE;
 /*!40000 ALTER TABLE `CannedResponses` DISABLE KEYS */;
-INSERT INTO `CannedResponses` VALUES ('101499bb-f61d-424a-ba6a-37ade1261e3b','45e5ae79-a3e1-40ff-8adc-0209f53bcac2','Water leaking in',NULL,NULL,'IMMEDIATE,MODERATE,SHOULD_WATCH,MAINTENANCE'),('57c54aab-60e9-4c08-8996-205564ef019f','45e5ae79-a3e1-40ff-8adc-0209f53bcac2','Light out',NULL,NULL,'IMMEDIATE,MODERATE');
+INSERT INTO `CannedResponses` VALUES ('101499bb-f61d-424a-ba6a-37ade1261e3b','45e5ae79-a3e1-40ff-8adc-0209f53bcac2','Water leaking in',NULL,NULL,'IMMEDIATE,MODERATE,SHOULD_WATCH,MAINTENANCE', 'Water leak'),('57c54aab-60e9-4c08-8996-205564ef019f','45e5ae79-a3e1-40ff-8adc-0209f53bcac2','Light out',NULL,NULL,'IMMEDIATE,MODERATE',NULL);
 /*!40000 ALTER TABLE `CannedResponses` ENABLE KEYS */;
 UNLOCK TABLES;
 

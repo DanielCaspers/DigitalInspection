@@ -30,7 +30,7 @@ namespace DigitalInspection.Models.Inspections
 		[DisplayName("Description")]
 		public string Description { get; set; } = String.Empty;
 
-		[DisplayName("RecommenededServiceDescription")]
+		[DisplayName("Recommended Service Description")]
 		public string RecommenededServiceDescription { get; set; } = String.Empty;
 
 		[DisplayName("Levels of Concern *")]

@@ -17,6 +17,8 @@
 		config: any,
 		onSelect?: (e: Event, dataTableInstance: any, type: string, indexes: any) => void,
 		onUserSelect?: (e: Event, dataTableInstance: any, type: string, cell: any, originalEvent: Event) => void): void {
+
+		config.order = [[0, 'desc']];
 		$(document).ready(() => {
 			const tableSelector = `#${elementId}`;
 			const searchInputSelector = `${tableSelector}_searchInput`;
